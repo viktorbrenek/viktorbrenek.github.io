@@ -3,6 +3,7 @@ var highlightjs = require('highlight.js');
 var rename = require("gulp-rename");
 var gulp = require('gulp');
 var pug = require("gulp-pug");
+var less = require("gulp-less");
 
 const paths = {
   articles: ['src/articles/*.md'],
@@ -12,6 +13,8 @@ const paths = {
   articlesdist: "docs/articles",
   pugstocompile: ['Core/*.pug'],
   pugcompile: "Core",
+  lesstocompile: ['Core/*.less'],
+  lesscompile: "Core",
 };
 
 const mvbConf = {
@@ -57,7 +60,13 @@ gulp.task('articles', () =>
 
 gulp.task("pugcompiler", () =>
   gulp.src(paths.pugstocompile)
-    .pipe(pug())
+    .pipe(pug({ pretty: true}))
     .pipe(gulp.dest(paths.pugcompile))
+);
+
+gulp.task("lesscompiler", () =>
+  gulp.src(paths.lesstocompile)
+    .pipe(less())
+    .pipe(gulp.dest(paths.lesscompile))
 );
 
