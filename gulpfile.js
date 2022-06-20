@@ -9,7 +9,9 @@ const paths = {
   //feedTemplate: 'src/templates/atom.pug',
   articleTemplate: 'src/templates/article.pug',
   articlesBasepath: 'articles',
-  articlesdist: "docs/articles"
+  articlesdist: "docs/articles",
+  pugstocompile: ['Core/*.pug'],
+  pugcompile: "Core",
 };
 
 const mvbConf = {
@@ -51,5 +53,11 @@ gulp.task('articles', () =>
     .pipe(mvb(mvbConf))
     .pipe(pug())
     .pipe(gulp.dest(paths.articlesdist))
+);
+
+gulp.task("pugcompiler", () =>
+  gulp.src(paths.pugstocompile)
+    .pipe(pug())
+    .pipe(gulp.dest(paths.pugcompile))
 );
 
