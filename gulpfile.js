@@ -12,9 +12,9 @@ const paths = {
   articlesBasepath: 'articles',
   articlesdist: "docs/articles",
   pugstocompile: ['Core/*.pug'],
-  pugcompile: "Core",
+  pugcompile: "docs",
   lesstocompile: ['Core/*.less'],
-  lesscompile: "Core",
+  lesscompile: "docs",
 };
 
 const mvbConf = {
@@ -70,3 +70,4 @@ gulp.task("lesscompiler", () =>
     .pipe(gulp.dest(paths.lesscompile))
 );
 
+//task na spuštění všeho najednou 
