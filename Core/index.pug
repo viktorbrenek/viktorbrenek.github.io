@@ -1,12 +1,30 @@
 doctype html
 head
+  style
+      include ../src/fonts/LatoLatin/latolatinfonts.css
+      include ../src/fonts/LatoLatin/latostyle.css
+      include ../docs/styles.css
+  meta(charset="utf-8")
+  
   title Viktor Břenek
-  link(rel='preconnect' href='https://fonts.googleapis.com')
-  link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
-  link(href='https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap' rel='stylesheet')
-h1 Hello World
-p I&apos;m hosted with GitHub Pages.
-section.articles_group
-  ul.articles.articles--blog
-    li.articles__item.acrticles__item--blog
+  
+body  
+  h1 Vítej na mém blogu borče
+  .myDiv
+    h5 zatím je tady prd :)
+    
+
+  ul#links.links 
+    li
+      a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
+    li
+      a.blog(href='https://www.youtube.com/c/ViktorBřenekYT' target='_blank') Youtube
+    li
+      a.source(href='https://github.com/viktorbrenek' target='_blank') Github
+  
+
+  
+  section.articles_group
+    ul.articles.articles--blog
+      li.articles__item.acrticles__item--blog
 
