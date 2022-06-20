@@ -6,6 +6,43 @@ body {
 .myDiv {
   margin: 0;
 }
+.wrapper {
+  display: block;
+}
+.inner_column {
+  min-height: 689px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: auto;
+}
+.header {
+  overflow: hidden;
+  display: block;
+  background: #e2962c;
+  color: #ffffff;
+  font-size: 16px;
+  align-items: center;
+}
+.header h1 {
+  text-align: center;
+}
+.header h5 {
+  text-align: center;
+}
+.mainpage {
+  display: block;
+}
+.footer {
+  position: static;
+  padding-bottom: 60px;
+  display: block;
+  background: rgba(223, 135, 12, 0.5);
+  margin-top: 30px;
+  padding: 10px 20px;
+  line-height: 1.8;
+  align-items: center;
+}
 h1 {
   display: block;
   font-size: 2em;

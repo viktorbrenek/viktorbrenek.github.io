@@ -302,6 +302,43 @@ body {
 .myDiv {
   margin: 0;
 }
+.wrapper {
+  display: block;
+}
+.inner_column {
+  min-height: 689px;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: auto;
+}
+.header {
+  overflow: hidden;
+  display: block;
+  background: #e2962c;
+  color: #ffffff;
+  font-size: 16px;
+  align-items: center;
+}
+.header h1 {
+  text-align: center;
+}
+.header h5 {
+  text-align: center;
+}
+.mainpage {
+  display: block;
+}
+.footer {
+  position: static;
+  padding-bottom: 60px;
+  display: block;
+  background: rgba(223, 135, 12, 0.5);
+  margin-top: 30px;
+  padding: 10px 20px;
+  line-height: 1.8;
+  align-items: center;
+}
 h1 {
   display: block;
   font-size: 2em;
@@ -377,19 +414,21 @@ h1 {
   <meta charset="utf-8">
   <title>Viktor Břenek</title>
 </head>
-<body> 
-  <h1>Vítej na mém blogu borče</h1>
-  <div class="myDiv">
-    <h5>zatím je tady prd :)</h5>
+<body>
+  <div class="mainwrapper" id="wrapper">
+    <div class="inner_column" id="inner_column"> 
+      <div class="header" id="header">
+        <h1>Vítej na mém blogu</h1>
+        <h5>Zatím tu nic nenajdeš</h5>
+      </div>
+      <div class="mainpage" id="mainpage">
+        <ul class="links" id="links"> 
+          <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li>
+          <li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li>
+          <li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li>
+        </ul>
+      </div>
+      <div class="footer" id="footer"></div>
+    </div>
   </div>
-  <ul class="links" id="links"> 
-    <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li>
-    <li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li>
-    <li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li>
-  </ul>
-  <section class="articles_group">
-    <ul class="articles articles--blog">
-      <li class="articles__item acrticles__item--blog"></li>
-    </ul>
-  </section>
 </body>
