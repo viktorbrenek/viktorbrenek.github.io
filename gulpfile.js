@@ -9,7 +9,7 @@ const paths = {
   //feedTemplate: 'src/templates/atom.pug',
   articleTemplate: 'src/templates/article.pug',
   articlesBasepath: 'articles',
-  articlesdist: "dist/articles"
+  articlesdist: "docs/articles"
 };
 
 const mvbConf = {
