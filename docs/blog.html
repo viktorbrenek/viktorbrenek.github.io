@@ -304,7 +304,7 @@ body {
 }
 h1 {
   display: block;
-  font-size: 2em;
+  font-size: 4.5rem;
   margin-block-start: 0.67em;
   margin-block-end: 0.67em;
   margin-inline-start: 0px;
@@ -399,13 +399,6 @@ html {
     font-family: "Lato", sans-serif;
   }
 }
-body {
-  background: #1a1a1a;
-  color: white;
-  margin: 0 auto;
-  max-width: 150rem;
-  overflow-x: hidden;
-}
 h1,
 h2,
 h3,
@@ -463,13 +456,19 @@ menu a {
   grid-template-columns: repeat(6, 1fr);
   grid-row-gap: 1.5rem;
   grid-column-gap: 1.5rem;
-  margin: auto;
+  margin: 0 auto;
+  max-width: 150rem;
+}
+body {
+  background: #1a1a1a;
+  color: white;
 }
 .gridblog {
   grid-template-columns: repeat(6, 1fr);
   grid-row-gap: 1.5rem;
   grid-column-gap: 1.5rem;
-  margin: auto;
+  margin: 0 auto;
+  max-width: 150rem;
 }
 .full {
   grid-column-start: 1;
@@ -480,6 +479,7 @@ menu a {
   grid-column-start: 1;
   grid-column-end: span 5;
   margin-top: 6rem;
+  font-size: 4.5rem;
 }
 .project-grid {
   grid-column-start: 1;
@@ -523,6 +523,8 @@ footer {
   -webkit-box-align: center;
   align-items: center;
   flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 150rem;
 }
 footer > * {
   margin-top: var(--padding);
@@ -630,44 +632,42 @@ footer h2 {
     <li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li>
     <li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li>
   </ul>
-  <div class="mainpage" id="mainpage">
-    <header><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></header>
-    <main class="gridblog">
-      <h1 class="intro">Blog</h1>
-      <section class="blog-grid">
-        <ul class="articles articles--blog">
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
-          </li>
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva  </span></a>
-          </li>
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
-          </li>
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva </span></a>
-          </li>
-        </ul>
-        <ul class="articles articles--blog">
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
-          </li>
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva</span></a>
-          </li>
-        </ul>
-        <ul class="articles articles--blog">
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
-          </li>
-          <li class="articles__item-articles__item--blog">
-            <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva   </span></a>
-          </li>
-        </ul>
-      </section>
-    </main>
-  </div>
+  <header><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></header>
+  <main class="gridblog">
+    <h1 class="intro">Blog</h1>
+    <section class="blog-grid">
+      <ul class="articles articles--blog">
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
+        </li>
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva  </span></a>
+        </li>
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
+        </li>
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva </span></a>
+        </li>
+      </ul>
+      <ul class="articles articles--blog">
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
+        </li>
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva</span></a>
+        </li>
+      </ul>
+      <ul class="articles articles--blog">
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">26.02.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek jedna</span></a>
+        </li>
+        <li class="articles__item-articles__item--blog">
+          <time class="articles__item_date">01.03.2019</time><a class="articles__item__link" href="articles/atomic-design-is-messy.html"><span class="articles__item__title">Testovací článek dva   </span></a>
+        </li>
+      </ul>
+    </section>
+  </main>
   <footer>
     <h2>Kontakt</h2><a class="button" href="#">Napiš mi</a>
   </footer>
