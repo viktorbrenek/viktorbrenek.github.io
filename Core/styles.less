@@ -199,6 +199,14 @@ header a {
   margin: auto;
 }
 
+.gridblog {
+    
+    grid-template-columns: repeat(6, 1fr);
+    grid-row-gap: 1.5rem;
+    grid-column-gap: 1.5rem;
+    margin: auto;
+  }
+
 .full {
   grid-column-start: 1;
   -ms-grid-column-span: 7;
@@ -285,39 +293,39 @@ footer h2 {
 
 .blog-grid {
     grid-column-start: 1;
-    grid-column-end: span 7;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, fr);
     grid-row-gap: 15rem;
     grid-column-gap: 2rem;
     margin: 1rem auto;
+    justify-content: left;
   }
   
-  .blog-grid a {
-    -ms-grid-column-span: 2;
-    grid-column: span 2;
-    color: white;
-    min-height: 56.25%;
-  }
   
-  .blog-grid a h3 {
-    font-size: 2.15rem;
-    margin: 1.25rem 0;
-  }
-  
-  .blog-grid a p {
-    font-size: 1.5rem;
-    color: lightgrey;
-  }
-  
-  .blog-grid a img {
-    margin-bottom: 0;
-    -o-object-fit: cover;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+  .articles {
+      list-style: none;
   }
 
+  .articles__item {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.articles__item__link {
+    flex: 1;
+    text-decoration: none;
+    cursor: auto;
+}
+
+.articles__item__title {
+    font-size: 2.15rem;
+    margin: 1.25rem 0;
+}
+
+.articles__item__date {
+    margin-right: 0.75rem;
+    flex-basis: 7em;
+}
 
 
 
