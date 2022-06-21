@@ -534,6 +534,36 @@ footer h2 {
   -webkit-filter: brightness(1.5);
   filter: brightness(1.5);
 }
+.blog-grid {
+  grid-column-start: 1;
+  grid-column-end: span 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+}
+.blog-grid a {
+  -ms-grid-column-span: 2;
+  grid-column: span 2;
+  color: white;
+  min-height: 56.25%;
+}
+.blog-grid a h3 {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.blog-grid a p {
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+.blog-grid a img {
+  margin-bottom: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
 @media (max-width: 960px) {
   :root {
     font-size: 9px;

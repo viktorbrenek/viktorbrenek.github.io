@@ -21,7 +21,7 @@ const mvbConf = {
   // glob that locates the article markdown files
   glob: paths.articles,
   // the template for an article page
-  template: paths.articleTemplate,
+  template: paths.articleTemplate, 
   // callback function for generating an article permalink.
   // see docs below for info on the article properties.
   permalink(article) {
