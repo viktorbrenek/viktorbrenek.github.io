@@ -1,1 +1,815 @@
-<h1>Configuring NGINX for Phoenix applications</h1><h1>Configuring NGINX for Phoenix applications</h1>
+<!DOCTYPE html><head><style>/* Webfont: LatoLatin-Black */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BlackItalic */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Bold */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BoldItalic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Hairline */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HairlineItalic */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Heavy */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HeavyItalic */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('vfonts/LatoLatin-HeavyItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Italic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Light */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-LightItalic */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Medium */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-MediumItalic */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Regular */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Semibold */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-SemiboldItalic */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Thin */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-ThinItalic */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@charset "utf-8";
+body {
+	font-family: "LatoLatinWeb";
+	font-size: 9pt;
+	font-style: normal;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#menu {
+	position: fixed;
+	top: 0.50em;
+    left: 0;
+	
+}
+#nav {
+	font-family: "LatoLatinWeb";
+	background-color: none;
+	width:150px;
+	text-align:left;
+	font-size:1em;
+	list-style: none;
+	margin: 0 0 0 0;
+	padding: 0 20 30 20;
+	float:left;
+}
+
+#nav li {
+	float:none;
+}
+
+#nav li a:link {
+	display:block;
+	padding: 4px 5px;
+	text-decoration: none;
+	background-color: #eee;
+	color:#222;
+	
+}
+
+.large {
+	font-size: 2.2em;
+}
+#main {
+	font-family: "LatoLatinWeb";
+	font-style: normal;
+	font-size: 1.5em;
+	color: black;
+	background-color: white;
+	width: 840px;
+	padding: 0 40px 0 40px;
+	margin-left: 180px;
+	margin-top: auto;
+	margin-right: 0;
+}
+.waterfall {
+	font-size: 10px;
+	width:100%;
+	overflow: hidden;
+	text-shadow: 0px 0px 0px black;
+	color: #000;
+}
+
+.size10{ font-size: 10px; }
+.size11{ font-size: 11px; }
+.size12{ font-size: 12px; }
+.size13{ font-size: 13px; }
+.size14{ font-size: 14px; }
+.size16{ font-size: 16px; }
+.size18{ font-size: 18px; }
+.size20{ font-size: 20px; }
+.size24{ font-size: 24px; }
+.size30{ font-size: 30px; }
+.size36{ font-size: 36px; }
+.size48{ font-size: 48px; }
+.size60{ font-size: 60px; }
+.size72{ font-size: 72px; }
+.size90{ font-size: 90px; }body {
+  background-color: #3d3f41;
+  font-family: "Lato", sans-serif;
+  color: #c7c7b0;
+}
+.mainpage {
+  display: block;
+}
+h1 {
+  display: block;
+  font-size: 4.5rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.links {
+  position: fixed;
+  list-style: none;
+  width: 120px;
+  bottom: 40px;
+  right: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
+}
+.links p {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 10px;
+  display: block;
+  width: 100%;
+  opacity: 0.6;
+  color: #FFF;
+}
+.links li {
+  border-bottom: #222 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+}
+.links li a {
+  transition: opacity 0.2s ease-out;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  width: 100%;
+  opacity: 0.4;
+  color: #FFF;
+}
+.links li a:hover {
+  opacity: 0.8;
+}
+.links li .who:before {
+  opacity: 0.5;
+  content: '@';
+  float: left;
+}
+.links li .source:before {
+  opacity: 0.5;
+  content: '{}';
+  float: left;
+}
+.links li .blog:before {
+  opacity: 0.5;
+  content: '&';
+  float: left;
+}
+.hide {
+  opacity: 0;
+}
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  font-size: 10px;
+  --padding: 3rem;
+}
+::-moz-selection {
+  background: #111111;
+  color: #595959;
+}
+::selection {
+  background: #111111;
+  color: #595959;
+}
+html {
+  font-family: "Lato", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Lato", sans-serif;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+  font-size: 3.5rem;
+  line-height: 1.3;
+}
+a {
+  text-decoration: none;
+  color: white;
+  -webkit-filter: brightness(0.8);
+  filter: brightness(0.8);
+  -webkit-transition: 150ms;
+  -o-transition: 150ms;
+  transition: 150ms;
+}
+a,
+a * {
+  border-radius: 0.15rem;
+}
+a:hover {
+  -webkit-filter: brightness(1.09);
+  filter: brightness(1.09);
+}
+menu {
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.262);
+  z-index: 999;
+}
+menu a {
+  font-size: 2.2rem;
+  color: white;
+  text-align: center;
+  display: block;
+  float: left;
+  padding: 16px 14px;
+  text-decoration: none;
+}
+.grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+}
+body {
+  background: #1a1a1a;
+  color: white;
+}
+.gridblog {
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+  min-height: 100vh;
+}
+.full {
+  grid-column-start: 1;
+  -ms-grid-column-span: 7;
+  grid-column-end: span 7;
+}
+.intro {
+  grid-column-start: 1;
+  grid-column-end: span 5;
+  margin-top: 6rem;
+  font-size: 4.5rem;
+}
+.project-grid {
+  grid-column-start: 1;
+  grid-column-end: span 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+}
+.project-grid a {
+  -ms-grid-column-span: 2;
+  grid-column: span 2;
+  color: white;
+  min-height: 56.25%;
+}
+.project-grid a h3 {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.project-grid a p {
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+.project-grid a img {
+  margin-bottom: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+main {
+  padding: 3rem var(--padding);
+}
+footer {
+  margin-top: 8rem;
+  padding: 6rem var(--padding);
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 150rem;
+  
+}
+footer > * {
+  margin-top: var(--padding);
+}
+footer h2 {
+  font-size: 4.5rem;
+}
+.button {
+  padding: 2rem 3rem;
+  font-size: 2.5rem;
+  background: #8e8e8e;
+  color: #1a1a1a;
+}
+.button:hover {
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
+}
+.blog-grid {
+  grid-column-start: 1;
+  display: grid;
+  grid-template-rows: repeat(3, fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+  justify-content: left;
+}
+.articles {
+  list-style: none;
+}
+.articles__item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articles__item__link {
+  flex: 1;
+  text-decoration: none;
+  cursor: auto;
+}
+.articles__item__title {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.articles__item__date {
+  margin-right: 0.75rem;
+  flex-basis: 7em;
+}
+@media (max-width: 960px) {
+  :root {
+    font-size: 9px;
+  }
+  .intro {
+    grid-column-start: 1;
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7;
+  }
+  .project-grid {
+    grid-row-gap: 16rem;
+  }
+  .project-grid a h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.15rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 3;
+    grid-column: span 3;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    font-size: 8px;
+    --padding: 2rem;
+  }
+  .project-grid {
+    grid-row-gap: 24rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 6;
+    grid-column: span 6;
+  }
+  .project-grid a h3 {
+    font-size: 3rem;
+    margin-top: 2rem;
+  }
+  .project-grid a p {
+    font-size: 1.75rem;
+  }
+  .project-grid a img {
+    width: 100vw;
+    margin: auto calc(50% - 50vw);
+  }
+}
+@media (min-width: 4000px) {
+  :root {
+    font-size: 40px;
+  }
+}
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Configuring NGINX for Phoenix applications</h1><a>Phoenix,Elixir,Nginx,Deployment,Gatling,Distillery,Tutorial,Ubuntu,Ubuntu 16,How To,Digital Ocean</a><a>&lt;p&gt;The previous article about &lt;a href=&quot;/articles/phoenix-deployment-gatling-ubuntu-digital-ocean.html&quot;&gt;deploying Phoenix with Gatling&lt;/a&gt; did not go into details for a proper NGINX configuration.
+Using NGINX as a front-end proxy for web applications is a pretty standard setup.
+There are some things to keep in mind concerning Phoenix, SSL and asset delivery and this article sums up the details.&lt;/p&gt;
+&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;note&quot;&gt;
+  &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; The goal of this article is to highlight some important config parts.
+  We will not cover the basic setup of NGINX, but what goes into the webapps configuration options to make it secure, performant and easy to maintain:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Extend a basic configuration with SSL&lt;/li&gt;
+    &lt;li&gt;Directives for delivering static asset via NGINX&lt;/li&gt;
+    &lt;li&gt;(specifics when deploying with Gatling)&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+&lt;h2&gt;Basic configuration with websocket proxy directives&lt;/h2&gt;
+&lt;p&gt;Let’s start out with the basics:
+This is the raw configuration file for Phoenix that &lt;a href=&quot;https://github.com/hashrocket/gatling&quot;&gt;Gatling&lt;/a&gt; provides when we set up an app.
+This article is not Gatling specific, but there were some questions about how to extend the initial setup which triggered me to write this up.
+What you find here is general advise on how to setup NGINX for a Phoenix app – the Gatling specific parts are covered at the end.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-nginx&quot;&gt;&lt;span class=&quot;hljs-section&quot;&gt;server&lt;/span&gt; {
+  &lt;span class=&quot;hljs-attribute&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;80&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;server_name&lt;/span&gt; myapp.com www.myapp.com;
+
+  &lt;span class=&quot;hljs-attribute&quot;&gt;location&lt;/span&gt; / {
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; X-Real-IP &lt;span class=&quot;hljs-variable&quot;&gt;$remote_addr&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; X-Forwarded-For &lt;span class=&quot;hljs-variable&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Host &lt;span class=&quot;hljs-variable&quot;&gt;$http_host&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_redirect&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;off&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_pass&lt;/span&gt; http://localhost:34567;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Upgrade &lt;span class=&quot;hljs-variable&quot;&gt;$http_upgrade&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Connection &lt;span class=&quot;hljs-string&quot;&gt;&quot;upgrade&quot;&lt;/span&gt;;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Basically this is just NGINX listening for requests that hit the configured domains on port 80 and proxying them to the Phoenix app that in this case runs on port 34567.&lt;/p&gt;
+&lt;p&gt;The important thing to note here are the last two &lt;code&gt;proxy_set_header&lt;/code&gt; directives that upgrade the client-server connection, which is needed to use websockets and Phoenix channels.
+For details see the offical blog on using &lt;a href=&quot;https://www.NGINX.com/blog/websocket-NGINX/&quot;&gt;NGINX as a WebSocket Proxy&lt;/a&gt; and running &lt;a href=&quot;http://www.phoenixframework.org/docs/serving-your-application-behind-a-proxy&quot;&gt;Phoenix Behind a Proxy&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Securing the app with SSL&lt;/h2&gt;
+&lt;p&gt;One of the first steps I take when setting up a new webserver is securing the connections.
+Nowadays this is pretty easy and does not involve any additional costs – thanks to the &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt; initiative.&lt;/p&gt;
+&lt;p&gt;This guide takes off from where you already got you certificates.
+If you first need to obtain a SSL certificate, Digital Ocean has a great guide on &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04?refcode=63eb025a3190&quot;&gt;How To Secure Nginx with Let’s Encrypt&lt;/a&gt;.
+Their guide covers obtaining a SSL certificate via Let’s Encrypt and automating the renewal.
+Most of the following configuration also resembles the general advise given in the mentioned guide.
+&lt;em&gt;The Digital Ocean docs are really good by the way and also applicable for similar setups, not just for their boxes.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Enough of the praise, here comes the config …&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-nginx&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;# extract Phoenix app upstream for better readability&lt;/span&gt;
+&lt;span class=&quot;hljs-attribute&quot;&gt;upstream&lt;/span&gt; myapp {
+  &lt;span class=&quot;hljs-attribute&quot;&gt;server&lt;/span&gt; localhost:&lt;span class=&quot;hljs-number&quot;&gt;34567&lt;/span&gt;;
+}
+
+&lt;span class=&quot;hljs-comment&quot;&gt;# hide server information&lt;/span&gt;
+&lt;span class=&quot;hljs-section&quot;&gt;http&lt;/span&gt; {
+  &lt;span class=&quot;hljs-attribute&quot;&gt;server_tokens&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;off&lt;/span&gt;;
+}
+
+&lt;span class=&quot;hljs-comment&quot;&gt;# redirect all http requests to https&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;# and also listen on IPv6 addresses&lt;/span&gt;
+&lt;span class=&quot;hljs-section&quot;&gt;server&lt;/span&gt; {
+  &lt;span class=&quot;hljs-attribute&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;80&lt;/span&gt; default_server;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;listen&lt;/span&gt; [::]:&lt;span class=&quot;hljs-number&quot;&gt;80&lt;/span&gt; default_server;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;server_name&lt;/span&gt; myapp.com www.myapp.com;
+
+  &lt;span class=&quot;hljs-attribute&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;301&lt;/span&gt; https://&lt;span class=&quot;hljs-variable&quot;&gt;$server_name&lt;/span&gt;&lt;span class=&quot;hljs-variable&quot;&gt;$request_uri&lt;/span&gt;;
+}
+
+&lt;span class=&quot;hljs-comment&quot;&gt;# the main server directive for ssl connections&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;# where we also use http2 (see asset delivery)&lt;/span&gt;
+&lt;span class=&quot;hljs-section&quot;&gt;server&lt;/span&gt; {
+  &lt;span class=&quot;hljs-attribute&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;443&lt;/span&gt; ssl http2 default_server;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;listen&lt;/span&gt; [::]:&lt;span class=&quot;hljs-number&quot;&gt;443&lt;/span&gt; ssl http2 default_server;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;server_name&lt;/span&gt; myapp.com www.myapp.com;
+
+  &lt;span class=&quot;hljs-comment&quot;&gt;# paths to certificate and key provided by Let's Encrypt&lt;/span&gt;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_certificate&lt;/span&gt; /etc/letsencrypt/live/myapp.com/fullchain.pem;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_certificate_key&lt;/span&gt; /etc/letsencrypt/live/myapp.com/privkey.pem;
+
+  &lt;span class=&quot;hljs-comment&quot;&gt;# SSL settings that currently offer good results in the SSL check&lt;/span&gt;
+  &lt;span class=&quot;hljs-comment&quot;&gt;# and have a reasonable backwards-compatibility, taken from&lt;/span&gt;
+  &lt;span class=&quot;hljs-comment&quot;&gt;# - https://cipherli.st/&lt;/span&gt;
+  &lt;span class=&quot;hljs-comment&quot;&gt;# - https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html&lt;/span&gt;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_protocols&lt;/span&gt; TLSv1 TLSv1.&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt; TLSv1.&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_prefer_server_ciphers&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;on&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_ciphers&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH&quot;&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_ecdh_curve&lt;/span&gt; secp384r1;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_session_cache&lt;/span&gt; shared:SSL:&lt;span class=&quot;hljs-number&quot;&gt;10m&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_session_tickets&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;off&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_stapling&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;on&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_stapling_verify&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;on&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;ssl_dhparam&lt;/span&gt; /etc/ssl/certs/dhparam.pem;
+
+  &lt;span class=&quot;hljs-comment&quot;&gt;# security enhancements&lt;/span&gt;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;add_header&lt;/span&gt; Strict-Transport-Security &lt;span class=&quot;hljs-string&quot;&gt;&quot;max-age=63072000; includeSubdomains&quot;&lt;/span&gt;;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;add_header&lt;/span&gt; X-Frame-Options DENY;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;add_header&lt;/span&gt; X-Content-Type-Options nosniff;
+
+  &lt;span class=&quot;hljs-comment&quot;&gt;# Let's Encrypt keeps its files here&lt;/span&gt;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;hljs-regexp&quot;&gt;~ /.well-known&lt;/span&gt; {
+    &lt;span class=&quot;hljs-attribute&quot;&gt;root&lt;/span&gt; /var/www/html;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;allow&lt;/span&gt; all;
+  }
+
+  &lt;span class=&quot;hljs-comment&quot;&gt;# besides referencing the extracted upstream this stays the same&lt;/span&gt;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;location&lt;/span&gt; / {
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; X-Real-IP &lt;span class=&quot;hljs-variable&quot;&gt;$remote_addr&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; X-Forwarded-For &lt;span class=&quot;hljs-variable&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Host &lt;span class=&quot;hljs-variable&quot;&gt;$http_host&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_redirect&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;off&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_pass&lt;/span&gt; http://myapp;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Upgrade &lt;span class=&quot;hljs-variable&quot;&gt;$http_upgrade&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Connection &lt;span class=&quot;hljs-string&quot;&gt;&quot;upgrade&quot;&lt;/span&gt;;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Noteworthy parts of this rather long config change:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Personally I prefer to extract the upstream and have it at the top of the config file.
+But this is totally optional and you can leave it as it was.&lt;/li&gt;
+&lt;li&gt;We integrated the SSL certificates provided by Let’s Encrypt and are redirecting all unencrypted traffic to the secured connection.&lt;/li&gt;
+&lt;li&gt;Depending on your needs you might want to change some of the SSL settings:
+The ones shown here offer a good compromise between an A+ result in the &lt;a href=&quot;https://www.ssllabs.com/ssltest/index.html&quot;&gt;SSL check&lt;/a&gt;
+and a reasonable backwards-compatibility. (Support for IE &amp;gt;= 10 and Android &amp;gt;= 4)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Beyond that we have also enabled &lt;code&gt;http2&lt;/code&gt; support via the &lt;code&gt;listen&lt;/code&gt; directive.
+This gives us benefits like &lt;a href=&quot;https://http2.github.io/faq/#what-are-the-key-differences-to-http1x&quot;&gt;connection multiplexing and low-latency transport&lt;/a&gt;, which brings us to the next point …&lt;/p&gt;
+&lt;h2&gt;Static asset delivery&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;mix phoenix.digest&lt;/code&gt; task already takes care of preparing the assets for efficient delivery.
+It adds a unique hash to the filename, which is based on the file content.
+This gives us static files that are cacheable by the client forever:
+Whenever the content changes a new filename will be generated which forces the client to download the new file.&lt;/p&gt;
+&lt;p&gt;The task also outputs a gzip compressed version of the file.
+The webserver can directly serve the compressed version without having to generate it itself.
+NGINX could handle gzipping the assets via the &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-add-the-gzip-module-to-nginx-on-ubuntu-16-04?refcode=63eb025a3190&quot;&gt;gzip module&lt;/a&gt;, but we do not have to take care of that.&lt;/p&gt;
+&lt;p&gt;By default the assets get served by the Phoenix app.
+This is not much of a problem server performance wise, but I encountered these two problems that prevent efficient file delivery:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;Expires&lt;/code&gt; header for browser-caching does not get set, forcing the client to (re)download the file with every request.&lt;/li&gt;
+&lt;li&gt;Even though the gzipped file is present, the uncompressed file gets sent. This means wasted traffic for the client as well as the server.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Maybe it is just me not finding the correct settings:
+I tried configuring &lt;a href=&quot;https://github.com/elixir-lang/plug/blob/master/lib/plug/static.ex&quot;&gt;&lt;code&gt;Plug.Static&lt;/code&gt;&lt;/a&gt; with the &lt;code&gt;gzip&lt;/code&gt; and &lt;code&gt;headers&lt;/code&gt; options, but I did not succeed – feedback and pointers in the right direction are appreciated!&lt;/p&gt;
+&lt;p&gt;So let’s turn to our trusted webserver to deliver the static files efficiently.
+We need to add another &lt;code&gt;location&lt;/code&gt; directive inside the existing one:
+This new &lt;code&gt;location&lt;/code&gt; matches all types of static files we want to deliver with NGINX.
+We suppress the &lt;code&gt;ETag&lt;/code&gt; header as we will be setting the maximum &lt;code&gt;Expires&lt;/code&gt; date, which instructs the client to cache the file almost forever.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;root&lt;/code&gt; path needs to be set and will depend on your deployment scenario and tools.
+It is the path where the static files are stored or copied to after the &lt;code&gt;mix phoenix.digest&lt;/code&gt; task has run.
+Depending on how you deploy (e.g. using Distillery releases) there are different ways to get the files to this path, see this &lt;a href=&quot;https://elixirforum.com/t/phoenix-behind-a-nginx/1313/6&quot;&gt;Elixir Forum post on using Phoenix behind a proxy&lt;/a&gt; for details.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-nginx&quot;&gt;&lt;span class=&quot;hljs-section&quot;&gt;server&lt;/span&gt; {
+  &lt;span class=&quot;hljs-comment&quot;&gt;# …&lt;/span&gt;
+  &lt;span class=&quot;hljs-attribute&quot;&gt;location&lt;/span&gt; / {
+    &lt;span class=&quot;hljs-comment&quot;&gt;# this part stays the same, no changes, just as a reference&lt;/span&gt;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; X-Real-IP &lt;span class=&quot;hljs-variable&quot;&gt;$remote_addr&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; X-Forwarded-For &lt;span class=&quot;hljs-variable&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Host &lt;span class=&quot;hljs-variable&quot;&gt;$http_host&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_redirect&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;off&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_pass&lt;/span&gt; http://myapp;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Upgrade &lt;span class=&quot;hljs-variable&quot;&gt;$http_upgrade&lt;/span&gt;;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;proxy_set_header&lt;/span&gt; Connection &lt;span class=&quot;hljs-string&quot;&gt;&quot;upgrade&quot;&lt;/span&gt;;
+
+    &lt;span class=&quot;hljs-comment&quot;&gt;# asset delivery using NGINX&lt;/span&gt;
+    &lt;span class=&quot;hljs-attribute&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;hljs-regexp&quot;&gt;~* ^.+\.(css|cur|gif|gz|ico|jpg|jpeg|js|png|svg|woff|woff2)$&lt;/span&gt; {
+      &lt;span class=&quot;hljs-attribute&quot;&gt;root&lt;/span&gt; /path/to/myapp/priv/static;
+      &lt;span class=&quot;hljs-attribute&quot;&gt;etag&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;off&lt;/span&gt;;
+      &lt;span class=&quot;hljs-attribute&quot;&gt;expires&lt;/span&gt; max;
+      &lt;span class=&quot;hljs-attribute&quot;&gt;add_header&lt;/span&gt; Cache-Control public;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When you are deploying with Gatling you could set this to the &lt;code&gt;priv/static&lt;/code&gt; directory inside the folder the project is build in, i.e &lt;code&gt;/home/deploy/myapp/priv/static&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Applying the changes&lt;/h2&gt;
+&lt;p&gt;The last step is to reload the NGINX configuration so that the changes above get applied:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo service nginx reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That’s it, your NGINX should be serving a secure and performant webapp 🎉&lt;/p&gt;
+&lt;p&gt;In case you are deploying with Gatling, the last part is relevant to you too – otherwise you can stop reading here and enjoy your day!&lt;/p&gt;
+&lt;h2&gt;Extending the Gatling NGINX config&lt;/h2&gt;
+&lt;p&gt;There isn’t anything specific to the NGINX config when you are deploying with Gatling.
+Except the fact that setting up a project gives you a minimalistic config file there is no magic involved:
+Once Gatling has deployed the config file it won’t touch it anymore.
+Same goes with the port, which is the only reason Gatling provides the config – so that you do not have to enter the port manually.&lt;/p&gt;
+&lt;p&gt;Having said this you can easily adapt you config following these steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Get the current nginx.conf (deployed by Gatling)&lt;/li&gt;
+&lt;li&gt;Change it, leaving the upstream port as it is&lt;/li&gt;
+&lt;li&gt;Overwrite the existing nginx.conf&lt;/li&gt;
+&lt;li&gt;Reload the NGINX configuration (see above)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There isn’t anything more to it.
+You can then check the &lt;code&gt;nginx.conf&lt;/code&gt; into version control and also delete the &lt;code&gt;domains&lt;/code&gt; file.
+Right now there is no way to &lt;a href=&quot;https://github.com/hashrocket/gatling/issues/10&quot;&gt;start out with a custom nginx.conf&lt;/a&gt;.
+That might change in the future and maybe also offer a way to automatically update the config on deployment – stay tuned!&lt;/p&gt;
+</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

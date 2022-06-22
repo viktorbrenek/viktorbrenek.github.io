@@ -173,6 +173,7 @@ body {
   grid-column-gap: 1.5rem;
   margin: 0 auto;
   max-width: 150rem;
+  min-height: 100vh;
 }
 .full {
   grid-column-start: 1;

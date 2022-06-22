@@ -1,2 +1,31 @@
-h1= mvb.article.title
-h1= mvb.article.title
+doctype html
+head
+  style
+      include ../fonts/LatoLatin/latolatinfonts.css
+      include ../fonts/LatoLatin/latostyle.css
+      include ../templates/astyles.css  
+  meta(charset="utf-8")
+  
+  title Blog
+
+body
+    ul#links.links 
+            li
+              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
+            li
+              a.blog(href='https://www.youtube.com/c/ViktorBřenekYT' target='_blank') Youtube
+            li
+              a.source(href='https://github.com/viktorbrenek' target='_blank') Github
+    menu
+        a.name(href='#') Viktor Břenek
+        a.name(href='https://viktorbrenek.github.io/blog') Blog
+        a.name(href='https://viktorbrenek.github.io') Portfolio
+    main.gridblog
+        h1= mvb.article.title
+        a= mvb.article.tags 
+        a= mvb.article.content 
+          
+
+    footer
+        h2 Kontakt
+        a.button(href='#') Napiš mi

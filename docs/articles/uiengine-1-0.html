@@ -1,1 +1,698 @@
-<h1>UIengine 1.0</h1><h1>UIengine 1.0</h1>
+<!DOCTYPE html><head><style>/* Webfont: LatoLatin-Black */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BlackItalic */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Bold */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BoldItalic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Hairline */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HairlineItalic */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Heavy */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HeavyItalic */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('vfonts/LatoLatin-HeavyItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Italic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Light */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-LightItalic */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Medium */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-MediumItalic */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Regular */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Semibold */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-SemiboldItalic */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Thin */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-ThinItalic */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@charset "utf-8";
+body {
+	font-family: "LatoLatinWeb";
+	font-size: 9pt;
+	font-style: normal;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#menu {
+	position: fixed;
+	top: 0.50em;
+    left: 0;
+	
+}
+#nav {
+	font-family: "LatoLatinWeb";
+	background-color: none;
+	width:150px;
+	text-align:left;
+	font-size:1em;
+	list-style: none;
+	margin: 0 0 0 0;
+	padding: 0 20 30 20;
+	float:left;
+}
+
+#nav li {
+	float:none;
+}
+
+#nav li a:link {
+	display:block;
+	padding: 4px 5px;
+	text-decoration: none;
+	background-color: #eee;
+	color:#222;
+	
+}
+
+.large {
+	font-size: 2.2em;
+}
+#main {
+	font-family: "LatoLatinWeb";
+	font-style: normal;
+	font-size: 1.5em;
+	color: black;
+	background-color: white;
+	width: 840px;
+	padding: 0 40px 0 40px;
+	margin-left: 180px;
+	margin-top: auto;
+	margin-right: 0;
+}
+.waterfall {
+	font-size: 10px;
+	width:100%;
+	overflow: hidden;
+	text-shadow: 0px 0px 0px black;
+	color: #000;
+}
+
+.size10{ font-size: 10px; }
+.size11{ font-size: 11px; }
+.size12{ font-size: 12px; }
+.size13{ font-size: 13px; }
+.size14{ font-size: 14px; }
+.size16{ font-size: 16px; }
+.size18{ font-size: 18px; }
+.size20{ font-size: 20px; }
+.size24{ font-size: 24px; }
+.size30{ font-size: 30px; }
+.size36{ font-size: 36px; }
+.size48{ font-size: 48px; }
+.size60{ font-size: 60px; }
+.size72{ font-size: 72px; }
+.size90{ font-size: 90px; }body {
+  background-color: #3d3f41;
+  font-family: "Lato", sans-serif;
+  color: #c7c7b0;
+}
+.mainpage {
+  display: block;
+}
+h1 {
+  display: block;
+  font-size: 4.5rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.links {
+  position: fixed;
+  list-style: none;
+  width: 120px;
+  bottom: 40px;
+  right: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
+}
+.links p {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 10px;
+  display: block;
+  width: 100%;
+  opacity: 0.6;
+  color: #FFF;
+}
+.links li {
+  border-bottom: #222 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+}
+.links li a {
+  transition: opacity 0.2s ease-out;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  width: 100%;
+  opacity: 0.4;
+  color: #FFF;
+}
+.links li a:hover {
+  opacity: 0.8;
+}
+.links li .who:before {
+  opacity: 0.5;
+  content: '@';
+  float: left;
+}
+.links li .source:before {
+  opacity: 0.5;
+  content: '{}';
+  float: left;
+}
+.links li .blog:before {
+  opacity: 0.5;
+  content: '&';
+  float: left;
+}
+.hide {
+  opacity: 0;
+}
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  font-size: 10px;
+  --padding: 3rem;
+}
+::-moz-selection {
+  background: #111111;
+  color: #595959;
+}
+::selection {
+  background: #111111;
+  color: #595959;
+}
+html {
+  font-family: "Lato", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Lato", sans-serif;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+  font-size: 3.5rem;
+  line-height: 1.3;
+}
+a {
+  text-decoration: none;
+  color: white;
+  -webkit-filter: brightness(0.8);
+  filter: brightness(0.8);
+  -webkit-transition: 150ms;
+  -o-transition: 150ms;
+  transition: 150ms;
+}
+a,
+a * {
+  border-radius: 0.15rem;
+}
+a:hover {
+  -webkit-filter: brightness(1.09);
+  filter: brightness(1.09);
+}
+menu {
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.262);
+  z-index: 999;
+}
+menu a {
+  font-size: 2.2rem;
+  color: white;
+  text-align: center;
+  display: block;
+  float: left;
+  padding: 16px 14px;
+  text-decoration: none;
+}
+.grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+}
+body {
+  background: #1a1a1a;
+  color: white;
+}
+.gridblog {
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+  min-height: 100vh;
+}
+.full {
+  grid-column-start: 1;
+  -ms-grid-column-span: 7;
+  grid-column-end: span 7;
+}
+.intro {
+  grid-column-start: 1;
+  grid-column-end: span 5;
+  margin-top: 6rem;
+  font-size: 4.5rem;
+}
+.project-grid {
+  grid-column-start: 1;
+  grid-column-end: span 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+}
+.project-grid a {
+  -ms-grid-column-span: 2;
+  grid-column: span 2;
+  color: white;
+  min-height: 56.25%;
+}
+.project-grid a h3 {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.project-grid a p {
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+.project-grid a img {
+  margin-bottom: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+main {
+  padding: 3rem var(--padding);
+}
+footer {
+  margin-top: 8rem;
+  padding: 6rem var(--padding);
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 150rem;
+  
+}
+footer > * {
+  margin-top: var(--padding);
+}
+footer h2 {
+  font-size: 4.5rem;
+}
+.button {
+  padding: 2rem 3rem;
+  font-size: 2.5rem;
+  background: #8e8e8e;
+  color: #1a1a1a;
+}
+.button:hover {
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
+}
+.blog-grid {
+  grid-column-start: 1;
+  display: grid;
+  grid-template-rows: repeat(3, fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+  justify-content: left;
+}
+.articles {
+  list-style: none;
+}
+.articles__item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articles__item__link {
+  flex: 1;
+  text-decoration: none;
+  cursor: auto;
+}
+.articles__item__title {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.articles__item__date {
+  margin-right: 0.75rem;
+  flex-basis: 7em;
+}
+@media (max-width: 960px) {
+  :root {
+    font-size: 9px;
+  }
+  .intro {
+    grid-column-start: 1;
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7;
+  }
+  .project-grid {
+    grid-row-gap: 16rem;
+  }
+  .project-grid a h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.15rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 3;
+    grid-column: span 3;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    font-size: 8px;
+    --padding: 2rem;
+  }
+  .project-grid {
+    grid-row-gap: 24rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 6;
+    grid-column: span 6;
+  }
+  .project-grid a h3 {
+    font-size: 3rem;
+    margin-top: 2rem;
+  }
+  .project-grid a p {
+    font-size: 1.75rem;
+  }
+  .project-grid a img {
+    width: 100vw;
+    margin: auto calc(50% - 50vw);
+  }
+}
+@media (min-width: 4000px) {
+  :root {
+    font-size: 40px;
+  }
+}
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>UIengine 1.0</h1><a>UIengineering,Design Systems,Frontend development</a><a>&lt;petr-brenek&gt;
+Ahoj
+&lt;/petr-brenek&gt;
+&lt;p&gt;The &lt;a href=&quot;https://github.com/dennisreimann/uiengine&quot;&gt;UIengine&lt;/a&gt; started out as a tool to build pattern libraries and documentation for design systems.
+My goal was to build something I could reuse in different projects, independent of the technologies used (e.g. templating languages).&lt;/p&gt;
+&lt;p&gt;Though the purpose is still the same, the tool has grown a lot and became more versatile during the last one and a half years.
+&lt;mark&gt;Now I am releasing the UIengine v1.0 to mark a public stable release and open it up for contributions.&lt;/mark&gt;&lt;/p&gt;
+&lt;h2&gt;A workbench for UI-driven development&lt;/h2&gt;
+&lt;p&gt;When I started working on the UIengine there were already similar tools:
+&lt;a href=&quot;https://fractal.build/&quot;&gt;Fractal&lt;/a&gt; and &lt;a href=&quot;http://patternlab.io/&quot;&gt;PatternLab&lt;/a&gt; being the well-known ones –
+in the meantime &lt;a href=&quot;https://storybook.js.org/&quot;&gt;Storybook&lt;/a&gt; also became a popular solution for component-driven development. So why reinvent the wheel?&lt;/p&gt;
+&lt;p&gt;Most of the existing tools focussed on the component development, but lacked ways to also provide good documentation.
+Some were limited to using a specific templating language or framework, which was suboptimal for me:
+As a freelancer I am working on many projects and each one has its own set of constraints and requirements.
+I wanted to build a tool with an open source license, which I could use and extend with every project I work on.&lt;/p&gt;
+&lt;h3&gt;The UI-driven workflow&lt;/h3&gt;
+&lt;p&gt;As I am working in larger organisations with multiple teams and apps nowadays, we often had the same needs:
+&lt;mark&gt;Providing a consistent user interface throughout all the products touchpoints while keeping quality high and development fast.&lt;/mark&gt;
+“Design systems” have become a popular term for a solution to this – and the UIengine supports our workflow of creating living design systems just fine.&lt;/p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;/files/uiengine/workflow.png&quot; alt=&quot;Our workflow for UI-driven development&quot; width=&quot;1280&quot; /&gt;
+  &lt;figcaption&gt;Our workflow for UI-driven development&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;We try to avoid creating deliverables (dead documents, e.g. graphic layouts or non-interaction wireframes) as much as possible.
+What are we doing instead? We try to bring most of the design and development workflow to the browser:
+The browser tooling has become pretty nice and here we have all the tools that also designers can benefit from:
+Layout via CSS grid and flexbox, variables via custom properties and animations done with CSS and JavaScript.&lt;/p&gt;
+&lt;p&gt;The UIengine is the central hub where most of the development takes place:
+The components and templates get implemented with the technology each team is using.
+We use the previews to display variants of the components and for prototyping on the template level.&lt;/p&gt;
+&lt;p&gt;When components and templates are done, we ship them as build artefacts (NPM packages) to the teams that consume the design system.
+There is also the &lt;a href=&quot;https://github.com/brainly/html-sketchapp&quot;&gt;html-sketchapp&lt;/a&gt; integration, which generates a Sketch library from the component code.&lt;/p&gt;
+&lt;p&gt;For the development there are a lot of useful features under the cover:
+One of my favorites being that the UIengine supports generating documentation for React PropTypes from the code automatically.&lt;/p&gt;
+&lt;figure&gt;
+  &lt;a href=&quot;/files/uiengine/property-extraction.gif&quot;&gt;
+    &lt;img src=&quot;/files/uiengine/property-extraction.gif&quot; alt=&quot;The UIengine extracts React PropTypes for documentation&quot; width=&quot;1332&quot; /&gt;
+  &lt;/a&gt;
+  &lt;figcaption&gt;The UIengine extracts React PropTypes for documentation&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Besides that, features like scaffolding for components and documentation pages give you an extra productivity boost.
+Also when building a responsive website or app it is very handy to see multiple breakpoints or viewports at once (as shown in the Tasty BBQ sample project screenshot below).
+In addition to that the UIengine has support for creating design systems that require themeing, which can be used when working on white label sites.&lt;/p&gt;
+&lt;h2&gt;Getting started and demos&lt;/h2&gt;
+&lt;p&gt;I have spent a lot of time on trying to provide good documentation.
+As one of the projects main purposes is to make it fun and easy to write docs, it makes sense that the
+&lt;a href=&quot;https://uiengine.uix.space/&quot;&gt;documentation site&lt;/a&gt; is generated with the UIengine itself.&lt;/p&gt;
+&lt;p&gt;There are a couple of resources that can get you started:
+The command for initializing a new project has the option to generate some demo content.
+Use this to try the UIengine yourself and get your hands dirty quickly:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;# setup an empty project&lt;/span&gt;
+mkdir uiengine-demo &amp;amp;&amp;amp; &lt;span class=&quot;hljs-built_in&quot;&gt;cd&lt;/span&gt; uiengine-demo &amp;amp;&amp;amp; npm init -y
+
+&lt;span class=&quot;hljs-comment&quot;&gt;# install the dependencies&lt;/span&gt;
+npm install --save-dev @uiengine/core @uiengine/adapter-html
+
+&lt;span class=&quot;hljs-comment&quot;&gt;# initialize the demo project&lt;/span&gt;
+npx uiengine init --demo
+
+&lt;span class=&quot;hljs-comment&quot;&gt;# build and start the dev server&lt;/span&gt;
+npx uiengine build --serve --watch
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In case you want to see a full-fledged example of a website featuring a design system, there is the
+&lt;a href=&quot;https://github.com/dennisreimann/uiengine-sample-react&quot;&gt;Tasty BBQ sample project&lt;/a&gt;:
+The &lt;a href=&quot;https://uiengine-sample-react.uix.space/&quot;&gt;website&lt;/a&gt; is build with React/Next.js.
+It utilizes the UIengine to generate the &lt;a href=&quot;https://uiengine-sample-react.uix.space/design-system/&quot;&gt;corresponding design system documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;figure&gt;
+  &lt;a href=&quot;https://uiengine-sample-react.uix.space/&quot;&gt;
+    &lt;img src=&quot;/files/uiengine/react-sample.jpg&quot; alt=&quot;The Tasty BBQ sample project for the UIengine&quot; width=&quot;1280&quot; /&gt;
+  &lt;/a&gt;
+  &lt;figcaption&gt;The Tasty BBQ sample project for the UIengine&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Please head on over to the &lt;a href=&quot;https://github.com/dennisreimann/uiengine&quot;&gt;UIengine repository on GitHub&lt;/a&gt; and star it if you like the project.
+I would also be very happy if you could help me &lt;a href=&quot;http://twitter.com/home?status=The%20UIengine%20is%20a%20workbench%20for%20UI-driven%20development.%20v1.0%20has%20been%20released%20and%20it%20looks%20pretty%20nice%21%20https%3A%2F%2Fgithub.com%2Fdennisreimann%2Fuiengine%20%23Frontend%20%23DesignSystems&quot;&gt;spread the word&lt;/a&gt; about this release.
+Thanks and enjoy the project! 😀&lt;/p&gt;
+</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

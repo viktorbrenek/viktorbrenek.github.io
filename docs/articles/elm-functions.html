@@ -1,1 +1,700 @@
-<h1>Elm Functions</h1><h1>Elm Functions</h1>
+<!DOCTYPE html><head><style>/* Webfont: LatoLatin-Black */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BlackItalic */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Bold */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BoldItalic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Hairline */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HairlineItalic */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Heavy */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HeavyItalic */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('vfonts/LatoLatin-HeavyItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Italic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Light */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-LightItalic */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Medium */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-MediumItalic */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Regular */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Semibold */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-SemiboldItalic */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Thin */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-ThinItalic */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@charset "utf-8";
+body {
+	font-family: "LatoLatinWeb";
+	font-size: 9pt;
+	font-style: normal;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#menu {
+	position: fixed;
+	top: 0.50em;
+    left: 0;
+	
+}
+#nav {
+	font-family: "LatoLatinWeb";
+	background-color: none;
+	width:150px;
+	text-align:left;
+	font-size:1em;
+	list-style: none;
+	margin: 0 0 0 0;
+	padding: 0 20 30 20;
+	float:left;
+}
+
+#nav li {
+	float:none;
+}
+
+#nav li a:link {
+	display:block;
+	padding: 4px 5px;
+	text-decoration: none;
+	background-color: #eee;
+	color:#222;
+	
+}
+
+.large {
+	font-size: 2.2em;
+}
+#main {
+	font-family: "LatoLatinWeb";
+	font-style: normal;
+	font-size: 1.5em;
+	color: black;
+	background-color: white;
+	width: 840px;
+	padding: 0 40px 0 40px;
+	margin-left: 180px;
+	margin-top: auto;
+	margin-right: 0;
+}
+.waterfall {
+	font-size: 10px;
+	width:100%;
+	overflow: hidden;
+	text-shadow: 0px 0px 0px black;
+	color: #000;
+}
+
+.size10{ font-size: 10px; }
+.size11{ font-size: 11px; }
+.size12{ font-size: 12px; }
+.size13{ font-size: 13px; }
+.size14{ font-size: 14px; }
+.size16{ font-size: 16px; }
+.size18{ font-size: 18px; }
+.size20{ font-size: 20px; }
+.size24{ font-size: 24px; }
+.size30{ font-size: 30px; }
+.size36{ font-size: 36px; }
+.size48{ font-size: 48px; }
+.size60{ font-size: 60px; }
+.size72{ font-size: 72px; }
+.size90{ font-size: 90px; }body {
+  background-color: #3d3f41;
+  font-family: "Lato", sans-serif;
+  color: #c7c7b0;
+}
+.mainpage {
+  display: block;
+}
+h1 {
+  display: block;
+  font-size: 4.5rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.links {
+  position: fixed;
+  list-style: none;
+  width: 120px;
+  bottom: 40px;
+  right: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
+}
+.links p {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 10px;
+  display: block;
+  width: 100%;
+  opacity: 0.6;
+  color: #FFF;
+}
+.links li {
+  border-bottom: #222 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+}
+.links li a {
+  transition: opacity 0.2s ease-out;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  width: 100%;
+  opacity: 0.4;
+  color: #FFF;
+}
+.links li a:hover {
+  opacity: 0.8;
+}
+.links li .who:before {
+  opacity: 0.5;
+  content: '@';
+  float: left;
+}
+.links li .source:before {
+  opacity: 0.5;
+  content: '{}';
+  float: left;
+}
+.links li .blog:before {
+  opacity: 0.5;
+  content: '&';
+  float: left;
+}
+.hide {
+  opacity: 0;
+}
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  font-size: 10px;
+  --padding: 3rem;
+}
+::-moz-selection {
+  background: #111111;
+  color: #595959;
+}
+::selection {
+  background: #111111;
+  color: #595959;
+}
+html {
+  font-family: "Lato", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Lato", sans-serif;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+  font-size: 3.5rem;
+  line-height: 1.3;
+}
+a {
+  text-decoration: none;
+  color: white;
+  -webkit-filter: brightness(0.8);
+  filter: brightness(0.8);
+  -webkit-transition: 150ms;
+  -o-transition: 150ms;
+  transition: 150ms;
+}
+a,
+a * {
+  border-radius: 0.15rem;
+}
+a:hover {
+  -webkit-filter: brightness(1.09);
+  filter: brightness(1.09);
+}
+menu {
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.262);
+  z-index: 999;
+}
+menu a {
+  font-size: 2.2rem;
+  color: white;
+  text-align: center;
+  display: block;
+  float: left;
+  padding: 16px 14px;
+  text-decoration: none;
+}
+.grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+}
+body {
+  background: #1a1a1a;
+  color: white;
+}
+.gridblog {
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+  min-height: 100vh;
+}
+.full {
+  grid-column-start: 1;
+  -ms-grid-column-span: 7;
+  grid-column-end: span 7;
+}
+.intro {
+  grid-column-start: 1;
+  grid-column-end: span 5;
+  margin-top: 6rem;
+  font-size: 4.5rem;
+}
+.project-grid {
+  grid-column-start: 1;
+  grid-column-end: span 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+}
+.project-grid a {
+  -ms-grid-column-span: 2;
+  grid-column: span 2;
+  color: white;
+  min-height: 56.25%;
+}
+.project-grid a h3 {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.project-grid a p {
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+.project-grid a img {
+  margin-bottom: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+main {
+  padding: 3rem var(--padding);
+}
+footer {
+  margin-top: 8rem;
+  padding: 6rem var(--padding);
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 150rem;
+  
+}
+footer > * {
+  margin-top: var(--padding);
+}
+footer h2 {
+  font-size: 4.5rem;
+}
+.button {
+  padding: 2rem 3rem;
+  font-size: 2.5rem;
+  background: #8e8e8e;
+  color: #1a1a1a;
+}
+.button:hover {
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
+}
+.blog-grid {
+  grid-column-start: 1;
+  display: grid;
+  grid-template-rows: repeat(3, fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+  justify-content: left;
+}
+.articles {
+  list-style: none;
+}
+.articles__item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articles__item__link {
+  flex: 1;
+  text-decoration: none;
+  cursor: auto;
+}
+.articles__item__title {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.articles__item__date {
+  margin-right: 0.75rem;
+  flex-basis: 7em;
+}
+@media (max-width: 960px) {
+  :root {
+    font-size: 9px;
+  }
+  .intro {
+    grid-column-start: 1;
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7;
+  }
+  .project-grid {
+    grid-row-gap: 16rem;
+  }
+  .project-grid a h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.15rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 3;
+    grid-column: span 3;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    font-size: 8px;
+    --padding: 2rem;
+  }
+  .project-grid {
+    grid-row-gap: 24rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 6;
+    grid-column: span 6;
+  }
+  .project-grid a h3 {
+    font-size: 3rem;
+    margin-top: 2rem;
+  }
+  .project-grid a p {
+    font-size: 1.75rem;
+  }
+  .project-grid a img {
+    width: 100vw;
+    margin: auto calc(50% - 50vw);
+  }
+}
+@media (min-width: 4000px) {
+  :root {
+    font-size: 40px;
+  }
+}
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Elm Functions</h1><a>Elm,Frontend development,Functions,Functional Programming</a><a>&lt;p&gt;This article spotlights the central construct of the Elm programming language: Functions. What does the definition of a function look like, how can functions be chained via piping and what the heck is currying? Let us have a closer look …&lt;/p&gt;
+&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
+&lt;h3&gt;REPL&lt;/h3&gt;
+&lt;p&gt;The &lt;em&gt;read-evaluate-print-loop&lt;/em&gt; is a runtime environment for executing Elm code. The result of an expression is immediately shown, which makes the REPL an ideal tool for running short code samples and getting used to the syntax and language constructs. The REPL is part of the Elm standard installation and it can be opened on the command line:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ elm-repl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The examples in this article can be run in the REPL. Multiline statements have to end with &lt;code&gt;\&lt;/code&gt;. This is not the case for normal Elm code, but the examples in this article use the backslash so that you can copy, paste and execute them in the REPL. I’ve added the output of each expression in the examples as &lt;code&gt;-- comment&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Calling functions&lt;/h3&gt;
+&lt;p&gt;Before we take a look at how functions are defined, we will use functions from the &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/String&quot;&gt;String module&lt;/a&gt; which is part of the standard library. To use its functions we first need to import it.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; String
+
+&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &amp;lt;function: append&amp;gt; : String -&amp;gt; String -&amp;gt; String&lt;/span&gt;
+
+&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;h&quot;&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;i&quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;hi&quot; : String&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Calling a function without any argument gives us its signature. As you can see with &lt;code&gt;String.append&lt;/code&gt;, the signature consists of the name and the types of the arguments and the return value. The type of the return value is not separated differently than the argument types, it is just the last element of the list.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;function: append&amp;gt; : String         -&amp;gt; String         -&amp;gt; String
+| function name    | type argument 1 | type argument 2 | type result |
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In Elm the &lt;strong&gt;arguments are separated with spaces&lt;/strong&gt;, as you can see with &lt;code&gt;String.append &amp;quot;h&amp;quot; &amp;quot;i&amp;quot;&lt;/code&gt;. There are also &lt;strong&gt;no parentheses around the arguments&lt;/strong&gt;. Instead one uses parentheses to encapsulate the whole function call in case the result should be used as an argument for another function call. Which brings us to the topic of …&lt;/p&gt;
+&lt;h3&gt;Piping: Chaining functions&lt;/h3&gt;
+&lt;p&gt;Of course return values can be used as arguments for subsequent function calls. In Elm there are two ways to chain the calls:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.repeat &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.toUpper (&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;h&quot;&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;i&quot;&lt;/span&gt;))
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;HIHIHI&quot; : String&lt;/span&gt;
+
+&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;h&quot;&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;i&quot;&lt;/span&gt; |&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.toUpper |&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.repeat &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;HIHIHI&quot; : String&lt;/span&gt;
+
+&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.repeat &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; &amp;lt;| &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.toUpper &amp;lt;| &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;h&quot;&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;i&quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;HIHIHI&quot; : String&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Using the pipe-operators &lt;code&gt;|&amp;gt;&lt;/code&gt; or &lt;code&gt;&amp;lt;|&lt;/code&gt; one can pass through the result to the next function where it is used as the last argument for the function it gets piped into. The data can flow in both directions, though the usual way of chaining functions with the pipe operator is using &lt;code&gt;|&amp;gt;&lt;/code&gt; and having a single line per function call:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;h&quot;&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;i&quot;&lt;/span&gt; \
+    |&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.toUpper \
+    |&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.repeat &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Function definition and type annotation&lt;/h3&gt;
+&lt;p&gt;Custom functions are defined with the name and arguments, which are separated from the function body by an equal sign. They can be written on a single line or using multiple lines:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;sayHello&lt;/span&gt; name = &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;Hello &quot;&lt;/span&gt; name
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &amp;lt;function&amp;gt; : String -&amp;gt; String&lt;/span&gt;
+
+&lt;span class=&quot;hljs-title&quot;&gt;sayHello&lt;/span&gt; name = \
+    &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;Hello &quot;&lt;/span&gt; name
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &amp;lt;function&amp;gt; : String -&amp;gt; String&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In addition to that its advisable to also use a type annotation. This is not a must, as the Elm compiler uses type inference to determine the types based on the argument usage in the program. Nevertheless its better to state the expected argument types explicitly as one ensures the correct type will be used and it also documents the program.&lt;/p&gt;
+&lt;p&gt;Type annotations are prepended to the function definition and state the function name as well as the types of the arguments and of the return value.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;sayHello&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
+&lt;span class=&quot;hljs-title&quot;&gt;sayHello&lt;/span&gt; name =
+    &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.append &lt;span class=&quot;hljs-string&quot;&gt;&quot;Hello &quot;&lt;/span&gt; name
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To learn more about this specific feature, see the dedicated article about &lt;a href=&quot;elm-type-annotations.html&quot;&gt;type annotations in Elm&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Anonymous functions / lambdas&lt;/h3&gt;
+&lt;p&gt;Anonymous functions do not have a function definition. They are defined inline and are often used as arguments for functions like &lt;code&gt;List.map&lt;/code&gt;. They are parenthesized and the content is prefixed with a backslash:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;(\x y -&amp;gt; x * y)
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &amp;lt;function&amp;gt; : number -&amp;gt; number -&amp;gt; number&lt;/span&gt;
+
+(\x y -&amp;gt; x * y) &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;-- 6 : number&lt;/span&gt;
+
+&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.map (\n -&amp;gt; sayHello n) [&lt;span class=&quot;hljs-string&quot;&gt;&quot;Alice&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;Bob&quot;&lt;/span&gt;]
+&lt;span class=&quot;hljs-comment&quot;&gt;-- [&quot;Hello Alice&quot;,&quot;Hello Bob&quot;] : List String&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Currying&lt;/h3&gt;
+&lt;p&gt;Functions in Elm support &lt;em&gt;currying&lt;/em&gt; – a technique of translating the evaluation of a function that takes multiple arguments into a function that takes a single argument.&lt;/p&gt;
+&lt;p&gt;In the following example the function &lt;code&gt;threeTimes&lt;/code&gt; encapsulates a partial call of &lt;code&gt;String.repeat&lt;/code&gt; and returns a function that expects the last argument:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;threeTimes&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;.repeat &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &amp;lt;function&amp;gt; : String -&amp;gt; String&lt;/span&gt;
+
+&lt;span class=&quot;hljs-title&quot;&gt;threeTimes&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;hi&quot;&lt;/span&gt;
+&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;hihihi&quot; : String&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Currying is often used to prepare a function that expects multiple arguments for use as an argument of a function that passes only one argument (like &lt;code&gt;List.map&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;For more examples and an in-depth explanation head over to LambdaCat: &lt;a href=&quot;http://www.lambdacat.com/road-to-elm-currying-the-unknown/&quot;&gt;Currying, The Unknown&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now that you know about functions, let us have a closer look at &lt;a href=&quot;/articles/elm-data-structures-list-array-set-dict.html&quot;&gt;data structures in Elm&lt;/a&gt;.&lt;/p&gt;
+</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

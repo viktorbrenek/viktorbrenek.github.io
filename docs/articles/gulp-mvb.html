@@ -1,1 +1,632 @@
-<h1>gulp-mvb</h1><h1>gulp-mvb</h1>
+<!DOCTYPE html><head><style>/* Webfont: LatoLatin-Black */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BlackItalic */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Bold */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BoldItalic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Hairline */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HairlineItalic */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Heavy */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HeavyItalic */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('vfonts/LatoLatin-HeavyItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Italic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Light */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-LightItalic */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Medium */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-MediumItalic */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Regular */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Semibold */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-SemiboldItalic */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Thin */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-ThinItalic */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@charset "utf-8";
+body {
+	font-family: "LatoLatinWeb";
+	font-size: 9pt;
+	font-style: normal;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#menu {
+	position: fixed;
+	top: 0.50em;
+    left: 0;
+	
+}
+#nav {
+	font-family: "LatoLatinWeb";
+	background-color: none;
+	width:150px;
+	text-align:left;
+	font-size:1em;
+	list-style: none;
+	margin: 0 0 0 0;
+	padding: 0 20 30 20;
+	float:left;
+}
+
+#nav li {
+	float:none;
+}
+
+#nav li a:link {
+	display:block;
+	padding: 4px 5px;
+	text-decoration: none;
+	background-color: #eee;
+	color:#222;
+	
+}
+
+.large {
+	font-size: 2.2em;
+}
+#main {
+	font-family: "LatoLatinWeb";
+	font-style: normal;
+	font-size: 1.5em;
+	color: black;
+	background-color: white;
+	width: 840px;
+	padding: 0 40px 0 40px;
+	margin-left: 180px;
+	margin-top: auto;
+	margin-right: 0;
+}
+.waterfall {
+	font-size: 10px;
+	width:100%;
+	overflow: hidden;
+	text-shadow: 0px 0px 0px black;
+	color: #000;
+}
+
+.size10{ font-size: 10px; }
+.size11{ font-size: 11px; }
+.size12{ font-size: 12px; }
+.size13{ font-size: 13px; }
+.size14{ font-size: 14px; }
+.size16{ font-size: 16px; }
+.size18{ font-size: 18px; }
+.size20{ font-size: 20px; }
+.size24{ font-size: 24px; }
+.size30{ font-size: 30px; }
+.size36{ font-size: 36px; }
+.size48{ font-size: 48px; }
+.size60{ font-size: 60px; }
+.size72{ font-size: 72px; }
+.size90{ font-size: 90px; }body {
+  background-color: #3d3f41;
+  font-family: "Lato", sans-serif;
+  color: #c7c7b0;
+}
+.mainpage {
+  display: block;
+}
+h1 {
+  display: block;
+  font-size: 4.5rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.links {
+  position: fixed;
+  list-style: none;
+  width: 120px;
+  bottom: 40px;
+  right: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
+}
+.links p {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 10px;
+  display: block;
+  width: 100%;
+  opacity: 0.6;
+  color: #FFF;
+}
+.links li {
+  border-bottom: #222 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+}
+.links li a {
+  transition: opacity 0.2s ease-out;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  width: 100%;
+  opacity: 0.4;
+  color: #FFF;
+}
+.links li a:hover {
+  opacity: 0.8;
+}
+.links li .who:before {
+  opacity: 0.5;
+  content: '@';
+  float: left;
+}
+.links li .source:before {
+  opacity: 0.5;
+  content: '{}';
+  float: left;
+}
+.links li .blog:before {
+  opacity: 0.5;
+  content: '&';
+  float: left;
+}
+.hide {
+  opacity: 0;
+}
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  font-size: 10px;
+  --padding: 3rem;
+}
+::-moz-selection {
+  background: #111111;
+  color: #595959;
+}
+::selection {
+  background: #111111;
+  color: #595959;
+}
+html {
+  font-family: "Lato", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Lato", sans-serif;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+  font-size: 3.5rem;
+  line-height: 1.3;
+}
+a {
+  text-decoration: none;
+  color: white;
+  -webkit-filter: brightness(0.8);
+  filter: brightness(0.8);
+  -webkit-transition: 150ms;
+  -o-transition: 150ms;
+  transition: 150ms;
+}
+a,
+a * {
+  border-radius: 0.15rem;
+}
+a:hover {
+  -webkit-filter: brightness(1.09);
+  filter: brightness(1.09);
+}
+menu {
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.262);
+  z-index: 999;
+}
+menu a {
+  font-size: 2.2rem;
+  color: white;
+  text-align: center;
+  display: block;
+  float: left;
+  padding: 16px 14px;
+  text-decoration: none;
+}
+.grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+}
+body {
+  background: #1a1a1a;
+  color: white;
+}
+.gridblog {
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+  min-height: 100vh;
+}
+.full {
+  grid-column-start: 1;
+  -ms-grid-column-span: 7;
+  grid-column-end: span 7;
+}
+.intro {
+  grid-column-start: 1;
+  grid-column-end: span 5;
+  margin-top: 6rem;
+  font-size: 4.5rem;
+}
+.project-grid {
+  grid-column-start: 1;
+  grid-column-end: span 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+}
+.project-grid a {
+  -ms-grid-column-span: 2;
+  grid-column: span 2;
+  color: white;
+  min-height: 56.25%;
+}
+.project-grid a h3 {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.project-grid a p {
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+.project-grid a img {
+  margin-bottom: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+main {
+  padding: 3rem var(--padding);
+}
+footer {
+  margin-top: 8rem;
+  padding: 6rem var(--padding);
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 150rem;
+  
+}
+footer > * {
+  margin-top: var(--padding);
+}
+footer h2 {
+  font-size: 4.5rem;
+}
+.button {
+  padding: 2rem 3rem;
+  font-size: 2.5rem;
+  background: #8e8e8e;
+  color: #1a1a1a;
+}
+.button:hover {
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
+}
+.blog-grid {
+  grid-column-start: 1;
+  display: grid;
+  grid-template-rows: repeat(3, fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+  justify-content: left;
+}
+.articles {
+  list-style: none;
+}
+.articles__item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articles__item__link {
+  flex: 1;
+  text-decoration: none;
+  cursor: auto;
+}
+.articles__item__title {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.articles__item__date {
+  margin-right: 0.75rem;
+  flex-basis: 7em;
+}
+@media (max-width: 960px) {
+  :root {
+    font-size: 9px;
+  }
+  .intro {
+    grid-column-start: 1;
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7;
+  }
+  .project-grid {
+    grid-row-gap: 16rem;
+  }
+  .project-grid a h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.15rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 3;
+    grid-column: span 3;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    font-size: 8px;
+    --padding: 2rem;
+  }
+  .project-grid {
+    grid-row-gap: 24rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 6;
+    grid-column: span 6;
+  }
+  .project-grid a h3 {
+    font-size: 3rem;
+    margin-top: 2rem;
+  }
+  .project-grid a p {
+    font-size: 1.75rem;
+  }
+  .project-grid a img {
+    width: 100vw;
+    margin: auto calc(50% - 50vw);
+  }
+}
+@media (min-width: 4000px) {
+  :root {
+    font-size: 40px;
+  }
+}
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>gulp-mvb</h1><a>Blog,Blogging,JavaScript,Gulp,Plugin,Markdown,Octopress,BrowserSync</a><a>&lt;p&gt;For five years I have run this site and the accompanying blog with &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; – a blogging tool written in Ruby. It is made to generate static sites - based on the fairly popular Jekyll, which also powers &lt;a href=&quot;https://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt;. And even though it has some pretty nice concepts, I never used much of its features – I just needed it to generate some static pages and the blog. Migrating from Octopress 1 to version 2 seemed like a time consuming task, which I dreaded for a long time – meanwhile my focus shifted from Ruby to JavaScript …&lt;/p&gt;
+&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
+&lt;p&gt;As writing articles for the blog stagnated and I needed to update the site, I decided to move the old content to an &lt;a href=&quot;https://archive.dennisreimann.de/&quot;&gt;archive&lt;/a&gt; and set up something new, using the tools I am now working with on a daily basis: JavaScript, Gulp, Pug und Stylus.
+Generating static sites with &lt;a href=&quot;http://gulpjs.com/&quot;&gt;Gulp&lt;/a&gt; and your templating language of choice (in my case &lt;a href=&quot;https://pugjs.org/&quot;&gt;Pug&lt;/a&gt;) is straight forward and you will end up with a pretty minimalistic gulpfile containing around 100 lines of code for generating a full-fledged site – including stylesheet and javascript preprocessing, image minification and all the good stuff.&lt;/p&gt;
+&lt;p&gt;However, blogging is another story than creating a web page and writing the articles using Pug would not make any sense. As I said I really liked some of the Octopress concepts, in particular using &lt;em&gt;Markdown for writing the articles&lt;/em&gt; and declaring the &lt;em&gt;meta information via YAML front matter&lt;/em&gt;. And in fact, Gulp is a very nice tool to wire all of this up, bringing some nice benefits and also being very fast: I can continuously build the site as I am writing on the blogpost, preview it with &lt;a href=&quot;https://www.browsersync.io/&quot;&gt;BrowserSync&lt;/a&gt; and have all the rest of the build chain fully integrated.&lt;/p&gt;
+&lt;p&gt;All that was missing was a gulp plugin, which assembled the parts. That is why I created &lt;a href=&quot;https://github.com/dennisreimann/gulp-mvb&quot;&gt;gulp-mvb&lt;/a&gt;, my approach of creating a &lt;em&gt;minimum viable blog&lt;/em&gt; with Gulp – using the Octopress style of blogging. As you might have guessed, I am already using it to write these articles and even though it is still alpha, it supports most of the features one would need for creating a minimum viable blog. Generating article lists and feeds, custom permalinks for articles and article templates are described in &lt;a href=&quot;https://github.com/dennisreimann/gulp-mvb/blob/master/README.md&quot;&gt;the README&lt;/a&gt; and I would really like to get some feedback in case you feel like using gulp-mvb for your own blog.&lt;/p&gt;
+&lt;p&gt;As this blog grows there will be some new features too, like grouping articles by years and months and referencing previous and next articles. It should stay pretty minimalistic, but there are some niceties which could improve this plugin – I am already looking forward to work on them :)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UPDATE Jan 12, 2016:&lt;/strong&gt;
+Both features have been implemented by now and are available in v0.3.0 of &lt;a href=&quot;https://github.com/dennisreimann/gulp-mvb&quot;&gt;gulp-mvb&lt;/a&gt;.&lt;/p&gt;
+</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

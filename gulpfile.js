@@ -70,7 +70,7 @@ gulp.task("lesscompiler", () =>
     .pipe(gulp.dest(paths.lesscompile))
 );
 
-gulp.task("default",gulp.series("articles", "pugcompiler", "lesscompiler"));
+gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles"));
 
 
 //task na spuštění všeho najednou 

@@ -1,1 +1,786 @@
-<h1>The Elm Architecture</h1><h1>The Elm Architecture</h1>
+<!DOCTYPE html><head><style>/* Webfont: LatoLatin-Black */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Black.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BlackItalic */@font-face {
+    font-family: 'LatoLatinWebBlack';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BlackItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Bold */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Bold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-BoldItalic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-BoldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Hairline */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Hairline.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HairlineItalic */@font-face {
+    font-family: 'LatoLatinWebHairline';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HairlineItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Heavy */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Heavy.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-HeavyItalic */@font-face {
+    font-family: 'LatoLatinWebHeavy';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('vfonts/LatoLatin-HeavyItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-HeavyItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Italic */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Italic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Light */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Light.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-LightItalic */@font-face {
+    font-family: 'LatoLatinWebLight';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-LightItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Medium */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Medium.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-MediumItalic */@font-face {
+    font-family: 'LatoLatinWebMedium';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-MediumItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Regular */@font-face {
+    font-family: 'LatoLatinWeb';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Semibold */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Semibold.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-SemiboldItalic */@font-face {
+    font-family: 'LatoLatinWebSemibold';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-SemiboldItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-Thin */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-Thin.ttf') format('truetype');
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: LatoLatin-ThinItalic */@font-face {
+    font-family: 'LatoLatinWebThin';
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot'); /* IE9 Compat Modes */
+    src: url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.woff') format('woff'), /* Modern Browsers */
+         url('src/fonts/LatoLatin/fonts/LatoLatin-ThinItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@charset "utf-8";
+body {
+	font-family: "LatoLatinWeb";
+	font-size: 9pt;
+	font-style: normal;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+}
+
+#menu {
+	position: fixed;
+	top: 0.50em;
+    left: 0;
+	
+}
+#nav {
+	font-family: "LatoLatinWeb";
+	background-color: none;
+	width:150px;
+	text-align:left;
+	font-size:1em;
+	list-style: none;
+	margin: 0 0 0 0;
+	padding: 0 20 30 20;
+	float:left;
+}
+
+#nav li {
+	float:none;
+}
+
+#nav li a:link {
+	display:block;
+	padding: 4px 5px;
+	text-decoration: none;
+	background-color: #eee;
+	color:#222;
+	
+}
+
+.large {
+	font-size: 2.2em;
+}
+#main {
+	font-family: "LatoLatinWeb";
+	font-style: normal;
+	font-size: 1.5em;
+	color: black;
+	background-color: white;
+	width: 840px;
+	padding: 0 40px 0 40px;
+	margin-left: 180px;
+	margin-top: auto;
+	margin-right: 0;
+}
+.waterfall {
+	font-size: 10px;
+	width:100%;
+	overflow: hidden;
+	text-shadow: 0px 0px 0px black;
+	color: #000;
+}
+
+.size10{ font-size: 10px; }
+.size11{ font-size: 11px; }
+.size12{ font-size: 12px; }
+.size13{ font-size: 13px; }
+.size14{ font-size: 14px; }
+.size16{ font-size: 16px; }
+.size18{ font-size: 18px; }
+.size20{ font-size: 20px; }
+.size24{ font-size: 24px; }
+.size30{ font-size: 30px; }
+.size36{ font-size: 36px; }
+.size48{ font-size: 48px; }
+.size60{ font-size: 60px; }
+.size72{ font-size: 72px; }
+.size90{ font-size: 90px; }body {
+  background-color: #3d3f41;
+  font-family: "Lato", sans-serif;
+  color: #c7c7b0;
+}
+.mainpage {
+  display: block;
+}
+h1 {
+  display: block;
+  font-size: 4.5rem;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.links {
+  position: fixed;
+  list-style: none;
+  width: 120px;
+  bottom: 40px;
+  right: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
+}
+.links p {
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 10px;
+  display: block;
+  width: 100%;
+  opacity: 0.6;
+  color: #FFF;
+}
+.links li {
+  border-bottom: #222 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+}
+.links li a {
+  transition: opacity 0.2s ease-out;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  width: 100%;
+  opacity: 0.4;
+  color: #FFF;
+}
+.links li a:hover {
+  opacity: 0.8;
+}
+.links li .who:before {
+  opacity: 0.5;
+  content: '@';
+  float: left;
+}
+.links li .source:before {
+  opacity: 0.5;
+  content: '{}';
+  float: left;
+}
+.links li .blog:before {
+  opacity: 0.5;
+  content: '&';
+  float: left;
+}
+.hide {
+  opacity: 0;
+}
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  font-size: 10px;
+  --padding: 3rem;
+}
+::-moz-selection {
+  background: #111111;
+  color: #595959;
+}
+::selection {
+  background: #111111;
+  color: #595959;
+}
+html {
+  font-family: "Lato", sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: "Lato", sans-serif;
+  }
+}
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+span {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+  font-size: 3.5rem;
+  line-height: 1.3;
+}
+a {
+  text-decoration: none;
+  color: white;
+  -webkit-filter: brightness(0.8);
+  filter: brightness(0.8);
+  -webkit-transition: 150ms;
+  -o-transition: 150ms;
+  transition: 150ms;
+}
+a,
+a * {
+  border-radius: 0.15rem;
+}
+a:hover {
+  -webkit-filter: brightness(1.09);
+  filter: brightness(1.09);
+}
+menu {
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.262);
+  z-index: 999;
+}
+menu a {
+  font-size: 2.2rem;
+  color: white;
+  text-align: center;
+  display: block;
+  float: left;
+  padding: 16px 14px;
+  text-decoration: none;
+}
+.grid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+}
+body {
+  background: #1a1a1a;
+  color: white;
+}
+.gridblog {
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 1.5rem;
+  grid-column-gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 150rem;
+  min-height: 100vh;
+}
+.full {
+  grid-column-start: 1;
+  -ms-grid-column-span: 7;
+  grid-column-end: span 7;
+}
+.intro {
+  grid-column-start: 1;
+  grid-column-end: span 5;
+  margin-top: 6rem;
+  font-size: 4.5rem;
+}
+.project-grid {
+  grid-column-start: 1;
+  grid-column-end: span 7;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+}
+.project-grid a {
+  -ms-grid-column-span: 2;
+  grid-column: span 2;
+  color: white;
+  min-height: 56.25%;
+}
+.project-grid a h3 {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.project-grid a p {
+  font-size: 1.5rem;
+  color: lightgrey;
+}
+.project-grid a img {
+  margin-bottom: 0;
+  -o-object-fit: cover;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+main {
+  padding: 3rem var(--padding);
+}
+footer {
+  margin-top: 8rem;
+  padding: 6rem var(--padding);
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  max-width: 150rem;
+  
+}
+footer > * {
+  margin-top: var(--padding);
+}
+footer h2 {
+  font-size: 4.5rem;
+}
+.button {
+  padding: 2rem 3rem;
+  font-size: 2.5rem;
+  background: #8e8e8e;
+  color: #1a1a1a;
+}
+.button:hover {
+  -webkit-filter: brightness(1.5);
+  filter: brightness(1.5);
+}
+.blog-grid {
+  grid-column-start: 1;
+  display: grid;
+  grid-template-rows: repeat(3, fr);
+  grid-row-gap: 15rem;
+  grid-column-gap: 2rem;
+  margin: 1rem auto;
+  justify-content: left;
+}
+.articles {
+  list-style: none;
+}
+.articles__item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articles__item__link {
+  flex: 1;
+  text-decoration: none;
+  cursor: auto;
+}
+.articles__item__title {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.articles__item__date {
+  margin-right: 0.75rem;
+  flex-basis: 7em;
+}
+@media (max-width: 960px) {
+  :root {
+    font-size: 9px;
+  }
+  .intro {
+    grid-column-start: 1;
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7;
+  }
+  .project-grid {
+    grid-row-gap: 16rem;
+  }
+  .project-grid a h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.15rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 3;
+    grid-column: span 3;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    font-size: 8px;
+    --padding: 2rem;
+  }
+  .project-grid {
+    grid-row-gap: 24rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 6;
+    grid-column: span 6;
+  }
+  .project-grid a h3 {
+    font-size: 3rem;
+    margin-top: 2rem;
+  }
+  .project-grid a p {
+    font-size: 1.75rem;
+  }
+  .project-grid a img {
+    width: 100vw;
+    margin: auto calc(50% - 50vw);
+  }
+}
+@media (min-width: 4000px) {
+  :root {
+    font-size: 40px;
+  }
+}
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>The Elm Architecture</h1><a>Elm,Architecture,The Elm Architecture,State management,Single State Tree,Redux,Frontend development</a><a>&lt;p&gt;The beauty of The Elm Architecture lies in its simplicity:
+It structures applications into four parts and it defines how these interact with each other.
+In Elm there is only this one determined way to handle interactions and manage state – 
+and it provides a good foundation for modularity, code reuse and testing by default.&lt;/p&gt;
+&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
+&lt;p&gt;One of the first things you will have probably heard about Elm is the way it structures your code.
+You come across this early on as it is the only way to architect your application and modules.
+When you are new to the language this might seem limiting at first, but don’t worry:
+The Elm Architecture gives you a solid and proven way for handling the state of your application and the effects that change this state.&lt;/p&gt;
+&lt;p&gt;The basic structure of your application and modules looks like this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Model&lt;/strong&gt;: Contains the application state/data&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;View&lt;/strong&gt;: Function(s) that generate HTML based on the model&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Update&lt;/strong&gt;: Handles interaction and transforms the model&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Runtime&lt;/strong&gt;: Wires up Model, View and Update&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To cover each of these parts in detail I came up with a &lt;a href=&quot;/files/elm/architecture-overview-example.html&quot;&gt;(very) simple blog example&lt;/a&gt;:
+The app shows a list of articles which can be expanded to show the full content by clicking on the title.
+Not quite a Medium competitor, but for us figuring out the most important things about The Elm Architecture it will work :)&lt;/p&gt;
+&lt;h2&gt;Model&lt;/h2&gt;
+&lt;p&gt;&lt;mark&gt;The model part represents the form of your data as well as the actual state.&lt;/mark&gt; ​
+You will have at least one type alias that defines your models:
+Most likely this type alias references a &lt;a href=&quot;/articles/elm-data-structures-record-tuple.html&quot;&gt;record&lt;/a&gt; that describes the shape of your data.&lt;/p&gt;
+&lt;p&gt;The example app has a model that represents a blog with a list of articles:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; =
+    { blogTitle : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
+    , articles : &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt;
+    }
+
+
+&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt; =
+    { title : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
+    , content : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
+    , showContent : &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
+    }
+
+
+&lt;span class=&quot;hljs-title&quot;&gt;initialModel&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt;
+&lt;span class=&quot;hljs-title&quot;&gt;initialModel&lt;/span&gt; =
+    { blogTitle = &lt;span class=&quot;hljs-string&quot;&gt;&quot;Some posts on Elm&quot;&lt;/span&gt;
+    , articles =
+        [ { title = &lt;span class=&quot;hljs-string&quot;&gt;&quot;Learning Elm&quot;&lt;/span&gt;
+          , content = &lt;span class=&quot;hljs-string&quot;&gt;&quot;I just started to learn functional frontend development with Elm. How cool is that?&quot;&lt;/span&gt;
+          , showContent = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
+          }
+        , { title = &lt;span class=&quot;hljs-string&quot;&gt;&quot;The Elm Architecture&quot;&lt;/span&gt;
+          , content = &lt;span class=&quot;hljs-string&quot;&gt;&quot;In this post I am trying to explain The Elm Architecture …&quot;&lt;/span&gt;
+          , showContent = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
+          }
+        ]
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model is the only place where the state of your application resides.
+It is a single state tree of immutable data.
+Each time this data is transformed by the &lt;code&gt;update&lt;/code&gt; function you get a new model containing the updated state.&lt;/p&gt;
+&lt;h2&gt;View&lt;/h2&gt;
+&lt;p&gt;The view is represented by one or many stateless functions.
+These functions generate HTML based on the model:
+​ &lt;mark&gt;Their input is the model or a part thereof; their output is the markup that represents the current state.&lt;/mark&gt;&lt;/p&gt;
+&lt;p&gt;There is no need to mutate the DOM manually, the markup – written in elm-html – is entirely declarative.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;view&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
+&lt;span class=&quot;hljs-title&quot;&gt;view&lt;/span&gt; model =
+    div
+        [ class &lt;span class=&quot;hljs-string&quot;&gt;&quot;blog&quot;&lt;/span&gt; ]
+        [ h1 [] [ text model.blogTitle ]
+        , p [] [ text &lt;span class=&quot;hljs-string&quot;&gt;&quot;Click the titles to read the full article.&quot;&lt;/span&gt; ]
+        , section
+            [ class &lt;span class=&quot;hljs-string&quot;&gt;&quot;articles&quot;&lt;/span&gt; ]
+            (&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.map viewArticle model.articles)
+        ]
+
+
+&lt;span class=&quot;hljs-title&quot;&gt;viewArticle&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
+&lt;span class=&quot;hljs-title&quot;&gt;viewArticle&lt;/span&gt; a =
+    article
+        [ onClick (&lt;span class=&quot;hljs-type&quot;&gt;ToggleContent&lt;/span&gt; a) ]
+        [ h2 [] [ text a.title ]
+        , div
+            [ hidden (not a.showContent) ]
+            [ text a.content ]
+        ]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Based on the concept of a Virtual DOM &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/html/latest/&quot;&gt;elm-html&lt;/a&gt; optimizes changes to the view.
+It is good to know that this provides &lt;a href=&quot;http://elm-lang.org/blog/blazing-fast-html-round-two&quot;&gt;really fast rendering&lt;/a&gt; by default.&lt;/p&gt;
+&lt;p&gt;Architecture-wise the most important point is, that the view gives you a declarative way of representing the current state and accepting user interaction:
+You register event handlers that emit messages to the runtime that will trigger &lt;code&gt;update&lt;/code&gt; as seen in the &lt;code&gt;viewArticle&lt;/code&gt; function.&lt;/p&gt;
+&lt;h2&gt;Update&lt;/h2&gt;
+&lt;p&gt;&lt;mark&gt;The &lt;code&gt;update&lt;/code&gt; function is the only place your model gets transformed.&lt;/mark&gt; ​
+It receives a message as well as the model, then updates the model according to the message and returns it.&lt;/p&gt;
+&lt;p&gt;In case of our example app the &lt;code&gt;update&lt;/code&gt; gets invoked when the user clicks the article:
+This sends the &lt;code&gt;ToggleContent&lt;/code&gt; message, which also contains the particular article.
+It then looks up the attached article in the model, toggles its &lt;code&gt;showContent&lt;/code&gt; value and returns a new model with the list containing the updated article.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
+    = &lt;span class=&quot;hljs-type&quot;&gt;ToggleContent&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt;
+
+
+&lt;span class=&quot;hljs-title&quot;&gt;update&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt;
+&lt;span class=&quot;hljs-title&quot;&gt;update&lt;/span&gt; msg model =
+    &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; msg &lt;span class=&quot;hljs-keyword&quot;&gt;of&lt;/span&gt;
+        &lt;span class=&quot;hljs-type&quot;&gt;ToggleContent&lt;/span&gt; article -&amp;gt;
+            &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt;
+                updateArticle a =
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; a == article &lt;span class=&quot;hljs-keyword&quot;&gt;then&lt;/span&gt;
+                        { a | showContent = (not article.showContent) }
+                    &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt;
+                        a
+
+                updatedArticles =
+                    &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.map updateArticle model.articles
+            &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt;
+                { model | articles = updatedArticles }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As the update function is the only place where your model gets transformed, this structure makes it very easy to reason about state changes and where they are coming from.
+This concept seems very simple and natural, yet it emerged and gained popularity through The Elm Architecture.&lt;/p&gt;
+&lt;p&gt;Contrast this to applications that manage all of their possible states implicitly and being changed from several places.
+It’s no surprise that this simple, yet powerful way of state management became very popular and influenced other frameworks like Redux.&lt;/p&gt;
+&lt;h2&gt;Runtime&lt;/h2&gt;
+&lt;p&gt;The main function is the entry of an Elm program.
+It takes care of wiring up the three parts described above.
+​ &lt;mark&gt;The runtime is contained in a program that gets initialized with the &lt;code&gt;model&lt;/code&gt;, &lt;code&gt;view&lt;/code&gt; and &lt;code&gt;update&lt;/code&gt; – this program is then returned by the main function.&lt;/mark&gt;&lt;/p&gt;
+&lt;p&gt;Supplemented with the imports of your module this can be considered the boilerplate of your application.
+The simple case with a &lt;code&gt;beginnerProgram&lt;/code&gt; might look like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; Main &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
+
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html.Events &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (onClick)
+&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html.Attributes &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (class, hidden)
+
+
+&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Program&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Never&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
+&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; =
+    &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.beginnerProgram
+        { model = initialModel
+        , view = view
+        , update = update
+        }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;Html.beginnerProgram&lt;/code&gt; encapsulates the basics of The Elm Architecture.
+It wires up the model, view and update functions and provides the setup for handling user interaction and managing state.
+Once initialized ​ &lt;mark&gt;the program executes a continuous loop, taking in actions from the user, changing the state and representing the changes in the view.&lt;/mark&gt; ​&lt;/p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;/files/elm/architecture-overview-diagram.svg&quot; alt=&quot;Diagram of The Elm Architecture&quot; width=&quot;320&quot; height=&quot;211&quot; /&gt;
+  &lt;figcaption&gt;Diagram of The Elm Architecture&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;h3&gt;Dealing with effects&lt;/h3&gt;
+&lt;p&gt;The runtime also handles all of the effects that your application produces or reacts to.
+Effects are interactions with the outside world, like loading and sending data via AJAX or writing to the local storage of the browser.
+Websocket communication and interoperating with JavaScript are also effects.&lt;/p&gt;
+&lt;p&gt;To enables these types of interactions, Elm offers the standard &lt;code&gt;Html.program&lt;/code&gt;, which expands the capabilities of the &lt;code&gt;Html.beginnerProgram&lt;/code&gt;.
+As this is a topic on its own, we will take a closer look at the standard program in one of the upcoming articles.&lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;With that you have seen the basic principles of The Elm Architecture.
+To summarize the above: An Elm application starts off with an initial &lt;em&gt;model&lt;/em&gt;.
+It is the input to the &lt;em&gt;view&lt;/em&gt; that represents the &lt;em&gt;model&lt;/em&gt;.
+The user interacts with the view which produces messages, which are handled by the &lt;em&gt;update&lt;/em&gt; function.
+This function is the only place your &lt;em&gt;model&lt;/em&gt; gets transformed.
+The &lt;em&gt;runtime&lt;/em&gt; encapsulates all of these parts and provides a continuous loop of these interactions.&lt;/p&gt;
+&lt;p&gt;With this, ​ &lt;mark&gt;The Elm Architecture offers a solid foundation for modularity, code reuse and testing.&lt;/mark&gt; ​
+It also facilitates onboarding new developers as the basic structure of every Elm app is the same.&lt;/p&gt;
+&lt;p&gt;As the &lt;a href=&quot;https://guide.elm-lang.org/architecture&quot;&gt;official guide&lt;/a&gt; states:
+“Even if you ultimately cannot use Elm at work yet, you will get a lot out of using Elm and internalizing this pattern.”
+If this motivates you to get your hands on some code, try the Elm Architecture tutorial offered by the guide.
+It helps to internalize and solidify your knowledge of this simple, yet powerful structure.&lt;/p&gt;
+</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
