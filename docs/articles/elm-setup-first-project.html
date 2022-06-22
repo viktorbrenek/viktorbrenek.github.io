@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Elm Setup</h1><a>Elm,Frontend development,Webpack,Gulp</a><a>&lt;p&gt;So you are ready to dive into the next generation approach of creating frontends for web applications? How to install Elm and which tools do you need to build your first project? Besides clarifying these questions we will also look at a toolchain that goes beyond the simple &lt;em&gt;Hello World&lt;/em&gt; …&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Setup</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Webpack,Gulp</a></span></div><p class="acontent">&lt;p&gt;So you are ready to dive into the next generation approach of creating frontends for web applications? How to install Elm and which tools do you need to build your first project? Besides clarifying these questions we will also look at a toolchain that goes beyond the simple &lt;em&gt;Hello World&lt;/em&gt; …&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;h3&gt;Installing Elm&lt;/h3&gt;
 &lt;p&gt;First of we need to install the main components: Compiler, package manager, REPL and the development server Reactor. For OS X and Windows there are &lt;a href=&quot;http://elm-lang.org/install&quot;&gt;prebuilt packages&lt;/a&gt; – in case you are running Linux you can &lt;a href=&quot;https://www.npmjs.com/package/elm&quot;&gt;install Elm via npm&lt;/a&gt;.&lt;/p&gt;
@@ -653,4 +691,4 @@ elm-make 0.16 (Elm Platform 0.16.0)
 &lt;p&gt;Right now it is kind of complicated to give custom HTML and CSS to Reactor. In addition to that larger projects oftentimes require a more extensive build process. After building my first small &lt;a href=&quot;https://gist.github.com/dennisreimann/cd8d45eefaba43199dcd&quot;&gt;Elm projects with Gulp&lt;/a&gt; I settled on  using Webpack, which seems to become the standard way of packaging Elm apps. The &lt;a href=&quot;https://github.com/rtfeldman/elm-webpack-loader&quot;&gt;elm-webpack-loader&lt;/a&gt; is a nice tool for helping with that.&lt;/p&gt;
 &lt;p&gt;Webpacks configuration might seem extensive, but there is the &lt;a href=&quot;https://github.com/pmdesgn/elm-webpack-starter&quot;&gt;elm-webpack-starter&lt;/a&gt; project which is a good starting point for creating your own, more ambitious setup. I have also used it for creating &lt;a href=&quot;https://github.com/dennisreimann/elm-bike-configurator&quot;&gt;my first, tiny elm application&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The upcoming articles spotlights &lt;a href=&quot;/articles/elm-modules-import.html&quot;&gt;the Elm module system&lt;/a&gt;.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

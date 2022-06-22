@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Living Pattern Libraries</h1><a>Pattern Library,Styleguide,Frontend development,Living Styleguide,Atomic Design,BEM,NPM,Handlebars</a><a>&lt;p&gt;Styleguides und Pattern Libraries sind in der &lt;a href=&quot;https://www.uiengineering.de/&quot;&gt;UI-Entwicklung&lt;/a&gt; schon seit längerem ein großes Thema. Sie bieten Designern und Entwicklern einen Baukasten von Komponenten, aus denen die Interfaces zusammengesetzt werden und sorgen für ein konsistentes Gesamtbild der Website oder Anwendung.&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Living Pattern Libraries</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Pattern Library,Styleguide,Frontend development,Living Styleguide,Atomic Design,BEM,NPM,Handlebars</a></span></div><p class="acontent">&lt;p&gt;Styleguides und Pattern Libraries sind in der &lt;a href=&quot;https://www.uiengineering.de/&quot;&gt;UI-Entwicklung&lt;/a&gt; schon seit längerem ein großes Thema. Sie bieten Designern und Entwicklern einen Baukasten von Komponenten, aus denen die Interfaces zusammengesetzt werden und sorgen für ein konsistentes Gesamtbild der Website oder Anwendung.&lt;/p&gt;
 &lt;p&gt;Über die Meinung, dass eine gut gepflegte Pattern Library in responsive Webprojekten ab einer gewissen Größe Sinn macht, dürfte mittlerweile Konsenz herrschen. Probleme und Unzufriedenheit treten jedoch oftmals an eben der Stelle auf, wo Pattern Library und Realität voneinander abweichen: Wird der Komponentenbaukasten nicht ständig auf dem neusten Stand gehalten, leben sich Pattern Library und die Zielanwendung auseinander – aus dem ehemaligen Traumpaar werden zwei Einzelteile, die sich gegenseitig als zunehmend lästig empfinden.&lt;/p&gt;
 &lt;h3&gt;Hilfe, es krieselt …&lt;/h3&gt;
 &lt;p&gt;So etwas kommt in den besten Beziehungen vor und kann verschiedene Gründe haben. Die häufigsten davon:&lt;/p&gt;
@@ -660,4 +698,4 @@ footer h2 {
 &lt;p&gt;Ja, das ist nicht trivial, aber es lohnt sich! Vieles davon sollte eh gängige Praxis in einem guten Buildprozess sein – der wichtige Teil im Bezug auf eine Living Pattern Library ist dabei der Export der Partials, so dass sich diese dann in den eigentlichen Anwendungen nutzen lassen. Dass man auf diese Art und Weise dann auch eine elegante Versionierung der Pattern Library und Komponenten bekommt, ist ein super Bonus!&lt;/p&gt;
 &lt;p&gt;Wie gesagt wäre das Ganze im Fall von nur einer Anwendung auch in integrierterer Form machbar: Die Pattern Library könnte im einfachsten Fall ein Zweig der eigentlichen Anwendung sein, so dass man den Umweg über Export und Integration nicht gehen müsste. Die zunehmende Verbreitung des Musters, Anwendungen in kleinteiligere Microservices zu zerlegen, lassen den beschriebenen Fall für die Zukunft aber umso relevanter werden.&lt;/p&gt;
 &lt;p&gt;Von der Nutzung her erinnert das Ganze an &lt;a href=&quot;https://customelements.io/&quot;&gt;Custom Elements&lt;/a&gt;. Leider haben &lt;a href=&quot;http://webcomponents.org/&quot;&gt;Web Components&lt;/a&gt; aktuell noch nicht die gewünschte Unterstützung und Implementierung (vor allem Shadow DOM), so dass sich im aktuellen Projekt der Weg über Handlebars anbot. Nichtsdestotrotz wird dieser standardisierte Weg in Zukunft das sein, was sich hoffentlich möglichst bald auch praktisch nutzen lässt: Mit den einzelnen Teilen der Web Components Spezifikation wird es eine nativ von den Browsern unterstützte Möglichkeit geben, Komponenten in gekapselter und isolierter Form abzubilden, ohne sich manuell drum kümmern zu müssen.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

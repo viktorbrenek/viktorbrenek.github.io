@@ -21,9 +21,14 @@ body
         a.name(href='https://viktorbrenek.github.io/blog') Blog
         a.name(href='https://viktorbrenek.github.io') Portfolio
     main.gridblog
-        h1= mvb.article.title
-        a= mvb.article.tags 
-        a= mvb.article.content 
+        h1.atitle= mvb.article.title
+        
+
+        div.task__tags
+            span.task__tag.task__tag--copyright 
+                a= mvb.article.tags
+
+        p.acontent= mvb.article.content 
           
 
     footer

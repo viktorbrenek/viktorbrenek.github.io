@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Elm Maybe</h1><a>Elm,Frontend development,Maybe</a><a>&lt;p&gt;Opposed to JavaScript and many other programming languages, Elm does not have the concept of &lt;code&gt;undefined&lt;/code&gt; or &lt;code&gt;null&lt;/code&gt; values. Of course there are cases in which variables contain nothing or functions cannot return a proper value – but instead of leaving it up to you whether or not to handle these cases, Elm makes them explicit with a type called &lt;code&gt;Maybe&lt;/code&gt; and enforces the handling thereof.&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Maybe</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Maybe</a></span></div><p class="acontent">&lt;p&gt;Opposed to JavaScript and many other programming languages, Elm does not have the concept of &lt;code&gt;undefined&lt;/code&gt; or &lt;code&gt;null&lt;/code&gt; values. Of course there are cases in which variables contain nothing or functions cannot return a proper value – but instead of leaving it up to you whether or not to handle these cases, Elm makes them explicit with a type called &lt;code&gt;Maybe&lt;/code&gt; and enforces the handling thereof.&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;p&gt;The &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Maybe&quot;&gt;&lt;code&gt;Maybe&lt;/code&gt;&lt;/a&gt; module contains the type as well as some helper functions for dealing with  optional arguments, error handling and records with optional fields. &lt;code&gt;Maybe&lt;/code&gt; itself is a &lt;a href=&quot;/articles/elm-data-structures-union-type.html&quot;&gt;union type&lt;/a&gt; type with the two constructors &lt;code&gt;Just&lt;/code&gt; and &lt;code&gt;Nothing&lt;/code&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt; value =
@@ -701,4 +739,4 @@ footer h2 {
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Here &lt;code&gt;List.head&lt;/code&gt; returns &lt;code&gt;Just(3)&lt;/code&gt; which is then passed to an anonymous function. This function multiplies it with 3 and returns the value 9 wrapped in a &lt;code&gt;Just&lt;/code&gt; which could then be passed to another &lt;code&gt;andThen&lt;/code&gt; as well.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; The Maybe module allows us to model and handle cases of non-existing values explicitely. The compiler forces us to handle each of the possible cases and guarantees there will be no runtime errors due to empty values.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

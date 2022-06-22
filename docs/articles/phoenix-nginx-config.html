@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Configuring NGINX for Phoenix applications</h1><a>Phoenix,Elixir,Nginx,Deployment,Gatling,Distillery,Tutorial,Ubuntu,Ubuntu 16,How To,Digital Ocean</a><a>&lt;p&gt;The previous article about &lt;a href=&quot;/articles/phoenix-deployment-gatling-ubuntu-digital-ocean.html&quot;&gt;deploying Phoenix with Gatling&lt;/a&gt; did not go into details for a proper NGINX configuration.
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Configuring NGINX for Phoenix applications</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Phoenix,Elixir,Nginx,Deployment,Gatling,Distillery,Tutorial,Ubuntu,Ubuntu 16,How To,Digital Ocean</a></span></div><p class="acontent">&lt;p&gt;The previous article about &lt;a href=&quot;/articles/phoenix-deployment-gatling-ubuntu-digital-ocean.html&quot;&gt;deploying Phoenix with Gatling&lt;/a&gt; did not go into details for a proper NGINX configuration.
 Using NGINX as a front-end proxy for web applications is a pretty standard setup.
 There are some things to keep in mind concerning Phoenix, SSL and asset delivery and this article sums up the details.&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
@@ -812,4 +850,4 @@ Same goes with the port, which is the only reason Gatling provides the config �
 You can then check the &lt;code&gt;nginx.conf&lt;/code&gt; into version control and also delete the &lt;code&gt;domains&lt;/code&gt; file.
 Right now there is no way to &lt;a href=&quot;https://github.com/hashrocket/gatling/issues/10&quot;&gt;start out with a custom nginx.conf&lt;/a&gt;.
 That might change in the future and maybe also offer a way to automatically update the config on deployment – stay tuned!&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

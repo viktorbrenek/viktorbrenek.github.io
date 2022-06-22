@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Elm Data Structures (2)</h1><a>Elm,Frontend development,Data structures,Record,Tuple</a><a>&lt;p&gt;After we have already covered the iterable data structures in the previous article, we will now work wth records and tuples, which can contain elements of different types. We will also have a look at how to access values using destructuring and get to know about type aliases …&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (2)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,Record,Tuple</a></span></div><p class="acontent">&lt;p&gt;After we have already covered the iterable data structures in the previous article, we will now work wth records and tuples, which can contain elements of different types. We will also have a look at how to access values using destructuring and get to know about type aliases …&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;p&gt;Records and tuples can contain an arbitrary amount of elements – as opposed to &lt;a href=&quot;/articles/elm-data-structures-list-array-set-dict.html&quot;&gt;lists, arrays, sets and dictionaries&lt;/a&gt; these elements do not have to be of the same data type. Because of that tuples and records are suited well for representing more complex element structures and objects. Before we will cover both of them in detail, let us first talk about &lt;em&gt;type aliases&lt;/em&gt;, which can be used to further describe records and tuples and make them more expressive.&lt;/p&gt;
 &lt;h3&gt;Type Aliases&lt;/h3&gt;
@@ -774,4 +812,4 @@ footer h2 {
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;In this example &lt;code&gt;alice&lt;/code&gt; is a &lt;code&gt;User&lt;/code&gt; (as of the type defined in the earlier example), but &lt;code&gt;bob&lt;/code&gt; is not. &lt;code&gt;bob&lt;/code&gt; is just a simple record with the fields &lt;code&gt;canEdit&lt;/code&gt; and &lt;code&gt;canDelete&lt;/code&gt; that are defined in the extensible record type &lt;code&gt;Authorized&lt;/code&gt;. Because both records are guaranteed to have those fields, we can use them in the same manner in the &lt;code&gt;allowedToEdit&lt;/code&gt; and &lt;code&gt;allowedToDelete&lt;/code&gt; functions – regardless of their exact type.&lt;/p&gt;
 &lt;p&gt;After we have looked at the iterable data structures as well as tuples and records the last article in the series about data structures in Elm will cover the &lt;em&gt;union type&lt;/em&gt;. In contrast to the structures we have seen up to now a union type can be of multiple different data types.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

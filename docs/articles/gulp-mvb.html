@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>gulp-mvb</h1><a>Blog,Blogging,JavaScript,Gulp,Plugin,Markdown,Octopress,BrowserSync</a><a>&lt;p&gt;For five years I have run this site and the accompanying blog with &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; – a blogging tool written in Ruby. It is made to generate static sites - based on the fairly popular Jekyll, which also powers &lt;a href=&quot;https://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt;. And even though it has some pretty nice concepts, I never used much of its features – I just needed it to generate some static pages and the blog. Migrating from Octopress 1 to version 2 seemed like a time consuming task, which I dreaded for a long time – meanwhile my focus shifted from Ruby to JavaScript …&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">gulp-mvb</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Blog,Blogging,JavaScript,Gulp,Plugin,Markdown,Octopress,BrowserSync</a></span></div><p class="acontent">&lt;p&gt;For five years I have run this site and the accompanying blog with &lt;a href=&quot;http://octopress.org/&quot;&gt;Octopress&lt;/a&gt; – a blogging tool written in Ruby. It is made to generate static sites - based on the fairly popular Jekyll, which also powers &lt;a href=&quot;https://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt;. And even though it has some pretty nice concepts, I never used much of its features – I just needed it to generate some static pages and the blog. Migrating from Octopress 1 to version 2 seemed like a time consuming task, which I dreaded for a long time – meanwhile my focus shifted from Ruby to JavaScript …&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;p&gt;As writing articles for the blog stagnated and I needed to update the site, I decided to move the old content to an &lt;a href=&quot;https://archive.dennisreimann.de/&quot;&gt;archive&lt;/a&gt; and set up something new, using the tools I am now working with on a daily basis: JavaScript, Gulp, Pug und Stylus.
 Generating static sites with &lt;a href=&quot;http://gulpjs.com/&quot;&gt;Gulp&lt;/a&gt; and your templating language of choice (in my case &lt;a href=&quot;https://pugjs.org/&quot;&gt;Pug&lt;/a&gt;) is straight forward and you will end up with a pretty minimalistic gulpfile containing around 100 lines of code for generating a full-fledged site – including stylesheet and javascript preprocessing, image minification and all the good stuff.&lt;/p&gt;
@@ -629,4 +667,4 @@ Generating static sites with &lt;a href=&quot;http://gulpjs.com/&quot;&gt;Gulp&l
 &lt;p&gt;As this blog grows there will be some new features too, like grouping articles by years and months and referencing previous and next articles. It should stay pretty minimalistic, but there are some niceties which could improve this plugin – I am already looking forward to work on them :)&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;UPDATE Jan 12, 2016:&lt;/strong&gt;
 Both features have been implemented by now and are available in v0.3.0 of &lt;a href=&quot;https://github.com/dennisreimann/gulp-mvb&quot;&gt;gulp-mvb&lt;/a&gt;.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

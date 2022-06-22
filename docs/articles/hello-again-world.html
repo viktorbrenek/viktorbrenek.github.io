@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Hello again, World</h1><a>Frontend-Entwicklung,Blog,Galeria Kaufhof,Microservices,JavaScript,Gulp</a><a>&lt;p&gt;Die vergangenen zwei Jahre waren recht arbeitsintensiv, wodurch ich leider das Bloggen hier quasi aufgegeben habe. Nichtsdestotrotz gibt es über diese zwei Jahre und auch die nahe Zukunft viel Spannendes zu erzählen, so dass dies hier der Versuch eines Wiedereinstiegs seien soll.&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Hello again, World</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Frontend-Entwicklung,Blog,Galeria Kaufhof,Microservices,JavaScript,Gulp</a></span></div><p class="acontent">&lt;p&gt;Die vergangenen zwei Jahre waren recht arbeitsintensiv, wodurch ich leider das Bloggen hier quasi aufgegeben habe. Nichtsdestotrotz gibt es über diese zwei Jahre und auch die nahe Zukunft viel Spannendes zu erzählen, so dass dies hier der Versuch eines Wiedereinstiegs seien soll.&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;h3&gt;Was war?&lt;/h3&gt;
 &lt;p&gt;Im Rahmen einer Auftragsarbeit für &lt;a href=&quot;http://neuland-bfi.de/&quot;&gt;neuland&lt;/a&gt; habe ich die vergangenen 20 Monate größtenteils am Galeria Kaufhof-Relaunch gearbeitet: Unter dem Projektnamen &lt;a href=&quot;http://galeria-kaufhof.github.io/general/2014/09/20/jump-ein-technologiesprung-bei-galeria-kaufhof/&quot;&gt;JUMP&lt;/a&gt; wurden sowohl der gesamte Webshop, als auch die Plattform, auf der dieser betrieben wird, von Grund auf neu entwickelt. Nach gut einem Jahr Entwicklungsarbeit, an der mehrere Entwicklungsteams und Dienstleister beteiligt waren, wurde der Online-Shop im Sommer 2015 mit der neuen Technologiebasis gerelauncht.&lt;/p&gt;
@@ -631,4 +669,4 @@ an der Architektur, dem dazugehörigen Styleguide und Anbindung der Microservice
 &lt;p&gt;Ich werde mich definitiv weiter im Frontend austoben, habe &lt;a href=&quot;/articles/elm-getting-started.html&quot;&gt;angefangen Elm zu lernen&lt;/a&gt; und freue mich darauf, nächstes Jahr wieder mehr auf Konferenzen unterwegs zu sein. Zum Einstieg ist schon das Ticket für die &lt;a href=&quot;http://bobkonf.de/de/index.html&quot;&gt;BOB Konferenz&lt;/a&gt; gebucht, die sich um funktionale Programmierung dreht – ein Thema, dass mittlerweile auch den JavaScript-Kosmos erreicht hat und sicherlich die kommenden Jahre über weiteren Zulauf erfahren wird.&lt;/p&gt;
 &lt;p&gt;Endlich komme ich auch wieder dazu, in der Freizeit an kleineren eigenen Projekten zu arbeiten. Eins davon ist  &lt;a href=&quot;gulp-mvb.html&quot;&gt;gulp-mvb&lt;/a&gt;, ein Gulp-Plugin zum Generieren eines minimalistischen Blogs. Ganz uneigennützig kommt es direkt auch hier zum Einsatz, aber dazu im kommenden Artikel mehr …&lt;/p&gt;
 &lt;p&gt;Die alten Blogartikel sind unterdessen ins &lt;a href=&quot;https://archive.dennisreimann.de/&quot;&gt;Archiv&lt;/a&gt; gewandert.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

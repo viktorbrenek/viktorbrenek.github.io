@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Elm Modules and Imports</h1><a>Elm,Frontend development,Module,Import</a><a>&lt;p&gt;In the previous article which describes &lt;a href=&quot;elm-setup-first-project.html&quot;&gt;how to setup your first Elm project&lt;/a&gt; we already needed to import a module. Importing a module exposes its functionality in the context of the program that is loading the module. In Elm there are different ways to import modules and we will have a look at these in this article.&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Modules and Imports</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Module,Import</a></span></div><p class="acontent">&lt;p&gt;In the previous article which describes &lt;a href=&quot;elm-setup-first-project.html&quot;&gt;how to setup your first Elm project&lt;/a&gt; we already needed to import a module. Importing a module exposes its functionality in the context of the program that is loading the module. In Elm there are different ways to import modules and we will have a look at these in this article.&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;h3&gt;The Elm module system&lt;/h3&gt;
 &lt;p&gt;Elm has three sources from which modules can be imported:&lt;/p&gt;
@@ -700,4 +738,4 @@ footer h2 {
 &lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; Restricted &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;ImportableType&lt;/span&gt;, importableFunction)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now that we know how to import and define our own modules, let us take the next step by learning about the central construct of the Elm programming language: &lt;a href=&quot;/articles/elm-functions.html&quot;&gt;Functions&lt;/a&gt;.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

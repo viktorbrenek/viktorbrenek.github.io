@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>Elm Functions</h1><a>Elm,Frontend development,Functions,Functional Programming</a><a>&lt;p&gt;This article spotlights the central construct of the Elm programming language: Functions. What does the definition of a function look like, how can functions be chained via piping and what the heck is currying? Let us have a closer look …&lt;/p&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Functions</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Functions,Functional Programming</a></span></div><p class="acontent">&lt;p&gt;This article spotlights the central construct of the Elm programming language: Functions. What does the definition of a function look like, how can functions be chained via piping and what the heck is currying? Let us have a closer look …&lt;/p&gt;
 &lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
 &lt;h3&gt;REPL&lt;/h3&gt;
 &lt;p&gt;The &lt;em&gt;read-evaluate-print-loop&lt;/em&gt; is a runtime environment for executing Elm code. The result of an expression is immediately shown, which makes the REPL an ideal tool for running short code samples and getting used to the syntax and language constructs. The REPL is part of the Elm standard installation and it can be opened on the command line:&lt;/p&gt;
@@ -697,4 +735,4 @@ footer h2 {
 &lt;p&gt;Currying is often used to prepare a function that expects multiple arguments for use as an argument of a function that passes only one argument (like &lt;code&gt;List.map&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;For more examples and an in-depth explanation head over to LambdaCat: &lt;a href=&quot;http://www.lambdacat.com/road-to-elm-currying-the-unknown/&quot;&gt;Currying, The Unknown&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Now that you know about functions, let us have a closer look at &lt;a href=&quot;/articles/elm-data-structures-list-array-set-dict.html&quot;&gt;data structures in Elm&lt;/a&gt;.&lt;/p&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

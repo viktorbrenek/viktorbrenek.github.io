@@ -214,7 +214,6 @@
     text-rendering: optimizeLegibility;
 }
 
-@charset "utf-8";
 body {
 	font-family: "LatoLatinWeb";
 	font-size: 9pt;
@@ -591,6 +590,45 @@ footer h2 {
     grid-column: span 3;
   }
 }
+
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  border-radius:100px;
+  padding:2px 13px;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.task__tag--copyright {
+  color:white;
+  background-color:orange;
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
 @media (max-width: 700px) {
   :root {
     font-size: 8px;
@@ -620,7 +658,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1>UIengineering Weekly – 28/2018</h1><a>UIengineering,Design Systems,Frontend development</a><a>&lt;p&gt;This is a summary of interesting articles I found and read this week.
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">UIengineering Weekly – 28/2018</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>UIengineering,Design Systems,Frontend development</a></span></div><p class="acontent">&lt;p&gt;This is a summary of interesting articles I found and read this week.
 You can follow along during the week on Twitter with the &lt;a href=&quot;https://twitter.com/search?q=%23UIengineering&quot;&gt;#UIengineering&lt;/a&gt; hashtag
 and in the &lt;a href=&quot;https://www.reddit.com/r/UIengineering/&quot;&gt;UIengineering subreddit&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;a href=&quot;https://www.smashingmagazine.com/2018/07/pattern-library-first-css/&quot;&gt;Pattern Library First: An Approach For Managing CSS&lt;/a&gt;&lt;/h2&gt;
@@ -642,4 +680,4 @@ Even though the examples are made with React, most of them can be applied to oth
 &lt;blockquote&gt;
 &lt;p&gt;In the case of pages, asking “what is the core functionality?” will help you come up with a good URL. With components, asking “what is the core functionality?” will help you come up with a good name …&lt;/p&gt;
 &lt;/blockquote&gt;
-</a></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
