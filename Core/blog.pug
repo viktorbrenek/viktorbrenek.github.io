@@ -18,47 +18,15 @@ body
               a.source(href='https://github.com/viktorbrenek' target='_blank') Github
     menu
         a.name(href='#') Viktor Břenek
-        a.name(href='https://viktorbrenek.github.io/blog') Blog
-        a.name(href='https://viktorbrenek.github.io') Portfolio
+        a.name(href='blog.html') Blog
+        a.name(href='index.html') Portfolio 
     main.gridblog
         h1.intro Blog
         section.blog-grid
-            ul.articles.articles--blog
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 26.02.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek jedna
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 01.03.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek dva  
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 26.02.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek jedna
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 01.03.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek dva 
-            ul.articles.articles--blog
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 26.02.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek jedna
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 01.03.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek dva
-            ul.articles.articles--blog
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 26.02.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek jedna
-                li.articles__item-articles__item--blog
-                    time.articles__item_date 01.03.2019
-                    a.articles__item__link(href='articles/atomic-design-is-messy.html')
-                        span.articles__item__title Testovací článek dva   
-                
+            ul 
+                each article in mvb.articles
+                    li
+                        a(href=`articles/${article.id}.html`)= article.title
 
     footer
         h2 Kontakt

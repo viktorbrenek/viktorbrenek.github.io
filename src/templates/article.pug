@@ -18,8 +18,8 @@ body
               a.source(href='https://github.com/viktorbrenek' target='_blank') Github
     menu
         a.name(href='#') Viktor Břenek
-        a.name(href='https://viktorbrenek.github.io/blog') Blog
-        a.name(href='https://viktorbrenek.github.io') Portfolio
+        a.name(href='../blog.html') Blog
+        a.name(href='../index.html') Portfolio
     main.gridblog
         h1.atitle= mvb.article.title
         
@@ -28,7 +28,7 @@ body
             span.task__tag.task__tag--copyright 
                 a= mvb.article.tags
 
-        p.acontent= mvb.article.content 
+        != mvb.article.content 
           
 
     footer

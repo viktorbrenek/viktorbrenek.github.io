@@ -658,89 +658,89 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (1)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,List,Array,Set,Dict</a></span></div><p class="acontent">&lt;p&gt;In Elm there are different kinds of data structures that can contain elements. This article spotlights the iterable structures lists, arrays, sets and dictionaries, which support the basic operations of functional programming like &lt;code&gt;map&lt;/code&gt;, &lt;code&gt;filter&lt;/code&gt; and folding/reducing.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;p&gt;All of these data structures require that the elements they contain have the same type – e.g. a list of strings: &lt;code&gt;List String&lt;/code&gt;. The compiler takes care of enforcing the type safety, which is a difference to JavaScript, where arrays can contain elements of any type.&lt;/p&gt;
-&lt;p&gt;The different data structures share a common “interface” of functions, which can be used to iterate over the elements and operate on them. Besides the basic operations &lt;code&gt;map&lt;/code&gt;, &lt;code&gt;filter&lt;/code&gt;, &lt;code&gt;foldl&lt;/code&gt;/&lt;code&gt;foldr&lt;/code&gt; (know to the JavaScripter as &lt;code&gt;reduce&lt;/code&gt;) there are also functions like &lt;code&gt;isEmpty&lt;/code&gt; or &lt;code&gt;member&lt;/code&gt;. The latter is not available for arrays though, which brings us right to the differences and use cases of the different kinds of data structures …&lt;/p&gt;
-&lt;h3&gt;Lists&lt;/h3&gt;
-&lt;p&gt;Lists are the essential and most used data structure in Elm. There are several ways to create a list: &lt;em&gt;(as shown in the previous article about &lt;a href=&quot;elm-functions.html&quot;&gt;functions&lt;/a&gt; you can use the REPL to run the code samples.)&lt;/em&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;list&lt;/span&gt; = [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;]
-&lt;span class=&quot;hljs-title&quot;&gt;listFromRange&lt;/span&gt; = [&lt;span class=&quot;hljs-number&quot;&gt;1.&lt;/span&gt;&lt;span class=&quot;hljs-number&quot;&gt;.4&lt;/span&gt;]
-&lt;span class=&quot;hljs-title&quot;&gt;listByAppending&lt;/span&gt; = [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;] ++ [&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;]
-&lt;span class=&quot;hljs-title&quot;&gt;listByPrepending&lt;/span&gt; = &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt; :: &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; :: &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; :: &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt; :: []
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (1)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,List,Array,Set,Dict</a></span></div><p>In Elm there are different kinds of data structures that can contain elements. This article spotlights the iterable structures lists, arrays, sets and dictionaries, which support the basic operations of functional programming like <code>map</code>, <code>filter</code> and folding/reducing.</p>
+<div id="more"></div>
+<p>All of these data structures require that the elements they contain have the same type – e.g. a list of strings: <code>List String</code>. The compiler takes care of enforcing the type safety, which is a difference to JavaScript, where arrays can contain elements of any type.</p>
+<p>The different data structures share a common “interface” of functions, which can be used to iterate over the elements and operate on them. Besides the basic operations <code>map</code>, <code>filter</code>, <code>foldl</code>/<code>foldr</code> (know to the JavaScripter as <code>reduce</code>) there are also functions like <code>isEmpty</code> or <code>member</code>. The latter is not available for arrays though, which brings us right to the differences and use cases of the different kinds of data structures …</p>
+<h3>Lists</h3>
+<p>Lists are the essential and most used data structure in Elm. There are several ways to create a list: <em>(as shown in the previous article about <a href="elm-functions.html">functions</a> you can use the REPL to run the code samples.)</em></p>
+<pre><code class="language-elm"><span class="hljs-title">list</span> = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-title">listFromRange</span> = [<span class="hljs-number">1.</span><span class="hljs-number">.4</span>]
+<span class="hljs-title">listByAppending</span> = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>] ++ [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-title">listByPrepending</span> = <span class="hljs-number">1</span> :: <span class="hljs-number">2</span> :: <span class="hljs-number">3</span> :: <span class="hljs-number">4</span> :: []
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [1,2,3,4] : List number&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The list syntax resembles JavaScript arrays, but the big difference to an array is that lists in Elm do not support accessing elements by index – at least not in its standard library version. Of course this functionality can be implemented and already exists in the &lt;a href=&quot;http://package.elm-lang.org/packages/circuithub/elm-list-extra/3.9.0/List-Extra&quot;&gt;List-Extra&lt;/a&gt; community package. Nevertheless this use case is pretty rare when operating on lists in a functional way. Instead you will be using functions like &lt;code&gt;filter&lt;/code&gt;, &lt;code&gt;head&lt;/code&gt; und &lt;code&gt;tail&lt;/code&gt; to select certain elements or parts of a list:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;list&lt;/span&gt; = [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [1,2,3,4] : List number&lt;/span&gt;
+<span class="hljs-comment">-- [1,2,3,4] : List number</span>
+</code></pre>
+<p>The list syntax resembles JavaScript arrays, but the big difference to an array is that lists in Elm do not support accessing elements by index – at least not in its standard library version. Of course this functionality can be implemented and already exists in the <a href="http://package.elm-lang.org/packages/circuithub/elm-list-extra/3.9.0/List-Extra">List-Extra</a> community package. Nevertheless this use case is pretty rare when operating on lists in a functional way. Instead you will be using functions like <code>filter</code>, <code>head</code> und <code>tail</code> to select certain elements or parts of a list:</p>
+<pre><code class="language-elm"><span class="hljs-title">list</span> = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-comment">-- [1,2,3,4] : List number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;filteredList&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.filter (\n -&amp;gt; n &amp;gt; &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;) list
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [3,4] : List number&lt;/span&gt;
+<span class="hljs-title">filteredList</span> = <span class="hljs-type">List</span>.filter (\n -&gt; n &gt; <span class="hljs-number">2</span>) list
+<span class="hljs-comment">-- [3,4] : List number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;firstElement&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.head list
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just 1 : Maybe.Maybe number&lt;/span&gt;
+<span class="hljs-title">firstElement</span> = <span class="hljs-type">List</span>.head list
+<span class="hljs-comment">-- Just 1 : Maybe.Maybe number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;restOfTheElements&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.tail list
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just [2,3,4] : Maybe.Maybe (List number)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;All of the transforming functions like &lt;code&gt;filter&lt;/code&gt;, &lt;code&gt;concat&lt;/code&gt;, or &lt;code&gt;take&lt;/code&gt; return new instances as data in Elm is immutable. Some functions like &lt;code&gt;head&lt;/code&gt; and &lt;code&gt;tail&lt;/code&gt; do not return a new instance of a list directly, but an instance of &lt;code&gt;Maybe&lt;/code&gt; which might contain the list. This is due to the fact that Elm does not have values like &lt;code&gt;null&lt;/code&gt; or &lt;code&gt;undefined&lt;/code&gt; – however there must be a return value for cases like empty lists. As this is a topic on its own we will take a closer look at the type &lt;code&gt;Maybe&lt;/code&gt; in a future article.&lt;/p&gt;
-&lt;p&gt;For an overview of all available list functions see the documentation of the &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/List&quot;&gt;List&lt;/a&gt; module.&lt;/p&gt;
-&lt;h3&gt;Arrays&lt;/h3&gt;
-&lt;p&gt;As already mentioned an &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Array&quot;&gt;Array&lt;/a&gt; supports positional access to its elements via the index. Arrays are 0-based, like in JavaScript. As opposed to lists, arrays also support setting elements via the index:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;array&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Array&lt;/span&gt;.fromList [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Array.fromList [1,2,3,4] : Array.Array number&lt;/span&gt;
+<span class="hljs-title">restOfTheElements</span> = <span class="hljs-type">List</span>.tail list
+<span class="hljs-comment">-- Just [2,3,4] : Maybe.Maybe (List number)</span>
+</code></pre>
+<p>All of the transforming functions like <code>filter</code>, <code>concat</code>, or <code>take</code> return new instances as data in Elm is immutable. Some functions like <code>head</code> and <code>tail</code> do not return a new instance of a list directly, but an instance of <code>Maybe</code> which might contain the list. This is due to the fact that Elm does not have values like <code>null</code> or <code>undefined</code> – however there must be a return value for cases like empty lists. As this is a topic on its own we will take a closer look at the type <code>Maybe</code> in a future article.</p>
+<p>For an overview of all available list functions see the documentation of the <a href="http://package.elm-lang.org/packages/elm-lang/core/3.0.0/List">List</a> module.</p>
+<h3>Arrays</h3>
+<p>As already mentioned an <a href="http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Array">Array</a> supports positional access to its elements via the index. Arrays are 0-based, like in JavaScript. As opposed to lists, arrays also support setting elements via the index:</p>
+<pre><code class="language-elm"><span class="hljs-title">array</span> = <span class="hljs-type">Array</span>.fromList [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]
+<span class="hljs-comment">-- Array.fromList [1,2,3,4] : Array.Array number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;thirdElement&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Array&lt;/span&gt;.get &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; array
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just 3 : Maybe.Maybe number&lt;/span&gt;
+<span class="hljs-title">thirdElement</span> = <span class="hljs-type">Array</span>.get <span class="hljs-number">2</span> array
+<span class="hljs-comment">-- Just 3 : Maybe.Maybe number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;sliceOfArray&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Array&lt;/span&gt;.slice &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; array
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Array.fromList [2,3] : Array.Array number&lt;/span&gt;
+<span class="hljs-title">sliceOfArray</span> = <span class="hljs-type">Array</span>.slice <span class="hljs-number">1</span> <span class="hljs-number">3</span> array
+<span class="hljs-comment">-- Array.fromList [2,3] : Array.Array number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;modifiedArray&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Array&lt;/span&gt;.set &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;7&lt;/span&gt; array
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Array.fromList [1,2,7,4] : Array.Array number&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The possibility to work with elements based on the index offers performance gains for use cases like targeted access and replacing of elements. The implementation of &lt;a href=&quot;http://elm-lang.org/blog/announce/0.12.1&quot;&gt;arrays as Relaxed Radix Balanced Trees&lt;/a&gt; makes accessing and modification of elements and parts of an array very fast, especially when dealing with large arrays.&lt;/p&gt;
-&lt;p&gt;Nevertheless arrays – as well as sets and dictionaries – are kind of second class data structures in Elm. This due to the fact that a majority of use cases can be modeled easily with lists and that there is &lt;a href=&quot;https://github.com/elm-lang/elm-plans/issues/12&quot;&gt;no literal syntax&lt;/a&gt; for these data structures. The latter makes dealing with them kind of clunky as they cannot be instantiated with syntactical shortcuts. This also makes arrays, sets and dictionaries not as well suited for domain-specific languages like elm-html.&lt;/p&gt;
-&lt;h3&gt;Sets&lt;/h3&gt;
-&lt;p&gt;A &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Set&quot;&gt;Set&lt;/a&gt; guarantees a collection of unique values. This means that a set can never contain multiple elements with the same value – therefore there is no need to filter out duplicates from a set.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Set
+<span class="hljs-title">modifiedArray</span> = <span class="hljs-type">Array</span>.set <span class="hljs-number">2</span> <span class="hljs-number">7</span> array
+<span class="hljs-comment">-- Array.fromList [1,2,7,4] : Array.Array number</span>
+</code></pre>
+<p>The possibility to work with elements based on the index offers performance gains for use cases like targeted access and replacing of elements. The implementation of <a href="http://elm-lang.org/blog/announce/0.12.1">arrays as Relaxed Radix Balanced Trees</a> makes accessing and modification of elements and parts of an array very fast, especially when dealing with large arrays.</p>
+<p>Nevertheless arrays – as well as sets and dictionaries – are kind of second class data structures in Elm. This due to the fact that a majority of use cases can be modeled easily with lists and that there is <a href="https://github.com/elm-lang/elm-plans/issues/12">no literal syntax</a> for these data structures. The latter makes dealing with them kind of clunky as they cannot be instantiated with syntactical shortcuts. This also makes arrays, sets and dictionaries not as well suited for domain-specific languages like elm-html.</p>
+<h3>Sets</h3>
+<p>A <a href="http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Set">Set</a> guarantees a collection of unique values. This means that a set can never contain multiple elements with the same value – therefore there is no need to filter out duplicates from a set.</p>
+<pre><code class="language-elm"><span class="hljs-keyword">import</span> Set
 
-&lt;span class=&quot;hljs-title&quot;&gt;set1&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Set&lt;/span&gt;.fromList [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Set.fromList [1,2,3,4] : Set.Set number&lt;/span&gt;
+<span class="hljs-title">set1</span> = <span class="hljs-type">Set</span>.fromList [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+<span class="hljs-comment">-- Set.fromList [1,2,3,4] : Set.Set number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;set2&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Set&lt;/span&gt;.fromList [&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;6&lt;/span&gt;]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Set.fromList [3,4,5,6] : Set.Set number&lt;/span&gt;
+<span class="hljs-title">set2</span> = <span class="hljs-type">Set</span>.fromList [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]
+<span class="hljs-comment">-- Set.fromList [3,4,5,6] : Set.Set number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;intersection&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Set&lt;/span&gt;.intersect set1 set2
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Set.fromList [3,4] : Set.Set number&lt;/span&gt;
+<span class="hljs-title">intersection</span> = <span class="hljs-type">Set</span>.intersect set1 set2
+<span class="hljs-comment">-- Set.fromList [3,4] : Set.Set number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;union&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Set&lt;/span&gt;.union set1 set2
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Set.fromList [1,2,3,4,5,6] : Set.Set number&lt;/span&gt;
+<span class="hljs-title">union</span> = <span class="hljs-type">Set</span>.union set1 set2
+<span class="hljs-comment">-- Set.fromList [1,2,3,4,5,6] : Set.Set number</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;differences&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Set&lt;/span&gt;.diff set1 set2
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Set.fromList [1,2] : Set.Set number&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Sets are well suited for operations in which one need to find intersections, unions, or differences of two sets.&lt;/p&gt;
-&lt;h3&gt;Dictionaries&lt;/h3&gt;
-&lt;p&gt;The data structure &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Dict&quot;&gt;&lt;code&gt;Dict&lt;/code&gt;&lt;/a&gt; stores key-value pairs. The keys are unique and can be of any comparable datatype value, so that besides &lt;code&gt;String&lt;/code&gt; and &lt;code&gt;Int&lt;/code&gt; also values of the types &lt;code&gt;Float&lt;/code&gt; and &lt;code&gt;Time&lt;/code&gt; can be used as keys.
-The values in a dictionary can be of any type as long as all of them have the same type (which is the requirement for all data structure in Elm).&lt;/p&gt;
-&lt;p&gt;A possible type for values is a record, which we will use in the following example and take a closer look at in the upcoming article about tuples and records:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Dict
+<span class="hljs-title">differences</span> = <span class="hljs-type">Set</span>.diff set1 set2
+<span class="hljs-comment">-- Set.fromList [1,2] : Set.Set number</span>
+</code></pre>
+<p>Sets are well suited for operations in which one need to find intersections, unions, or differences of two sets.</p>
+<h3>Dictionaries</h3>
+<p>The data structure <a href="http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Dict"><code>Dict</code></a> stores key-value pairs. The keys are unique and can be of any comparable datatype value, so that besides <code>String</code> and <code>Int</code> also values of the types <code>Float</code> and <code>Time</code> can be used as keys.
+The values in a dictionary can be of any type as long as all of them have the same type (which is the requirement for all data structure in Elm).</p>
+<p>A possible type for values is a record, which we will use in the following example and take a closer look at in the upcoming article about tuples and records:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">import</span> Dict
 
-&lt;span class=&quot;hljs-title&quot;&gt;users&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Dict&lt;/span&gt;.fromList \
-    [ (&lt;span class=&quot;hljs-string&quot;&gt;&quot;dennis&quot;&lt;/span&gt;, { email = &lt;span class=&quot;hljs-string&quot;&gt;&quot;mail@dennisreimann.de&quot;&lt;/span&gt;}) \
-    , (&lt;span class=&quot;hljs-string&quot;&gt;&quot;otherdude&quot;&lt;/span&gt;, { email = &lt;span class=&quot;hljs-string&quot;&gt;&quot;otherdude@example.org&quot;&lt;/span&gt;}) \
+<span class="hljs-title">users</span> = <span class="hljs-type">Dict</span>.fromList \
+    [ (<span class="hljs-string">"dennis"</span>, { email = <span class="hljs-string">"mail@dennisreimann.de"</span>}) \
+    , (<span class="hljs-string">"otherdude"</span>, { email = <span class="hljs-string">"otherdude@example.org"</span>}) \
     ]
 
-&lt;span class=&quot;hljs-title&quot;&gt;usernames&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Dict&lt;/span&gt;.keys users
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [&quot;dennis&quot;,&quot;otherdude&quot;] : List String&lt;/span&gt;
+<span class="hljs-title">usernames</span> = <span class="hljs-type">Dict</span>.keys users
+<span class="hljs-comment">-- ["dennis","otherdude"] : List String</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;userRecords&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Dict&lt;/span&gt;.values users
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [{ email = &quot;mail@dennisreimann.de&quot; },{ email = &quot;otherdude@example.org&quot; }] : List { email : String }&lt;/span&gt;
+<span class="hljs-title">userRecords</span> = <span class="hljs-type">Dict</span>.values users
+<span class="hljs-comment">-- [{ email = "mail@dennisreimann.de" },{ email = "otherdude@example.org" }] : List { email : String }</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;dennis&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Dict&lt;/span&gt;.get &lt;span class=&quot;hljs-string&quot;&gt;&quot;dennis&quot;&lt;/span&gt; users
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just { email = &quot;mail@dennisreimann.de &quot; } : Maybe.Maybe { email : String }&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The next article covers the data structures &lt;a href=&quot;/articles/elm-data-structures-record-tuple.html&quot;&gt;record and tuple&lt;/a&gt;, which can contain elements of different types.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+<span class="hljs-title">dennis</span> = <span class="hljs-type">Dict</span>.get <span class="hljs-string">"dennis"</span> users
+<span class="hljs-comment">-- Just { email = "mail@dennisreimann.de " } : Maybe.Maybe { email : String }</span>
+</code></pre>
+<p>The next article covers the data structures <a href="/articles/elm-data-structures-record-tuple.html">record and tuple</a>, which can contain elements of different types.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

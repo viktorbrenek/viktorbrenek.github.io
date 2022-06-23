@@ -658,37 +658,37 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Setup</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Webpack,Gulp</a></span></div><p class="acontent">&lt;p&gt;So you are ready to dive into the next generation approach of creating frontends for web applications? How to install Elm and which tools do you need to build your first project? Besides clarifying these questions we will also look at a toolchain that goes beyond the simple &lt;em&gt;Hello World&lt;/em&gt; …&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;h3&gt;Installing Elm&lt;/h3&gt;
-&lt;p&gt;First of we need to install the main components: Compiler, package manager, REPL and the development server Reactor. For OS X and Windows there are &lt;a href=&quot;http://elm-lang.org/install&quot;&gt;prebuilt packages&lt;/a&gt; – in case you are running Linux you can &lt;a href=&quot;https://www.npmjs.com/package/elm&quot;&gt;install Elm via npm&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Once you are done, you can verify everything is working by running &lt;code&gt;elm-make -h&lt;/code&gt; on the command line - the result should yield the version number as well as some helpful commands to compile an Elm file.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ elm-make -h
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Setup</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Webpack,Gulp</a></span></div><p>So you are ready to dive into the next generation approach of creating frontends for web applications? How to install Elm and which tools do you need to build your first project? Besides clarifying these questions we will also look at a toolchain that goes beyond the simple <em>Hello World</em> …</p>
+<div id="more"></div>
+<h3>Installing Elm</h3>
+<p>First of we need to install the main components: Compiler, package manager, REPL and the development server Reactor. For OS X and Windows there are <a href="http://elm-lang.org/install">prebuilt packages</a> – in case you are running Linux you can <a href="https://www.npmjs.com/package/elm">install Elm via npm</a>.</p>
+<p>Once you are done, you can verify everything is working by running <code>elm-make -h</code> on the command line - the result should yield the version number as well as some helpful commands to compile an Elm file.</p>
+<pre><code class="language-bash">$ elm-make -h
 elm-make 0.16 (Elm Platform 0.16.0)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To get your editor of choice up and running you will find plugins for the usual suspects on the &lt;a href=&quot;http://elm-lang.org/install&quot;&gt;official installation page&lt;/a&gt;. I am using either Atom or Visual Studio Code to develop Elm applications. For the latter there is a &lt;a href=&quot;https://marketplace.visualstudio.com/items/sbrink.elm&quot;&gt;VS Code Plugin for Elm&lt;/a&gt; that offers some basic IDE features and integrates Reactor and the REPL.&lt;/p&gt;
-&lt;h3&gt;Your first Elm project&lt;/h3&gt;
-&lt;p&gt;As we will be diving deeper into topics like syntax in further articles, let us confine this one to a simple &lt;em&gt;Hello World&lt;/em&gt; example and look at how we can get it to render in the browser. For that we create a file (named something like &lt;code&gt;Main.elm&lt;/code&gt;) with the following content:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html
+</code></pre>
+<p>To get your editor of choice up and running you will find plugins for the usual suspects on the <a href="http://elm-lang.org/install">official installation page</a>. I am using either Atom or Visual Studio Code to develop Elm applications. For the latter there is a <a href="https://marketplace.visualstudio.com/items/sbrink.elm">VS Code Plugin for Elm</a> that offers some basic IDE features and integrates Reactor and the REPL.</p>
+<h3>Your first Elm project</h3>
+<p>As we will be diving deeper into topics like syntax in further articles, let us confine this one to a simple <em>Hello World</em> example and look at how we can get it to render in the browser. For that we create a file (named something like <code>Main.elm</code>) with the following content:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">import</span> Html
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.text &lt;span class=&quot;hljs-string&quot;&gt;&quot;Hello World&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As you can see we are about to create HTML output. Therefore we need the first package that has to be installed: &lt;a href=&quot;http://package.elm-lang.org/packages/evancz/elm-html/latest/&quot;&gt;&lt;code&gt;elm-html&lt;/code&gt;&lt;/a&gt; offers the functionality to render HTML via virtual DOM. One of its functions is &lt;code&gt;Html.text&lt;/code&gt; which we use to create a simple text node that will be the return value of the &lt;code&gt;main&lt;/code&gt; function.&lt;/p&gt;
-&lt;p&gt;To import the &lt;code&gt;Html&lt;/code&gt; package we have to install it first:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ elm-package install evancz/elm-html
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The package manager lets us know what exactly will be installed and what dependencies are also needed. It will create the file &lt;code&gt;elm-package.json&lt;/code&gt; which is the Elm equivalent to the &lt;code&gt;package.json&lt;/code&gt; you might be familiar with from JavaScript projects. The installed packages are stored inside the &lt;code&gt;elm-stuff&lt;/code&gt; directory which resembles the &lt;code&gt;node_modules&lt;/code&gt; folder.&lt;/p&gt;
-&lt;p&gt;Now we have got everything we need to build the file and execute it in the browser. You can start the development server Reactor on the command line:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ elm-reactor
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Opening the URL &lt;a href=&quot;http://localhost:8000/Main.elm&quot;&gt;&lt;code&gt;http://localhost:8000/Main.elm&lt;/code&gt;&lt;/a&gt; in the browser you should see the text &lt;em&gt;Hello World&lt;/em&gt;. Reactor is a helpful tool for development and it supports the &lt;a href=&quot;http://elm-lang.org/blog/time-travel-made-easy&quot;&gt;time travel debugger&lt;/a&gt; as well as &lt;a href=&quot;http://elm-lang.org/blog/interactive-programming&quot;&gt;hot swapping&lt;/a&gt; so that changes to the program should be shown without reloading the browser. Nevertheless the latter is &lt;a href=&quot;https://github.com/elm-lang/elm-reactor/issues/168&quot;&gt;not reliable in version 0.16.0&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Reactor also gives us the boilerplate we would otherwise have to create manually – an HTML file that is the context for running the program. To create this file yourself you can utilize &lt;code&gt;elm-make&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ elm-make Main.elm --output index.html
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The file &lt;code&gt;index.html&lt;/code&gt; contains the Elm runtime as well as our custom code plus some extra glue code to setup everything. This way you can upload the file to show your parents that you are now able to program in Elm.&lt;/p&gt;
-&lt;h3&gt;Building larger Elm projects&lt;/h3&gt;
-&lt;p&gt;Right now it is kind of complicated to give custom HTML and CSS to Reactor. In addition to that larger projects oftentimes require a more extensive build process. After building my first small &lt;a href=&quot;https://gist.github.com/dennisreimann/cd8d45eefaba43199dcd&quot;&gt;Elm projects with Gulp&lt;/a&gt; I settled on  using Webpack, which seems to become the standard way of packaging Elm apps. The &lt;a href=&quot;https://github.com/rtfeldman/elm-webpack-loader&quot;&gt;elm-webpack-loader&lt;/a&gt; is a nice tool for helping with that.&lt;/p&gt;
-&lt;p&gt;Webpacks configuration might seem extensive, but there is the &lt;a href=&quot;https://github.com/pmdesgn/elm-webpack-starter&quot;&gt;elm-webpack-starter&lt;/a&gt; project which is a good starting point for creating your own, more ambitious setup. I have also used it for creating &lt;a href=&quot;https://github.com/dennisreimann/elm-bike-configurator&quot;&gt;my first, tiny elm application&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The upcoming articles spotlights &lt;a href=&quot;/articles/elm-modules-import.html&quot;&gt;the Elm module system&lt;/a&gt;.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+<span class="hljs-title">main</span> = <span class="hljs-type">Html</span>.text <span class="hljs-string">"Hello World"</span>
+</code></pre>
+<p>As you can see we are about to create HTML output. Therefore we need the first package that has to be installed: <a href="http://package.elm-lang.org/packages/evancz/elm-html/latest/"><code>elm-html</code></a> offers the functionality to render HTML via virtual DOM. One of its functions is <code>Html.text</code> which we use to create a simple text node that will be the return value of the <code>main</code> function.</p>
+<p>To import the <code>Html</code> package we have to install it first:</p>
+<pre><code class="language-bash">$ elm-package install evancz/elm-html
+</code></pre>
+<p>The package manager lets us know what exactly will be installed and what dependencies are also needed. It will create the file <code>elm-package.json</code> which is the Elm equivalent to the <code>package.json</code> you might be familiar with from JavaScript projects. The installed packages are stored inside the <code>elm-stuff</code> directory which resembles the <code>node_modules</code> folder.</p>
+<p>Now we have got everything we need to build the file and execute it in the browser. You can start the development server Reactor on the command line:</p>
+<pre><code class="language-bash">$ elm-reactor
+</code></pre>
+<p>Opening the URL <a href="http://localhost:8000/Main.elm"><code>http://localhost:8000/Main.elm</code></a> in the browser you should see the text <em>Hello World</em>. Reactor is a helpful tool for development and it supports the <a href="http://elm-lang.org/blog/time-travel-made-easy">time travel debugger</a> as well as <a href="http://elm-lang.org/blog/interactive-programming">hot swapping</a> so that changes to the program should be shown without reloading the browser. Nevertheless the latter is <a href="https://github.com/elm-lang/elm-reactor/issues/168">not reliable in version 0.16.0</a>.</p>
+<p>Reactor also gives us the boilerplate we would otherwise have to create manually – an HTML file that is the context for running the program. To create this file yourself you can utilize <code>elm-make</code>:</p>
+<pre><code class="language-bash">$ elm-make Main.elm --output index.html
+</code></pre>
+<p>The file <code>index.html</code> contains the Elm runtime as well as our custom code plus some extra glue code to setup everything. This way you can upload the file to show your parents that you are now able to program in Elm.</p>
+<h3>Building larger Elm projects</h3>
+<p>Right now it is kind of complicated to give custom HTML and CSS to Reactor. In addition to that larger projects oftentimes require a more extensive build process. After building my first small <a href="https://gist.github.com/dennisreimann/cd8d45eefaba43199dcd">Elm projects with Gulp</a> I settled on  using Webpack, which seems to become the standard way of packaging Elm apps. The <a href="https://github.com/rtfeldman/elm-webpack-loader">elm-webpack-loader</a> is a nice tool for helping with that.</p>
+<p>Webpacks configuration might seem extensive, but there is the <a href="https://github.com/pmdesgn/elm-webpack-starter">elm-webpack-starter</a> project which is a good starting point for creating your own, more ambitious setup. I have also used it for creating <a href="https://github.com/dennisreimann/elm-bike-configurator">my first, tiny elm application</a>.</p>
+<p>The upcoming articles spotlights <a href="/articles/elm-modules-import.html">the Elm module system</a>.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

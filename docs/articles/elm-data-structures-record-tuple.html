@@ -658,158 +658,158 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (2)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,Record,Tuple</a></span></div><p class="acontent">&lt;p&gt;After we have already covered the iterable data structures in the previous article, we will now work wth records and tuples, which can contain elements of different types. We will also have a look at how to access values using destructuring and get to know about type aliases …&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;p&gt;Records and tuples can contain an arbitrary amount of elements – as opposed to &lt;a href=&quot;/articles/elm-data-structures-list-array-set-dict.html&quot;&gt;lists, arrays, sets and dictionaries&lt;/a&gt; these elements do not have to be of the same data type. Because of that tuples and records are suited well for representing more complex element structures and objects. Before we will cover both of them in detail, let us first talk about &lt;em&gt;type aliases&lt;/em&gt;, which can be used to further describe records and tuples and make them more expressive.&lt;/p&gt;
-&lt;h3&gt;Type Aliases&lt;/h3&gt;
-&lt;p&gt;The keyword &lt;code&gt;type&lt;/code&gt; defines a new data type which did not exist before. Opposed to that &lt;code&gt;type alias&lt;/code&gt; gives an extra name to an already existing type. It does not create a distinct data type but can be used to reference another type and give it a more expressive meaning for the context the data is used in. Type aliases can be defined on the root level of a program as well as in &lt;code&gt;let/in&lt;/code&gt; expressions.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Login&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Age&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;IsAdmin&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;They are used to further describe data structures. A type alias can be defined for basic data types and we will use them in the upcoming examples to give more meaning to our tuples and records.&lt;/p&gt;
-&lt;h3&gt;Tuples&lt;/h3&gt;
-&lt;p&gt;A tuple is an ordered collection of values, which can consist of two or more elements. In Elm tuples are created using the literal syntax of two surrounding parenthesis – the order as well as the count of values need to be the same for every tuple of the same type (defined by a type alias).&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;-- tuple without type definition&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;coordinates&lt;/span&gt; = (&lt;span class=&quot;hljs-number&quot;&gt;53.1201749&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;8.5962037&lt;/span&gt;)
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (2)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,Record,Tuple</a></span></div><p>After we have already covered the iterable data structures in the previous article, we will now work wth records and tuples, which can contain elements of different types. We will also have a look at how to access values using destructuring and get to know about type aliases …</p>
+<div id="more"></div>
+<p>Records and tuples can contain an arbitrary amount of elements – as opposed to <a href="/articles/elm-data-structures-list-array-set-dict.html">lists, arrays, sets and dictionaries</a> these elements do not have to be of the same data type. Because of that tuples and records are suited well for representing more complex element structures and objects. Before we will cover both of them in detail, let us first talk about <em>type aliases</em>, which can be used to further describe records and tuples and make them more expressive.</p>
+<h3>Type Aliases</h3>
+<p>The keyword <code>type</code> defines a new data type which did not exist before. Opposed to that <code>type alias</code> gives an extra name to an already existing type. It does not create a distinct data type but can be used to reference another type and give it a more expressive meaning for the context the data is used in. Type aliases can be defined on the root level of a program as well as in <code>let/in</code> expressions.</p>
+<pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">Login</span> = <span class="hljs-type">String</span>
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">Age</span> = <span class="hljs-type">Int</span>
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">IsAdmin</span> = <span class="hljs-type">Bool</span>
+</code></pre>
+<p>They are used to further describe data structures. A type alias can be defined for basic data types and we will use them in the upcoming examples to give more meaning to our tuples and records.</p>
+<h3>Tuples</h3>
+<p>A tuple is an ordered collection of values, which can consist of two or more elements. In Elm tuples are created using the literal syntax of two surrounding parenthesis – the order as well as the count of values need to be the same for every tuple of the same type (defined by a type alias).</p>
+<pre><code class="language-elm"><span class="hljs-comment">-- tuple without type definition</span>
+<span class="hljs-title">coordinates</span> = (<span class="hljs-number">53.1201749</span>, <span class="hljs-number">8.5962037</span>)
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- tuple with type definition&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;area&lt;/span&gt; : (&lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;)
-&lt;span class=&quot;hljs-title&quot;&gt;area&lt;/span&gt; = (&lt;span class=&quot;hljs-number&quot;&gt;42&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;23&lt;/span&gt;)
+<span class="hljs-comment">-- tuple with type definition</span>
+<span class="hljs-title">area</span> : (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)
+<span class="hljs-title">area</span> = (<span class="hljs-number">42</span>, <span class="hljs-number">23</span>)
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- tuple with type alias&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;IsValid&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Message&lt;/span&gt; = &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;ValidationResult&lt;/span&gt; = (&lt;span class=&quot;hljs-type&quot;&gt;IsValid&lt;/span&gt;, &lt;span class=&quot;hljs-type&quot;&gt;Message&lt;/span&gt;)
+<span class="hljs-comment">-- tuple with type alias</span>
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">IsValid</span> = <span class="hljs-type">Bool</span>
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">Message</span> = <span class="hljs-type">String</span>
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">ValidationResult</span> = (<span class="hljs-type">IsValid</span>, <span class="hljs-type">Message</span>)
 
-&lt;span class=&quot;hljs-title&quot;&gt;success&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;ValidationResult&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;success&lt;/span&gt; = (&lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;All is good.&quot;&lt;/span&gt;)
+<span class="hljs-title">success</span> : <span class="hljs-type">ValidationResult</span>
+<span class="hljs-title">success</span> = (<span class="hljs-type">True</span>, <span class="hljs-string">"All is good."</span>)
 
-&lt;span class=&quot;hljs-title&quot;&gt;error&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;ValidationResult&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;error&lt;/span&gt; = (&lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;Something went wrong.&quot;&lt;/span&gt;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Tuple are suitable for creating simple, short data structures – e.g. to return multiple values from a function. For accessing the values of a tuple with two values one can use the functions &lt;code&gt;first&lt;/code&gt; and &lt;code&gt;second&lt;/code&gt;, for tuples with three or more values one has to use destructuring.&lt;/p&gt;
-&lt;h3&gt;Destructuring&lt;/h3&gt;
-&lt;p&gt;With destructuring we can access the values of a tuple and directly assign these values to other variables. Using &lt;code&gt;_&lt;/code&gt; one can define placeholders for values that will be ignored or skipped.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;coordinates&lt;/span&gt; = (&lt;span class=&quot;hljs-number&quot;&gt;53.1201749&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;8.5962037&lt;/span&gt;)
+<span class="hljs-title">error</span> : <span class="hljs-type">ValidationResult</span>
+<span class="hljs-title">error</span> = (<span class="hljs-type">False</span>, <span class="hljs-string">"Something went wrong."</span>)
+</code></pre>
+<p>Tuple are suitable for creating simple, short data structures – e.g. to return multiple values from a function. For accessing the values of a tuple with two values one can use the functions <code>first</code> and <code>second</code>, for tuples with three or more values one has to use destructuring.</p>
+<h3>Destructuring</h3>
+<p>With destructuring we can access the values of a tuple and directly assign these values to other variables. Using <code>_</code> one can define placeholders for values that will be ignored or skipped.</p>
+<pre><code class="language-elm"><span class="hljs-title">coordinates</span> = (<span class="hljs-number">53.1201749</span>, <span class="hljs-number">8.5962037</span>)
 (latitude, longitude) = coordinates
 
-&lt;span class=&quot;hljs-title&quot;&gt;error&lt;/span&gt; = (&lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;Something went wrong.&quot;&lt;/span&gt;, [&lt;span class=&quot;hljs-string&quot;&gt;&quot;username&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;email&quot;&lt;/span&gt;])
+<span class="hljs-title">error</span> = (<span class="hljs-type">False</span>, <span class="hljs-string">"Something went wrong."</span>, [<span class="hljs-string">"username"</span>, <span class="hljs-string">"email"</span>])
 (isValid, _, invalidFields) = error
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- works even with nested tuples&lt;/span&gt;
-(a, (b, c, (d, e), _), _) = (&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, (&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, (&lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;), &lt;span class=&quot;hljs-number&quot;&gt;6&lt;/span&gt;), &lt;span class=&quot;hljs-number&quot;&gt;7&lt;/span&gt;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;For further &lt;a href=&quot;http://www.lambdacat.com/road-to-elm-destructuring/&quot;&gt;explanations for destructuring&lt;/a&gt; see the LambdaCat article which also contains more examples and a comparison to destructuring in JavaScript.&lt;/p&gt;
-&lt;h3&gt;Records&lt;/h3&gt;
-&lt;p&gt;For more complex structures records are a better fit than tuples. Records consist of key-value pairs, which makes them similar similar to objects in JavaScript. They are created using the literal syntax of two surrounding curly braces and they can be described further using a type alias.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;-- record without type definition&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;coordinate&lt;/span&gt; =
-    { latitude = &lt;span class=&quot;hljs-number&quot;&gt;53.1201749&lt;/span&gt;
-    , longitude = &lt;span class=&quot;hljs-number&quot;&gt;8.5962037&lt;/span&gt;
+<span class="hljs-comment">-- works even with nested tuples</span>
+(a, (b, c, (d, e), _), _) = (<span class="hljs-number">1</span>, (<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, (<span class="hljs-number">4</span>, <span class="hljs-number">5</span>), <span class="hljs-number">6</span>), <span class="hljs-number">7</span>)
+</code></pre>
+<p>For further <a href="http://www.lambdacat.com/road-to-elm-destructuring/">explanations for destructuring</a> see the LambdaCat article which also contains more examples and a comparison to destructuring in JavaScript.</p>
+<h3>Records</h3>
+<p>For more complex structures records are a better fit than tuples. Records consist of key-value pairs, which makes them similar similar to objects in JavaScript. They are created using the literal syntax of two surrounding curly braces and they can be described further using a type alias.</p>
+<pre><code class="language-elm"><span class="hljs-comment">-- record without type definition</span>
+<span class="hljs-title">coordinate</span> =
+    { latitude = <span class="hljs-number">53.1201749</span>
+    , longitude = <span class="hljs-number">8.5962037</span>
     }
 
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- record with type definition&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;area&lt;/span&gt; : { width : &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;, height : &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt; }
-&lt;span class=&quot;hljs-title&quot;&gt;area&lt;/span&gt; =
-    { width = &lt;span class=&quot;hljs-number&quot;&gt;42&lt;/span&gt;
-    , height = &lt;span class=&quot;hljs-number&quot;&gt;23&lt;/span&gt;
+<span class="hljs-comment">-- record with type definition</span>
+<span class="hljs-title">area</span> : { width : <span class="hljs-type">Int</span>, height : <span class="hljs-type">Int</span> }
+<span class="hljs-title">area</span> =
+    { width = <span class="hljs-number">42</span>
+    , height = <span class="hljs-number">23</span>
     }
 
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- record with type definition via type alias&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;User&lt;/span&gt; =
-    { login : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-    , isAdmin : &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
+<span class="hljs-comment">-- record with type definition via type alias</span>
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">User</span> =
+    { login : <span class="hljs-type">String</span>
+    , isAdmin : <span class="hljs-type">Bool</span>
     }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;alice&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;User&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;alice&lt;/span&gt; =
-    { login = &lt;span class=&quot;hljs-string&quot;&gt;&quot;alice&quot;&lt;/span&gt;
-    , isAdmin = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
+<span class="hljs-title">alice</span> : <span class="hljs-type">User</span>
+<span class="hljs-title">alice</span> =
+    { login = <span class="hljs-string">"alice"</span>
+    , isAdmin = <span class="hljs-type">False</span>
     }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;bob&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;User&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;bob&lt;/span&gt; =
-    { login = &lt;span class=&quot;hljs-string&quot;&gt;&quot;bob&quot;&lt;/span&gt;
-    , isAdmin = &lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt;
+<span class="hljs-title">bob</span> : <span class="hljs-type">User</span>
+<span class="hljs-title">bob</span> =
+    { login = <span class="hljs-string">"bob"</span>
+    , isAdmin = <span class="hljs-type">True</span>
     }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Values of a record can be accessed by means of these techniques:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Directly with the dot syntax (similar as in JavaScript)&lt;/li&gt;
-&lt;li&gt;Using the standalone function with dot notation&lt;/li&gt;
-&lt;li&gt;Destructuring&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;alice&lt;/span&gt;.isAdmin
-&lt;span class=&quot;hljs-comment&quot;&gt;-- False : Bool&lt;/span&gt;
+</code></pre>
+<p>Values of a record can be accessed by means of these techniques:</p>
+<ul>
+<li>Directly with the dot syntax (similar as in JavaScript)</li>
+<li>Using the standalone function with dot notation</li>
+<li>Destructuring</li>
+</ul>
+<pre><code class="language-elm"><span class="hljs-title">alice</span>.isAdmin
+<span class="hljs-comment">-- False : Bool</span>
 
 .login bob
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;bob&quot; : String&lt;/span&gt;
+<span class="hljs-comment">-- "bob" : String</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.filter .isAdmin [alice, bob]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [{ login = &quot;bob&quot;, isAdmin = True }] : List User&lt;/span&gt;
+<span class="hljs-type">List</span>.filter .isAdmin [alice, bob]
+<span class="hljs-comment">-- [{ login = "bob", isAdmin = True }] : List User</span>
 
 { login, isAdmin } = alice
-&lt;span class=&quot;hljs-title&quot;&gt;login&lt;/span&gt;
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;alice&quot; : String&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;When using destructuring it is required to name the variable the value gets assigned to after the key of the according record value.&lt;/p&gt;
-&lt;p&gt;Using the standalone function with dot notation is a shortcut for the functionally equivalent option of using  an anonymous function: &lt;code&gt;(.isAdmin bob) == ((\u -&amp;gt; u.isAdmin) bob)&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Generally you do not have the options to access keys of a record that do not exist – as opposed to JavaScript objects. The compiler will give you an error for that, which is quite nice and a timesaver.&lt;/p&gt;
-&lt;h4&gt;Updating records&lt;/h4&gt;
-&lt;p&gt;To edit records one can create a new record based on an existing one. The name of the existing records and the fields you want to edit are separated by a &lt;code&gt;|&lt;/code&gt; and one can change single or multiple values:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;aliceTheAdmin&lt;/span&gt; =
-    { alice | isAdmin = &lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt; }
+<span class="hljs-title">login</span>
+<span class="hljs-comment">-- "alice" : String</span>
+</code></pre>
+<p>When using destructuring it is required to name the variable the value gets assigned to after the key of the according record value.</p>
+<p>Using the standalone function with dot notation is a shortcut for the functionally equivalent option of using  an anonymous function: <code>(.isAdmin bob) == ((\u -&gt; u.isAdmin) bob)</code></p>
+<p>Generally you do not have the options to access keys of a record that do not exist – as opposed to JavaScript objects. The compiler will give you an error for that, which is quite nice and a timesaver.</p>
+<h4>Updating records</h4>
+<p>To edit records one can create a new record based on an existing one. The name of the existing records and the fields you want to edit are separated by a <code>|</code> and one can change single or multiple values:</p>
+<pre><code class="language-elm"><span class="hljs-title">aliceTheAdmin</span> =
+    { alice | isAdmin = <span class="hljs-type">True</span> }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;aliceTheMightyAdmin&lt;/span&gt; =
+<span class="hljs-title">aliceTheMightyAdmin</span> =
     { alice
-        | name = &lt;span class=&quot;hljs-string&quot;&gt;&quot;mighty-alice&quot;&lt;/span&gt;
-        , isAdmin = &lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt;
+        | name = <span class="hljs-string">"mighty-alice"</span>
+        , isAdmin = <span class="hljs-type">True</span>
     }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4&gt;Extensible records&lt;/h4&gt;
-&lt;p&gt;Last but not least there is also the concept of extensible records, which can be thought of as field mixins. An extensible record defines a type that has at least certain fields. This can be used for writing functions that take records which might not be of the same type but which share a common set of fields:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Authorized&lt;/span&gt; user =
+</code></pre>
+<h4>Extensible records</h4>
+<p>Last but not least there is also the concept of extensible records, which can be thought of as field mixins. An extensible record defines a type that has at least certain fields. This can be used for writing functions that take records which might not be of the same type but which share a common set of fields:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">Authorized</span> user =
     { user
-        | canEdit : &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
-        , canDelete : &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
+        | canEdit : <span class="hljs-type">Bool</span>
+        , canDelete : <span class="hljs-type">Bool</span>
     }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;alice&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Authorized&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;User&lt;/span&gt;)
-&lt;span class=&quot;hljs-title&quot;&gt;alice&lt;/span&gt; =
-    { login = &lt;span class=&quot;hljs-string&quot;&gt;&quot;alice&quot;&lt;/span&gt;
-    , isAdmin = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
-    , canEdit = &lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt;
-    , canDelete = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
+<span class="hljs-title">alice</span> : <span class="hljs-type">Authorized</span> (<span class="hljs-type">User</span>)
+<span class="hljs-title">alice</span> =
+    { login = <span class="hljs-string">"alice"</span>
+    , isAdmin = <span class="hljs-type">False</span>
+    , canEdit = <span class="hljs-type">True</span>
+    , canDelete = <span class="hljs-type">False</span>
     }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;bob&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Authorized&lt;/span&gt; {}
-&lt;span class=&quot;hljs-title&quot;&gt;bob&lt;/span&gt; =
-    { canEdit = &lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt;
-    , canDelete = &lt;span class=&quot;hljs-type&quot;&gt;True&lt;/span&gt;
+<span class="hljs-title">bob</span> : <span class="hljs-type">Authorized</span> {}
+<span class="hljs-title">bob</span> =
+    { canEdit = <span class="hljs-type">True</span>
+    , canDelete = <span class="hljs-type">True</span>
     }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;allowedToEdit&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Authorized&lt;/span&gt; a -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;allowedToEdit&lt;/span&gt; a =
+<span class="hljs-title">allowedToEdit</span> : <span class="hljs-type">Authorized</span> a -&gt; <span class="hljs-type">Bool</span>
+<span class="hljs-title">allowedToEdit</span> a =
     a.canEdit
 
-&lt;span class=&quot;hljs-title&quot;&gt;allowedToEdit&lt;/span&gt; alice
-&lt;span class=&quot;hljs-comment&quot;&gt;-- True : Bool&lt;/span&gt;
+<span class="hljs-title">allowedToEdit</span> alice
+<span class="hljs-comment">-- True : Bool</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;allowedToDelete&lt;/span&gt; alice
-&lt;span class=&quot;hljs-comment&quot;&gt;-- False : Bool&lt;/span&gt;
+<span class="hljs-title">allowedToDelete</span> alice
+<span class="hljs-comment">-- False : Bool</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;allowedToDelete&lt;/span&gt; bob
-&lt;span class=&quot;hljs-comment&quot;&gt;-- True : Bool&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In this example &lt;code&gt;alice&lt;/code&gt; is a &lt;code&gt;User&lt;/code&gt; (as of the type defined in the earlier example), but &lt;code&gt;bob&lt;/code&gt; is not. &lt;code&gt;bob&lt;/code&gt; is just a simple record with the fields &lt;code&gt;canEdit&lt;/code&gt; and &lt;code&gt;canDelete&lt;/code&gt; that are defined in the extensible record type &lt;code&gt;Authorized&lt;/code&gt;. Because both records are guaranteed to have those fields, we can use them in the same manner in the &lt;code&gt;allowedToEdit&lt;/code&gt; and &lt;code&gt;allowedToDelete&lt;/code&gt; functions – regardless of their exact type.&lt;/p&gt;
-&lt;p&gt;After we have looked at the iterable data structures as well as tuples and records the last article in the series about data structures in Elm will cover the &lt;em&gt;union type&lt;/em&gt;. In contrast to the structures we have seen up to now a union type can be of multiple different data types.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+<span class="hljs-title">allowedToDelete</span> bob
+<span class="hljs-comment">-- True : Bool</span>
+</code></pre>
+<p>In this example <code>alice</code> is a <code>User</code> (as of the type defined in the earlier example), but <code>bob</code> is not. <code>bob</code> is just a simple record with the fields <code>canEdit</code> and <code>canDelete</code> that are defined in the extensible record type <code>Authorized</code>. Because both records are guaranteed to have those fields, we can use them in the same manner in the <code>allowedToEdit</code> and <code>allowedToDelete</code> functions – regardless of their exact type.</p>
+<p>After we have looked at the iterable data structures as well as tuples and records the last article in the series about data structures in Elm will cover the <em>union type</em>. In contrast to the structures we have seen up to now a union type can be of multiple different data types.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

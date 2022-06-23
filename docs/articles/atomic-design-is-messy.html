@@ -658,81 +658,81 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Atomic Design is messy, here's what I prefer</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Atomic Design,Design Systems,Frontend development,Pattern Library</a></span></div><p class="acontent">&lt;p&gt;Wow, what a clickbaity headline – it makes me apologize to Brad Frost in this very first sentence.
-But now that I got your attention, let me elaborate in modest terms so I can back up this sentiment.&lt;/p&gt;
-&lt;h2&gt;The good parts&lt;/h2&gt;
-&lt;p&gt;I like &lt;a href=&quot;http://atomicdesign.bradfrost.com/table-of-contents/&quot;&gt;Atomic Design&lt;/a&gt; on a conceptual level and I think it works as a methodology to a good extend.
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Atomic Design is messy, here's what I prefer</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Atomic Design,Design Systems,Frontend development,Pattern Library</a></span></div><p>Wow, what a clickbaity headline – it makes me apologize to Brad Frost in this very first sentence.
+But now that I got your attention, let me elaborate in modest terms so I can back up this sentiment.</p>
+<h2>The good parts</h2>
+<p>I like <a href="http://atomicdesign.bradfrost.com/table-of-contents/">Atomic Design</a> on a conceptual level and I think it works as a methodology to a good extend.
 What I like in particular is how it proposes a mental model that connects to a known concept:
 This alone makes it easy for beginners to understand connections and provides a framework for categorizing things.
-Every non-technical person can get it almost right away and has a way to frame their ideas.&lt;/p&gt;
-&lt;h2&gt;The bad parts&lt;/h2&gt;
-&lt;p&gt;There are two things in particular I see as problematic and coming up when explaining and implementing a design system …&lt;/p&gt;
-&lt;h3&gt;It leads to strict categorization&lt;/h3&gt;
-&lt;p&gt;&lt;mark&gt;Categorizing components as atoms, molecules and organisms works well at first glance, but can become debatable in the details.&lt;/mark&gt;&lt;/p&gt;
-&lt;p&gt;Atoms are defined as „basic building blocks“.
+Every non-technical person can get it almost right away and has a way to frame their ideas.</p>
+<h2>The bad parts</h2>
+<p>There are two things in particular I see as problematic and coming up when explaining and implementing a design system …</p>
+<h3>It leads to strict categorization</h3>
+<p><mark>Categorizing components as atoms, molecules and organisms works well at first glance, but can become debatable in the details.</mark></p>
+<p>Atoms are defined as „basic building blocks“.
 This maps perfectly fine to single (HTML) elements when thinking in terms of components.
 However, basics such as colors, typography or spacing do not fit well right beside components.
-This might sound nitpicky and esoteric, but in my opinion these design tokens demand for another kind of category.&lt;/p&gt;
-&lt;p&gt;A question which I bet has been asked in every team that applies atomic design: “Is this thing a molecule or an organism?”&lt;br&gt;
-And in fact: What makes something &lt;em&gt;“small”&lt;/em&gt; or &lt;em&gt;“big”&lt;/em&gt;?
+This might sound nitpicky and esoteric, but in my opinion these design tokens demand for another kind of category.</p>
+<p>A question which I bet has been asked in every team that applies atomic design: “Is this thing a molecule or an organism?”<br>
+And in fact: What makes something <em>“small”</em> or <em>“big”</em>?
 Is it the number of elements or other components it includes?
 The type of subparts it contains?
-The visual space it takes up on the screen?&lt;/p&gt;
-&lt;p&gt;Here we are in the debatable questions on a conceptual level – but these can be sorted out with answers and conventions a team can agree on.
+The visual space it takes up on the screen?</p>
+<p>Here we are in the debatable questions on a conceptual level – but these can be sorted out with answers and conventions a team can agree on.
 What I see all the time though is that this does not stop at the conceptual level:
-Teams use these categorizations in the implementation and put the components in actual folders.&lt;/p&gt;
-&lt;p&gt;This is also part of the tooling and Pattern Lab proposes such a structure.
+Teams use these categorizations in the implementation and put the components in actual folders.</p>
+<p>This is also part of the tooling and Pattern Lab proposes such a structure.
 Personally I do not like this, as it makes it hard to refactor and reshape things.
-Used on an agreed upon conceptual level this might work, but if this is part of your build process you are into trouble sooner than later.&lt;/p&gt;
-&lt;h3&gt;It is a leaky abstraction&lt;/h3&gt;
-&lt;p&gt;&lt;mark&gt;The mental model does not work to full extend and breaks on the template and pages level.&lt;/mark&gt;
+Used on an agreed upon conceptual level this might work, but if this is part of your build process you are into trouble sooner than later.</p>
+<h3>It is a leaky abstraction</h3>
+<p><mark>The mental model does not work to full extend and breaks on the template and pages level.</mark>
 Alright, I accept this is nitpicky, but I think the best metaphors work all the way through.
 With a simpler way to frame this, we would not need the metaphor as a mental model all together.
 I will not hammer on this as other things are more interesting:
-Like the distinction between templates and pages.&lt;/p&gt;
-&lt;p&gt;Technical people might get this: Templates are the abstract form, pages the concrete implementation.
+Like the distinction between templates and pages.</p>
+<p>Technical people might get this: Templates are the abstract form, pages the concrete implementation.
 Non-technical people struggle with this, if it is part of the language and categorization.
 Even I have my problems of fitting templates into the documentation as it is hard to represent them, not just visually.
-Best advice I can give from our experience is to not use this distinction and confuse people.&lt;/p&gt;
-&lt;h2&gt;Are we done ranting?&lt;/h2&gt;
-&lt;p&gt;Seriously, I don‘t want this to offend.
+Best advice I can give from our experience is to not use this distinction and confuse people.</p>
+<h2>Are we done ranting?</h2>
+<p>Seriously, I don‘t want this to offend.
 I wanted to write about some points I see coming up in discussions all the time.
-If you are using Atomic Design and like it I am glad it works for you and please stick to it!&lt;/p&gt;
-&lt;p&gt;The following – hopefully more constructive – part is for those of you who have had similar gripes with it as I did.
-I hope it proposes another angle of looking at it, which I see as a simpler way to frame things.&lt;/p&gt;
-&lt;h2&gt;Foundation, Elements, Modules and the Prototype&lt;/h2&gt;
-&lt;p&gt;Here is the high-level overview of how I like to structure and implement the individual parts:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Foundation&lt;/strong&gt;: This is the basic layer of design tokens such as colors, typography, spacings, iconography and their like.
+If you are using Atomic Design and like it I am glad it works for you and please stick to it!</p>
+<p>The following – hopefully more constructive – part is for those of you who have had similar gripes with it as I did.
+I hope it proposes another angle of looking at it, which I see as a simpler way to frame things.</p>
+<h2>Foundation, Elements, Modules and the Prototype</h2>
+<p>Here is the high-level overview of how I like to structure and implement the individual parts:</p>
+<ul>
+<li>
+<p><strong>Foundation</strong>: This is the basic layer of design tokens such as colors, typography, spacings, iconography and their like.
 Basically the non-component basics I have my trouble with when defined and categorized as atoms.
-Assigning them an explicit category and naming it foundation makes clear that this affects every piece of the system.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Elements&lt;/strong&gt;: The “basic building block” components everyone thinks of when talking about atoms.
+Assigning them an explicit category and naming it foundation makes clear that this affects every piece of the system.</p>
+</li>
+<li>
+<p><strong>Elements</strong>: The “basic building block” components everyone thinks of when talking about atoms.
 Concretely they map to customized implementations of single HTML elements, like headings and buttons.
 But also these kinds of elements, that do not make any sense in HTML when used standalone, like list items.
-In this case a list would be the most non-dividable form and hence the element.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Modules&lt;/strong&gt;: Everything that can contain other components.
+In this case a list would be the most non-dividable form and hence the element.</p>
+</li>
+<li>
+<p><strong>Modules</strong>: Everything that can contain other components.
 I am defining components as a collective term for elements or modules – the distinction being whether or not they can contain other parts.
 In atomic design terms this is the group of molecules and organisms, avoiding the strict categorization.
 As you might have guessed, this distinction also does not find its expression in the file system:
-There is no folder hierarchy, just a single flat components directory which contains a single folder for each component.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Prototype&lt;/strong&gt;: In the end product people do not want design tokens, components or templates.
+There is no folder hierarchy, just a single flat components directory which contains a single folder for each component.</p>
+</li>
+<li>
+<p><strong>Prototype</strong>: In the end product people do not want design tokens, components or templates.
 They want concrete pages which should be assembled of all these parts.
 The prototype is our section in the pattern library/design system documentation where everything comes together.
 Here the templates containing the components are married with the (sample) data to form pages everyone understands.
-The prototype is also the basis for testing and validating ideas and features.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;That’s it!
+The prototype is also the basis for testing and validating ideas and features.</p>
+</li>
+</ul>
+<p>That’s it!
 Sorry this is not more fancy, but we have found this works for us and the clients and teams we work with.
 It avoids the discussions mentioned above.
-It is simple and hence works without a metaphor.&lt;/p&gt;
-&lt;p&gt;Feel free to ask questions and challenge this approach.
-I am eager to learn how you tackle this, so let me know!&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+It is simple and hence works without a metaphor.</p>
+<p>Feel free to ask questions and challenge this approach.
+I am eager to learn how you tackle this, so let me know!</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

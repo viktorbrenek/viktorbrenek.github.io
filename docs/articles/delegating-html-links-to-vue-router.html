@@ -658,86 +658,86 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Delegating HTML links to vue-router</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Vue.js,Vue,vue-router,Frontend development</a></span></div><p class="acontent">&lt;p&gt;When you are dealing with dynamic or user generated content in a Vue.js application, you might want &lt;a href=&quot;https://router.vuejs.org/&quot;&gt;vue-router&lt;/a&gt; to handle internal HTML links.
-Links that are not implemented via &lt;code&gt;&amp;lt;router-link&amp;gt;&lt;/code&gt; will trigger a full page reload. So we need a way to hijack clicks on &lt;code&gt;&amp;lt;a href&amp;gt;&lt;/code&gt; and delegate them to vue-router in case they reference an internal resource.
-There are two ways to intercept the clicks, depending on your use case and needs.&lt;/p&gt;
-&lt;h2&gt;Application-wide handling&lt;/h2&gt;
-&lt;p&gt;In case you have dynamic links all over your application you can intercept them globally.
-To do this, bind the event listener to the window in your top-most/main app components &lt;code&gt;mounted&lt;/code&gt; lifecycle hook:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;mounted () {
-  &lt;span class=&quot;hljs-built_in&quot;&gt;window&lt;/span&gt;.addEventListener(&lt;span class=&quot;hljs-string&quot;&gt;'click'&lt;/span&gt;, event =&amp;gt; {
-    &lt;span class=&quot;hljs-comment&quot;&gt;// ensure we use the link, in case the click has been received by a subelement&lt;/span&gt;
-    &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt; { target } = event
-    &lt;span class=&quot;hljs-keyword&quot;&gt;while&lt;/span&gt; (target &amp;amp;&amp;amp; target.tagName !== &lt;span class=&quot;hljs-string&quot;&gt;'A'&lt;/span&gt;) target = target.parentNode
-    &lt;span class=&quot;hljs-comment&quot;&gt;// handle only links that do not reference external resources&lt;/span&gt;
-    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (target &amp;amp;&amp;amp; target.matches(&lt;span class=&quot;hljs-string&quot;&gt;&quot;a:not([href*='://'])&quot;&lt;/span&gt;) &amp;amp;&amp;amp; target.href) {
-      &lt;span class=&quot;hljs-comment&quot;&gt;// some sanity checks taken from vue-router:&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// https://github.com/vuejs/vue-router/blob/dev/src/components/link.js#L106&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; { altKey, ctrlKey, metaKey, shiftKey, button, defaultPrevented } = event
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle with control keys&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (metaKey || altKey || ctrlKey || shiftKey) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle when preventDefault called&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (defaultPrevented) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle right clicks&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (button !== &lt;span class=&quot;hljs-literal&quot;&gt;undefined&lt;/span&gt; &amp;amp;&amp;amp; button !== &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle if `target=&quot;_blank&quot;`&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (target &amp;amp;&amp;amp; target.getAttribute) {
-        &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; linkTarget = target.getAttribute(&lt;span class=&quot;hljs-string&quot;&gt;'target'&lt;/span&gt;)
-        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;hljs-regexp&quot;&gt;/\b_blank\b/i&lt;/span&gt;.test(linkTarget)) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Delegating HTML links to vue-router</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Vue.js,Vue,vue-router,Frontend development</a></span></div><p>When you are dealing with dynamic or user generated content in a Vue.js application, you might want <a href="https://router.vuejs.org/">vue-router</a> to handle internal HTML links.
+Links that are not implemented via <code>&lt;router-link&gt;</code> will trigger a full page reload. So we need a way to hijack clicks on <code>&lt;a href&gt;</code> and delegate them to vue-router in case they reference an internal resource.
+There are two ways to intercept the clicks, depending on your use case and needs.</p>
+<h2>Application-wide handling</h2>
+<p>In case you have dynamic links all over your application you can intercept them globally.
+To do this, bind the event listener to the window in your top-most/main app components <code>mounted</code> lifecycle hook:</p>
+<pre><code class="language-javascript">mounted () {
+  <span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">'click'</span>, event =&gt; {
+    <span class="hljs-comment">// ensure we use the link, in case the click has been received by a subelement</span>
+    <span class="hljs-keyword">let</span> { target } = event
+    <span class="hljs-keyword">while</span> (target &amp;&amp; target.tagName !== <span class="hljs-string">'A'</span>) target = target.parentNode
+    <span class="hljs-comment">// handle only links that do not reference external resources</span>
+    <span class="hljs-keyword">if</span> (target &amp;&amp; target.matches(<span class="hljs-string">"a:not([href*='://'])"</span>) &amp;&amp; target.href) {
+      <span class="hljs-comment">// some sanity checks taken from vue-router:</span>
+      <span class="hljs-comment">// https://github.com/vuejs/vue-router/blob/dev/src/components/link.js#L106</span>
+      <span class="hljs-keyword">const</span> { altKey, ctrlKey, metaKey, shiftKey, button, defaultPrevented } = event
+      <span class="hljs-comment">// don't handle with control keys</span>
+      <span class="hljs-keyword">if</span> (metaKey || altKey || ctrlKey || shiftKey) <span class="hljs-keyword">return</span>
+      <span class="hljs-comment">// don't handle when preventDefault called</span>
+      <span class="hljs-keyword">if</span> (defaultPrevented) <span class="hljs-keyword">return</span>
+      <span class="hljs-comment">// don't handle right clicks</span>
+      <span class="hljs-keyword">if</span> (button !== <span class="hljs-literal">undefined</span> &amp;&amp; button !== <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>
+      <span class="hljs-comment">// don't handle if `target="_blank"`</span>
+      <span class="hljs-keyword">if</span> (target &amp;&amp; target.getAttribute) {
+        <span class="hljs-keyword">const</span> linkTarget = target.getAttribute(<span class="hljs-string">'target'</span>)
+        <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\b_blank\b/i</span>.test(linkTarget)) <span class="hljs-keyword">return</span>
       }
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle same page links/anchors&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; url = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; URL(target.href)
-      &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; to = url.pathname
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;hljs-built_in&quot;&gt;window&lt;/span&gt;.location.pathname !== to &amp;amp;&amp;amp; event.preventDefault) {
+      <span class="hljs-comment">// don't handle same page links/anchors</span>
+      <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> URL(target.href)
+      <span class="hljs-keyword">const</span> to = url.pathname
+      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.location.pathname !== to &amp;&amp; event.preventDefault) {
         event.preventDefault()
-        &lt;span class=&quot;hljs-keyword&quot;&gt;this&lt;/span&gt;.$router.push(to)
+        <span class="hljs-keyword">this</span>.$router.push(to)
       }
     }
   })
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Encapsulation in a component&lt;/h2&gt;
-&lt;p&gt;If there are only certain places where this kind of link handling must occur, you should encapsulate the event handling in a component.
-The advantage of this is, that it will be more performant and there is no need to interfere with the rest of the apps links.&lt;/p&gt;
-&lt;p&gt;The components template might look like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;span class=&quot;hljs-tag&quot;&gt;&amp;lt;&lt;span class=&quot;hljs-name&quot;&gt;div&lt;/span&gt;
-  &lt;span class=&quot;hljs-attr&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;dynamic-content&quot;&lt;/span&gt;
-  @&lt;span class=&quot;hljs-attr&quot;&gt;click&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;handleClicks&quot;&lt;/span&gt;
-  &lt;span class=&quot;hljs-attr&quot;&gt;v-html&lt;/span&gt;=&lt;span class=&quot;hljs-string&quot;&gt;&quot;dynamicContent&quot;&lt;/span&gt;
-/&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Here &lt;code&gt;dynamicContent&lt;/code&gt; is a html string containing the &lt;code&gt;&amp;lt;a href&amp;gt;&lt;/code&gt; links, which the &lt;code&gt;handleClicks&lt;/code&gt; method takes care of:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;methods: {
+</code></pre>
+<h2>Encapsulation in a component</h2>
+<p>If there are only certain places where this kind of link handling must occur, you should encapsulate the event handling in a component.
+The advantage of this is, that it will be more performant and there is no need to interfere with the rest of the apps links.</p>
+<p>The components template might look like this:</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+  <span class="hljs-attr">class</span>=<span class="hljs-string">"dynamic-content"</span>
+  @<span class="hljs-attr">click</span>=<span class="hljs-string">"handleClicks"</span>
+  <span class="hljs-attr">v-html</span>=<span class="hljs-string">"dynamicContent"</span>
+/&gt;</span>
+</code></pre>
+<p>Here <code>dynamicContent</code> is a html string containing the <code>&lt;a href&gt;</code> links, which the <code>handleClicks</code> method takes care of:</p>
+<pre><code class="language-javascript">methods: {
   handleClicks (event) {
-    &lt;span class=&quot;hljs-comment&quot;&gt;// ensure we use the link, in case the click has been received by a subelement&lt;/span&gt;
-    &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt; { target } = event
-    &lt;span class=&quot;hljs-keyword&quot;&gt;while&lt;/span&gt; (target &amp;amp;&amp;amp; target.tagName !== &lt;span class=&quot;hljs-string&quot;&gt;'A'&lt;/span&gt;) target = target.parentNode
-    &lt;span class=&quot;hljs-comment&quot;&gt;// handle only links that occur inside the component and do not reference external resources&lt;/span&gt;
-    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (target &amp;amp;&amp;amp; target.matches(&lt;span class=&quot;hljs-string&quot;&gt;&quot;.dynamic-content a:not([href*='://'])&quot;&lt;/span&gt;) &amp;amp;&amp;amp; target.href) {
-      &lt;span class=&quot;hljs-comment&quot;&gt;// some sanity checks taken from vue-router:&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// https://github.com/vuejs/vue-router/blob/dev/src/components/link.js#L106&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; { altKey, ctrlKey, metaKey, shiftKey, button, defaultPrevented } = event
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle with control keys&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (metaKey || altKey || ctrlKey || shiftKey) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle when preventDefault called&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (defaultPrevented) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle right clicks&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (button !== &lt;span class=&quot;hljs-literal&quot;&gt;undefined&lt;/span&gt; &amp;amp;&amp;amp; button !== &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle if `target=&quot;_blank&quot;`&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (target &amp;amp;&amp;amp; target.getAttribute) {
-        &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; linkTarget = target.getAttribute(&lt;span class=&quot;hljs-string&quot;&gt;'target'&lt;/span&gt;)
-        &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;hljs-regexp&quot;&gt;/\b_blank\b/i&lt;/span&gt;.test(linkTarget)) &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt;
+    <span class="hljs-comment">// ensure we use the link, in case the click has been received by a subelement</span>
+    <span class="hljs-keyword">let</span> { target } = event
+    <span class="hljs-keyword">while</span> (target &amp;&amp; target.tagName !== <span class="hljs-string">'A'</span>) target = target.parentNode
+    <span class="hljs-comment">// handle only links that occur inside the component and do not reference external resources</span>
+    <span class="hljs-keyword">if</span> (target &amp;&amp; target.matches(<span class="hljs-string">".dynamic-content a:not([href*='://'])"</span>) &amp;&amp; target.href) {
+      <span class="hljs-comment">// some sanity checks taken from vue-router:</span>
+      <span class="hljs-comment">// https://github.com/vuejs/vue-router/blob/dev/src/components/link.js#L106</span>
+      <span class="hljs-keyword">const</span> { altKey, ctrlKey, metaKey, shiftKey, button, defaultPrevented } = event
+      <span class="hljs-comment">// don't handle with control keys</span>
+      <span class="hljs-keyword">if</span> (metaKey || altKey || ctrlKey || shiftKey) <span class="hljs-keyword">return</span>
+      <span class="hljs-comment">// don't handle when preventDefault called</span>
+      <span class="hljs-keyword">if</span> (defaultPrevented) <span class="hljs-keyword">return</span>
+      <span class="hljs-comment">// don't handle right clicks</span>
+      <span class="hljs-keyword">if</span> (button !== <span class="hljs-literal">undefined</span> &amp;&amp; button !== <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>
+      <span class="hljs-comment">// don't handle if `target="_blank"`</span>
+      <span class="hljs-keyword">if</span> (target &amp;&amp; target.getAttribute) {
+        <span class="hljs-keyword">const</span> linkTarget = target.getAttribute(<span class="hljs-string">'target'</span>)
+        <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/\b_blank\b/i</span>.test(linkTarget)) <span class="hljs-keyword">return</span>
       }
-      &lt;span class=&quot;hljs-comment&quot;&gt;// don't handle same page links/anchors&lt;/span&gt;
-      &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; url = &lt;span class=&quot;hljs-keyword&quot;&gt;new&lt;/span&gt; URL(target.href)
-      &lt;span class=&quot;hljs-keyword&quot;&gt;const&lt;/span&gt; to = url.pathname
-      &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;hljs-built_in&quot;&gt;window&lt;/span&gt;.location.pathname !== to &amp;amp;&amp;amp; event.preventDefault) {
+      <span class="hljs-comment">// don't handle same page links/anchors</span>
+      <span class="hljs-keyword">const</span> url = <span class="hljs-keyword">new</span> URL(target.href)
+      <span class="hljs-keyword">const</span> to = url.pathname
+      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.location.pathname !== to &amp;&amp; event.preventDefault) {
         event.preventDefault()
-        &lt;span class=&quot;hljs-keyword&quot;&gt;this&lt;/span&gt;.$router.push(to)
+        <span class="hljs-keyword">this</span>.$router.push(to)
       }
     }
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As you can see, this hijacks only a subset of the link clicks – those that occur inside of this component.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</code></pre>
+<p>As you can see, this hijacks only a subset of the link clicks – those that occur inside of this component.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

@@ -658,84 +658,84 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Modules and Imports</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Module,Import</a></span></div><p class="acontent">&lt;p&gt;In the previous article which describes &lt;a href=&quot;elm-setup-first-project.html&quot;&gt;how to setup your first Elm project&lt;/a&gt; we already needed to import a module. Importing a module exposes its functionality in the context of the program that is loading the module. In Elm there are different ways to import modules and we will have a look at these in this article.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;h3&gt;The Elm module system&lt;/h3&gt;
-&lt;p&gt;Elm has three sources from which modules can be imported:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The standard library&lt;/li&gt;
-&lt;li&gt;Additionally installed modules (via the package manager)&lt;/li&gt;
-&lt;li&gt;Custom modules from the current project&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Some of the modules from the standard library are imported by default and can be used without explicitly importing them: In Elm 0.16.0 these are &lt;code&gt;Basics&lt;/code&gt;, &lt;code&gt;Debug&lt;/code&gt;, &lt;code&gt;List&lt;/code&gt;, &lt;code&gt;Maybe&lt;/code&gt;, &lt;code&gt;Result&lt;/code&gt; and &lt;code&gt;Signal&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The standard library covers the most essential parts of the functionality in Elm, but there is already a wide range of additional modules that can be installed via the package manager. One of them is the &lt;a href=&quot;http://package.elm-lang.org/packages/evancz/elm-html/latest/&quot;&gt;&lt;code&gt;elm-html&lt;/code&gt;&lt;/a&gt; package which we will use in the examples below. To import the package we first need to install it:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;$ elm-package install evancz/elm-html
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Before we will learn how to define custom modules let us focus on the different ways to import modules …&lt;/p&gt;
-&lt;h3&gt;Qualified Imports&lt;/h3&gt;
-&lt;p&gt;We are going to expand upon the Hello World example from the previous article. It already showed the simplest way of using the &lt;code&gt;import&lt;/code&gt; statement:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html
-&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html.Attributes
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Modules and Imports</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Module,Import</a></span></div><p>In the previous article which describes <a href="elm-setup-first-project.html">how to setup your first Elm project</a> we already needed to import a module. Importing a module exposes its functionality in the context of the program that is loading the module. In Elm there are different ways to import modules and we will have a look at these in this article.</p>
+<div id="more"></div>
+<h3>The Elm module system</h3>
+<p>Elm has three sources from which modules can be imported:</p>
+<ul>
+<li>The standard library</li>
+<li>Additionally installed modules (via the package manager)</li>
+<li>Custom modules from the current project</li>
+</ul>
+<p>Some of the modules from the standard library are imported by default and can be used without explicitly importing them: In Elm 0.16.0 these are <code>Basics</code>, <code>Debug</code>, <code>List</code>, <code>Maybe</code>, <code>Result</code> and <code>Signal</code>.</p>
+<p>The standard library covers the most essential parts of the functionality in Elm, but there is already a wide range of additional modules that can be installed via the package manager. One of them is the <a href="http://package.elm-lang.org/packages/evancz/elm-html/latest/"><code>elm-html</code></a> package which we will use in the examples below. To import the package we first need to install it:</p>
+<pre><code class="language-bash">$ elm-package install evancz/elm-html
+</code></pre>
+<p>Before we will learn how to define custom modules let us focus on the different ways to import modules …</p>
+<h3>Qualified Imports</h3>
+<p>We are going to expand upon the Hello World example from the previous article. It already showed the simplest way of using the <code>import</code> statement:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">import</span> Html
+<span class="hljs-keyword">import</span> Html.Attributes
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.&lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; =
-    &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.div
-        [ &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.&lt;span class=&quot;hljs-type&quot;&gt;Attributes&lt;/span&gt;.class &lt;span class=&quot;hljs-string&quot;&gt;&quot;wrapper&quot;&lt;/span&gt; ]
-        [ &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.h1
-            [ &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.&lt;span class=&quot;hljs-type&quot;&gt;Attributes&lt;/span&gt;.class &lt;span class=&quot;hljs-string&quot;&gt;&quot;headline&quot;&lt;/span&gt; ]
-            [ &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.text &lt;span class=&quot;hljs-string&quot;&gt;&quot;Hello World&quot;&lt;/span&gt; ]
-        , &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.p []
-            [ &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.text &lt;span class=&quot;hljs-string&quot;&gt;&quot;HTML, with qualified imports.&quot;&lt;/span&gt; ]
+<span class="hljs-title">main</span> : <span class="hljs-type">Html</span>.<span class="hljs-type">Html</span>
+<span class="hljs-title">main</span> =
+    <span class="hljs-type">Html</span>.div
+        [ <span class="hljs-type">Html</span>.<span class="hljs-type">Attributes</span>.class <span class="hljs-string">"wrapper"</span> ]
+        [ <span class="hljs-type">Html</span>.h1
+            [ <span class="hljs-type">Html</span>.<span class="hljs-type">Attributes</span>.class <span class="hljs-string">"headline"</span> ]
+            [ <span class="hljs-type">Html</span>.text <span class="hljs-string">"Hello World"</span> ]
+        , <span class="hljs-type">Html</span>.p []
+            [ <span class="hljs-type">Html</span>.text <span class="hljs-string">"HTML, with qualified imports."</span> ]
         ]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To generate HTML we import the &lt;a href=&quot;http://package.elm-lang.org/packages/evancz/elm-html/latest/&quot;&gt;&lt;code&gt;Html&lt;/code&gt;&lt;/a&gt; module and the accompanying submodule &lt;code&gt;Html.Attributes&lt;/code&gt;, which includes helper functions for creating HTML attributes. There is also the submodule &lt;code&gt;Html.Events&lt;/code&gt; for attaching event bindings to elements.&lt;/p&gt;
-&lt;p&gt;When using a &lt;em&gt;qualified import&lt;/em&gt; one has to reference the modules functions by their fully-qualified name. This means you have to state their name including the module name and even the type of the module can only be referenced with the full qualifier (in this case &lt;code&gt;Html.Html&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;As you can see this leads to some redundancy in case a modules is used often. This brings us to the next type of imports …&lt;/p&gt;
-&lt;h3&gt;Unqualified Imports&lt;/h3&gt;
-&lt;p&gt;Using the keyword &lt;code&gt;exposing&lt;/code&gt; one can define which parts of the module should be available without using the qualifier.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;-- exposing single identifiers&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;, div, h1, p)
+</code></pre>
+<p>To generate HTML we import the <a href="http://package.elm-lang.org/packages/evancz/elm-html/latest/"><code>Html</code></a> module and the accompanying submodule <code>Html.Attributes</code>, which includes helper functions for creating HTML attributes. There is also the submodule <code>Html.Events</code> for attaching event bindings to elements.</p>
+<p>When using a <em>qualified import</em> one has to reference the modules functions by their fully-qualified name. This means you have to state their name including the module name and even the type of the module can only be referenced with the full qualifier (in this case <code>Html.Html</code>).</p>
+<p>As you can see this leads to some redundancy in case a modules is used often. This brings us to the next type of imports …</p>
+<h3>Unqualified Imports</h3>
+<p>Using the keyword <code>exposing</code> one can define which parts of the module should be available without using the qualifier.</p>
+<pre><code class="language-elm"><span class="hljs-comment">-- exposing single identifiers</span>
+<span class="hljs-keyword">import</span> Html <span class="hljs-keyword">exposing</span> (<span class="hljs-type">Html</span>, div, h1, p)
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- exposing everything&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html.Attributes &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
+<span class="hljs-comment">-- exposing everything</span>
+<span class="hljs-keyword">import</span> Html.Attributes <span class="hljs-keyword">exposing</span> (..)
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; =
+<span class="hljs-title">main</span> : <span class="hljs-type">Html</span>
+<span class="hljs-title">main</span> =
     div
-        [ class &lt;span class=&quot;hljs-string&quot;&gt;&quot;wrapper&quot;&lt;/span&gt; ]
+        [ class <span class="hljs-string">"wrapper"</span> ]
         [ h1
-            [ class &lt;span class=&quot;hljs-string&quot;&gt;&quot;headline&quot;&lt;/span&gt; ]
-            [ text &lt;span class=&quot;hljs-string&quot;&gt;&quot;Hello World&quot;&lt;/span&gt; ]
+            [ class <span class="hljs-string">"headline"</span> ]
+            [ text <span class="hljs-string">"Hello World"</span> ]
         , p []
-            [ text &lt;span class=&quot;hljs-string&quot;&gt;&quot;HTML, mit Unqualified Imports.&quot;&lt;/span&gt; ]
+            [ text <span class="hljs-string">"HTML, mit Unqualified Imports."</span> ]
         ]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;One can expose single module identifiers (module or function names, see the &lt;code&gt;Html&lt;/code&gt; import) or even all of the modules identifiers, as shown with the import of &lt;code&gt;Html.Attributes&lt;/code&gt;.&lt;/p&gt;
-&lt;h3&gt;Import Alias&lt;/h3&gt;
-&lt;p&gt;Beyond the basic import functionality there is also a way of defining an alias for the imported module:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; HelperFunctions &lt;span class=&quot;hljs-keyword&quot;&gt;as&lt;/span&gt; Utils
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In this example the functions defined in &lt;code&gt;HelperFunctions&lt;/code&gt; will be available by using &lt;code&gt;Utils&lt;/code&gt; as qualifier/prefix.&lt;/p&gt;
-&lt;h3&gt;When to use which kind of import?&lt;/h3&gt;
-&lt;p&gt;These are some best practices to consider when importing a module:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;You should try your best to use &lt;em&gt;qualified imports&lt;/em&gt; as much as possible, as they offer the clearest way to show which module functionality is coming from.&lt;/li&gt;
-&lt;li&gt;For often used identifiers its best though, to use an &lt;em&gt;unqualified import&lt;/em&gt;. This prevents redundancy and helps to keep the code clean. The HTML modules are a good example for this.&lt;/li&gt;
-&lt;li&gt;An &lt;em&gt;alias&lt;/em&gt; should not be used to shorten module names to something meaningless and cryptic like &lt;code&gt;import Html as H&lt;/code&gt;. Instead one should define a suitable name that reveals the intention or the purpose of the given module.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;Defining custom modules&lt;/h3&gt;
-&lt;p&gt;As long as we are working in a simple app contained in a single file everything is pretty easy. In this case we do not even need a module definition as the compiler assumes we are working inside the &lt;code&gt;Main&lt;/code&gt; module. When projects grow, it makes sense to split them up into separate modules.&lt;/p&gt;
-&lt;p&gt;Modules get defined at the top of the file. It is optional to explicitly state what gets exported – in case this statement is left out everything will be exported, which is the same as defining the exports as &lt;code&gt;(..)&lt;/code&gt;.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;-- default module definition&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; Main
+</code></pre>
+<p>One can expose single module identifiers (module or function names, see the <code>Html</code> import) or even all of the modules identifiers, as shown with the import of <code>Html.Attributes</code>.</p>
+<h3>Import Alias</h3>
+<p>Beyond the basic import functionality there is also a way of defining an alias for the imported module:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">import</span> HelperFunctions <span class="hljs-keyword">as</span> Utils
+</code></pre>
+<p>In this example the functions defined in <code>HelperFunctions</code> will be available by using <code>Utils</code> as qualifier/prefix.</p>
+<h3>When to use which kind of import?</h3>
+<p>These are some best practices to consider when importing a module:</p>
+<ul>
+<li>You should try your best to use <em>qualified imports</em> as much as possible, as they offer the clearest way to show which module functionality is coming from.</li>
+<li>For often used identifiers its best though, to use an <em>unqualified import</em>. This prevents redundancy and helps to keep the code clean. The HTML modules are a good example for this.</li>
+<li>An <em>alias</em> should not be used to shorten module names to something meaningless and cryptic like <code>import Html as H</code>. Instead one should define a suitable name that reveals the intention or the purpose of the given module.</li>
+</ul>
+<h3>Defining custom modules</h3>
+<p>As long as we are working in a simple app contained in a single file everything is pretty easy. In this case we do not even need a module definition as the compiler assumes we are working inside the <code>Main</code> module. When projects grow, it makes sense to split them up into separate modules.</p>
+<p>Modules get defined at the top of the file. It is optional to explicitly state what gets exported – in case this statement is left out everything will be exported, which is the same as defining the exports as <code>(..)</code>.</p>
+<pre><code class="language-elm"><span class="hljs-comment">-- default module definition</span>
+<span class="hljs-keyword">module</span> Main
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- custom module exporting everything&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; FullAwesomeness &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
+<span class="hljs-comment">-- custom module exporting everything</span>
+<span class="hljs-keyword">module</span> FullAwesomeness <span class="hljs-keyword">exposing</span> (..)
 
-&lt;span class=&quot;hljs-comment&quot;&gt;-- custom module exporting only the specified types and functions&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; Restricted &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;ImportableType&lt;/span&gt;, importableFunction)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now that we know how to import and define our own modules, let us take the next step by learning about the central construct of the Elm programming language: &lt;a href=&quot;/articles/elm-functions.html&quot;&gt;Functions&lt;/a&gt;.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+<span class="hljs-comment">-- custom module exporting only the specified types and functions</span>
+<span class="hljs-keyword">module</span> Restricted <span class="hljs-keyword">exposing</span> (<span class="hljs-type">ImportableType</span>, importableFunction)
+</code></pre>
+<p>Now that we know how to import and define our own modules, let us take the next step by learning about the central construct of the Elm programming language: <a href="/articles/elm-functions.html">Functions</a>.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

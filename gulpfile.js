@@ -60,6 +60,7 @@ gulp.task('articles', () =>
 
 gulp.task("pugcompiler", () =>
   gulp.src(paths.pugstocompile)
+    .pipe(mvb(mvbConf))
     .pipe(pug({ pretty: true}))
     .pipe(gulp.dest(paths.pugcompile))
 );

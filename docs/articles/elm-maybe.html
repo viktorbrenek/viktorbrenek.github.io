@@ -658,85 +658,85 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Maybe</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Maybe</a></span></div><p class="acontent">&lt;p&gt;Opposed to JavaScript and many other programming languages, Elm does not have the concept of &lt;code&gt;undefined&lt;/code&gt; or &lt;code&gt;null&lt;/code&gt; values. Of course there are cases in which variables contain nothing or functions cannot return a proper value – but instead of leaving it up to you whether or not to handle these cases, Elm makes them explicit with a type called &lt;code&gt;Maybe&lt;/code&gt; and enforces the handling thereof.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Maybe&quot;&gt;&lt;code&gt;Maybe&lt;/code&gt;&lt;/a&gt; module contains the type as well as some helper functions for dealing with  optional arguments, error handling and records with optional fields. &lt;code&gt;Maybe&lt;/code&gt; itself is a &lt;a href=&quot;/articles/elm-data-structures-union-type.html&quot;&gt;union type&lt;/a&gt; type with the two constructors &lt;code&gt;Just&lt;/code&gt; and &lt;code&gt;Nothing&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt; value =
-    &lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; value |
-    &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It is best to think of &lt;code&gt;Maybe&lt;/code&gt; as a container for a single value, which can either be present or missing. For example, consider accessing elements of a &lt;code&gt;List&lt;/code&gt; or an &lt;code&gt;Array&lt;/code&gt;: Whereas in dynamic languages like JavaScript you would get &lt;code&gt;undefined&lt;/code&gt; for values that do not exist, statically typed languages like Elm require a special type for representing the concept of nothingness.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Array &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (fromList)
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Maybe</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Maybe</a></span></div><p>Opposed to JavaScript and many other programming languages, Elm does not have the concept of <code>undefined</code> or <code>null</code> values. Of course there are cases in which variables contain nothing or functions cannot return a proper value – but instead of leaving it up to you whether or not to handle these cases, Elm makes them explicit with a type called <code>Maybe</code> and enforces the handling thereof.</p>
+<div id="more"></div>
+<p>The <a href="http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Maybe"><code>Maybe</code></a> module contains the type as well as some helper functions for dealing with  optional arguments, error handling and records with optional fields. <code>Maybe</code> itself is a <a href="/articles/elm-data-structures-union-type.html">union type</a> type with the two constructors <code>Just</code> and <code>Nothing</code>:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-type">Maybe</span> value =
+    <span class="hljs-type">Just</span> value |
+    <span class="hljs-type">Nothing</span>
+</code></pre>
+<p>It is best to think of <code>Maybe</code> as a container for a single value, which can either be present or missing. For example, consider accessing elements of a <code>List</code> or an <code>Array</code>: Whereas in dynamic languages like JavaScript you would get <code>undefined</code> for values that do not exist, statically typed languages like Elm require a special type for representing the concept of nothingness.</p>
+<pre><code class="language-elm"><span class="hljs-keyword">import</span> Array <span class="hljs-keyword">exposing</span> (fromList)
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;myList&lt;/span&gt; =
-    [ &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; ]
+<span class="hljs-title">myList</span> =
+    [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ]
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;myArray&lt;/span&gt; =
+<span class="hljs-title">myArray</span> =
     (fromList myList)
 
 
-&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.head myList
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just 1 : Maybe.Maybe number&lt;/span&gt;
+<span class="hljs-type">List</span>.head myList
+<span class="hljs-comment">-- Just 1 : Maybe.Maybe number</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;Array&lt;/span&gt;.get &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt; myArray
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Nothing : Maybe.Maybe number&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;code&gt;List.head&lt;/code&gt; gives back the first element of the given list, which may or may not exist. In this case the returned &lt;code&gt;Just&lt;/code&gt; value wraps the actual value of &lt;code&gt;1&lt;/code&gt; as the list has at least one element. When trying to access the forth element of the array we get back the value &lt;code&gt;Nothing&lt;/code&gt; as the array contains only three elements.&lt;/p&gt;
-&lt;p&gt;This forces us to always handle both cases when trying to access values that may or may not exist: The compiler simply won’t compile our code if we have not covered both possibilities. This is actually a very good thing as the compiler assures you do not forget to handle errors and edge cases that will surely come up one day. It is also an example of how the compiler prevents runtime errors …&lt;/p&gt;
-&lt;h3&gt;Dealing with Maybes&lt;/h3&gt;
-&lt;p&gt;Ok, now that we are assured that we won’t miss any cases how do we handle &lt;code&gt;Maybe&lt;/code&gt; values? Instead of using &lt;code&gt;if&lt;/code&gt; and &lt;code&gt;else&lt;/code&gt; as in JavaScript, in Elm we are using the &lt;code&gt;case&lt;/code&gt; expression:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;alice&lt;/span&gt; =
-    &lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; ({ login = &lt;span class=&quot;hljs-string&quot;&gt;&quot;alice&quot;&lt;/span&gt; })
-
-
-&lt;span class=&quot;hljs-title&quot;&gt;bob&lt;/span&gt; =
-    &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;
+<span class="hljs-type">Array</span>.get <span class="hljs-number">4</span> myArray
+<span class="hljs-comment">-- Nothing : Maybe.Maybe number</span>
+</code></pre>
+<p><code>List.head</code> gives back the first element of the given list, which may or may not exist. In this case the returned <code>Just</code> value wraps the actual value of <code>1</code> as the list has at least one element. When trying to access the forth element of the array we get back the value <code>Nothing</code> as the array contains only three elements.</p>
+<p>This forces us to always handle both cases when trying to access values that may or may not exist: The compiler simply won’t compile our code if we have not covered both possibilities. This is actually a very good thing as the compiler assures you do not forget to handle errors and edge cases that will surely come up one day. It is also an example of how the compiler prevents runtime errors …</p>
+<h3>Dealing with Maybes</h3>
+<p>Ok, now that we are assured that we won’t miss any cases how do we handle <code>Maybe</code> values? Instead of using <code>if</code> and <code>else</code> as in JavaScript, in Elm we are using the <code>case</code> expression:</p>
+<pre><code class="language-elm"><span class="hljs-title">alice</span> =
+    <span class="hljs-type">Just</span> ({ login = <span class="hljs-string">"alice"</span> })
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;currentUserLogin&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;currentUserLogin&lt;/span&gt; user =
-    &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; user &lt;span class=&quot;hljs-keyword&quot;&gt;of&lt;/span&gt;
-        &lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; currentUser -&amp;gt;
+<span class="hljs-title">bob</span> =
+    <span class="hljs-type">Nothing</span>
+
+
+<span class="hljs-title">currentUserLogin</span> : <span class="hljs-type">Maybe</span> -&gt; <span class="hljs-type">String</span>
+<span class="hljs-title">currentUserLogin</span> user =
+    <span class="hljs-keyword">case</span> user <span class="hljs-keyword">of</span>
+        <span class="hljs-type">Just</span> currentUser -&gt;
           currentUser.login
-        &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt; -&amp;gt;
-          &lt;span class=&quot;hljs-string&quot;&gt;&quot;&quot;&lt;/span&gt;
+        <span class="hljs-type">Nothing</span> -&gt;
+          <span class="hljs-string">""</span>
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;currentUserLogin&lt;/span&gt; alice
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;alice&quot; : String&lt;/span&gt;
+<span class="hljs-title">currentUserLogin</span> alice
+<span class="hljs-comment">-- "alice" : String</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;currentUserLogin&lt;/span&gt; bob
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;&quot; : String&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Here we are creating the function &lt;code&gt;alice&lt;/code&gt; returning a &lt;code&gt;Maybe&lt;/code&gt; value by using the &lt;code&gt;Just&lt;/code&gt; function with a sample record representing a user that is signed in. The function &lt;code&gt;bob&lt;/code&gt; represents a signed out user by returning the value &lt;code&gt;Nothing&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;user&lt;/code&gt; value is handled in the case statement contained in the &lt;code&gt;currentUserLogin&lt;/code&gt; function: If it is &lt;code&gt;Nothing&lt;/code&gt; the case statement returns an empty string. In case the &lt;code&gt;user&lt;/code&gt; is signed in the statement destructures the &lt;code&gt;Just&lt;/code&gt; value to &lt;code&gt;currentUser&lt;/code&gt; and returns the users login.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;elm-data-structures-record-tuple.html#destructuring&quot;&gt;Destructuring&lt;/a&gt; is a really nice feature in Elm and case statements can destructure all kinds of data structures. You will find it in many places in Elm code: Update functions use destructuring for &lt;code&gt;Msg&lt;/code&gt; types and the &lt;code&gt;Result&lt;/code&gt; and &lt;code&gt;Task&lt;/code&gt; types are handled very similar to how we deal with &lt;code&gt;Maybe&lt;/code&gt;.&lt;/p&gt;
-&lt;h4&gt;More ways to handle Maybes&lt;/h4&gt;
-&lt;p&gt;We can also access &lt;code&gt;Maybe&lt;/code&gt; values by mapping them or using the functions &lt;code&gt;withDefault&lt;/code&gt; and &lt;code&gt;oneOf&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.map (\n -&amp;gt; n + &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;) (&lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;)
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just 3 : Maybe.Maybe number&lt;/span&gt;
+<span class="hljs-title">currentUserLogin</span> bob
+<span class="hljs-comment">-- "" : String</span>
+</code></pre>
+<p>Here we are creating the function <code>alice</code> returning a <code>Maybe</code> value by using the <code>Just</code> function with a sample record representing a user that is signed in. The function <code>bob</code> represents a signed out user by returning the value <code>Nothing</code>.</p>
+<p>The <code>user</code> value is handled in the case statement contained in the <code>currentUserLogin</code> function: If it is <code>Nothing</code> the case statement returns an empty string. In case the <code>user</code> is signed in the statement destructures the <code>Just</code> value to <code>currentUser</code> and returns the users login.</p>
+<p><a href="elm-data-structures-record-tuple.html#destructuring">Destructuring</a> is a really nice feature in Elm and case statements can destructure all kinds of data structures. You will find it in many places in Elm code: Update functions use destructuring for <code>Msg</code> types and the <code>Result</code> and <code>Task</code> types are handled very similar to how we deal with <code>Maybe</code>.</p>
+<h4>More ways to handle Maybes</h4>
+<p>We can also access <code>Maybe</code> values by mapping them or using the functions <code>withDefault</code> and <code>oneOf</code>:</p>
+<pre><code class="language-elm"><span class="hljs-type">Maybe</span>.map (\n -&gt; n + <span class="hljs-number">2</span>) (<span class="hljs-type">Just</span> <span class="hljs-number">1</span>)
+<span class="hljs-comment">-- Just 3 : Maybe.Maybe number</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.map (\n -&amp;gt; n + &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;) &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Nothing : Maybe.Maybe number&lt;/span&gt;
+<span class="hljs-type">Maybe</span>.map (\n -&gt; n + <span class="hljs-number">2</span>) <span class="hljs-type">Nothing</span>
+<span class="hljs-comment">-- Nothing : Maybe.Maybe number</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.withDefault &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;)
-&lt;span class=&quot;hljs-comment&quot;&gt;-- 5 : number&lt;/span&gt;
+<span class="hljs-type">Maybe</span>.withDefault <span class="hljs-number">3</span> (<span class="hljs-type">Just</span> <span class="hljs-number">5</span>)
+<span class="hljs-comment">-- 5 : number</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.withDefault &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;
-&lt;span class=&quot;hljs-comment&quot;&gt;-- 3 : number&lt;/span&gt;
+<span class="hljs-type">Maybe</span>.withDefault <span class="hljs-number">3</span> <span class="hljs-type">Nothing</span>
+<span class="hljs-comment">-- 3 : number</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.oneOf [ &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;, (&lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;), (&lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;) ]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just 1 : Maybe.Maybe number&lt;/span&gt;
+<span class="hljs-type">Maybe</span>.oneOf [ <span class="hljs-type">Nothing</span>, (<span class="hljs-type">Just</span> <span class="hljs-number">1</span>), (<span class="hljs-type">Just</span> <span class="hljs-number">2</span>) ]
+<span class="hljs-comment">-- Just 1 : Maybe.Maybe number</span>
 
-&lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.oneOf [ &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;, &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt;, &lt;span class=&quot;hljs-type&quot;&gt;Nothing&lt;/span&gt; ]
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Nothing : Maybe.Maybe a&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;And last but not least the higher order function &lt;code&gt;andThen&lt;/code&gt; can be used to chain computations. It receives a &lt;code&gt;Maybe&lt;/code&gt; value and a callback function that gets invoked in case there is a value:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;(&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.head [&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]) |&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Maybe&lt;/span&gt;.andThen (\n -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Just&lt;/span&gt;(n * &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;))
-&lt;span class=&quot;hljs-comment&quot;&gt;-- Just 9 : Maybe.Maybe number&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Here &lt;code&gt;List.head&lt;/code&gt; returns &lt;code&gt;Just(3)&lt;/code&gt; which is then passed to an anonymous function. This function multiplies it with 3 and returns the value 9 wrapped in a &lt;code&gt;Just&lt;/code&gt; which could then be passed to another &lt;code&gt;andThen&lt;/code&gt; as well.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; The Maybe module allows us to model and handle cases of non-existing values explicitely. The compiler forces us to handle each of the possible cases and guarantees there will be no runtime errors due to empty values.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+<span class="hljs-type">Maybe</span>.oneOf [ <span class="hljs-type">Nothing</span>, <span class="hljs-type">Nothing</span>, <span class="hljs-type">Nothing</span> ]
+<span class="hljs-comment">-- Nothing : Maybe.Maybe a</span>
+</code></pre>
+<p>And last but not least the higher order function <code>andThen</code> can be used to chain computations. It receives a <code>Maybe</code> value and a callback function that gets invoked in case there is a value:</p>
+<pre><code class="language-elm">(<span class="hljs-type">List</span>.head [<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]) |&gt; <span class="hljs-type">Maybe</span>.andThen (\n -&gt; <span class="hljs-type">Just</span>(n * <span class="hljs-number">3</span>))
+<span class="hljs-comment">-- Just 9 : Maybe.Maybe number</span>
+</code></pre>
+<p>Here <code>List.head</code> returns <code>Just(3)</code> which is then passed to an anonymous function. This function multiplies it with 3 and returns the value 9 wrapped in a <code>Just</code> which could then be passed to another <code>andThen</code> as well.</p>
+<p><strong>TL;DR</strong> The Maybe module allows us to model and handle cases of non-existing values explicitely. The compiler forces us to handle each of the possible cases and guarantees there will be no runtime errors due to empty values.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

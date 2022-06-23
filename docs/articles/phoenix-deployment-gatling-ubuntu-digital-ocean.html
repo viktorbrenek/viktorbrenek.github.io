@@ -658,260 +658,260 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Deploying Phoenix on Ubuntu with Gatling</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Phoenix,Elixir,Deployment,Gatling,Distillery,Tutorial,How To,Digital Ocean,Ubuntu,Ubuntu 16,Postgres,Nginx,Heroku,edeliver,Erlang,Hot Upgrade</a></span></div><p class="acontent">&lt;p&gt;There aren’t many detailed posts on how to deploy Phoenix apps to production, yet.
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Deploying Phoenix on Ubuntu with Gatling</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Phoenix,Elixir,Deployment,Gatling,Distillery,Tutorial,How To,Digital Ocean,Ubuntu,Ubuntu 16,Postgres,Nginx,Heroku,edeliver,Erlang,Hot Upgrade</a></span></div><p>There aren’t many detailed posts on how to deploy Phoenix apps to production, yet.
 This article is a step by step description of what I did to ship my first Phoenix app.
-I hope it will be a handy resource if you are searching for an easy way to achieve an &lt;em&gt;automated deployment to a single server and leverage hot upgrades&lt;/em&gt;.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;note&quot;&gt;
-  &lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt; My goal was finding a good and easily manageable way to ship my first Phoenix app.
-  To keep the setup easy I am making a few assumptions:&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;The build happens on the production system, no CI or separate build server involved.&lt;/li&gt;
-    &lt;li&gt;We deploy to a single server that hosts the app, NGINX as a reverse proxy and the postgres database.
-    The target server is an [Ubuntu 16.04 Digital Ocean droplet](http://www.digitalocean.com/?refcode=63eb025a3190).&lt;/li&gt;
-    &lt;li&gt;Achieve a Heroku-style `git push` based deployment by using [Gatling](https://github.com/hashrocket/gatling).&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/div&gt;
-&lt;p&gt;The basic approach is outlined in the &lt;a href=&quot;http://www.phoenixframework.org/docs/advanced-deployment&quot;&gt;official Phoenix deployment guide&lt;/a&gt;.
+I hope it will be a handy resource if you are searching for an easy way to achieve an <em>automated deployment to a single server and leverage hot upgrades</em>.</p>
+<div id="more"></div>
+<div class="note">
+  <p><strong>TL;DR</strong> My goal was finding a good and easily manageable way to ship my first Phoenix app.
+  To keep the setup easy I am making a few assumptions:</p>
+  <ul>
+    <li>The build happens on the production system, no CI or separate build server involved.</li>
+    <li>We deploy to a single server that hosts the app, NGINX as a reverse proxy and the postgres database.
+    The target server is an [Ubuntu 16.04 Digital Ocean droplet](http://www.digitalocean.com/?refcode=63eb025a3190).</li>
+    <li>Achieve a Heroku-style `git push` based deployment by using [Gatling](https://github.com/hashrocket/gatling).</li>
+  </ul>
+</div>
+<p>The basic approach is outlined in the <a href="http://www.phoenixframework.org/docs/advanced-deployment">official Phoenix deployment guide</a>.
 The guide offers a good introduction and gives you a basic understanding of the steps involved.
 Though it describes the manual way to deploy, there are some options for automating the deployment,
-like &lt;a href=&quot;https://github.com/boldpoker/edeliver&quot;&gt;edeliver&lt;/a&gt; (Capistrano style) or &lt;a href=&quot;https://github.com/hashrocket/gatling&quot;&gt;Gatling&lt;/a&gt; (Heroku style).&lt;/p&gt;
-&lt;p&gt;There are many options to go beyond this kind of setup, e.g. using a Docker-based deployment;
+like <a href="https://github.com/boldpoker/edeliver">edeliver</a> (Capistrano style) or <a href="https://github.com/hashrocket/gatling">Gatling</a> (Heroku style).</p>
+<p>There are many options to go beyond this kind of setup, e.g. using a Docker-based deployment;
 They all seemed to complex for getting my first app out there and Gatling offered a pragmatic way to deploy and leverage hot upgrading – that’s why I have chosen it.
 During the setup I came across a few rough edges what might be due to the fact that Gatling is roughly half a year old.
 But before I get down to the nitty-gritty of how to deploy with Gatling, let’s get the server set up …
-if you already have your box up and running you can skip to the &lt;a href=&quot;#phoenix-deployment&quot;&gt;Phoenix deployment&lt;/a&gt; part.&lt;/p&gt;
-&lt;h2&gt;Configuring a Digital Ocean Ubuntu 16.04 droplet for Phoenix&lt;/h2&gt;
-&lt;p&gt;I like Digital Ocean for its ease of use and their documentation:
+if you already have your box up and running you can skip to the <a href="#phoenix-deployment">Phoenix deployment</a> part.</p>
+<h2>Configuring a Digital Ocean Ubuntu 16.04 droplet for Phoenix</h2>
+<p>I like Digital Ocean for its ease of use and their documentation:
 You can have your server running in a performant and secure way within half a day and you do not need to be a sysadmin for that.
 For a more in-depth version of what I am describing I’ve attached links to the Digital Ocean setup resources.
 Their docs and this guide work for other hosting providers offering Ubuntu 16.04 as well –
-nevertheless I was really satisfied with the smoothness of the setup process on Digital Ocean.&lt;/p&gt;
-&lt;p&gt;I assume you have followed their instructions for the
-&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04&quot;&gt;Initial Server Setup with Ubuntu&lt;/a&gt; and applied the
-&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers&quot;&gt;Additional Recommended Steps for New Ubuntu Servers&lt;/a&gt;.
-Though these resources target Ubuntu 14.04 they work perfectly fine with the successor version.&lt;/p&gt;
-&lt;p&gt;If you have not configured the domain and DNS for it yet, now is right time to do so.&lt;/p&gt;
-&lt;h3&gt;The deploy user&lt;/h3&gt;
-&lt;p&gt;With the basic setup you have a non-root/deployment user with sudo privileges and ssh-key authentication.
-&lt;strong&gt;This guide refers to this user named &lt;code&gt;deploy&lt;/code&gt;.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;This user currently needs password authentication when issuing &lt;code&gt;sudo&lt;/code&gt; commands.
+nevertheless I was really satisfied with the smoothness of the setup process on Digital Ocean.</p>
+<p>I assume you have followed their instructions for the
+<a href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04">Initial Server Setup with Ubuntu</a> and applied the
+<a href="https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-ubuntu-14-04-servers">Additional Recommended Steps for New Ubuntu Servers</a>.
+Though these resources target Ubuntu 14.04 they work perfectly fine with the successor version.</p>
+<p>If you have not configured the domain and DNS for it yet, now is right time to do so.</p>
+<h3>The deploy user</h3>
+<p>With the basic setup you have a non-root/deployment user with sudo privileges and ssh-key authentication.
+<strong>This guide refers to this user named <code>deploy</code>.</strong></p>
+<p>This user currently needs password authentication when issuing <code>sudo</code> commands.
 We need to change this as Gatling has some administrative tasks that are performed in non-terminal mode,
-like rolling out new releases based on the post-receive git hook.&lt;/p&gt;
-&lt;p&gt;Add a new sudoers config for this particular user using the &lt;code&gt;visudo&lt;/code&gt; command:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo visudo -f /etc/sudoers.d/deploy
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This line will allow the &lt;code&gt;deploy&lt;/code&gt; user to run &lt;code&gt;sudo&lt;/code&gt; commands without password prompt:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;deploy  ALL=(ALL) NOPASSWD:ALL
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To learn more about this, see the guide for
-&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos&quot;&gt;How To Edit the Sudoers File on Ubuntu&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;Server Prerequisites&lt;/h2&gt;
-&lt;p&gt;Next up we will set up everything we need to build and run the app, namely Erlang, Elixir, Node, NGINX and Postgres.
-To keep it short and easy this guide sticks to system packages where possible.&lt;/p&gt;
-&lt;h3&gt;Erlang and Elixir&lt;/h3&gt;
-&lt;p&gt;Install Erlang and Elixir using the commands stated in the
-&lt;a href=&quot;http://elixir-lang.org/install.html#unix-and-unix-like&quot;&gt;official Elixir installation docs&lt;/a&gt;:
-This adds the Erlang Solutions repo, installs the OTP platform and Elixir.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb &amp;amp;&amp;amp; sudo dpkg -i erlang-solutions_1.0_all.deb &amp;amp;&amp;amp; rm erlang-solutions_1.0_all.deb
+like rolling out new releases based on the post-receive git hook.</p>
+<p>Add a new sudoers config for this particular user using the <code>visudo</code> command:</p>
+<pre><code class="language-bash">sudo visudo -f /etc/sudoers.d/deploy
+</code></pre>
+<p>This line will allow the <code>deploy</code> user to run <code>sudo</code> commands without password prompt:</p>
+<pre><code>deploy  ALL=(ALL) NOPASSWD:ALL
+</code></pre>
+<p>To learn more about this, see the guide for
+<a href="https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos">How To Edit the Sudoers File on Ubuntu</a>.</p>
+<h2>Server Prerequisites</h2>
+<p>Next up we will set up everything we need to build and run the app, namely Erlang, Elixir, Node, NGINX and Postgres.
+To keep it short and easy this guide sticks to system packages where possible.</p>
+<h3>Erlang and Elixir</h3>
+<p>Install Erlang and Elixir using the commands stated in the
+<a href="http://elixir-lang.org/install.html#unix-and-unix-like">official Elixir installation docs</a>:
+This adds the Erlang Solutions repo, installs the OTP platform and Elixir.</p>
+<pre><code class="language-bash">wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb &amp;&amp; sudo dpkg -i erlang-solutions_1.0_all.deb &amp;&amp; rm erlang-solutions_1.0_all.deb
 sudo apt-get update
 sudo apt-get install -y esl-erlang elixir
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Node.js&lt;/h3&gt;
-&lt;p&gt;As we will build everything on the production system, we also need Node.js to compile the app assets.
+</code></pre>
+<h3>Node.js</h3>
+<p>As we will build everything on the production system, we also need Node.js to compile the app assets.
 This adds the official Node repo and installs the current development version of Node.js as well as the build-essential package.
-The latter is needed to later on install npm packages that require compiling code from source.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+The latter is needed to later on install npm packages that require compiling code from source.</p>
+<pre><code class="language-bash">curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 sudo apt-get install -y nodejs build-essential
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If you want to use the stable LTS version, you can do so by installing v6 instead of v7.
+</code></pre>
+<p>If you want to use the stable LTS version, you can do so by installing v6 instead of v7.
 For details refer to the
-&lt;a href=&quot;https://github.com/nodesource/distributions#debmanual&quot;&gt;Node.js distributions guide&lt;/a&gt; and
-&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04&quot;&gt;How To Install Node.js on Ubuntu&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;Nginx&lt;/h3&gt;
-&lt;p&gt;We need NGINX as a reverse proxy for the Phoenix app.
+<a href="https://github.com/nodesource/distributions#debmanual">Node.js distributions guide</a> and
+<a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04">How To Install Node.js on Ubuntu</a>.</p>
+<h3>Nginx</h3>
+<p>We need NGINX as a reverse proxy for the Phoenix app.
 In an extended setup NGINX can also provide load balancing and SSL termination.
-You can install it via the official package as Ubuntu 16.04 ships with a relatively up-to-date version of NGINX:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo apt-get install NGINX
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Alternatively you can use the latest and greatest versions by using PPAs, but Gatling assumes configuration and paths that match the official distribution versions.
+You can install it via the official package as Ubuntu 16.04 ships with a relatively up-to-date version of NGINX:</p>
+<pre><code class="language-bash">sudo apt-get install NGINX
+</code></pre>
+<p>Alternatively you can use the latest and greatest versions by using PPAs, but Gatling assumes configuration and paths that match the official distribution versions.
 Keep this in mind because e.g. the
-&lt;a href=&quot;https://www.NGINX.com/resources/wiki/start/topics/tutorials/install/#ubuntu-ppa&quot;&gt;NGINX version from the Ubuntu PPA&lt;/a&gt;
-does not adhere to the usual paths structure and misses &lt;code&gt;sites-available&lt;/code&gt; and &lt;code&gt;sites-enabled&lt;/code&gt;.&lt;/p&gt;
-&lt;h3&gt;Postgres&lt;/h3&gt;
-&lt;p&gt;This gives you Postgres 9.5 which is not the latest and greatest but perfectly fine for now:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo apt-get install postgresql
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4&gt;Postgres user&lt;/h4&gt;
-&lt;p&gt;We also create a new user for our application.
+<a href="https://www.NGINX.com/resources/wiki/start/topics/tutorials/install/#ubuntu-ppa">NGINX version from the Ubuntu PPA</a>
+does not adhere to the usual paths structure and misses <code>sites-available</code> and <code>sites-enabled</code>.</p>
+<h3>Postgres</h3>
+<p>This gives you Postgres 9.5 which is not the latest and greatest but perfectly fine for now:</p>
+<pre><code class="language-bash">sudo apt-get install postgresql
+</code></pre>
+<h4>Postgres user</h4>
+<p>We also create a new user for our application.
 This user needs a superuser role to create the app database and migrate its schema.
-Again this user is named &lt;code&gt;deploy&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo -u postgres createuser -s -P deploy
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As postgres also expects a database with the users login name, let’s create it:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo -u postgres createdb deploy
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Afterwards we can verify that the login works.
-Open the postgres console as deploy user executing the command &lt;code&gt;psql&lt;/code&gt;
-(or &lt;code&gt;psql -W&lt;/code&gt; to force the password prompt and check the password).
-If this works you can then leave the postgres console by typing &lt;code&gt;\q&lt;/code&gt;.&lt;/p&gt;
-&lt;h2&gt;Phoenix Deployment&lt;/h2&gt;
-&lt;p&gt;We are getting closer: The server has everything set up so that we can prepare our Phoenix application for deployment.
-The official guide uses Exrm to build the releases, but we will use its successor &lt;a href=&quot;https://github.com/bitwalker/distillery&quot;&gt;Distillery&lt;/a&gt; which is required by Gatling.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;First off: This guide naively assumes the app being named &lt;code&gt;MyApp&lt;/code&gt;.&lt;/strong&gt;&lt;br&gt;
-Change this to your liking, your mileage may vary ;)&lt;/p&gt;
-&lt;h3&gt;Preparing the Distillery release&lt;/h3&gt;
-&lt;p&gt;Whether or not you are using Phoenix or Gatling, Distillery is a good tool for building Elixir releases and it offers detailed documentation.
-This guide assumes you are familiar with the basic process outlined in the &lt;a href=&quot;https://hexdocs.pm/distillery/getting-started.html&quot;&gt;Getting Started&lt;/a&gt; docs.
-You have installed and initialized Distillery in your project and we can skip to &lt;a href=&quot;https://hexdocs.pm/distillery/use-with-phoenix.html&quot;&gt;Using Distillery with Phoenix&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In you Phoenix project you have a &lt;code&gt;rel/config.exs&lt;/code&gt; file which contains your release configuration.
+Again this user is named <code>deploy</code>:</p>
+<pre><code class="language-bash">sudo -u postgres createuser -s -P deploy
+</code></pre>
+<p>As postgres also expects a database with the users login name, let’s create it:</p>
+<pre><code class="language-bash">sudo -u postgres createdb deploy
+</code></pre>
+<p>Afterwards we can verify that the login works.
+Open the postgres console as deploy user executing the command <code>psql</code>
+(or <code>psql -W</code> to force the password prompt and check the password).
+If this works you can then leave the postgres console by typing <code>\q</code>.</p>
+<h2>Phoenix Deployment</h2>
+<p>We are getting closer: The server has everything set up so that we can prepare our Phoenix application for deployment.
+The official guide uses Exrm to build the releases, but we will use its successor <a href="https://github.com/bitwalker/distillery">Distillery</a> which is required by Gatling.</p>
+<p><strong>First off: This guide naively assumes the app being named <code>MyApp</code>.</strong><br>
+Change this to your liking, your mileage may vary ;)</p>
+<h3>Preparing the Distillery release</h3>
+<p>Whether or not you are using Phoenix or Gatling, Distillery is a good tool for building Elixir releases and it offers detailed documentation.
+This guide assumes you are familiar with the basic process outlined in the <a href="https://hexdocs.pm/distillery/getting-started.html">Getting Started</a> docs.
+You have installed and initialized Distillery in your project and we can skip to <a href="https://hexdocs.pm/distillery/use-with-phoenix.html">Using Distillery with Phoenix</a>.</p>
+<p>In you Phoenix project you have a <code>rel/config.exs</code> file which contains your release configuration.
 You can use it as-is or configure additional options for the production environment.
-Note: &lt;code&gt;include_erts&lt;/code&gt; has to be set to &lt;code&gt;true&lt;/code&gt; to enable hot upgrades.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elixir&quot;&gt;environment &lt;span class=&quot;hljs-symbol&quot;&gt;:prod&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;hljs-comment&quot;&gt;# We need to include the Erlang Run-Time System even though&lt;/span&gt;
-  &lt;span class=&quot;hljs-comment&quot;&gt;# we deploy on the same machine that builds the release.&lt;/span&gt;
-  &lt;span class=&quot;hljs-comment&quot;&gt;# This has to be enabled to support hot upgrades.&lt;/span&gt;
-  set &lt;span class=&quot;hljs-symbol&quot;&gt;include_erts:&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;hljs-comment&quot;&gt;# ...&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Preparing the app&lt;/h3&gt;
-&lt;p&gt;We will configure the production env using environment variables.
-I prefer this approach to the Phoenix’ standard of a separate &lt;code&gt;prod.secret.exs&lt;/code&gt; file.
+Note: <code>include_erts</code> has to be set to <code>true</code> to enable hot upgrades.</p>
+<pre><code class="language-elixir">environment <span class="hljs-symbol">:prod</span> <span class="hljs-keyword">do</span>
+  <span class="hljs-comment"># We need to include the Erlang Run-Time System even though</span>
+  <span class="hljs-comment"># we deploy on the same machine that builds the release.</span>
+  <span class="hljs-comment"># This has to be enabled to support hot upgrades.</span>
+  set <span class="hljs-symbol">include_erts:</span> <span class="hljs-keyword">true</span>
+  <span class="hljs-comment"># ...</span>
+<span class="hljs-keyword">end</span>
+</code></pre>
+<h3>Preparing the app</h3>
+<p>We will configure the production env using environment variables.
+I prefer this approach to the Phoenix’ standard of a separate <code>prod.secret.exs</code> file.
 Read about the details in the
-&lt;a href=&quot;http://blog.plataformatec.com.br/2016/05/how-to-config-environment-variables-with-elixir-and-exrm/&quot;&gt;How to config environment variables with Elixir&lt;/a&gt;
-post by Plataformatec to get an idea of why you might want to do that.&lt;/p&gt;
-&lt;p&gt;Without further ado, here are the relevant &lt;code&gt;config/prod.exs&lt;/code&gt; parts:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elixir&quot;&gt;config &lt;span class=&quot;hljs-symbol&quot;&gt;:my_app&lt;/span&gt;, MyApp.Endpoint,
-  &lt;span class=&quot;hljs-comment&quot;&gt;# the PORT env variable will be set by Gatling in the&lt;/span&gt;
-  &lt;span class=&quot;hljs-comment&quot;&gt;# init script of the service that (re)starts the app&lt;/span&gt;
-  &lt;span class=&quot;hljs-symbol&quot;&gt;http:&lt;/span&gt; [&lt;span class=&quot;hljs-symbol&quot;&gt;port:&lt;/span&gt; {&lt;span class=&quot;hljs-symbol&quot;&gt;:system&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;PORT&quot;&lt;/span&gt;}],
-  &lt;span class=&quot;hljs-symbol&quot;&gt;url:&lt;/span&gt; [&lt;span class=&quot;hljs-symbol&quot;&gt;scheme:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;http&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;host:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;myapp.com&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;port:&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;80&lt;/span&gt;],
-  &lt;span class=&quot;hljs-symbol&quot;&gt;cache_static_manifest:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;priv/static/manifest.json&quot;&lt;/span&gt;,
-  &lt;span class=&quot;hljs-comment&quot;&gt;# configuration for the Distillery release&lt;/span&gt;
-  &lt;span class=&quot;hljs-symbol&quot;&gt;root:&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;.&quot;&lt;/span&gt;,
-  &lt;span class=&quot;hljs-symbol&quot;&gt;server:&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;,
-  &lt;span class=&quot;hljs-symbol&quot;&gt;version:&lt;/span&gt; Mix.Project.config[&lt;span class=&quot;hljs-symbol&quot;&gt;:version&lt;/span&gt;]
+<a href="http://blog.plataformatec.com.br/2016/05/how-to-config-environment-variables-with-elixir-and-exrm/">How to config environment variables with Elixir</a>
+post by Plataformatec to get an idea of why you might want to do that.</p>
+<p>Without further ado, here are the relevant <code>config/prod.exs</code> parts:</p>
+<pre><code class="language-elixir">config <span class="hljs-symbol">:my_app</span>, MyApp.Endpoint,
+  <span class="hljs-comment"># the PORT env variable will be set by Gatling in the</span>
+  <span class="hljs-comment"># init script of the service that (re)starts the app</span>
+  <span class="hljs-symbol">http:</span> [<span class="hljs-symbol">port:</span> {<span class="hljs-symbol">:system</span>, <span class="hljs-string">"PORT"</span>}],
+  <span class="hljs-symbol">url:</span> [<span class="hljs-symbol">scheme:</span> <span class="hljs-string">"http"</span>, <span class="hljs-symbol">host:</span> <span class="hljs-string">"myapp.com"</span>, <span class="hljs-symbol">port:</span> <span class="hljs-number">80</span>],
+  <span class="hljs-symbol">cache_static_manifest:</span> <span class="hljs-string">"priv/static/manifest.json"</span>,
+  <span class="hljs-comment"># configuration for the Distillery release</span>
+  <span class="hljs-symbol">root:</span> <span class="hljs-string">"."</span>,
+  <span class="hljs-symbol">server:</span> <span class="hljs-keyword">true</span>,
+  <span class="hljs-symbol">version:</span> Mix.Project.config[<span class="hljs-symbol">:version</span>]
 
-config &lt;span class=&quot;hljs-symbol&quot;&gt;:my_app&lt;/span&gt;, MyApp.Endpoint,
-  &lt;span class=&quot;hljs-symbol&quot;&gt;secret_key_base:&lt;/span&gt; System.get_env(&lt;span class=&quot;hljs-string&quot;&gt;&quot;SECRET_KEY_BASE&quot;&lt;/span&gt;)
+config <span class="hljs-symbol">:my_app</span>, MyApp.Endpoint,
+  <span class="hljs-symbol">secret_key_base:</span> System.get_env(<span class="hljs-string">"SECRET_KEY_BASE"</span>)
 
-config &lt;span class=&quot;hljs-symbol&quot;&gt;:my_app&lt;/span&gt;, MyApp.Repo,
-  &lt;span class=&quot;hljs-symbol&quot;&gt;adapter:&lt;/span&gt; Ecto.Adapters.Postgres,
-  &lt;span class=&quot;hljs-symbol&quot;&gt;username:&lt;/span&gt; System.get_env(&lt;span class=&quot;hljs-string&quot;&gt;&quot;DB_USERNAME&quot;&lt;/span&gt;),
-  &lt;span class=&quot;hljs-symbol&quot;&gt;password:&lt;/span&gt; System.get_env(&lt;span class=&quot;hljs-string&quot;&gt;&quot;DB_PASSWORD&quot;&lt;/span&gt;),
-  &lt;span class=&quot;hljs-symbol&quot;&gt;database:&lt;/span&gt; System.get_env(&lt;span class=&quot;hljs-string&quot;&gt;&quot;DB_DATABASE&quot;&lt;/span&gt;),
-  &lt;span class=&quot;hljs-symbol&quot;&gt;hostname:&lt;/span&gt; System.get_env(&lt;span class=&quot;hljs-string&quot;&gt;&quot;DB_HOSTNAME&quot;&lt;/span&gt;),
-  &lt;span class=&quot;hljs-symbol&quot;&gt;pool_size:&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;20&lt;/span&gt;
+config <span class="hljs-symbol">:my_app</span>, MyApp.Repo,
+  <span class="hljs-symbol">adapter:</span> Ecto.Adapters.Postgres,
+  <span class="hljs-symbol">username:</span> System.get_env(<span class="hljs-string">"DB_USERNAME"</span>),
+  <span class="hljs-symbol">password:</span> System.get_env(<span class="hljs-string">"DB_PASSWORD"</span>),
+  <span class="hljs-symbol">database:</span> System.get_env(<span class="hljs-string">"DB_DATABASE"</span>),
+  <span class="hljs-symbol">hostname:</span> System.get_env(<span class="hljs-string">"DB_HOSTNAME"</span>),
+  <span class="hljs-symbol">pool_size:</span> <span class="hljs-number">20</span>
 
-&lt;span class=&quot;hljs-comment&quot;&gt;# This line appears further down. Do not forget to uncomment it!&lt;/span&gt;
-config &lt;span class=&quot;hljs-symbol&quot;&gt;:phoenix&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;:serve_endpoints&lt;/span&gt;, &lt;span class=&quot;hljs-keyword&quot;&gt;true&lt;/span&gt;
+<span class="hljs-comment"># This line appears further down. Do not forget to uncomment it!</span>
+config <span class="hljs-symbol">:phoenix</span>, <span class="hljs-symbol">:serve_endpoints</span>, <span class="hljs-keyword">true</span>
 
-&lt;span class=&quot;hljs-comment&quot;&gt;# Remove the prod secret import as we configure via environment variables&lt;/span&gt;
-&lt;span class=&quot;hljs-comment&quot;&gt;# import_config &quot;prod.secret.exs&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Commit this, there is some more work to do on the server …&lt;/p&gt;
-&lt;h3&gt;Setting the environment on the server&lt;/h3&gt;
-&lt;p&gt;To have these environment variables available on the server, we will append them to the &lt;code&gt;/etc/environment&lt;/code&gt; file.
-So logged in as the &lt;code&gt;deploy&lt;/code&gt; user perform these commands adjusted to your needs:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;hljs-built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;'MIX_ENV=prod'&lt;/span&gt; | sudo tee -a /etc/environment
-&lt;span class=&quot;hljs-built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;'SECRET_KEY_BASE=TheSecretKeyBaseFromTheProdSecretFile'&lt;/span&gt; | sudo tee -a /etc/environment
-&lt;span class=&quot;hljs-built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;'DB_HOSTNAME=localhost'&lt;/span&gt; | sudo tee -a /etc/environment
-&lt;span class=&quot;hljs-built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;'DB_DATABASE=myapp_prod'&lt;/span&gt; | sudo tee -a /etc/environment
-&lt;span class=&quot;hljs-built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;'DB_USERNAME=deploy'&lt;/span&gt; | sudo tee -a /etc/environment
-&lt;span class=&quot;hljs-built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;'DB_PASSWORD=password_for_myapp_prod'&lt;/span&gt; | sudo tee -a /etc/environment
+<span class="hljs-comment"># Remove the prod secret import as we configure via environment variables</span>
+<span class="hljs-comment"># import_config "prod.secret.exs"</span>
+</code></pre>
+<p>Commit this, there is some more work to do on the server …</p>
+<h3>Setting the environment on the server</h3>
+<p>To have these environment variables available on the server, we will append them to the <code>/etc/environment</code> file.
+So logged in as the <code>deploy</code> user perform these commands adjusted to your needs:</p>
+<pre><code class="language-bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">'MIX_ENV=prod'</span> | sudo tee -a /etc/environment
+<span class="hljs-built_in">echo</span> <span class="hljs-string">'SECRET_KEY_BASE=TheSecretKeyBaseFromTheProdSecretFile'</span> | sudo tee -a /etc/environment
+<span class="hljs-built_in">echo</span> <span class="hljs-string">'DB_HOSTNAME=localhost'</span> | sudo tee -a /etc/environment
+<span class="hljs-built_in">echo</span> <span class="hljs-string">'DB_DATABASE=myapp_prod'</span> | sudo tee -a /etc/environment
+<span class="hljs-built_in">echo</span> <span class="hljs-string">'DB_USERNAME=deploy'</span> | sudo tee -a /etc/environment
+<span class="hljs-built_in">echo</span> <span class="hljs-string">'DB_PASSWORD=password_for_myapp_prod'</span> | sudo tee -a /etc/environment
 
-&lt;span class=&quot;hljs-built_in&quot;&gt;source&lt;/span&gt; /etc/environment
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Note that we do not need to set the &lt;code&gt;PORT&lt;/code&gt; environment variable as it will be set by Gatling in the init script of the service that (re)starts the app.
-A propos Gatling …&lt;/p&gt;
-&lt;h3&gt;Preparing the server for Gatling&lt;/h3&gt;
-&lt;p&gt;Maybe I should spend some words on &lt;a href=&quot;https://github.com/hashrocket/gatling&quot;&gt;Gatling&lt;/a&gt; in general first:
-It is a deployment tool developed by Hashrocket and you can read more about the ideas involved in &lt;a href=&quot;https://hashrocket.com/blog/posts/how-i-built-my-own-heroku-for-phoenix-apps-part-1&quot;&gt;their introduction post about Gatling&lt;/a&gt;.
-It is an opinionated tool, but I like the assumptions and the pragmatic approach it offers.&lt;/p&gt;
-&lt;p&gt;Using Gatling we can automate the deployment and automatically build new releases triggered by a &lt;code&gt;git push&lt;/code&gt; to a repository on the production server.
-This comes with the prerequisite that the server needs a Git version greater than 2.0, but Ubuntu 16.04 has you covered.&lt;/p&gt;
-&lt;p&gt;First off we must install Gatling on the server.
+<span class="hljs-built_in">source</span> /etc/environment
+</code></pre>
+<p>Note that we do not need to set the <code>PORT</code> environment variable as it will be set by Gatling in the init script of the service that (re)starts the app.
+A propos Gatling …</p>
+<h3>Preparing the server for Gatling</h3>
+<p>Maybe I should spend some words on <a href="https://github.com/hashrocket/gatling">Gatling</a> in general first:
+It is a deployment tool developed by Hashrocket and you can read more about the ideas involved in <a href="https://hashrocket.com/blog/posts/how-i-built-my-own-heroku-for-phoenix-apps-part-1">their introduction post about Gatling</a>.
+It is an opinionated tool, but I like the assumptions and the pragmatic approach it offers.</p>
+<p>Using Gatling we can automate the deployment and automatically build new releases triggered by a <code>git push</code> to a repository on the production server.
+This comes with the prerequisite that the server needs a Git version greater than 2.0, but Ubuntu 16.04 has you covered.</p>
+<p>First off we must install Gatling on the server.
 We also need hex and rebar installed locally to fetch and install the app dependencies.
-To do so, log in as the &lt;code&gt;deploy&lt;/code&gt; user on the production server and execute these commands to
-&lt;a href=&quot;https://github.com/hashrocket/gatling#instructions&quot;&gt;install Gatling&lt;/a&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;mix local.hex
+To do so, log in as the <code>deploy</code> user on the production server and execute these commands to
+<a href="https://github.com/hashrocket/gatling#instructions">install Gatling</a>:</p>
+<pre><code class="language-bash">mix local.hex
 mix local.rebar
 mix archive.install https://github.com/hashrocket/gatling_archives/raw/master/gatling.ez
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Afterwards we can initialize the app using the &lt;code&gt;load&lt;/code&gt; task provided by Gatling.
-This creates and sets up the Git repository we will push to later.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;mix gatling.load myapp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The repository resides in the home directory of our &lt;code&gt;deploy&lt;/code&gt; user.
-Let’s go back to our local development machine and do the remaining bits there …&lt;/p&gt;
-&lt;h3&gt;Configuring Gatling&lt;/h3&gt;
-&lt;p&gt;First we add the newly created repository as production remote:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;git remote add production deploy@myapp.com:myapp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Gatling requires a &lt;code&gt;domains&lt;/code&gt; file in the root of the repo.
-This is read by Gatlings deploy task and used to configure the server names NGINX responds to:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-nohighlight&quot;&gt;myapp.com
+</code></pre>
+<p>Afterwards we can initialize the app using the <code>load</code> task provided by Gatling.
+This creates and sets up the Git repository we will push to later.</p>
+<pre><code class="language-bash">mix gatling.load myapp
+</code></pre>
+<p>The repository resides in the home directory of our <code>deploy</code> user.
+Let’s go back to our local development machine and do the remaining bits there …</p>
+<h3>Configuring Gatling</h3>
+<p>First we add the newly created repository as production remote:</p>
+<pre><code class="language-bash">git remote add production deploy@myapp.com:myapp
+</code></pre>
+<p>Gatling requires a <code>domains</code> file in the root of the repo.
+This is read by Gatlings deploy task and used to configure the server names NGINX responds to:</p>
+<pre><code class="language-nohighlight">myapp.com
 www.myapp.com
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4&gt;Deployment hooks&lt;/h4&gt;
-&lt;p&gt;Gatling has hooks for every deployment step.
-We add two files to the root of our project that take care of compiling the assets before they get digested.&lt;/p&gt;
-&lt;p&gt;This first file is named &lt;code&gt;deploy.exs&lt;/code&gt;.
-It is used for the initial deployment:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elixir&quot;&gt;&lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;MyApp.DeployCallbacks&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Gatling.Bash
+</code></pre>
+<h4>Deployment hooks</h4>
+<p>Gatling has hooks for every deployment step.
+We add two files to the root of our project that take care of compiling the assets before they get digested.</p>
+<p>This first file is named <code>deploy.exs</code>.
+It is used for the initial deployment:</p>
+<pre><code class="language-elixir"><span class="hljs-class"><span class="hljs-keyword">defmodule</span> <span class="hljs-title">MyApp.DeployCallbacks</span></span> <span class="hljs-keyword">do</span>
+  <span class="hljs-keyword">import</span> Gatling.Bash
 
-  &lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;before_mix_digest&lt;/span&gt;&lt;/span&gt;(env) &lt;span class=&quot;hljs-keyword&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;hljs-comment&quot;&gt;# mkdir prevents complains about this directory not existing&lt;/span&gt;
-    bash(&lt;span class=&quot;hljs-string&quot;&gt;&quot;mkdir&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;~w[-p priv/static]&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;cd:&lt;/span&gt; env.build_dir)
-    bash(&lt;span class=&quot;hljs-string&quot;&gt;&quot;npm&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;~w[install]&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;cd:&lt;/span&gt; env.build_dir)
-    bash(&lt;span class=&quot;hljs-string&quot;&gt;&quot;npm&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;~w[run deploy]&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;cd:&lt;/span&gt; env.build_dir)
-  &lt;span class=&quot;hljs-keyword&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The second file called &lt;code&gt;upgrade.exs&lt;/code&gt; also performs migrations before hot upgrading the app.
-It will be used every time we push to the repo after the initial deployment has happened and the app gets upgraded:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elixir&quot;&gt;&lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;defmodule&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;MyApp.UpgradeCallbacks&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;do&lt;/span&gt;
-  &lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Gatling.Bash
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_mix_digest</span></span>(env) <span class="hljs-keyword">do</span>
+    <span class="hljs-comment"># mkdir prevents complains about this directory not existing</span>
+    bash(<span class="hljs-string">"mkdir"</span>, <span class="hljs-string">~w[-p priv/static]</span>, <span class="hljs-symbol">cd:</span> env.build_dir)
+    bash(<span class="hljs-string">"npm"</span>, <span class="hljs-string">~w[install]</span>, <span class="hljs-symbol">cd:</span> env.build_dir)
+    bash(<span class="hljs-string">"npm"</span>, <span class="hljs-string">~w[run deploy]</span>, <span class="hljs-symbol">cd:</span> env.build_dir)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>The second file called <code>upgrade.exs</code> also performs migrations before hot upgrading the app.
+It will be used every time we push to the repo after the initial deployment has happened and the app gets upgraded:</p>
+<pre><code class="language-elixir"><span class="hljs-class"><span class="hljs-keyword">defmodule</span> <span class="hljs-title">MyApp.UpgradeCallbacks</span></span> <span class="hljs-keyword">do</span>
+  <span class="hljs-keyword">import</span> Gatling.Bash
 
-  &lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;before_mix_digest&lt;/span&gt;&lt;/span&gt;(env) &lt;span class=&quot;hljs-keyword&quot;&gt;do&lt;/span&gt;
-    bash(&lt;span class=&quot;hljs-string&quot;&gt;&quot;npm&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;~w[install]&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;cd:&lt;/span&gt; env.build_dir)
-    bash(&lt;span class=&quot;hljs-string&quot;&gt;&quot;npm&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;~w[run deploy]&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;cd:&lt;/span&gt; env.build_dir)
-  &lt;span class=&quot;hljs-keyword&quot;&gt;end&lt;/span&gt;
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_mix_digest</span></span>(env) <span class="hljs-keyword">do</span>
+    bash(<span class="hljs-string">"npm"</span>, <span class="hljs-string">~w[install]</span>, <span class="hljs-symbol">cd:</span> env.build_dir)
+    bash(<span class="hljs-string">"npm"</span>, <span class="hljs-string">~w[run deploy]</span>, <span class="hljs-symbol">cd:</span> env.build_dir)
+  <span class="hljs-keyword">end</span>
 
-  &lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;before_upgrade_service&lt;/span&gt;&lt;/span&gt;(env) &lt;span class=&quot;hljs-keyword&quot;&gt;do&lt;/span&gt;
-    bash(&lt;span class=&quot;hljs-string&quot;&gt;&quot;mix&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;~w[ecto.migrate]&lt;/span&gt;, &lt;span class=&quot;hljs-symbol&quot;&gt;cd:&lt;/span&gt; env.build_dir)
-  &lt;span class=&quot;hljs-keyword&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;hljs-keyword&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;These files look a bit different than the examples from the Gatling README.
-Their examples did not work for me and I submitted a &lt;a href=&quot;https://github.com/hashrocket/gatling/pull/30&quot;&gt;pull request&lt;/a&gt; for that.&lt;/p&gt;
-&lt;h4&gt;Deploying the app&lt;/h4&gt;
-&lt;p&gt;You have to increase the version number in your &lt;code&gt;mix.exs&lt;/code&gt; file every time you want to roll out a new release.
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_upgrade_service</span></span>(env) <span class="hljs-keyword">do</span>
+    bash(<span class="hljs-string">"mix"</span>, <span class="hljs-string">~w[ecto.migrate]</span>, <span class="hljs-symbol">cd:</span> env.build_dir)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+</code></pre>
+<p>These files look a bit different than the examples from the Gatling README.
+Their examples did not work for me and I submitted a <a href="https://github.com/hashrocket/gatling/pull/30">pull request</a> for that.</p>
+<h4>Deploying the app</h4>
+<p>You have to increase the version number in your <code>mix.exs</code> file every time you want to roll out a new release.
 We are explicit about releasing by pushing to our production repository though.
-In case you want a simple push based roll out, you can &lt;a href=&quot;https://github.com/hashrocket/gatling/blob/master/mix.example.exs&quot;&gt;have your version number set based on the commit date&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Now we can commit, push this state to the production remote and run the initial deployment – finally!&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;git push production master
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Logged in as the deploy user on our production server we need to perform the initial deployment manually by executing the Gatling deploy task:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;sudo mix gatling.deploy myapp
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This builds the initial release, looks up an available port and configures NGINX to proxy to the app and containing &lt;a href=&quot;https://www.NGINX.com/blog/websocket-NGINX/&quot;&gt;the necessary settings for using websockets&lt;/a&gt;.
-It also creates a &lt;code&gt;init.d&lt;/code&gt; script that is used to manage the app process.
-You can see the available commands for this service by running &lt;code&gt;sudo service myapp&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;If all of that worked you now have your app deployed and every successive push to the production remote will upgrade the app – congratulations!&lt;/p&gt;
-&lt;h2&gt;Recap&lt;/h2&gt;
-&lt;p&gt;Wow, that seems like a heck of a lot to get a Phoenix app running in production.
+In case you want a simple push based roll out, you can <a href="https://github.com/hashrocket/gatling/blob/master/mix.example.exs">have your version number set based on the commit date</a>.</p>
+<p>Now we can commit, push this state to the production remote and run the initial deployment – finally!</p>
+<pre><code class="language-bash">git push production master
+</code></pre>
+<p>Logged in as the deploy user on our production server we need to perform the initial deployment manually by executing the Gatling deploy task:</p>
+<pre><code class="language-bash">sudo mix gatling.deploy myapp
+</code></pre>
+<p>This builds the initial release, looks up an available port and configures NGINX to proxy to the app and containing <a href="https://www.NGINX.com/blog/websocket-NGINX/">the necessary settings for using websockets</a>.
+It also creates a <code>init.d</code> script that is used to manage the app process.
+You can see the available commands for this service by running <code>sudo service myapp</code>.</p>
+<p>If all of that worked you now have your app deployed and every successive push to the production remote will upgrade the app – congratulations!</p>
+<h2>Recap</h2>
+<p>Wow, that seems like a heck of a lot to get a Phoenix app running in production.
 Nevertheless I think it seems more complex than it actually is.
-It is well worth to take on the deployment early on as afterwards you can enjoy the benefits of an automated deployment.&lt;/p&gt;
-&lt;p&gt;I hope this guide helps you and provides useful information so that you do not have to spend as much time as I did figuring out the details.
+It is well worth to take on the deployment early on as afterwards you can enjoy the benefits of an automated deployment.</p>
+<p>I hope this guide helps you and provides useful information so that you do not have to spend as much time as I did figuring out the details.
 There are many options to go beyond this setup and there is also a very detailed guide on
-&lt;a href=&quot;http://www.akitaonrails.com/2016/12/23/elixir-phoenix-app-deployed-into-a-load-balanced-digitalocean-setup&quot;&gt;deploying into a multi-server load balanced setup on Digital Ocean&lt;/a&gt;
+<a href="http://www.akitaonrails.com/2016/12/23/elixir-phoenix-app-deployed-into-a-load-balanced-digitalocean-setup">deploying into a multi-server load balanced setup on Digital Ocean</a>
 by Fabio Akita.
-I also wrote a follow-up on &lt;a href=&quot;/articles/phoenix-nginx-config.html&quot;&gt;Configuring NGINX for Phoenix applications&lt;/a&gt; you might be interested in.&lt;/p&gt;
-&lt;p&gt;In case you want to try all of this for yourself you can use my
-&lt;a href=&quot;http://www.digitalocean.com/?refcode=63eb025a3190&quot;&gt;Digital Ocean referrer link&lt;/a&gt; to sign up there.
+I also wrote a follow-up on <a href="/articles/phoenix-nginx-config.html">Configuring NGINX for Phoenix applications</a> you might be interested in.</p>
+<p>In case you want to try all of this for yourself you can use my
+<a href="http://www.digitalocean.com/?refcode=63eb025a3190">Digital Ocean referrer link</a> to sign up there.
 It will give you $10 credit to start with, which is worth two months of the lowest price droplet.
-I used this type of droplet to figure out the details described in this article too.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+I used this type of droplet to figure out the details described in this article too.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

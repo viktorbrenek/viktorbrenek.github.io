@@ -658,167 +658,167 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">The Elm Architecture</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Architecture,The Elm Architecture,State management,Single State Tree,Redux,Frontend development</a></span></div><p class="acontent">&lt;p&gt;The beauty of The Elm Architecture lies in its simplicity:
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">The Elm Architecture</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Architecture,The Elm Architecture,State management,Single State Tree,Redux,Frontend development</a></span></div><p>The beauty of The Elm Architecture lies in its simplicity:
 It structures applications into four parts and it defines how these interact with each other.
 In Elm there is only this one determined way to handle interactions and manage state – 
-and it provides a good foundation for modularity, code reuse and testing by default.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;p&gt;One of the first things you will have probably heard about Elm is the way it structures your code.
+and it provides a good foundation for modularity, code reuse and testing by default.</p>
+<div id="more"></div>
+<p>One of the first things you will have probably heard about Elm is the way it structures your code.
 You come across this early on as it is the only way to architect your application and modules.
 When you are new to the language this might seem limiting at first, but don’t worry:
-The Elm Architecture gives you a solid and proven way for handling the state of your application and the effects that change this state.&lt;/p&gt;
-&lt;p&gt;The basic structure of your application and modules looks like this:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Model&lt;/strong&gt;: Contains the application state/data&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;View&lt;/strong&gt;: Function(s) that generate HTML based on the model&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Update&lt;/strong&gt;: Handles interaction and transforms the model&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Runtime&lt;/strong&gt;: Wires up Model, View and Update&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To cover each of these parts in detail I came up with a &lt;a href=&quot;/files/elm/architecture-overview-example.html&quot;&gt;(very) simple blog example&lt;/a&gt;:
+The Elm Architecture gives you a solid and proven way for handling the state of your application and the effects that change this state.</p>
+<p>The basic structure of your application and modules looks like this:</p>
+<ul>
+<li><strong>Model</strong>: Contains the application state/data</li>
+<li><strong>View</strong>: Function(s) that generate HTML based on the model</li>
+<li><strong>Update</strong>: Handles interaction and transforms the model</li>
+<li><strong>Runtime</strong>: Wires up Model, View and Update</li>
+</ul>
+<p>To cover each of these parts in detail I came up with a <a href="/files/elm/architecture-overview-example.html">(very) simple blog example</a>:
 The app shows a list of articles which can be expanded to show the full content by clicking on the title.
-Not quite a Medium competitor, but for us figuring out the most important things about The Elm Architecture it will work :)&lt;/p&gt;
-&lt;h2&gt;Model&lt;/h2&gt;
-&lt;p&gt;&lt;mark&gt;The model part represents the form of your data as well as the actual state.&lt;/mark&gt; ​
+Not quite a Medium competitor, but for us figuring out the most important things about The Elm Architecture it will work :)</p>
+<h2>Model</h2>
+<p><mark>The model part represents the form of your data as well as the actual state.</mark> ​
 You will have at least one type alias that defines your models:
-Most likely this type alias references a &lt;a href=&quot;/articles/elm-data-structures-record-tuple.html&quot;&gt;record&lt;/a&gt; that describes the shape of your data.&lt;/p&gt;
-&lt;p&gt;The example app has a model that represents a blog with a list of articles:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; =
-    { blogTitle : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-    , articles : &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt;
+Most likely this type alias references a <a href="/articles/elm-data-structures-record-tuple.html">record</a> that describes the shape of your data.</p>
+<p>The example app has a model that represents a blog with a list of articles:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">Model</span> =
+    { blogTitle : <span class="hljs-type">String</span>
+    , articles : <span class="hljs-type">List</span> <span class="hljs-type">Article</span>
     }
 
 
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt; =
-    { title : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-    , content : &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-    , showContent : &lt;span class=&quot;hljs-type&quot;&gt;Bool&lt;/span&gt;
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">alias</span> <span class="hljs-type">Article</span> =
+    { title : <span class="hljs-type">String</span>
+    , content : <span class="hljs-type">String</span>
+    , showContent : <span class="hljs-type">Bool</span>
     }
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;initialModel&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;initialModel&lt;/span&gt; =
-    { blogTitle = &lt;span class=&quot;hljs-string&quot;&gt;&quot;Some posts on Elm&quot;&lt;/span&gt;
+<span class="hljs-title">initialModel</span> : <span class="hljs-type">Model</span>
+<span class="hljs-title">initialModel</span> =
+    { blogTitle = <span class="hljs-string">"Some posts on Elm"</span>
     , articles =
-        [ { title = &lt;span class=&quot;hljs-string&quot;&gt;&quot;Learning Elm&quot;&lt;/span&gt;
-          , content = &lt;span class=&quot;hljs-string&quot;&gt;&quot;I just started to learn functional frontend development with Elm. How cool is that?&quot;&lt;/span&gt;
-          , showContent = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
+        [ { title = <span class="hljs-string">"Learning Elm"</span>
+          , content = <span class="hljs-string">"I just started to learn functional frontend development with Elm. How cool is that?"</span>
+          , showContent = <span class="hljs-type">False</span>
           }
-        , { title = &lt;span class=&quot;hljs-string&quot;&gt;&quot;The Elm Architecture&quot;&lt;/span&gt;
-          , content = &lt;span class=&quot;hljs-string&quot;&gt;&quot;In this post I am trying to explain The Elm Architecture …&quot;&lt;/span&gt;
-          , showContent = &lt;span class=&quot;hljs-type&quot;&gt;False&lt;/span&gt;
+        , { title = <span class="hljs-string">"The Elm Architecture"</span>
+          , content = <span class="hljs-string">"In this post I am trying to explain The Elm Architecture …"</span>
+          , showContent = <span class="hljs-type">False</span>
           }
         ]
     }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The model is the only place where the state of your application resides.
+</code></pre>
+<p>The model is the only place where the state of your application resides.
 It is a single state tree of immutable data.
-Each time this data is transformed by the &lt;code&gt;update&lt;/code&gt; function you get a new model containing the updated state.&lt;/p&gt;
-&lt;h2&gt;View&lt;/h2&gt;
-&lt;p&gt;The view is represented by one or many stateless functions.
+Each time this data is transformed by the <code>update</code> function you get a new model containing the updated state.</p>
+<h2>View</h2>
+<p>The view is represented by one or many stateless functions.
 These functions generate HTML based on the model:
-​ &lt;mark&gt;Their input is the model or a part thereof; their output is the markup that represents the current state.&lt;/mark&gt;&lt;/p&gt;
-&lt;p&gt;There is no need to mutate the DOM manually, the markup – written in elm-html – is entirely declarative.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;view&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;view&lt;/span&gt; model =
+​ <mark>Their input is the model or a part thereof; their output is the markup that represents the current state.</mark></p>
+<p>There is no need to mutate the DOM manually, the markup – written in elm-html – is entirely declarative.</p>
+<pre><code class="language-elm"><span class="hljs-title">view</span> : <span class="hljs-type">Model</span> -&gt; <span class="hljs-type">Html</span> <span class="hljs-type">Msg</span>
+<span class="hljs-title">view</span> model =
     div
-        [ class &lt;span class=&quot;hljs-string&quot;&gt;&quot;blog&quot;&lt;/span&gt; ]
+        [ class <span class="hljs-string">"blog"</span> ]
         [ h1 [] [ text model.blogTitle ]
-        , p [] [ text &lt;span class=&quot;hljs-string&quot;&gt;&quot;Click the titles to read the full article.&quot;&lt;/span&gt; ]
+        , p [] [ text <span class="hljs-string">"Click the titles to read the full article."</span> ]
         , section
-            [ class &lt;span class=&quot;hljs-string&quot;&gt;&quot;articles&quot;&lt;/span&gt; ]
-            (&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.map viewArticle model.articles)
+            [ class <span class="hljs-string">"articles"</span> ]
+            (<span class="hljs-type">List</span>.map viewArticle model.articles)
         ]
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;viewArticle&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;viewArticle&lt;/span&gt; a =
+<span class="hljs-title">viewArticle</span> : <span class="hljs-type">Article</span> -&gt; <span class="hljs-type">Html</span> <span class="hljs-type">Msg</span>
+<span class="hljs-title">viewArticle</span> a =
     article
-        [ onClick (&lt;span class=&quot;hljs-type&quot;&gt;ToggleContent&lt;/span&gt; a) ]
+        [ onClick (<span class="hljs-type">ToggleContent</span> a) ]
         [ h2 [] [ text a.title ]
         , div
             [ hidden (not a.showContent) ]
             [ text a.content ]
         ]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Based on the concept of a Virtual DOM &lt;a href=&quot;http://package.elm-lang.org/packages/elm-lang/html/latest/&quot;&gt;elm-html&lt;/a&gt; optimizes changes to the view.
-It is good to know that this provides &lt;a href=&quot;http://elm-lang.org/blog/blazing-fast-html-round-two&quot;&gt;really fast rendering&lt;/a&gt; by default.&lt;/p&gt;
-&lt;p&gt;Architecture-wise the most important point is, that the view gives you a declarative way of representing the current state and accepting user interaction:
-You register event handlers that emit messages to the runtime that will trigger &lt;code&gt;update&lt;/code&gt; as seen in the &lt;code&gt;viewArticle&lt;/code&gt; function.&lt;/p&gt;
-&lt;h2&gt;Update&lt;/h2&gt;
-&lt;p&gt;&lt;mark&gt;The &lt;code&gt;update&lt;/code&gt; function is the only place your model gets transformed.&lt;/mark&gt; ​
-It receives a message as well as the model, then updates the model according to the message and returns it.&lt;/p&gt;
-&lt;p&gt;In case of our example app the &lt;code&gt;update&lt;/code&gt; gets invoked when the user clicks the article:
-This sends the &lt;code&gt;ToggleContent&lt;/code&gt; message, which also contains the particular article.
-It then looks up the attached article in the model, toggles its &lt;code&gt;showContent&lt;/code&gt; value and returns a new model with the list containing the updated article.&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
-    = &lt;span class=&quot;hljs-type&quot;&gt;ToggleContent&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Article&lt;/span&gt;
+</code></pre>
+<p>Based on the concept of a Virtual DOM <a href="http://package.elm-lang.org/packages/elm-lang/html/latest/">elm-html</a> optimizes changes to the view.
+It is good to know that this provides <a href="http://elm-lang.org/blog/blazing-fast-html-round-two">really fast rendering</a> by default.</p>
+<p>Architecture-wise the most important point is, that the view gives you a declarative way of representing the current state and accepting user interaction:
+You register event handlers that emit messages to the runtime that will trigger <code>update</code> as seen in the <code>viewArticle</code> function.</p>
+<h2>Update</h2>
+<p><mark>The <code>update</code> function is the only place your model gets transformed.</mark> ​
+It receives a message as well as the model, then updates the model according to the message and returns it.</p>
+<p>In case of our example app the <code>update</code> gets invoked when the user clicks the article:
+This sends the <code>ToggleContent</code> message, which also contains the particular article.
+It then looks up the attached article in the model, toggles its <code>showContent</code> value and returns a new model with the list containing the updated article.</p>
+<pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-type">Msg</span>
+    = <span class="hljs-type">ToggleContent</span> <span class="hljs-type">Article</span>
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;update&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;update&lt;/span&gt; msg model =
-    &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; msg &lt;span class=&quot;hljs-keyword&quot;&gt;of&lt;/span&gt;
-        &lt;span class=&quot;hljs-type&quot;&gt;ToggleContent&lt;/span&gt; article -&amp;gt;
-            &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt;
+<span class="hljs-title">update</span> : <span class="hljs-type">Msg</span> -&gt; <span class="hljs-type">Model</span> -&gt; <span class="hljs-type">Model</span>
+<span class="hljs-title">update</span> msg model =
+    <span class="hljs-keyword">case</span> msg <span class="hljs-keyword">of</span>
+        <span class="hljs-type">ToggleContent</span> article -&gt;
+            <span class="hljs-keyword">let</span>
                 updateArticle a =
-                    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; a == article &lt;span class=&quot;hljs-keyword&quot;&gt;then&lt;/span&gt;
+                    <span class="hljs-keyword">if</span> a == article <span class="hljs-keyword">then</span>
                         { a | showContent = (not article.showContent) }
-                    &lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt;
+                    <span class="hljs-keyword">else</span>
                         a
 
                 updatedArticles =
-                    &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.map updateArticle model.articles
-            &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt;
+                    <span class="hljs-type">List</span>.map updateArticle model.articles
+            <span class="hljs-keyword">in</span>
                 { model | articles = updatedArticles }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;As the update function is the only place where your model gets transformed, this structure makes it very easy to reason about state changes and where they are coming from.
-This concept seems very simple and natural, yet it emerged and gained popularity through The Elm Architecture.&lt;/p&gt;
-&lt;p&gt;Contrast this to applications that manage all of their possible states implicitly and being changed from several places.
-It’s no surprise that this simple, yet powerful way of state management became very popular and influenced other frameworks like Redux.&lt;/p&gt;
-&lt;h2&gt;Runtime&lt;/h2&gt;
-&lt;p&gt;The main function is the entry of an Elm program.
+</code></pre>
+<p>As the update function is the only place where your model gets transformed, this structure makes it very easy to reason about state changes and where they are coming from.
+This concept seems very simple and natural, yet it emerged and gained popularity through The Elm Architecture.</p>
+<p>Contrast this to applications that manage all of their possible states implicitly and being changed from several places.
+It’s no surprise that this simple, yet powerful way of state management became very popular and influenced other frameworks like Redux.</p>
+<h2>Runtime</h2>
+<p>The main function is the entry of an Elm program.
 It takes care of wiring up the three parts described above.
-​ &lt;mark&gt;The runtime is contained in a program that gets initialized with the &lt;code&gt;model&lt;/code&gt;, &lt;code&gt;view&lt;/code&gt; and &lt;code&gt;update&lt;/code&gt; – this program is then returned by the main function.&lt;/mark&gt;&lt;/p&gt;
-&lt;p&gt;Supplemented with the imports of your module this can be considered the boilerplate of your application.
-The simple case with a &lt;code&gt;beginnerProgram&lt;/code&gt; might look like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; Main &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
+​ <mark>The runtime is contained in a program that gets initialized with the <code>model</code>, <code>view</code> and <code>update</code> – this program is then returned by the main function.</mark></p>
+<p>Supplemented with the imports of your module this can be considered the boilerplate of your application.
+The simple case with a <code>beginnerProgram</code> might look like this:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">module</span> Main <span class="hljs-keyword">exposing</span> (..)
 
-&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
-&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html.Events &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (onClick)
-&lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; Html.Attributes &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (class, hidden)
+<span class="hljs-keyword">import</span> Html <span class="hljs-keyword">exposing</span> (..)
+<span class="hljs-keyword">import</span> Html.Events <span class="hljs-keyword">exposing</span> (onClick)
+<span class="hljs-keyword">import</span> Html.Attributes <span class="hljs-keyword">exposing</span> (class, hidden)
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Program&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Never&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Model&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Msg&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;main&lt;/span&gt; =
-    &lt;span class=&quot;hljs-type&quot;&gt;Html&lt;/span&gt;.beginnerProgram
+<span class="hljs-title">main</span> : <span class="hljs-type">Program</span> <span class="hljs-type">Never</span> <span class="hljs-type">Model</span> <span class="hljs-type">Msg</span>
+<span class="hljs-title">main</span> =
+    <span class="hljs-type">Html</span>.beginnerProgram
         { model = initialModel
         , view = view
         , update = update
         }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The &lt;code&gt;Html.beginnerProgram&lt;/code&gt; encapsulates the basics of The Elm Architecture.
+</code></pre>
+<p>The <code>Html.beginnerProgram</code> encapsulates the basics of The Elm Architecture.
 It wires up the model, view and update functions and provides the setup for handling user interaction and managing state.
-Once initialized ​ &lt;mark&gt;the program executes a continuous loop, taking in actions from the user, changing the state and representing the changes in the view.&lt;/mark&gt; ​&lt;/p&gt;
-&lt;figure&gt;
-  &lt;img src=&quot;/files/elm/architecture-overview-diagram.svg&quot; alt=&quot;Diagram of The Elm Architecture&quot; width=&quot;320&quot; height=&quot;211&quot; /&gt;
-  &lt;figcaption&gt;Diagram of The Elm Architecture&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;h3&gt;Dealing with effects&lt;/h3&gt;
-&lt;p&gt;The runtime also handles all of the effects that your application produces or reacts to.
+Once initialized ​ <mark>the program executes a continuous loop, taking in actions from the user, changing the state and representing the changes in the view.</mark> ​</p>
+<figure>
+  <img src="/files/elm/architecture-overview-diagram.svg" alt="Diagram of The Elm Architecture" width="320" height="211" />
+  <figcaption>Diagram of The Elm Architecture</figcaption>
+</figure>
+<h3>Dealing with effects</h3>
+<p>The runtime also handles all of the effects that your application produces or reacts to.
 Effects are interactions with the outside world, like loading and sending data via AJAX or writing to the local storage of the browser.
-Websocket communication and interoperating with JavaScript are also effects.&lt;/p&gt;
-&lt;p&gt;To enables these types of interactions, Elm offers the standard &lt;code&gt;Html.program&lt;/code&gt;, which expands the capabilities of the &lt;code&gt;Html.beginnerProgram&lt;/code&gt;.
-As this is a topic on its own, we will take a closer look at the standard program in one of the upcoming articles.&lt;/p&gt;
-&lt;h2&gt;Summary&lt;/h2&gt;
-&lt;p&gt;With that you have seen the basic principles of The Elm Architecture.
-To summarize the above: An Elm application starts off with an initial &lt;em&gt;model&lt;/em&gt;.
-It is the input to the &lt;em&gt;view&lt;/em&gt; that represents the &lt;em&gt;model&lt;/em&gt;.
-The user interacts with the view which produces messages, which are handled by the &lt;em&gt;update&lt;/em&gt; function.
-This function is the only place your &lt;em&gt;model&lt;/em&gt; gets transformed.
-The &lt;em&gt;runtime&lt;/em&gt; encapsulates all of these parts and provides a continuous loop of these interactions.&lt;/p&gt;
-&lt;p&gt;With this, ​ &lt;mark&gt;The Elm Architecture offers a solid foundation for modularity, code reuse and testing.&lt;/mark&gt; ​
-It also facilitates onboarding new developers as the basic structure of every Elm app is the same.&lt;/p&gt;
-&lt;p&gt;As the &lt;a href=&quot;https://guide.elm-lang.org/architecture&quot;&gt;official guide&lt;/a&gt; states:
+Websocket communication and interoperating with JavaScript are also effects.</p>
+<p>To enables these types of interactions, Elm offers the standard <code>Html.program</code>, which expands the capabilities of the <code>Html.beginnerProgram</code>.
+As this is a topic on its own, we will take a closer look at the standard program in one of the upcoming articles.</p>
+<h2>Summary</h2>
+<p>With that you have seen the basic principles of The Elm Architecture.
+To summarize the above: An Elm application starts off with an initial <em>model</em>.
+It is the input to the <em>view</em> that represents the <em>model</em>.
+The user interacts with the view which produces messages, which are handled by the <em>update</em> function.
+This function is the only place your <em>model</em> gets transformed.
+The <em>runtime</em> encapsulates all of these parts and provides a continuous loop of these interactions.</p>
+<p>With this, ​ <mark>The Elm Architecture offers a solid foundation for modularity, code reuse and testing.</mark> ​
+It also facilitates onboarding new developers as the basic structure of every Elm app is the same.</p>
+<p>As the <a href="https://guide.elm-lang.org/architecture">official guide</a> states:
 “Even if you ultimately cannot use Elm at work yet, you will get a lot out of using Elm and internalizing this pattern.”
 If this motivates you to get your hands on some code, try the Elm Architecture tutorial offered by the guide.
-It helps to internalize and solidify your knowledge of this simple, yet powerful structure.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+It helps to internalize and solidify your knowledge of this simple, yet powerful structure.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

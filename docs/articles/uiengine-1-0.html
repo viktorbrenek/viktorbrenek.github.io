@@ -658,79 +658,79 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">UIengine 1.0</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>UIengineering,Design Systems,Frontend development</a></span></div><p class="acontent">&lt;petr-brenek&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">UIengine 1.0</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>UIengineering,Design Systems,Frontend development</a></span></div><petr-brenek>
 Ahoj
-&lt;/petr-brenek&gt;
-&lt;p&gt;The &lt;a href=&quot;https://github.com/dennisreimann/uiengine&quot;&gt;UIengine&lt;/a&gt; started out as a tool to build pattern libraries and documentation for design systems.
-My goal was to build something I could reuse in different projects, independent of the technologies used (e.g. templating languages).&lt;/p&gt;
-&lt;p&gt;Though the purpose is still the same, the tool has grown a lot and became more versatile during the last one and a half years.
-&lt;mark&gt;Now I am releasing the UIengine v1.0 to mark a public stable release and open it up for contributions.&lt;/mark&gt;&lt;/p&gt;
-&lt;h2&gt;A workbench for UI-driven development&lt;/h2&gt;
-&lt;p&gt;When I started working on the UIengine there were already similar tools:
-&lt;a href=&quot;https://fractal.build/&quot;&gt;Fractal&lt;/a&gt; and &lt;a href=&quot;http://patternlab.io/&quot;&gt;PatternLab&lt;/a&gt; being the well-known ones –
-in the meantime &lt;a href=&quot;https://storybook.js.org/&quot;&gt;Storybook&lt;/a&gt; also became a popular solution for component-driven development. So why reinvent the wheel?&lt;/p&gt;
-&lt;p&gt;Most of the existing tools focussed on the component development, but lacked ways to also provide good documentation.
+</petr-brenek>
+<p>The <a href="https://github.com/dennisreimann/uiengine">UIengine</a> started out as a tool to build pattern libraries and documentation for design systems.
+My goal was to build something I could reuse in different projects, independent of the technologies used (e.g. templating languages).</p>
+<p>Though the purpose is still the same, the tool has grown a lot and became more versatile during the last one and a half years.
+<mark>Now I am releasing the UIengine v1.0 to mark a public stable release and open it up for contributions.</mark></p>
+<h2>A workbench for UI-driven development</h2>
+<p>When I started working on the UIengine there were already similar tools:
+<a href="https://fractal.build/">Fractal</a> and <a href="http://patternlab.io/">PatternLab</a> being the well-known ones –
+in the meantime <a href="https://storybook.js.org/">Storybook</a> also became a popular solution for component-driven development. So why reinvent the wheel?</p>
+<p>Most of the existing tools focussed on the component development, but lacked ways to also provide good documentation.
 Some were limited to using a specific templating language or framework, which was suboptimal for me:
 As a freelancer I am working on many projects and each one has its own set of constraints and requirements.
-I wanted to build a tool with an open source license, which I could use and extend with every project I work on.&lt;/p&gt;
-&lt;h3&gt;The UI-driven workflow&lt;/h3&gt;
-&lt;p&gt;As I am working in larger organisations with multiple teams and apps nowadays, we often had the same needs:
-&lt;mark&gt;Providing a consistent user interface throughout all the products touchpoints while keeping quality high and development fast.&lt;/mark&gt;
-“Design systems” have become a popular term for a solution to this – and the UIengine supports our workflow of creating living design systems just fine.&lt;/p&gt;
-&lt;figure&gt;
-  &lt;img src=&quot;/files/uiengine/workflow.png&quot; alt=&quot;Our workflow for UI-driven development&quot; width=&quot;1280&quot; /&gt;
-  &lt;figcaption&gt;Our workflow for UI-driven development&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;We try to avoid creating deliverables (dead documents, e.g. graphic layouts or non-interaction wireframes) as much as possible.
+I wanted to build a tool with an open source license, which I could use and extend with every project I work on.</p>
+<h3>The UI-driven workflow</h3>
+<p>As I am working in larger organisations with multiple teams and apps nowadays, we often had the same needs:
+<mark>Providing a consistent user interface throughout all the products touchpoints while keeping quality high and development fast.</mark>
+“Design systems” have become a popular term for a solution to this – and the UIengine supports our workflow of creating living design systems just fine.</p>
+<figure>
+  <img src="/files/uiengine/workflow.png" alt="Our workflow for UI-driven development" width="1280" />
+  <figcaption>Our workflow for UI-driven development</figcaption>
+</figure>
+<p>We try to avoid creating deliverables (dead documents, e.g. graphic layouts or non-interaction wireframes) as much as possible.
 What are we doing instead? We try to bring most of the design and development workflow to the browser:
 The browser tooling has become pretty nice and here we have all the tools that also designers can benefit from:
-Layout via CSS grid and flexbox, variables via custom properties and animations done with CSS and JavaScript.&lt;/p&gt;
-&lt;p&gt;The UIengine is the central hub where most of the development takes place:
+Layout via CSS grid and flexbox, variables via custom properties and animations done with CSS and JavaScript.</p>
+<p>The UIengine is the central hub where most of the development takes place:
 The components and templates get implemented with the technology each team is using.
-We use the previews to display variants of the components and for prototyping on the template level.&lt;/p&gt;
-&lt;p&gt;When components and templates are done, we ship them as build artefacts (NPM packages) to the teams that consume the design system.
-There is also the &lt;a href=&quot;https://github.com/brainly/html-sketchapp&quot;&gt;html-sketchapp&lt;/a&gt; integration, which generates a Sketch library from the component code.&lt;/p&gt;
-&lt;p&gt;For the development there are a lot of useful features under the cover:
-One of my favorites being that the UIengine supports generating documentation for React PropTypes from the code automatically.&lt;/p&gt;
-&lt;figure&gt;
-  &lt;a href=&quot;/files/uiengine/property-extraction.gif&quot;&gt;
-    &lt;img src=&quot;/files/uiengine/property-extraction.gif&quot; alt=&quot;The UIengine extracts React PropTypes for documentation&quot; width=&quot;1332&quot; /&gt;
-  &lt;/a&gt;
-  &lt;figcaption&gt;The UIengine extracts React PropTypes for documentation&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Besides that, features like scaffolding for components and documentation pages give you an extra productivity boost.
+We use the previews to display variants of the components and for prototyping on the template level.</p>
+<p>When components and templates are done, we ship them as build artefacts (NPM packages) to the teams that consume the design system.
+There is also the <a href="https://github.com/brainly/html-sketchapp">html-sketchapp</a> integration, which generates a Sketch library from the component code.</p>
+<p>For the development there are a lot of useful features under the cover:
+One of my favorites being that the UIengine supports generating documentation for React PropTypes from the code automatically.</p>
+<figure>
+  <a href="/files/uiengine/property-extraction.gif">
+    <img src="/files/uiengine/property-extraction.gif" alt="The UIengine extracts React PropTypes for documentation" width="1332" />
+  </a>
+  <figcaption>The UIengine extracts React PropTypes for documentation</figcaption>
+</figure>
+<p>Besides that, features like scaffolding for components and documentation pages give you an extra productivity boost.
 Also when building a responsive website or app it is very handy to see multiple breakpoints or viewports at once (as shown in the Tasty BBQ sample project screenshot below).
-In addition to that the UIengine has support for creating design systems that require themeing, which can be used when working on white label sites.&lt;/p&gt;
-&lt;h2&gt;Getting started and demos&lt;/h2&gt;
-&lt;p&gt;I have spent a lot of time on trying to provide good documentation.
+In addition to that the UIengine has support for creating design systems that require themeing, which can be used when working on white label sites.</p>
+<h2>Getting started and demos</h2>
+<p>I have spent a lot of time on trying to provide good documentation.
 As one of the projects main purposes is to make it fun and easy to write docs, it makes sense that the
-&lt;a href=&quot;https://uiengine.uix.space/&quot;&gt;documentation site&lt;/a&gt; is generated with the UIengine itself.&lt;/p&gt;
-&lt;p&gt;There are a couple of resources that can get you started:
+<a href="https://uiengine.uix.space/">documentation site</a> is generated with the UIengine itself.</p>
+<p>There are a couple of resources that can get you started:
 The command for initializing a new project has the option to generate some demo content.
-Use this to try the UIengine yourself and get your hands dirty quickly:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;hljs-comment&quot;&gt;# setup an empty project&lt;/span&gt;
-mkdir uiengine-demo &amp;amp;&amp;amp; &lt;span class=&quot;hljs-built_in&quot;&gt;cd&lt;/span&gt; uiengine-demo &amp;amp;&amp;amp; npm init -y
+Use this to try the UIengine yourself and get your hands dirty quickly:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># setup an empty project</span>
+mkdir uiengine-demo &amp;&amp; <span class="hljs-built_in">cd</span> uiengine-demo &amp;&amp; npm init -y
 
-&lt;span class=&quot;hljs-comment&quot;&gt;# install the dependencies&lt;/span&gt;
+<span class="hljs-comment"># install the dependencies</span>
 npm install --save-dev @uiengine/core @uiengine/adapter-html
 
-&lt;span class=&quot;hljs-comment&quot;&gt;# initialize the demo project&lt;/span&gt;
+<span class="hljs-comment"># initialize the demo project</span>
 npx uiengine init --demo
 
-&lt;span class=&quot;hljs-comment&quot;&gt;# build and start the dev server&lt;/span&gt;
+<span class="hljs-comment"># build and start the dev server</span>
 npx uiengine build --serve --watch
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In case you want to see a full-fledged example of a website featuring a design system, there is the
-&lt;a href=&quot;https://github.com/dennisreimann/uiengine-sample-react&quot;&gt;Tasty BBQ sample project&lt;/a&gt;:
-The &lt;a href=&quot;https://uiengine-sample-react.uix.space/&quot;&gt;website&lt;/a&gt; is build with React/Next.js.
-It utilizes the UIengine to generate the &lt;a href=&quot;https://uiengine-sample-react.uix.space/design-system/&quot;&gt;corresponding design system documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;figure&gt;
-  &lt;a href=&quot;https://uiengine-sample-react.uix.space/&quot;&gt;
-    &lt;img src=&quot;/files/uiengine/react-sample.jpg&quot; alt=&quot;The Tasty BBQ sample project for the UIengine&quot; width=&quot;1280&quot; /&gt;
-  &lt;/a&gt;
-  &lt;figcaption&gt;The Tasty BBQ sample project for the UIengine&lt;/figcaption&gt;
-&lt;/figure&gt;
-&lt;p&gt;Please head on over to the &lt;a href=&quot;https://github.com/dennisreimann/uiengine&quot;&gt;UIengine repository on GitHub&lt;/a&gt; and star it if you like the project.
-I would also be very happy if you could help me &lt;a href=&quot;http://twitter.com/home?status=The%20UIengine%20is%20a%20workbench%20for%20UI-driven%20development.%20v1.0%20has%20been%20released%20and%20it%20looks%20pretty%20nice%21%20https%3A%2F%2Fgithub.com%2Fdennisreimann%2Fuiengine%20%23Frontend%20%23DesignSystems&quot;&gt;spread the word&lt;/a&gt; about this release.
-Thanks and enjoy the project! 😀&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</code></pre>
+<p>In case you want to see a full-fledged example of a website featuring a design system, there is the
+<a href="https://github.com/dennisreimann/uiengine-sample-react">Tasty BBQ sample project</a>:
+The <a href="https://uiengine-sample-react.uix.space/">website</a> is build with React/Next.js.
+It utilizes the UIengine to generate the <a href="https://uiengine-sample-react.uix.space/design-system/">corresponding design system documentation</a>.</p>
+<figure>
+  <a href="https://uiengine-sample-react.uix.space/">
+    <img src="/files/uiengine/react-sample.jpg" alt="The Tasty BBQ sample project for the UIengine" width="1280" />
+  </a>
+  <figcaption>The Tasty BBQ sample project for the UIengine</figcaption>
+</figure>
+<p>Please head on over to the <a href="https://github.com/dennisreimann/uiengine">UIengine repository on GitHub</a> and star it if you like the project.
+I would also be very happy if you could help me <a href="http://twitter.com/home?status=The%20UIengine%20is%20a%20workbench%20for%20UI-driven%20development.%20v1.0%20has%20been%20released%20and%20it%20looks%20pretty%20nice%21%20https%3A%2F%2Fgithub.com%2Fdennisreimann%2Fuiengine%20%23Frontend%20%23DesignSystems">spread the word</a> about this release.
+Thanks and enjoy the project! 😀</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

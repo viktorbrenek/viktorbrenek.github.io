@@ -658,89 +658,89 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (3)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,Union Type</a></span></div><p class="acontent">&lt;p&gt;Now that we have already looked at the data structures &lt;a href=&quot;/articles/elm-data-structures-list-array-set-dict.html&quot;&gt;lists, arrays, sets and dictionaries&lt;/a&gt; as well as &lt;a href=&quot;/articles/elm-data-structures-record-tuple.html&quot;&gt;records and tuples&lt;/a&gt;, there is only one more basic structure we need to talk about: The so called &lt;em&gt;Union Type&lt;/em&gt;.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;p&gt;By defining a union type one always creates a new type that did not exist before. As opposed to the other data structures we already covered, a union type can be an amalgamation of different types – but it does not have to be.&lt;/p&gt;
-&lt;p&gt;In its simplest form it can be thought of as an enumeration:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;PullRequestState&lt;/span&gt;
-    = &lt;span class=&quot;hljs-type&quot;&gt;Proposed&lt;/span&gt;
-    | &lt;span class=&quot;hljs-type&quot;&gt;Rejected&lt;/span&gt;
-    | &lt;span class=&quot;hljs-type&quot;&gt;Merged&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This statement creates the type PullRequestState which can have one of the three mentioned values. These values are also called &lt;em&gt;tags&lt;/em&gt; and are used to distinguish between the possibilities when handling the union type in a case expression. Depending on the tag, different actions can be performed:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;branchColor&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;PullRequestState&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;branchColor&lt;/span&gt; state =
-    &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; state &lt;span class=&quot;hljs-keyword&quot;&gt;of&lt;/span&gt;
-        &lt;span class=&quot;hljs-type&quot;&gt;Proposed&lt;/span&gt; -&amp;gt;
-            &lt;span class=&quot;hljs-string&quot;&gt;&quot;yellow&quot;&lt;/span&gt;
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Data Structures (3)</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Data structures,Union Type</a></span></div><p>Now that we have already looked at the data structures <a href="/articles/elm-data-structures-list-array-set-dict.html">lists, arrays, sets and dictionaries</a> as well as <a href="/articles/elm-data-structures-record-tuple.html">records and tuples</a>, there is only one more basic structure we need to talk about: The so called <em>Union Type</em>.</p>
+<div id="more"></div>
+<p>By defining a union type one always creates a new type that did not exist before. As opposed to the other data structures we already covered, a union type can be an amalgamation of different types – but it does not have to be.</p>
+<p>In its simplest form it can be thought of as an enumeration:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-type">PullRequestState</span>
+    = <span class="hljs-type">Proposed</span>
+    | <span class="hljs-type">Rejected</span>
+    | <span class="hljs-type">Merged</span>
+</code></pre>
+<p>This statement creates the type PullRequestState which can have one of the three mentioned values. These values are also called <em>tags</em> and are used to distinguish between the possibilities when handling the union type in a case expression. Depending on the tag, different actions can be performed:</p>
+<pre><code class="language-elm"><span class="hljs-title">branchColor</span> : <span class="hljs-type">PullRequestState</span> -&gt; <span class="hljs-type">String</span>
+<span class="hljs-title">branchColor</span> state =
+    <span class="hljs-keyword">case</span> state <span class="hljs-keyword">of</span>
+        <span class="hljs-type">Proposed</span> -&gt;
+            <span class="hljs-string">"yellow"</span>
 
-        &lt;span class=&quot;hljs-type&quot;&gt;Rejected&lt;/span&gt; -&amp;gt;
-            &lt;span class=&quot;hljs-string&quot;&gt;&quot;red&quot;&lt;/span&gt;
+        <span class="hljs-type">Rejected</span> -&gt;
+            <span class="hljs-string">"red"</span>
 
-        &lt;span class=&quot;hljs-type&quot;&gt;Merged&lt;/span&gt; -&amp;gt;
-            &lt;span class=&quot;hljs-string&quot;&gt;&quot;green&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So far, so unexciting – the fun begins when we start using compositions of different types. This way we can think of &lt;a href=&quot;http://elm-lang.org/guide/model-the-problem&quot;&gt;union types as state machines&lt;/a&gt; or even various “classes” of entities.&lt;/p&gt;
-&lt;p&gt;Let us examine this with an example in which we model the availability of a product:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;module&lt;/span&gt; Main &lt;span class=&quot;hljs-keyword&quot;&gt;exposing&lt;/span&gt; (..)
-
-
-&lt;span class=&quot;hljs-keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Availability&lt;/span&gt;
-    = &lt;span class=&quot;hljs-type&quot;&gt;SoldOut&lt;/span&gt;
-    | &lt;span class=&quot;hljs-type&quot;&gt;InStock&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;
-    | &lt;span class=&quot;hljs-type&quot;&gt;Reordered&lt;/span&gt; ( &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;, &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt; )
-    | &lt;span class=&quot;hljs-type&quot;&gt;Announced&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
+        <span class="hljs-type">Merged</span> -&gt;
+            <span class="hljs-string">"green"</span>
+</code></pre>
+<p>So far, so unexciting – the fun begins when we start using compositions of different types. This way we can think of <a href="http://elm-lang.org/guide/model-the-problem">union types as state machines</a> or even various “classes” of entities.</p>
+<p>Let us examine this with an example in which we model the availability of a product:</p>
+<pre><code class="language-elm"><span class="hljs-keyword">module</span> Main <span class="hljs-keyword">exposing</span> (..)
 
 
-&lt;span class=&quot;hljs-title&quot;&gt;displayStatus&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Availability&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;String&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;displayStatus&lt;/span&gt; availability =
-    &lt;span class=&quot;hljs-keyword&quot;&gt;case&lt;/span&gt; availability &lt;span class=&quot;hljs-keyword&quot;&gt;of&lt;/span&gt;
-        &lt;span class=&quot;hljs-type&quot;&gt;SoldOut&lt;/span&gt; -&amp;gt;
-            &lt;span class=&quot;hljs-string&quot;&gt;&quot;Sold out&quot;&lt;/span&gt;
+<span class="hljs-keyword">type</span> <span class="hljs-type">Availability</span>
+    = <span class="hljs-type">SoldOut</span>
+    | <span class="hljs-type">InStock</span> <span class="hljs-type">Int</span>
+    | <span class="hljs-type">Reordered</span> ( <span class="hljs-type">Int</span>, <span class="hljs-type">Int</span> )
+    | <span class="hljs-type">Announced</span> <span class="hljs-type">String</span>
 
-        &lt;span class=&quot;hljs-type&quot;&gt;InStock&lt;/span&gt; amount -&amp;gt;
-            &lt;span class=&quot;hljs-string&quot;&gt;&quot;In stock: &quot;&lt;/span&gt; ++ (toString amount) ++ &lt;span class=&quot;hljs-string&quot;&gt;&quot; left.&quot;&lt;/span&gt;
 
-        &lt;span class=&quot;hljs-type&quot;&gt;Reordered&lt;/span&gt; days -&amp;gt;
-            &lt;span class=&quot;hljs-keyword&quot;&gt;let&lt;/span&gt;
+<span class="hljs-title">displayStatus</span> : <span class="hljs-type">Availability</span> -&gt; <span class="hljs-type">String</span>
+<span class="hljs-title">displayStatus</span> availability =
+    <span class="hljs-keyword">case</span> availability <span class="hljs-keyword">of</span>
+        <span class="hljs-type">SoldOut</span> -&gt;
+            <span class="hljs-string">"Sold out"</span>
+
+        <span class="hljs-type">InStock</span> amount -&gt;
+            <span class="hljs-string">"In stock: "</span> ++ (toString amount) ++ <span class="hljs-string">" left."</span>
+
+        <span class="hljs-type">Reordered</span> days -&gt;
+            <span class="hljs-keyword">let</span>
                 min =
                     toString (first days)
 
                 max =
                     toString (second days)
-            &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt;
-                &lt;span class=&quot;hljs-string&quot;&gt;&quot;Available again in &quot;&lt;/span&gt; ++ min ++ &lt;span class=&quot;hljs-string&quot;&gt;&quot; to &quot;&lt;/span&gt; ++ max ++ &lt;span class=&quot;hljs-string&quot;&gt;&quot; days.&quot;&lt;/span&gt;
+            <span class="hljs-keyword">in</span>
+                <span class="hljs-string">"Available again in "</span> ++ min ++ <span class="hljs-string">" to "</span> ++ max ++ <span class="hljs-string">" days."</span>
 
-        &lt;span class=&quot;hljs-type&quot;&gt;Announced&lt;/span&gt; date -&amp;gt;
-            &lt;span class=&quot;hljs-string&quot;&gt;&quot;Available on &quot;&lt;/span&gt; ++ date ++ &lt;span class=&quot;hljs-string&quot;&gt;&quot;.&quot;&lt;/span&gt;
+        <span class="hljs-type">Announced</span> date -&gt;
+            <span class="hljs-string">"Available on "</span> ++ date ++ <span class="hljs-string">"."</span>
 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This way we have the option of associating extra information to the tags. And these can even be different types of values, like in this example …&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;an integer representing the amount of items left for the &lt;code&gt;InStock&lt;/code&gt; tag&lt;/li&gt;
-&lt;li&gt;a tuple of integers defining the range of days until the product will be available again for the &lt;code&gt;Reordered&lt;/code&gt; tag&lt;/li&gt;
-&lt;li&gt;a string representing the publishing date for the &lt;code&gt;Announced&lt;/code&gt; tag&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;displayStatus&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;InStock&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;42&lt;/span&gt;)
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;In stock: 42 left.&quot; : String&lt;/span&gt;
+</code></pre>
+<p>This way we have the option of associating extra information to the tags. And these can even be different types of values, like in this example …</p>
+<ul>
+<li>an integer representing the amount of items left for the <code>InStock</code> tag</li>
+<li>a tuple of integers defining the range of days until the product will be available again for the <code>Reordered</code> tag</li>
+<li>a string representing the publishing date for the <code>Announced</code> tag</li>
+</ul>
+<pre><code class="language-elm"><span class="hljs-title">displayStatus</span> (<span class="hljs-type">InStock</span> <span class="hljs-number">42</span>)
+<span class="hljs-comment">-- "In stock: 42 left." : String</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;displayStatus&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;Reordered&lt;/span&gt; (&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;,&lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;))
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;Available again in 3 to 5 days.&quot; : String&lt;/span&gt;
+<span class="hljs-title">displayStatus</span> (<span class="hljs-type">Reordered</span> (<span class="hljs-number">3</span>,<span class="hljs-number">5</span>))
+<span class="hljs-comment">-- "Available again in 3 to 5 days." : String</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;displayStatus&lt;/span&gt; (&lt;span class=&quot;hljs-type&quot;&gt;Announced&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;2016-12-24&quot;&lt;/span&gt;)
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &quot;Available on 2016-12-24.&quot; : String&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Each of these items might have a different shape, but as they share the same union type, we can combine them and have a unified way of handling them. For instance we can create a list of &lt;code&gt;Availability&lt;/code&gt; items and display their states – regardless of their particular form:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;availabilities&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;hljs-type&quot;&gt;Availability&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;availabilities&lt;/span&gt; =
-    [ &lt;span class=&quot;hljs-type&quot;&gt;SoldOut&lt;/span&gt;
-    , &lt;span class=&quot;hljs-type&quot;&gt;InStock&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;42&lt;/span&gt;
-    , &lt;span class=&quot;hljs-type&quot;&gt;Reordered&lt;/span&gt; ( &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt; )
+<span class="hljs-title">displayStatus</span> (<span class="hljs-type">Announced</span> <span class="hljs-string">"2016-12-24"</span>)
+<span class="hljs-comment">-- "Available on 2016-12-24." : String</span>
+</code></pre>
+<p>Each of these items might have a different shape, but as they share the same union type, we can combine them and have a unified way of handling them. For instance we can create a list of <code>Availability</code> items and display their states – regardless of their particular form:</p>
+<pre><code class="language-elm"><span class="hljs-title">availabilities</span> : <span class="hljs-type">List</span> <span class="hljs-type">Availability</span>
+<span class="hljs-title">availabilities</span> =
+    [ <span class="hljs-type">SoldOut</span>
+    , <span class="hljs-type">InStock</span> <span class="hljs-number">42</span>
+    , <span class="hljs-type">Reordered</span> ( <span class="hljs-number">3</span>, <span class="hljs-number">5</span> )
     ]
 
-&lt;span class=&quot;hljs-type&quot;&gt;List&lt;/span&gt;.map displayStatus availabilities
-&lt;span class=&quot;hljs-comment&quot;&gt;-- [&quot;Sold out&quot;,&quot;In stock: 42 left.&quot;,&quot;Available again in 3 to 5 days.&quot;] : List String&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This gives us an easy way of handling cases in which we would have used &lt;a href=&quot;https://github.com/Dobiasd/articles/blob/master/from_oop_to_fp_-_inheritance_and_the_expression_problem.md&quot;&gt;subclasses, when thinking in OOP terms&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;That’s it: Now you know of the basic data structures in Elm. We will continue this series with looking at the type &lt;code&gt;Maybe&lt;/code&gt; and examining pattern matching in more depth. After having covered these fundamentals we will dive into more advanced topics :)&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+<span class="hljs-type">List</span>.map displayStatus availabilities
+<span class="hljs-comment">-- ["Sold out","In stock: 42 left.","Available again in 3 to 5 days."] : List String</span>
+</code></pre>
+<p>This gives us an easy way of handling cases in which we would have used <a href="https://github.com/Dobiasd/articles/blob/master/from_oop_to_fp_-_inheritance_and_the_expression_problem.md">subclasses, when thinking in OOP terms</a>.</p>
+<p>That’s it: Now you know of the basic data structures in Elm. We will continue this series with looking at the type <code>Maybe</code> and examining pattern matching in more depth. After having covered these fundamentals we will dive into more advanced topics :)</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>

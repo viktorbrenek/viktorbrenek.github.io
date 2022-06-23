@@ -658,49 +658,49 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="https://viktorbrenek.github.io/blog">Blog</a><a class="name" href="https://viktorbrenek.github.io">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Type Annotations</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Maybe</a></span></div><p class="acontent">&lt;p&gt;As Elm is a statically typed language, everything has a type – even &lt;a href=&quot;elm-maybe.html&quot;&gt;nothing&lt;/a&gt;. Type annotations are an optional feature and the compiler can infer the types of your functions and value. Even though you do not have to write the type annotations yourself you probably should: They document your code and make it more explicit.&lt;/p&gt;
-&lt;div id=&quot;more&quot;&gt;&lt;/div&gt;
-&lt;h3&gt;What are type annotations?&lt;/h3&gt;
-&lt;p&gt;When I wrote about &lt;a href=&quot;elm-functions.html&quot;&gt;functions in Elm&lt;/a&gt; I already briefly touched on type annotations, but there is much more to them. To start lets recap quickly: &lt;strong&gt;Type annotations describe the input and output types of functions.&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;add&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;add&lt;/span&gt; a b =
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Type Annotations</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Maybe</a></span></div><p>As Elm is a statically typed language, everything has a type – even <a href="elm-maybe.html">nothing</a>. Type annotations are an optional feature and the compiler can infer the types of your functions and value. Even though you do not have to write the type annotations yourself you probably should: They document your code and make it more explicit.</p>
+<div id="more"></div>
+<h3>What are type annotations?</h3>
+<p>When I wrote about <a href="elm-functions.html">functions in Elm</a> I already briefly touched on type annotations, but there is much more to them. To start lets recap quickly: <strong>Type annotations describe the input and output types of functions.</strong></p>
+<pre><code class="language-elm"><span class="hljs-title">add</span> : <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span>
+<span class="hljs-title">add</span> a b =
     a + b
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It starts with the function name which is separated from the argument and return types by a colon. The type of the return value is not any different than the argument types, it is just the last element of the list:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;function: add&amp;gt; : Int      -&amp;gt; Int      -&amp;gt; Int
+</code></pre>
+<p>It starts with the function name which is separated from the argument and return types by a colon. The type of the return value is not any different than the argument types, it is just the last element of the list:</p>
+<pre><code>&lt;function: add&gt; : Int      -&gt; Int      -&gt; Int
 | function name | type arg1 | type arg2 | type result |
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3&gt;Partial application and currying&lt;/h3&gt;
-&lt;p&gt;There is a good reason for the return type not being any different from the arguments: In Elm, functions are curried by default. In case they do not receive all arguments listed in the type annotation, they will return a partially applied function. To illustrate this let’s use our &lt;code&gt;add&lt;/code&gt; function from above and let it capture the first argument:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;add2&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Int&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;add2&lt;/span&gt; = add &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;
+</code></pre>
+<h3>Partial application and currying</h3>
+<p>There is a good reason for the return type not being any different from the arguments: In Elm, functions are curried by default. In case they do not receive all arguments listed in the type annotation, they will return a partially applied function. To illustrate this let’s use our <code>add</code> function from above and let it capture the first argument:</p>
+<pre><code class="language-elm"><span class="hljs-title">add2</span> : <span class="hljs-type">Int</span> -&gt; <span class="hljs-type">Int</span>
+<span class="hljs-title">add2</span> = add <span class="hljs-number">2</span>
 
-&lt;span class=&quot;hljs-title&quot;&gt;add2&lt;/span&gt; &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;
-&lt;span class=&quot;hljs-comment&quot;&gt;-- 5 : Int&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The function &lt;code&gt;add2&lt;/code&gt; is created by applying the value &lt;code&gt;2&lt;/code&gt; to the &lt;code&gt;add&lt;/code&gt; function. This returns a new function that only needs one argument to be fullfilled.&lt;/p&gt;
-&lt;p&gt;As a matter of fact, every function in Elm takes only one argument: Functions that look like they are taking multiple arguments are simply using single argument functions behind the scenes. This way &lt;strong&gt;type annotation are also telling you about partial application of a function&lt;/strong&gt;: If you give a function only some of its arguments the result is another function that is taking the rest of the original functions arguments.&lt;/p&gt;
-&lt;h3&gt;Optional, but strongly encouraged&lt;/h3&gt;
-&lt;p&gt;The Elm compiler can infer the types and does not need them as an explicit information. You will learn quickly though that the &lt;strong&gt;type annotations are not meant for the compiler but for yourself&lt;/strong&gt;: They let you know at a glance how many and what kinds of arguments a function expects. Therefore they are very useful for documentation purposes. And they are a kind of documentation that won’t go out of date: The compiler assures that the stated types match the function definition.&lt;/p&gt;
-&lt;p&gt;Every function in the standard library has a type annotation. Before you can publish a library on the &lt;a href=&quot;http://package.elm-lang.org/&quot;&gt;Elm Packages&lt;/a&gt; site you are required to have type annotations for your functions. This is not just nice in terms of basic documentation, but also for third-party tools and editor plugins, which can use the annotations to offer code completion or additional documentation.&lt;/p&gt;
-&lt;p&gt;Besides the documentation aspect &lt;strong&gt;you will be guided towards better code&lt;/strong&gt;: By writing and thinking about the type annotations first you define the interface of your functions: Hence you have not only to think about the types of the arguments but also their order – which is particularly interesting in terms of partial application.&lt;/p&gt;
-&lt;h3&gt;Constraining types and type variables&lt;/h3&gt;
-&lt;p&gt;In warning mode the compiler will let you know about missing type annotations and it will also present the infered annotation. This can help as a starting point for more complex type definitions &lt;em&gt;(e.g. for records)&lt;/em&gt;, nevertheless you want to end up with your own annotations: Not only are they more expressive, but you can also be more restrictive than the autogenerated annotations:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;subtract&lt;/span&gt; a b =
+<span class="hljs-title">add2</span> <span class="hljs-number">3</span>
+<span class="hljs-comment">-- 5 : Int</span>
+</code></pre>
+<p>The function <code>add2</code> is created by applying the value <code>2</code> to the <code>add</code> function. This returns a new function that only needs one argument to be fullfilled.</p>
+<p>As a matter of fact, every function in Elm takes only one argument: Functions that look like they are taking multiple arguments are simply using single argument functions behind the scenes. This way <strong>type annotation are also telling you about partial application of a function</strong>: If you give a function only some of its arguments the result is another function that is taking the rest of the original functions arguments.</p>
+<h3>Optional, but strongly encouraged</h3>
+<p>The Elm compiler can infer the types and does not need them as an explicit information. You will learn quickly though that the <strong>type annotations are not meant for the compiler but for yourself</strong>: They let you know at a glance how many and what kinds of arguments a function expects. Therefore they are very useful for documentation purposes. And they are a kind of documentation that won’t go out of date: The compiler assures that the stated types match the function definition.</p>
+<p>Every function in the standard library has a type annotation. Before you can publish a library on the <a href="http://package.elm-lang.org/">Elm Packages</a> site you are required to have type annotations for your functions. This is not just nice in terms of basic documentation, but also for third-party tools and editor plugins, which can use the annotations to offer code completion or additional documentation.</p>
+<p>Besides the documentation aspect <strong>you will be guided towards better code</strong>: By writing and thinking about the type annotations first you define the interface of your functions: Hence you have not only to think about the types of the arguments but also their order – which is particularly interesting in terms of partial application.</p>
+<h3>Constraining types and type variables</h3>
+<p>In warning mode the compiler will let you know about missing type annotations and it will also present the infered annotation. This can help as a starting point for more complex type definitions <em>(e.g. for records)</em>, nevertheless you want to end up with your own annotations: Not only are they more expressive, but you can also be more restrictive than the autogenerated annotations:</p>
+<pre><code class="language-elm"><span class="hljs-title">subtract</span> a b =
     a - b
-&lt;span class=&quot;hljs-comment&quot;&gt;-- &amp;lt;function&amp;gt; : number -&amp;gt; number -&amp;gt; number&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In this simple case the compiler infers the type &lt;code&gt;number&lt;/code&gt;. It is a &lt;em&gt;special kind of type variable*&lt;/em&gt; which can either be an &lt;code&gt;Int&lt;/code&gt; or &lt;code&gt;Float&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Type variables are used to describe more than one possible type&lt;/strong&gt;: They have lowercase names, making them easy to distinguish from concrete types, which are capitalized. When a type variable is used multiple times in an annotation, all occurrences must resolve to the same type. If you want to use different types, you have to use different names for the type variables.&lt;/p&gt;
-&lt;p&gt;Oftentimes you want to be explicit about the types that should be used. By defining a type annotation you can constrain the function to only accept concrete types:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;hljs-title&quot;&gt;subtract&lt;/span&gt; : &lt;span class=&quot;hljs-type&quot;&gt;Float&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Float&lt;/span&gt; -&amp;gt; &lt;span class=&quot;hljs-type&quot;&gt;Float&lt;/span&gt;
-&lt;span class=&quot;hljs-title&quot;&gt;subtract&lt;/span&gt; a b =
+<span class="hljs-comment">-- &lt;function&gt; : number -&gt; number -&gt; number</span>
+</code></pre>
+<p>In this simple case the compiler infers the type <code>number</code>. It is a <em>special kind of type variable*</em> which can either be an <code>Int</code> or <code>Float</code>.</p>
+<p><strong>Type variables are used to describe more than one possible type</strong>: They have lowercase names, making them easy to distinguish from concrete types, which are capitalized. When a type variable is used multiple times in an annotation, all occurrences must resolve to the same type. If you want to use different types, you have to use different names for the type variables.</p>
+<p>Oftentimes you want to be explicit about the types that should be used. By defining a type annotation you can constrain the function to only accept concrete types:</p>
+<pre><code class="language-elm"><span class="hljs-title">subtract</span> : <span class="hljs-type">Float</span> -&gt; <span class="hljs-type">Float</span> -&gt; <span class="hljs-type">Float</span>
+<span class="hljs-title">subtract</span> a b =
     a - b
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;* &lt;em&gt;Besides &lt;code&gt;number&lt;/code&gt; there are two more special cases: &lt;code&gt;comparable&lt;/code&gt; and &lt;code&gt;appendable&lt;/code&gt;. Those three &lt;strong&gt;keywords for type variables&lt;/strong&gt; define traits of values and point to a superset of possible types.&lt;/em&gt;&lt;/p&gt;
-&lt;h3&gt;More on type annotations&lt;/h3&gt;
-&lt;p&gt;Even though I described type annotations only in conjunction with functions, you can also use them for values like tuples, lists or records:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-elm&quot;&gt;coordinates : (Float, Float)
+</code></pre>
+<p>* <em>Besides <code>number</code> there are two more special cases: <code>comparable</code> and <code>appendable</code>. Those three <strong>keywords for type variables</strong> define traits of values and point to a superset of possible types.</em></p>
+<h3>More on type annotations</h3>
+<p>Even though I described type annotations only in conjunction with functions, you can also use them for values like tuples, lists or records:</p>
+<pre><code class="language-elm">coordinates : (Float, Float)
 coordinates = (53.1201749, 8.5962037)
 
 list : List number
@@ -708,7 +708,7 @@ list = [ 1, 2, 3, 4 ]
 
 rect : { width : Int, height : Int }
 rect = { width = 10, height = 20 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4&gt;Type Annotations in elm-repl&lt;/h4&gt;
-&lt;p&gt;When you try to use type annotations in the elm-repl you will get a syntax error pointing out the unexpected occurrence of the colon. This happened to me some times when I tried to copy and paste code I wanted to test in the REPL. The message is not really intuitive at first and made me wonder what was wrong. It is simply due to the fact that the elm-repl unfortunately &lt;a href=&quot;https://github.com/elm-lang/elm-repl/issues/86&quot;&gt;does not support type annotations yet&lt;/a&gt;. In case you need to test code with type annotations you have to use elm-reactor or the &lt;a href=&quot;http://elm-lang.org/try&quot;&gt;Try Environment on elm-lang.org&lt;/a&gt;.&lt;/p&gt;
-</p></main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</code></pre>
+<h4>Type Annotations in elm-repl</h4>
+<p>When you try to use type annotations in the elm-repl you will get a syntax error pointing out the unexpected occurrence of the colon. This happened to me some times when I tried to copy and paste code I wanted to test in the REPL. The message is not really intuitive at first and made me wonder what was wrong. It is simply due to the fact that the elm-repl unfortunately <a href="https://github.com/elm-lang/elm-repl/issues/86">does not support type annotations yet</a>. In case you need to test code with type annotations you have to use elm-reactor or the <a href="http://elm-lang.org/try">Try Environment on elm-lang.org</a>.</p>
+</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
