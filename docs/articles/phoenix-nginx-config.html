@@ -607,15 +607,33 @@ footer h2 {
 }
    
 .task__tag {
-  border-radius:100px;
-  padding:2px 13px;
   font-size:12px;
   cursor:pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  margin: 0.5em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+  border-radius: 2em;
+
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
+}
+
+.task__tag:hover {
+  transform: scale(1.2);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.task__tags {
+  list-style-type: none;
+  
 }
 
 .task__tag--copyright {
-  color:white;
-  background-color:orange;
+  
   font-weight: 900;
 }
  
@@ -658,7 +676,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Configuring NGINX for Phoenix applications</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Phoenix,Elixir,Nginx,Deployment,Gatling,Distillery,Tutorial,Ubuntu,Ubuntu 16,How To,Digital Ocean</a></span></div><p>The previous article about <a href="/articles/phoenix-deployment-gatling-ubuntu-digital-ocean.html">deploying Phoenix with Gatling</a> did not go into details for a proper NGINX configuration.
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Configuring NGINX for Phoenix applications</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">Phoenix</li><li class="task__tag task__tag--copyright">Elixir</li><li class="task__tag task__tag--copyright">Nginx</li><li class="task__tag task__tag--copyright">Deployment</li><li class="task__tag task__tag--copyright">Gatling</li><li class="task__tag task__tag--copyright">Distillery</li><li class="task__tag task__tag--copyright">Tutorial</li><li class="task__tag task__tag--copyright">Ubuntu</li><li class="task__tag task__tag--copyright">Ubuntu 16</li><li class="task__tag task__tag--copyright">How To</li><li class="task__tag task__tag--copyright">Digital Ocean</li></ul></span></div><p>The previous article about <a href="/articles/phoenix-deployment-gatling-ubuntu-digital-ocean.html">deploying Phoenix with Gatling</a> did not go into details for a proper NGINX configuration.
 Using NGINX as a front-end proxy for web applications is a pretty standard setup.
 There are some things to keep in mind concerning Phoenix, SSL and asset delivery and this article sums up the details.</p>
 <div id="more"></div>

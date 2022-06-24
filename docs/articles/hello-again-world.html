@@ -607,15 +607,33 @@ footer h2 {
 }
    
 .task__tag {
-  border-radius:100px;
-  padding:2px 13px;
   font-size:12px;
   cursor:pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  margin: 0.5em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+  border-radius: 2em;
+
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
+}
+
+.task__tag:hover {
+  transform: scale(1.2);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.task__tags {
+  list-style-type: none;
+  
 }
 
 .task__tag--copyright {
-  color:white;
-  background-color:orange;
+  
   font-weight: 900;
 }
  
@@ -658,7 +676,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Hello again, World</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Frontend-Entwicklung,Blog,Galeria Kaufhof,Microservices,JavaScript,Gulp</a></span></div><p>Die vergangenen zwei Jahre waren recht arbeitsintensiv, wodurch ich leider das Bloggen hier quasi aufgegeben habe. Nichtsdestotrotz gibt es über diese zwei Jahre und auch die nahe Zukunft viel Spannendes zu erzählen, so dass dies hier der Versuch eines Wiedereinstiegs seien soll.</p>
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Hello again, World</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">Frontend-Entwicklung</li><li class="task__tag task__tag--copyright">Blog</li><li class="task__tag task__tag--copyright">Galeria Kaufhof</li><li class="task__tag task__tag--copyright">Microservices</li><li class="task__tag task__tag--copyright">JavaScript</li><li class="task__tag task__tag--copyright">Gulp</li></ul></span></div><p>Die vergangenen zwei Jahre waren recht arbeitsintensiv, wodurch ich leider das Bloggen hier quasi aufgegeben habe. Nichtsdestotrotz gibt es über diese zwei Jahre und auch die nahe Zukunft viel Spannendes zu erzählen, so dass dies hier der Versuch eines Wiedereinstiegs seien soll.</p>
 <div id="more"></div>
 <h3>Was war?</h3>
 <p>Im Rahmen einer Auftragsarbeit für <a href="http://neuland-bfi.de/">neuland</a> habe ich die vergangenen 20 Monate größtenteils am Galeria Kaufhof-Relaunch gearbeitet: Unter dem Projektnamen <a href="http://galeria-kaufhof.github.io/general/2014/09/20/jump-ein-technologiesprung-bei-galeria-kaufhof/">JUMP</a> wurden sowohl der gesamte Webshop, als auch die Plattform, auf der dieser betrieben wird, von Grund auf neu entwickelt. Nach gut einem Jahr Entwicklungsarbeit, an der mehrere Entwicklungsteams und Dienstleister beteiligt waren, wurde der Online-Shop im Sommer 2015 mit der neuen Technologiebasis gerelauncht.</p>

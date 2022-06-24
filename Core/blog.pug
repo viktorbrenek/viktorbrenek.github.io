@@ -24,9 +24,9 @@ body
         h1.intro Blog
         section.blog-grid
             ul 
-                each article in mvb.articles
-                    li
-                        a(href=`articles/${article.id}.html`)= article.title
+              each article in mvb.articles
+                li
+                  a(href=`articles/${article.id}.html`)= article.title
 
     footer
         h2 Kontakt

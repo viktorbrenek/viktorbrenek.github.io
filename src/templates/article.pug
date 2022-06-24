@@ -24,12 +24,24 @@ body
         h1.atitle= mvb.article.title
         
 
-        div.task__tags
-            span.task__tag.task__tag--copyright 
-                a= mvb.article.tags
+        div
+            span
+                ul.task__tags
+                  each tag in mvb.article.tags
+                    li.task__tag.task__tag--copyright= tag
+            
 
         != mvb.article.content 
-          
+
+       
+            
+
+        
+
+      
+      
+     
+
 
     footer
         h2 Kontakt

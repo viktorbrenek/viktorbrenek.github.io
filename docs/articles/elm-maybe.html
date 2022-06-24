@@ -607,15 +607,33 @@ footer h2 {
 }
    
 .task__tag {
-  border-radius:100px;
-  padding:2px 13px;
   font-size:12px;
   cursor:pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  margin: 0.5em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+  border-radius: 2em;
+
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
+}
+
+.task__tag:hover {
+  transform: scale(1.2);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.task__tags {
+  list-style-type: none;
+  
 }
 
 .task__tag--copyright {
-  color:white;
-  background-color:orange;
+  
   font-weight: 900;
 }
  
@@ -658,7 +676,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Maybe</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend development,Maybe</a></span></div><p>Opposed to JavaScript and many other programming languages, Elm does not have the concept of <code>undefined</code> or <code>null</code> values. Of course there are cases in which variables contain nothing or functions cannot return a proper value – but instead of leaving it up to you whether or not to handle these cases, Elm makes them explicit with a type called <code>Maybe</code> and enforces the handling thereof.</p>
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm Maybe</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">Elm</li><li class="task__tag task__tag--copyright">Frontend development</li><li class="task__tag task__tag--copyright">Maybe</li></ul></span></div><p>Opposed to JavaScript and many other programming languages, Elm does not have the concept of <code>undefined</code> or <code>null</code> values. Of course there are cases in which variables contain nothing or functions cannot return a proper value – but instead of leaving it up to you whether or not to handle these cases, Elm makes them explicit with a type called <code>Maybe</code> and enforces the handling thereof.</p>
 <div id="more"></div>
 <p>The <a href="http://package.elm-lang.org/packages/elm-lang/core/3.0.0/Maybe"><code>Maybe</code></a> module contains the type as well as some helper functions for dealing with  optional arguments, error handling and records with optional fields. <code>Maybe</code> itself is a <a href="/articles/elm-data-structures-union-type.html">union type</a> type with the two constructors <code>Just</code> and <code>Nothing</code>:</p>
 <pre><code class="language-elm"><span class="hljs-keyword">type</span> <span class="hljs-type">Maybe</span> value =

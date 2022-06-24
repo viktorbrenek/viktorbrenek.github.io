@@ -607,15 +607,33 @@ footer h2 {
 }
    
 .task__tag {
-  border-radius:100px;
-  padding:2px 13px;
   font-size:12px;
   cursor:pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  margin: 0.5em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+  border-radius: 2em;
+
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
+}
+
+.task__tag:hover {
+  transform: scale(1.2);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.task__tags {
+  list-style-type: none;
+  
 }
 
 .task__tag--copyright {
-  color:white;
-  background-color:orange;
+  
   font-weight: 900;
 }
  
@@ -658,7 +676,7 @@ footer h2 {
     font-size: 40px;
   }
 }
-</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm lernen</h1><div class="task__tags"><span class="task__tag task__tag--copyright"> <a>Elm,Frontend-Entwicklung,functional-reactive,JavaScript,React,PureScript,RxJS</a></span></div><p>Vor ein paar Wochen habe ich dank <a href="https://twitter.com/naltatis">Michael</a> angefangen, mich näher mit <a href="http://elm-lang.org">Elm</a> zu beschäftigen und bin mittlerweile regelrecht begeistert. Das letzte Mal, dass ich so ein gutes Gefühl dabei hatte, etwas Neues zu lernen, ist knapp zehn Jahren her: Damals wusste man bei Rails direkt, dass man es mit etwas Besonderem zu tun hat.</p>
+</style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm lernen</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">Elm</li><li class="task__tag task__tag--copyright">Frontend-Entwicklung</li><li class="task__tag task__tag--copyright">functional-reactive</li><li class="task__tag task__tag--copyright">JavaScript</li><li class="task__tag task__tag--copyright">React</li><li class="task__tag task__tag--copyright">PureScript</li><li class="task__tag task__tag--copyright">RxJS</li></ul></span></div><p>Vor ein paar Wochen habe ich dank <a href="https://twitter.com/naltatis">Michael</a> angefangen, mich näher mit <a href="http://elm-lang.org">Elm</a> zu beschäftigen und bin mittlerweile regelrecht begeistert. Das letzte Mal, dass ich so ein gutes Gefühl dabei hatte, etwas Neues zu lernen, ist knapp zehn Jahren her: Damals wusste man bei Rails direkt, dass man es mit etwas Besonderem zu tun hat.</p>
 <div id="more"></div>
 <p>In 2015 ist die funktionale Programmierung auch stärker ins Frontend vorgerückt und die sich anschließende Paradigmen beeinflußen zunehmend JavaScript und seine Frameworks: <a href="http://www.purescript.org/">PureScript</a> und <a href="https://github.com/ReactiveX/RxJS">RxJS</a> sind Beispiele für oft eingesetzte Sprachen und Bibliotheken, welche auf den Konzepten der funktional-reaktiven Programmierung fußen. <a href="https://facebook.github.io/react/">React</a> und die Bibliotheken in seinem Ökosystem setzen auf <a href="http://staltz.com/unidirectional-user-interface-architectures.html">unidirektionalen Datenfluß</a> und es ist kein Geheimnis, dass <a href="http://redux.js.org/">Redux</a> - die mittlerweile als Gold-Standard bezeichnete Implementierung des Flux-Patterns - der <a href="https://gist.github.com/evancz/2b2ba366cae1887fe621">Elm-Architektur</a> nachempfunden wurden.</p>
 <h3>Was ist Elm?</h3>

@@ -315,15 +315,33 @@ footer h2 {
 }
    
 .task__tag {
-  border-radius:100px;
-  padding:2px 13px;
   font-size:12px;
   cursor:pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  margin: 0.5em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+  border-radius: 2em;
+
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
+}
+
+.task__tag:hover {
+  transform: scale(1.2);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.task__tags {
+  list-style-type: none;
+  
 }
 
 .task__tag--copyright {
-  color:white;
-  background-color:orange;
+  
   font-weight: 900;
 }
  
