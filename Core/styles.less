@@ -168,7 +168,7 @@ menu {
   width: 100%;
   top: 0;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.262);
+  background-color: rgba(0, 0, 0, 0.750);
   z-index:999;
 }
 
@@ -185,13 +185,14 @@ menu a {
 
 .grid {
   display: -ms-grid;
-  display: grid;
+  
   -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
   grid-template-columns: repeat(6, 1fr);
   grid-row-gap: 1.5rem;
   grid-column-gap: 1.5rem;
   margin: 0 auto;
   max-width: 150rem;
+  min-height: 100vh;
 }
 
 body {
@@ -339,9 +340,6 @@ footer h2 {
 
 
 
-
-
-
 @media (max-width: 960px) {
   :root {
     font-size: 9px;
@@ -388,6 +386,8 @@ footer h2 {
     margin: auto calc(50% - 50vw);
   }
 }
+
+
 
 @media (min-width: 4000px) {
   :root {

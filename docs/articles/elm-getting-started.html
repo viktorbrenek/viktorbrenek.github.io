@@ -1,4 +1,4 @@
-<!DOCTYPE html><head><style>/* Webfont: LatoLatin-Black */@font-face {
+<!DOCTYPE html><head><title>Viktor Břenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Petr Břenek"><meta name="description" content="Osobní blog a portfolio"><meta property="og:image" content="http://viktorbrenek.github.io/assets/images/modely.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><style>/* Webfont: LatoLatin-Black */@font-face {
     font-family: 'LatoLatinWebBlack';
     src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot'); /* IE9 Compat Modes */
     src: url('src/fonts/LatoLatin/fonts/LatoLatin-Black.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -290,7 +290,9 @@ body {
 .size48{ font-size: 48px; }
 .size60{ font-size: 60px; }
 .size72{ font-size: 72px; }
-.size90{ font-size: 90px; }body {
+.size90{ font-size: 90px; }@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+body {
   background-color: #3d3f41;
   font-family: "Lato", sans-serif;
   color: #c7c7b0;
@@ -302,7 +304,7 @@ h1 {
   display: block;
   font-size: 4.5rem;
   margin-block-start: 0.67em;
-  margin-block-end: 0.67em;
+
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
@@ -433,7 +435,7 @@ menu {
   width: 100%;
   top: 0;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.262);
+  background-color: rgba(0, 0, 0, 0.750);
   z-index: 999;
 }
 menu a {
@@ -466,6 +468,7 @@ body {
   margin: 0 auto;
   max-width: 150rem;
   min-height: 100vh;
+  max-width: 1024px;
 }
 .full {
   grid-column-start: 1;
@@ -569,27 +572,6 @@ footer h2 {
   margin-right: 0.75rem;
   flex-basis: 7em;
 }
-@media (max-width: 960px) {
-  :root {
-    font-size: 9px;
-  }
-  .intro {
-    grid-column-start: 1;
-    -ms-grid-column-span: 7;
-    grid-column-end: span 7;
-  }
-  .project-grid {
-    grid-row-gap: 16rem;
-  }
-  .project-grid a h3 {
-    font-size: 2.5rem;
-    margin-bottom: 1.15rem;
-  }
-  .project-grid a {
-    -ms-grid-column-span: 3;
-    grid-column: span 3;
-  }
-}
 
 .task {
   cursor:move;
@@ -611,17 +593,16 @@ footer h2 {
   cursor:pointer;
   display: inline-block;
   padding: 0.3em 0.85em;
-  margin: 0.5em;
   text-transform: uppercase;
   border: 3px solid #28242f;
-  border-radius: 2em;
+ 
 
   transition: transform 0.2s;
   transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
 }
 
 .task__tag:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   background: linear-gradient(to right, #ff8a00, #da1b60);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -629,7 +610,7 @@ footer h2 {
 
 .task__tags {
   list-style-type: none;
-  
+  margin: 0.5em 0.5em 1.5em 0.5em;
 }
 
 .task__tag--copyright {
@@ -646,6 +627,63 @@ footer h2 {
 }
 
 
+
+pre {
+  background: #222;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: #fff;
+  padding: 2.5em;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  overflow: scroll;
+}
+
+code {
+  font: 'Source Code Pro';  
+}
+
+h2 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+
+@media (max-width: 4000px) {
+  pre { 
+    overflow: hidden ;
+  }
+}
+
+
+
+@media (max-width: 960px) {
+  :root {
+    font-size: 9px;
+  }
+  .intro {
+    grid-column-start: 1;
+    -ms-grid-column-span: 7;
+    grid-column-end: span 7;
+  }
+  .project-grid {
+    grid-row-gap: 16rem;
+  }
+  .project-grid a h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1.15rem;
+  }
+  .project-grid a {
+    -ms-grid-column-span: 3;
+    grid-column: span 3;
+  }
+
+  pre { 
+    overflow: hidden ;
+  }
+}
 
 @media (max-width: 700px) {
   :root {
@@ -670,11 +708,15 @@ footer h2 {
     width: 100vw;
     margin: auto calc(50% - 50vw);
   }
+  pre { 
+    overflow: scroll ;
+  }
 }
 @media (min-width: 4000px) {
   :root {
     font-size: 40px;
   }
+  
 }
 </style><meta charset="utf-8"><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBřenekYT" target="_blank">Youtube</a></li><li><a class="source" href="https://github.com/viktorbrenek" target="_blank">Github</a></li></ul><menu><a class="name" href="#">Viktor Břenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Elm lernen</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">Elm</li><li class="task__tag task__tag--copyright">Frontend-Entwicklung</li><li class="task__tag task__tag--copyright">functional-reactive</li><li class="task__tag task__tag--copyright">JavaScript</li><li class="task__tag task__tag--copyright">React</li><li class="task__tag task__tag--copyright">PureScript</li><li class="task__tag task__tag--copyright">RxJS</li></ul></span></div><p>Vor ein paar Wochen habe ich dank <a href="https://twitter.com/naltatis">Michael</a> angefangen, mich näher mit <a href="http://elm-lang.org">Elm</a> zu beschäftigen und bin mittlerweile regelrecht begeistert. Das letzte Mal, dass ich so ein gutes Gefühl dabei hatte, etwas Neues zu lernen, ist knapp zehn Jahren her: Damals wusste man bei Rails direkt, dass man es mit etwas Besonderem zu tun hat.</p>
 <div id="more"></div>
@@ -692,4 +734,4 @@ footer h2 {
 <li><a href="https://learnxinyminutes.com/docs/elm/">Learn Elm in X minutes</a> - für die Sprachfreaks, die erstmal eine grobe Übersicht der Elm-Syntax möchten.</li>
 <li>Wer anschließend etwas tiefer in Beispiele komplexerer Anwendungen einsteigen möchte, findet mit <a href="https://github.com/evancz/elm-todomvc">elm-todomvc</a> und <a href="https://github.com/Gizra/elm-hedley">elm-hedley</a> gute Beispiele.</li>
 </ul>
-</main><footer><h2>Kontakt</h2><a class="button" href="#">Napiš mi</a></footer></body>
+</main><footer></footer></body>
