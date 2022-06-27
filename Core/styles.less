@@ -191,6 +191,7 @@ menu a {
   grid-row-gap: 1.5rem;
   grid-column-gap: 1.5rem;
   margin: 0 auto;
+  margin-bottom: 10rem;
   max-width: 150rem;
   min-height: 100vh;
 }
@@ -206,8 +207,10 @@ body {
     grid-row-gap: 1.5rem;
     grid-column-gap: 1.5rem;
     margin: 0 auto;
+    margin-bottom: 10rem;
     max-width: 150rem;
     min-height: 100vh;
+    max-width: 1024px;
   }
 
 .full {
@@ -329,6 +332,31 @@ footer h2 {
 .articles__item__date {
     margin-right: 0.75rem;
     flex-basis: 7em;
+}
+
+ul{
+  list-style-type: none;
+}
+
+li {
+  border-bottom: #222 1px solid;
+  border-bottom: rgba(255, 255, 255, 0.1) 1px solid;
+}
+li a {
+  transition: opacity 0.2s ease-out;
+  font-family: "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.25em 0;
+  letter-spacing: 2px;
+  font-size: 12px;
+  display: block;
+  width: 100%;
+  opacity: 0.4;
+  color: #FFF;
+}
+li a:hover {
+  opacity: 0.8;
 }
 
 
