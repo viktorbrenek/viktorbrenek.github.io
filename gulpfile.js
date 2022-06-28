@@ -39,14 +39,33 @@ const mvbConf = {
   // access the return value via the groupedArticles property, so that you can
   // either return an array if you only have one group or return an object with
   // named groups in case you want to use multiple groups (by date, by tag, ...)
-  grouping(articles) {
-    const byYear = {};
-    articles.forEach((article) => {
-      let year = article.date.toISOString().replace(/-.*/, "");
-      byYear[year] || (byYear[year] = []);
-      return byYear[year].push(article);
-    });
-    return { byYear };
+  grouping (articles) {
+    const byYear = {}
+    const byTag = {}
+
+    articles.forEach(function (article) {
+      const year = article.date.toISOString().replace(/-.*/, '')
+      if (!byYear[year]) { byYear[year] = [] }
+      byYear[year].push(article)
+
+      return (article.tags || []).forEach(function (tag) {
+        if (!byTag[tag]) { byTag[tag] = [] }
+        return byTag[tag].push(article)
+      })
+    })
+
+    // year
+    const articlesByYear = []
+    Object.keys(byYear).reverse().forEach(year => articlesByYear.push({ year, articles: byYear[year] }))
+
+    // tag
+    const articlesByTag = byTag
+
+    // groups
+    return {
+      byTag: articlesByTag,
+      byYear: articlesByYear
+    }
   }
 }
 

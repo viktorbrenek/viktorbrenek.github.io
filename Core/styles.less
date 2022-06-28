@@ -99,6 +99,8 @@ opacity: 0;
   padding: 0;
 }
 
+
+
 :root {
   font-size: 10px;
   --padding: 3rem;
@@ -302,7 +304,7 @@ footer h2 {
     grid-column-start: 1;
     display: grid;
     grid-template-rows: repeat(3, fr);
-    grid-row-gap: 15rem;
+    grid-row-gap: 2rem;
     grid-column-gap: 2rem;
     margin: 1rem auto;
     justify-content: left;
@@ -336,6 +338,7 @@ footer h2 {
 
 ul{
   list-style-type: none;
+  
 }
 
 li {
@@ -359,7 +362,121 @@ li a:hover {
   opacity: 0.8;
 }
 
+.articles {
+  list-style: none;
+}
+.articles__item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.articles__item__link {
+  flex: 1;
+  text-decoration: none;
+  cursor: auto;
+}
+.articles__item__title {
+  font-size: 2.15rem;
+  margin: 1.25rem 0;
+}
+.articles__item__date {
+  margin-right: 0.75rem;
+  flex-basis: 7em;
+}
 
+.task {
+  cursor:move;
+  background-color:var(--white);
+  padding:1rem;
+  border-radius:8px;
+  width:100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom:1rem;
+  border:3px dashed transparent;
+} 
+.task__tag--copyright:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color:rgba(162,179,207,.2)!important;
+}
+   
+.task__tag {
+  font-size:12px;
+  cursor:pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+ 
+
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45)
+}
+
+.task__tag:hover {
+  transform: scale(1.1);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.task__tags {
+  list-style-type: none;
+  margin: 0.5em 0.5em 1.5em 0.5em;
+}
+
+.task__tag--copyright {
+  
+  font-weight: 900;
+}
+ 
+.atitle {
+  padding-top: 4rem;
+}
+
+.acontent {
+  padding-top: 2rem;
+}
+
+
+
+pre {
+  background: #222;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: #fff;
+  padding: 2.5em;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  overflow: scroll;
+}
+
+code {
+  font: 'Source Code Pro';
+  font-size: 1.2rem;  
+}
+
+h2 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+li {
+  font-size: 1.5rem;
+  list-style-type: none;
+}
+
+
+.articleslist {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
 
 
 

@@ -7,8 +7,7 @@ head
   meta(name="description" content="Osobní blog a portfolio")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/modely.png")
   meta(name="viewport" content="width=device-width,initial-scale=1.0") 
-  style
-      include ../templates/astyles.css  
+  link(rel='stylesheet', href='../styles.css') 
   meta(charset="utf-8")
   
   title Blog
@@ -34,6 +33,7 @@ body
                 ul.task__tags
                   each tag in mvb.article.tags
                     li.task__tag.task__tag--copyright= tag
+       
             
 
         != mvb.article.content 
