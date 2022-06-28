@@ -343,6 +343,20 @@ li a:hover {
   padding: 0.3em 0.85em;
   text-transform: uppercase;
   border: 3px solid #28242f;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  transition: transform 0.2s;
+  transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45);
+}
+.task__tag2 {
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.3em 0.85em;
+  text-transform: uppercase;
+  border: 3px solid #28242f;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
   transition: transform 0.2s;
   transition-timing-function: cubic-bezier(0.45, -0.85, 0.55, -0.45);
 }
@@ -397,6 +411,32 @@ li {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
+}
+.nav a,
+.nav label {
+  display: block;
+  padding: 0.85rem;
+  transition: all 0.25s ease-in;
+}
+.nav label {
+  cursor: pointer;
+}
+.group-list,
+.sub-group-list,
+.sub-sub-group-list {
+  height: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+.nav__list input[type="checkbox"]:checked + label + ul {
+  max-height: 1000px;
+}
+label > span {
+  transition: transform 0.65s ease;
+}
+.shrink {
+  width: fit-content;
 }
 @media (max-width: 960px) {
   :root {
