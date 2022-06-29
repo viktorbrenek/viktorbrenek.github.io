@@ -527,8 +527,31 @@ label > span {
 }
 
 
+.viktor:after {
+		content: ' Petr Břenek ';		
+		animation: tech 10s infinite; 
+}
+
+@keyframes tech {
+	0% {
+		content: ' Petr Břenek ';}
+	25%{
+		content: ' Illustrator ';}
+	50%{
+		content: ' Game dev ';}		
+	75%{
+		content: ' Content creator ';}
+	100%{
+		content: ' Artist ';}
+  }
 
 
+
+@media (max-width: 4000px) {
+  pre { 
+    overflow: hidden ;
+  }
+}
 
 
 
@@ -551,6 +574,10 @@ label > span {
   .project-grid a {
     -ms-grid-column-span: 3;
     grid-column: span 3;
+  }
+
+  pre { 
+    overflow: hidden ;
   }
 }
 
@@ -577,13 +604,14 @@ label > span {
     width: 100vw;
     margin: auto calc(50% - 50vw);
   }
+  pre { 
+    overflow: scroll ;
+  }
 }
-
-
-
 @media (min-width: 4000px) {
   :root {
     font-size: 40px;
   }
+  
 }
 
