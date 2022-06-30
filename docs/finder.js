@@ -1,57 +1,19 @@
-const PEOPLE = [
-    {name:'Ping', age: 20},
-    {name:'Amir', age: 24},
-    {name:'Shabnum', age: 30 },
-    {name: 'Mark', age: 40}
-  ]
-  
-  new Vue({
-    el:"#app",
-    data: {
-      searchDetails: '',
-      reverse: false,
-      people: PEOPLE
-    },
-    methods: {
-      getKey: function(key){
-       this.reverse = ! this.reverse
-       if(key==='name' && this.reverse){
-         this.people = _.orderBy(this.people, ['name'], ['asc'])
-       }else if(key==='name' && !this.reverse){
-         this.people = _.orderBy(this.people, ['name'], ['desc'])
-       }else if(key==='age' && this.reverse){
-         this.people = _.orderBy(this.people, ['age'], ['asc'])
-       }else{
-         this.people = _.orderBy(this.people, ['age'], ['desc'])
-       }
-      }
-    },
-    computed: {
-      
-      
-      filterIt: function(){
-        
-         if(_.isString(this.searchDetails)){
-          return this.filterPeopleByName;
-         }else{
-           return this.filterPeopleByAge;
-         }
-      },
-      
-      filterPeopleByName: function(){
-        var self = this
-            return this.people.filter(function(p){
-              return p.name.indexOf(self.searchDetails) > - 1
-            })  
-        
-       },
-      filterPeopleByAge: function(){
-        var self = this
-            return this.people.filter(function(p){
-              var age = p.age.toString()
-              return age.indexOf(self.searchDetails) > - 1
-            })  
-      }
-      
+(function() {
+  window.addEventListener('scroll', function(event) {
+    var depth, layer, layers, movement, topDistance, translate3d, _i, _len;
+    topDistance = this.pageYOffset;
+    layers = document.querySelectorAll("[data-type='parallax']");
+    for (_i = 0, _len = layers.length; _i < _len; _i++) {
+      layer = layers[_i];
+      depth = layer.getAttribute('data-depth');
+      movement = -(topDistance * depth);
+      translate3d = 'translate3d(0, ' + movement + 'px, 0)';
+      layer.style['-webkit-transform'] = translate3d;
+      layer.style['-moz-transform'] = translate3d;
+      layer.style['-ms-transform'] = translate3d;
+      layer.style['-o-transform'] = translate3d;
+      layer.style.transform = translate3d;
     }
-  })
+  });
+
+}).call(this);
