@@ -4,7 +4,7 @@
     position: relative;
   }
   #content {
-    background-color: #130d0a;
+    background-color: #000000;
   }
   .layer {
     background-position: bottom center;
@@ -17,63 +17,32 @@
   }
   #hero-mobile {
     display: none;
-    background: url("https://i.ibb.co/d7hw559/full-illustration.png") no-repeat center bottom / cover;
+    background: url("assets/images/mobile.png") no-repeat center bottom / cover;
     height: 320px;
   }
   .first-section {
     padding: 50px 0 20px 0;
   }
-  .text-header {
-    font-size: 50px;
-    text-align: center;
-  }
-  h1 {
-    line-height: 120%;
-    margin-bottom: 30px;
-  }
-  p {
-    color: #ede0d5;
-    font-size: 18px;
-    line-height: 150%;
-  }
+
+
   #hero, .layer {
     min-height: 800px;
   }
   .layer-bg {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/272781/ilu_bg.jpg");
+    background-image: url("assets/images/background.png");
+    background-size: cover;
   }
-  .layer-1 {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/272781/ilu_03.png");
-    background-position: left bottom;
-  }
-  .layer-2 {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/272781/ilu_02.png");
-  }
+  
   .layer-3 {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/272781/ilu_man.png");
-    background-position: right bottom;
+    background-image: url("assets/images/lista.png");
+    background-size: cover;
   }
   .layer-4 {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/272781/ilu_01.png");
+    background-image: url("assets/images/character.png");
+    background-position: right bottom;
   }
   .layer-overlay {
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/272781/ilu_overlay.png"
-   );
+    background-image: url("assets/images/overlay.png");
   }
-  @media only screen and (max-width: 768px) {
-    #hero {
-      display: none;
-   }
-    #hero-mobile {
-      display: block;
-   }
-  }
-  .tutorial-link {
-    color: #fff;
-    font-size: 18px;
-    text-decoration: underline;
-  }
-  .tutorial-link:hover {
-    color: #ede0d5;
-  }
+  
   
