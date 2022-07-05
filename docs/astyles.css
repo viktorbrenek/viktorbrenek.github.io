@@ -32,6 +32,10 @@
     background-image: url("assets/images/background.png");
     background-size: cover;
   }
+  .layer-bg2 {
+    background-image: url("assets/images/planeta.gif");
+    background-size: cover;
+  }
   
   .layer-3 {
     background-image: url("assets/images/lista.png");
@@ -40,6 +44,10 @@
   .layer-4 {
     background-image: url("assets/images/character.png");
     background-position: right bottom;
+  }
+  .layer-44 {
+    background-image: url("assets/images/lod.png");
+    background-position: right;
   }
   .layer-overlay {
     background-image: url("assets/images/overlay.png");
