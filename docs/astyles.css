@@ -53,6 +53,8 @@
     background-image: url("assets/images/overlay.png");
   }
 
-
-  
+#threejs {
+  height: 20rem;
+  width: auto;
+}
   

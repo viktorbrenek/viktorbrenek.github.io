@@ -1,0 +1,112 @@
+doctype html
+head
+  title Viktor Břenek
+  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
+  meta(content="utf-8",http-equiv="encoding")
+  meta(name="author" content="Petr Břenek")
+  meta(name="description" content="Osobní blog a portfolio")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/modely.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
+  link(rel='stylesheet', href='styles.css')
+  link(rel='stylesheet', href='astyles.css')
+  link(rel='stylesheet', href='img.css')
+  script(src="finder.js") 
+  meta(charset="utf-8")
+  //script aby se nanačítal dáme na konec body
+  title Portfolio post 1#
+
+
+body
+    ul#links.links 
+            li
+              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
+            li
+              a.blog(href='https://www.youtube.com/c/ViktorBřenekYT' target='_blank') Youtube
+            li
+              a.source(href='https://github.com/viktorbrenek' target='_blank') Github
+    menu
+        a.name(href='#') Viktor Břenek
+        a.name(href='blog.html') Blog
+        a.name(href='index.html') Portfolio 
+            
+    #hero
+        .layer-bg.layer(data-depth='0.10' data-type='parallax')
+        .layer-1.layer(data-depth='0.20' data-type='parallax')
+        .layer-2.layer(data-depth='0.50' data-type='parallax')
+        .layer-3.layer(data-depth='0.80' data-type='parallax')
+        .layer-4.layer(data-depth='1.00' data-type='parallax')
+        .layer-overlay.layer(data-depth='0.85' data-type='parallax')
+
+    #hero-mobile
+    #content
+        .container
+            section.first-section.gridblog.secpad
+                section.blog-grid
+                    .row
+                        .col-sm-6
+                        h1
+                            | Arcanepunk Lost 
+                    .row
+                        .col-sm-6
+                        p 
+                            | Vlastní rpg, které vytvářím nezávisle po večerech.
+                            | Zde naleznete postupně informace o průběhu vývoje a ukázky modelů.
+                            | Techničtější informace a postupy naleznete v sekci blogu pod tagem GameDev.
+                            | Toto portfolio je předmětem změny a bude se postupem času rozšiřovat.
+                    .row
+                        script(src="three.js") 
+                        script(src="GLTFLoader.js")
+                        script(src="OrbitControls.js")
+                        #threejs  
+                          script.
+                            let scene, camera, renderer;
+                            function init() {
+                              scene = new THREE.Scene();
+                              scene.background = new THREE.Color(0xdddddd);
+                              camera = new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,1,5000);
+                              camera.rotation.y = 45/180*Math.PI;
+                              camera.position.x = 800;
+                              camera.position.y = 100;
+                              camera.position.z = 1000;
+                              hlight = new THREE.AmbientLight (0x404040,100);
+                              scene.add(hlight);
+                              directionalLight = new THREE.DirectionalLight(0xffffff,100);
+                              directionalLight.position.set(0,1,0);
+                              directionalLight.castShadow = true;
+                              scene.add(directionalLight);
+                              light = new THREE.PointLight(0xc4c4c4,10);
+                              light.position.set(0,300,500);
+                              scene.add(light);
+                              light2 = new THREE.PointLight(0xc4c4c4,10);
+                              light2.position.set(500,100,0);
+                              scene.add(light2);
+                              light3 = new THREE.PointLight(0xc4c4c4,10);
+                              light3.position.set(0,100,-500);
+                              scene.add(light3);
+                              light4 = new THREE.PointLight(0xc4c4c4,10);
+                              light4.position.set(-500,300,500);
+                              scene.add(light4);
+                              renderer = new THREE.WebGLRenderer({antialias:true});
+                              renderer.setSize(600,400);
+                              document.body.appendChild(renderer.domElement);
+                              container = document.getElementById('threejs');
+                              //renderer.setSize($(container).width(), $(container).height());
+                              container.appendChild(renderer.domElement);
+                              let controls = new THREE.OrbitControls(camera, renderer.domElement);
+                              controls.addEventListener('change', renderer);
+                              let loader = new THREE.GLTFLoader();
+                              loader.load('assets/images/boxscene.gltf', function(gltf){
+                              car = gltf.scene.children[0];
+                              car.scale.set(0.5,0.5,0.5);
+                              scene.add(gltf.scene);
+                              animate();
+                              });
+                            }
+                            function animate() {
+                              renderer.render(scene,camera);
+                              requestAnimationFrame(animate);
+                            }
+                            init();
+
+
+
