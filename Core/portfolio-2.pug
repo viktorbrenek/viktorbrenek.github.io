@@ -105,7 +105,14 @@ body
                                 
                                 //ovládání myší - mobil moc nic
                                 let controls = new THREE.OrbitControls(camera, renderer.domElement);
-                                controls.addEventListener('change', renderer);
+                                controls.addEventListener( 'change', render );
+                                
+                                
+                                
+                                function render() {
+                                    renderer.render( scene, camera );
+                                }
+                                renderer.render( scene, camera )
                                 //tohle načítá můj model - kde načtu textury? hmm
                                 let loader = new THREE.GLTFLoader();
                                 loader.load('assets/images/tree.gltf', function(gltf){
@@ -116,17 +123,22 @@ body
                                 });
                               }
                               //funkce která resizuje boxík a kameru v něm, ale váže se na proměnné které jsou nahoře
+                              
                               function onWindowResize(event) {
-                                  Width = container.clientWidth;
-                                  Height = container.clientHeight;
+                                  container = document.getElementById("threejs");
+                                  Width = container.innerWidth;
+                                  Height = container.innerHeight;
                                   document.getElementById("threejs").innerHTML = "RELOAD ME IF EMPTY" ;
                                   //document.getElementById("threejs").innerHTML = Width + "," + Height;
                                   renderer.setSize(width, height);
                                   camera.aspect = Width / Height;
                                   camera.updateProjectionMatrix();
                                   controls.handleResize();
+
                               }
                               window.onresize = onWindowResize;
+
+                              
                               //netuším :D asi dělá tu animaci při ovládání
                               function animate() {
                                 renderer.render(scene,camera);

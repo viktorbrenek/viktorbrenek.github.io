@@ -25,7 +25,7 @@
 			if ( domElement === document ) console.error( 'THREE.OrbitControls: "document" should not be used as the target "domElement". Please use "renderer.domElement" instead.' );
 			this.object = object;
 			this.domElement = domElement;
-			//this.domElement.style.touchAction = 'none'; // disable touch scroll
+			this.domElement.style.touchAction = 'none'; // disable touch scroll
 			// Set to false to disable this control
 
 			this.enabled = true; // "target" sets the location of focus, where the object orbits around
@@ -844,8 +844,6 @@
 
 			function onMouseMove( event ) {
 
-				if ( scope.enabled === false ) return;
-
 				switch ( state ) {
 
 					case STATE.ROTATE:
@@ -1036,12 +1034,13 @@
 
 			} //
 
+
 			scope.domElement.addEventListener( 'contextmenu', onContextMenu );
 			scope.domElement.addEventListener( 'pointerdown', onPointerDown );
 			scope.domElement.addEventListener( 'pointercancel', onPointerCancel );
 			scope.domElement.addEventListener( 'wheel', onMouseWheel, {
 				passive: false
-			} ); // force an update at start 
+			} ); // force an update at start
 
 			this.update();
 
