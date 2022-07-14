@@ -24,5 +24,9 @@
 		"highlight.js": "^9.12.0",
 		"less-plugin-autoprefix": "^2.0.0",
 		"lessc": "1.0.2"
+	},
+	"dependencies": {
+		"simplex-noise": "^3.0.1",
+		"three.terrain.js": "^2.0.0"
 	}
 }
