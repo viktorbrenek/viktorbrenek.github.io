@@ -10,10 +10,11 @@ head
   link(rel='stylesheet', href='styles.css')
   link(rel='stylesheet', href='astyles.css')
   link(rel='stylesheet', href='img.css')
-  script(src="finder.js")  
+  script(src="finder.js") 
   meta(charset="utf-8")
   //script aby se nanačítal dáme na konec body
-  title Portfolio post 5#
+  title Portfolio post 1#
+
 
 body
     ul#links.links 
@@ -26,14 +27,14 @@ body
     menu
         a.name(href='#') Viktor Břenek
         a.name(href='blog.html') Blog
-        a.name(href='index.html') Portfolio
+        a.name(href='index.html') Portfolio 
             
     #hero
-        .layer-bg2.layer(data-depth='0.10' data-type='parallax')
+        .layer-bg.layer(data-depth='0.10' data-type='parallax')
         .layer-1.layer(data-depth='0.20' data-type='parallax')
         .layer-2.layer(data-depth='0.50' data-type='parallax')
         .layer-3.layer(data-depth='0.80' data-type='parallax')
-        .layer-44.layer(data-depth='1.00' data-type='parallax')
+        .layer-4.layer(data-depth='1.00' data-type='parallax')
         .layer-overlay.layer(data-depth='0.85' data-type='parallax')
 
     #hero-mobile
@@ -44,17 +45,167 @@ body
                     .row
                         .col-sm-6
                         h1
-                            | The Last City 
+                            | Arcanepunk Lost 
                     .row
                         .col-sm-6
                         p 
-                            | Cyberpunkově laděný komiks odehrávající se v alternativní vesmíru. 
-                            | Součást diplomové práce. Obsahuje digitální kresby, animace, html a css řešení. 
-                            | Celý komiks naleznete na uvedeném odkaze, prozatím pod stránkou Wix.
+                            | Vlastní rpg, které vytvářím nezávisle po večerech.
+                            | Zde naleznete postupně informace o průběhu vývoje a ukázky modelů.
+                            | Techničtější informace a postupy naleznete v sekci blogu pod tagem GameDev.
                             | Toto portfolio je předmětem změny a bude se postupem času rozšiřovat.
-                    img.imgport(src='assets/images/comics-page.png' alt='' loading='lazy')
-                    
+                    .row
+                      container#container 
+                          script(src="three.js") 
+                          script(src="GLTFLoader.js")
+                          script(src="OrbitControls.js")
+                          script(src="ImprovedNoise.js")
+                          script(src="THREE.Terrain.js")
+                          #threejs  
+                            script.
+                              let scene, camera, renderer;
+                              function init() {
+                                container = document.getElementById("threejs");
+                                const worldWidth = 256, worldDepth = 256;
+                                Width = container.clientWidth;
+                                Height = container.clientHeight;
+                                camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+                                camera.position.set( 2, 3, - 6 );
+                                camera.lookAt( 0, 1, 0 );
+                                //tady určíme jak bude velký box do čeho se ten render promítne.
+                                scene = new THREE.Scene();
+                                scene.background = new THREE.Color( 0xa0a0a0 );
+                                scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
 
-                
-                  
-    
+                                const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+                                hemiLight.position.set( 0, 20, 0 );
+                                scene.add( hemiLight );
+
+                                const dirLight = new THREE.DirectionalLight( 0xffffff );
+                                dirLight.position.set( - 3, 10, - 10 );
+                                dirLight.castShadow = true;
+                                dirLight.shadow.camera.top = 4;
+                                dirLight.shadow.camera.bottom = - 4;
+                                dirLight.shadow.camera.left = - 4;
+                                dirLight.shadow.camera.right = 4;
+                                dirLight.shadow.camera.near = 0.1;
+                                dirLight.shadow.camera.far = 40;
+                                scene.add( dirLight );
+                                
+
+
+                               
+
+                                renderer = new THREE.WebGLRenderer({antialias:true}); 
+                                //document.body.appendChild(renderer.domElement);
+                                renderer.shadowMap.enabled = true;
+                                renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
+
+                                
+
+
+                                container = document.getElementById('threejs');   //tohle určuje velikost okna                           
+                                //container = document.getElementById('threejs').innerHTML = Width + "," + Height; //Toto zobrazuje dimenze a nějak to souvisí se zobrazením
+                                threejs.appendChild(renderer.domElement); //tady tohle zobrazuje výsledek renderu
+                                renderer.setSize(Width, Height); //tohle určuje velikost renderu
+                                
+                                //ovládání myší - mobil moc nic
+                                let controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+                                controls.addEventListener( 'change', render );
+                                
+                                //config
+                                
+                                
+                                
+                                function render() {
+                                    renderer.render( scene, camera );
+                                }
+                                renderer.render( scene, camera )
+                                //tohle načítá můj model - kde načtu textury? hmm
+                                let loader = new THREE.GLTFLoader();
+                                loader.load('assets/images/walk.gltf', function(gltf){
+                                model = gltf.scene.children[0];
+                                model.scale.set(0.5,0.5,0.5);
+                                model.traverse( function ( object ) {
+
+                                  if ( object.isMesh ) object.castShadow = true;
+
+                                } );
+
+
+                                scene.add(gltf.scene);
+                                //car.castShadow = true; //default is false
+                                //car.receiveShadow = false; //default
+                                animate();
+                                });
+                                // ground
+
+                                const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 5000, 5000, worldWidth - 1, worldDepth - 1 ), new THREE.MeshPhongMaterial( { color: 0xE6AE30, depthWrite: false } ) );
+                                
+      
+                                mesh.rotation.x = - Math.PI / 2;
+                                mesh.receiveShadow = true;
+                                scene.add( mesh );
+                                
+                               
+
+                              
+                                                                /*hokusy obyč kostka
+                                const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                                const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+                                const cube = new THREE.Mesh( geometry, material );
+                                scene.add( cube );*/
+                              }
+                              //inicializace scriptu?
+                              
+
+                              init();
+
+                              
+
+                              //funkce která resizuje boxík a kameru v něm, ale váže se na proměnné které jsou nahoře
+                              
+                              function onWindowResize(event) {
+                                  container = document.getElementById("threejs");
+                                  Width = container.innerWidth;
+                                  Height = container.innerHeight;
+                                  document.getElementById("threejs").innerHTML = "RELOAD ME IF EMPTY" ;
+                                  //document.getElementById("threejs").innerHTML = Width + "," + Height;
+                                  renderer.setSize(width, height);
+                                  camera.aspect = Width / Height;
+                                  camera.updateProjectionMatrix();
+                                  controls.handleResize();
+
+                              }
+                              window.onresize = onWindowResize;
+
+                              
+                              //netuším :D asi dělá tu animaci při ovládání
+                              function animate() {
+
+                                requestAnimationFrame(animate);
+                                scene.rotation.y += 0.005;
+                                //scene.rotation.y += 0.01;
+                                renderer.render(scene,camera);
+                                
+                                
+                              }
+
+                              
+                              //výsledek renderu 
+                              function render() {
+                                  renderer.render(scene, camera);
+                              }
+
+                              
+                              
+                              
+
+                              
+                              
+
+
+                            
+
+
+

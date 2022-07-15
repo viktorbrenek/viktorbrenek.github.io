@@ -118,7 +118,7 @@
                     renderer.render( scene, camera )
                     //tohle načítá můj model - kde načtu textury? hmm
                     let loader = new THREE.GLTFLoader();
-                    loader.load('assets/images/walk.gltf', function(gltf){
+                    loader.load('assets/images/prace.gltf', function(gltf){
                     model = gltf.scene.children[0];
                     model.scale.set(0.5,0.5,0.5);
                     model.traverse( function ( object ) {
