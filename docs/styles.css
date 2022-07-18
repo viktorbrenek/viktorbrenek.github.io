@@ -1,3 +1,17 @@
+:root {
+  font-size: 10px;
+  --padding: 3rem;
+  --color--10: hsl(175, 100%, 50%);
+  --color--20: hsl(293, 52%, 48%);
+  --color--30: hsl(230, 55%, 54%);
+  --color--40: hsl(199, 72%, 54%);
+  --color--50: hsl(120, 57%, 47%);
+  --color--60: hsl(90, 68%, 45%);
+  --color--70: hsl(53, 90%, 49%);
+  --color--80: hsl(32, 95%, 45%);
+  --color--90: hsl(340, 66%, 47%);
+  --color--100: hsl(265, 57%, 55%);
+}
 body {
   background-color: #3d3f41;
   font-family: "Lato", sans-serif;
@@ -82,10 +96,6 @@ h1 {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-:root {
-  font-size: 10px;
-  --padding: 3rem;
 }
 ::-moz-selection {
   background: #111111;

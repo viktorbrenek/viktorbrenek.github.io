@@ -50,17 +50,41 @@
           </div>
           <div class="row">
             <container id="container"> 
-              <script src="three.js"> </script>
+              <!--script(src="three.js") -->
+              <script *="THREE" src="three.js"> </script>
               <script src="GLTFLoader.js"></script>
               <script src="OrbitControls.js"></script>
               <script src="ImprovedNoise.js"></script>
               <script src="THREE.Terrain.js"></script>
+              <!--script(type="module" src="RGBELoader.js")-->
+              <script type="RGBELoader" src="RGBELoader.js"></script>
+              <!--tady mám nějaký pokusy o import scriptu, ale moc to nejde-->
+              <!--script(type="module") | import { RGBELoader } from '/docs/RGBELoader.js'
+              -->
+              <!--<script type="module">import { RGBELoader } from 'RGBELoader.js'
+              -->
+              <!--</script>-->
               <div id="threejs"> 
                 <script>
                   let scene, camera, renderer;
+                  
+                  
                   function init() {
                     container = document.getElementById("threejs");
+                    //variables
                     const worldWidth = 256, worldDepth = 256;
+                    //color variables
+                    const color1 = "hsla(175, 100%, 50%, 1)";
+                    const color2 = "hsla(293, 52%, 48%, 1)";
+                    const color3 = "hsla(230, 55%, 54%, 1)";
+                    const color4 = "hsla(199, 72%, 54%, 1)";
+                    const color5 = "hsla(120, 57%, 47%, 1)";
+                    const color6 = "hsla(90, 68%, 45%, 1)";
+                    const color7 = "hsla(53, 90%, 49%, 1)";
+                    const color8 = "hsla(32, 95%, 45%, 1)";
+                    const color9 = "hsla(340, 66%, 47%, 1)";
+                    const color10 = "hsla(265, 57%, 55%, 1)";
+                  
                     Width = container.clientWidth;
                     Height = container.clientHeight;
                     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -68,8 +92,10 @@
                     camera.lookAt( 0, 1, 0 );
                     //tady určíme jak bude velký box do čeho se ten render promítne.
                     scene = new THREE.Scene();
-                    scene.background = new THREE.Color( 0xa0a0a0 );
-                    scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
+                    scene.background = new THREE.Color( color2 );
+                    scene.fog = new THREE.Fog( color2, 10, 50 );
+                  
+                    
                   
                     const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
                     hemiLight.position.set( 0, 20, 0 );
@@ -105,7 +131,8 @@
                     
                     //ovládání myší - mobil moc nic
                     let controls = new THREE.OrbitControls(camera, renderer.domElement);
-                  
+                    //prevents controll of camera from going into the ground
+                    controls.maxPolarAngle = Math.PI / 2.1
                     controls.addEventListener( 'change', render );
                     
                     //config
@@ -135,22 +162,41 @@
                     });
                     // ground
                   
-                    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 5000, 5000, worldWidth - 1, worldDepth - 1 ), new THREE.MeshPhongMaterial( { color: 0xE6AE30, depthWrite: false } ) );
+                    const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 5000, 5000, worldWidth - 1, worldDepth - 1 ), new THREE.MeshPhongMaterial( { color: color2, depthWrite: false } ) );
                     
                   
                     mesh.rotation.x = - Math.PI / 2;
                     mesh.receiveShadow = true;
                     scene.add( mesh );
                     
-                   
-                  
-                  
-                                                    /*hokusy obyč kostka
+                    //kostka
                     const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-                    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+                    const texture = new THREE.CanvasTexture( generateTexture() );
+                    texture.magFilter = THREE.NearestFilter;
+                    texture.wrapT = THREE.RepeatWrapping;
+                    texture.wrapS = THREE.RepeatWrapping;
+                    texture.repeat.set( 1, 3.5 );
+                    //transmissive material variable
+                    const material = new THREE.MeshPhysicalMaterial( {
+                      color: 0xffffff,
+                      transmission: 1,
+                      opacity: 1,
+                      metalness: 0,
+                      roughness: 0,
+                      ior: 1.5,
+                      thickness: 0.01,
+                      specularIntensity: 1,
+                      specularColor: 0xffffff,
+                      envMapIntensity: 1,
+                      lightIntensity: 1,
+                      exposure: 1
+                    } );                            
+                    //načteme do kostky rozměr a material
                     const cube = new THREE.Mesh( geometry, material );
-                    scene.add( cube );*/
+                    scene.add( cube );
                   }
+                  
+                  
                   //inicializace scriptu?
                   
                   
@@ -185,7 +231,20 @@
                     
                     
                   }
+                  //kostka generování textury před renderem na kostku
+                  function generateTexture() {
                   
+                    const canvas = document.createElement( 'canvas' );
+                    canvas.width = 2;
+                    canvas.height = 2;
+                  
+                    const context = canvas.getContext( '2d' );
+                    context.fillStyle = 'white';
+                    context.fillRect( 0, 1, 2, 1 );
+                  
+                    return canvas;
+                  
+                  }
                   
                   //výsledek renderu 
                   function render() {
