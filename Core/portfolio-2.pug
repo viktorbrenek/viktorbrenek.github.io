@@ -221,14 +221,19 @@ body
                                   Height = container.innerHeight;
                                   document.getElementById("threejs").innerHTML = "RELOAD ME IF EMPTY" ;
                                   //document.getElementById("threejs").innerHTML = Width + "," + Height;
-                                  renderer.setSize(width, height);
+                                  //renderer.setSize( container.width, container.height );
+                                  renderer.setSize(width, height); //width, height
                                   camera.aspect = Width / Height;
                                   camera.updateProjectionMatrix();
                                   controls.handleResize();
 
                               }
                               window.onresize = onWindowResize;
+                              
 
+
+                             
+                              
                               
                               //netuším :D asi dělá tu animaci při ovládání
                               function animate() {

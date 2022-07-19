@@ -54,12 +54,39 @@
   }
 
 #threejs {
-  min-width: auto;
-  min-height: 666px;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  transition: 2s;
   float: none;
   border-width: thick;
   border-style: solid;
   margin-top: 100px;
+}
+
+.refresh {
+  position: fixed;
+  list-style: none;
+  width: 40px;
+  height: 40px;
+  bottom: 40px;
+  left: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
+}
+
+.disena {
+  position: fixed;
+  list-style: none;
+  width: 40px;
+  height: 40px;
+  bottom: 80px;
+  left: 20px;
+  padding: 0;
+  margin: 0;
+  z-index: 998;
 }
 
 
