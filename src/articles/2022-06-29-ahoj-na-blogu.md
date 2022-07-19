@@ -26,18 +26,18 @@ Samotný výpis tagů už řeší javascript, který pochází z výšše uveden
 PUG/HTML
 ```js
 nav.nav(role='navigation')
-  ul.nav__list
-    each tag, name in mvb.groupedArticles.byTag 
-      br
-      label.task__tag2.task__tag--copyright
-        input#group-1(type='checkbox' hidden='')
-        label.shrink
-          span.fa.fa-angle-right= name
-        ul.group-list  
-          each article in tag
-            br 
-            li
-              a.articlelink(href=`articles/${article.id}.html`)= article.title
+            ul.nav__list
+              each tag, name in mvb.groupedArticles.byTag 
+                br
+                label.task__tag2.task__tag--copyright
+                  input#group-1(type='checkbox' hidden='')
+                  label.shrink.fa.fa-angle-right= name
+                    span
+                  ul.group-list  
+                    each article in tag
+                      br 
+                      li
+                        a.articlelink(href=`articles/${article.id}.html`)= article.title
 ```
 #
 Stylování už je samozřejmě na každém, ale můj výsledek si můžete prohlídnout samy.
