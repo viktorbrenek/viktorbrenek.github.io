@@ -15,8 +15,11 @@ head
   //script aby se nanačítal dáme na konec body
   title Portfolio post 1#
 
-   
-    
+  
+
+  
+
+      
     
 
 body
@@ -32,32 +35,7 @@ body
         a.name(href='blog.html') Blog
         a.name(href='index.html') Portfolio 
             
-    #hero
-        .layer-bg.layer(data-depth='0.10' data-type='parallax')
-        .layer-1.layer(data-depth='0.20' data-type='parallax')
-        .layer-2.layer(data-depth='0.50' data-type='parallax')
-        .layer-3.layer(data-depth='0.80' data-type='parallax')
-        .layer-4.layer(data-depth='1.00' data-type='parallax')
-        .layer-overlay.layer(data-depth='0.85' data-type='parallax')
-
-    #hero-mobile
-    #content
-        .container
-            section.first-section.gridblog.secpad
-                section.blog-grid
-                    .row
-                        .col-sm-6
-                        h1
-                            | Arcanepunk Lost 
-                    .row
-                        .col-sm-6
-                        p 
-                            | Vlastní rpg, které vytvářím nezávisle po večerech.
-                            | Zde naleznete postupně informace o průběhu vývoje a ukázky modelů.
-                            | Techničtější informace a postupy naleznete v sekci blogu pod tagem GameDev.
-                            | Toto portfolio je předmětem změny a bude se postupem času rozšiřovat.
-                    .row
-                      container#container 
+     
                           //script(src="three.js") 
                           script(*="THREE" src="three.js") 
                           script(src="GLTFLoader.js")
@@ -66,6 +44,7 @@ body
                           script(src="THREE.Terrain.js")
                           //script(type="module" src="RGBELoader.js")
                           script(type="RGBELoader" src="RGBELoader.js")
+                          script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
                           //tady mám nějaký pokusy o import scriptu, ale moc to nejde
                           
                           //script(type="module") 
@@ -73,11 +52,10 @@ body
                           //<script type="module">
                             import { RGBELoader } from 'RGBELoader.js'
                           //</script>
-                          #threejs  
+                         
+                          #threejss  
                             script.
-                              let scene, camera, renderer;
-                          
-                          
+                                                      
                               function init() {
                                 container = document.getElementById("threejs");
                                 //variables
@@ -94,8 +72,8 @@ body
                                 const color9 = "hsla(340, 66%, 47%, 1)";
                                 const color10 = "hsla(265, 57%, 55%, 1)";
 
-                                Width = container.clientWidth;
-                                Height = container.clientHeight;
+                                Width = window.innerWidth;
+                                Height = window.innerHeight;
                                 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
                                 camera.position.set( 2, 3, - 6 );
                                 camera.lookAt( 0, 1, 0 );
@@ -129,14 +107,10 @@ body
                                 //document.body.appendChild(renderer.domElement);
                                 renderer.shadowMap.enabled = true;
                                 renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
-
-                                
-
-
-                                container = document.getElementById('threejs');   //tohle určuje velikost okna                           
+                     
                                 //container = document.getElementById('threejs').innerHTML = Width + "," + Height; //Toto zobrazuje dimenze a nějak to souvisí se zobrazením
-                                threejs.appendChild(renderer.domElement); //tady tohle zobrazuje výsledek renderu
-                                renderer.setSize(Width, Height); //tohle určuje velikost renderu
+                                document.body.appendChild(renderer.domElement); //tady tohle zobrazuje výsledek renderu
+                                renderer.setSize(window.innerWidth, window.innerHeight); //tohle určuje velikost renderu
                                 
                                 //ovládání myší - mobil moc nic
                                 let controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -145,16 +119,11 @@ body
                                 controls.addEventListener( 'change', render );
                                 
                                 //config
-                                
-                                
-                                
-                                function render() {
-                                    renderer.render( scene, camera );
-                                }
+
                                 renderer.render( scene, camera )
                                 //tohle načítá můj model - kde načtu textury? hmm
                                 let loader = new THREE.GLTFLoader();
-                                loader.load('assets/images/prace.gltf', function(gltf){
+                                loader.load('assets/images/mac.gltf', function(gltf){
                                 model = gltf.scene.children[0];
                                 model.scale.set(0.5,0.5,0.5);
                                 model.traverse( function ( object ) {
@@ -214,21 +183,17 @@ body
                               
 
                               //funkce která resizuje boxík a kameru v něm, ale váže se na proměnné které jsou nahoře
-                              
-                              function onWindowResize(event) {
-                                  container = document.getElementById("threejs");
-                                  Width = container.innerWidth;
-                                  Height = container.innerHeight;
-                                  document.getElementById("threejs").innerHTML = "RELOAD ME IF EMPTY" ;
-                                  //document.getElementById("threejs").innerHTML = Width + "," + Height;
-                                  //renderer.setSize( container.width, container.height );
-                                  renderer.setSize(width, height); //width, height
-                                  camera.aspect = Width / Height;
+                              window.addEventListener( 'resize', onWindowResize, false );
+
+                              function onWindowResize(){
+
+                                  camera.aspect = window.innerWidth / window.innerHeight;
                                   camera.updateProjectionMatrix();
-                                  controls.handleResize();
+
+                                  renderer.setSize( window.innerWidth, window.innerHeight );
 
                               }
-                              window.onresize = onWindowResize;
+                              //window.onresize = onWindowResize;
                               
 
 
@@ -264,6 +229,11 @@ body
                               function render() {
                                   renderer.render(scene, camera);
                               }
+
+
+                          
+
+                              
 
                               
                               

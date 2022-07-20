@@ -89,5 +89,14 @@
   z-index: 998;
 }
 
-
+.windowdisplay {
+  min-width: 100%;
+  min-height: 666px;
+  left: 0px;
+  transition: 2s;
+  float: none;
+  border-width: thick;
+  border-style: solid;
+  margin-top: 20px;
+}
   
