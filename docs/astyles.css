@@ -1,3 +1,5 @@
+
+
 #hero {
     height: 800px;
     overflow: hidden;
@@ -34,6 +36,11 @@
   }
   .layer-bg2 {
     background-image: url("assets/images/planeta.gif");
+    background-size: cover;
+  }
+
+  .layer-bg3 {
+    background-image: url("assets/images/threejs.png");
     background-size: cover;
   }
   

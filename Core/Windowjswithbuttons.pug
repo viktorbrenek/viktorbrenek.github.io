@@ -1,0 +1,313 @@
+doctype html
+head
+  title Viktor Břenek
+  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
+  meta(content="utf-8",http-equiv="encoding")
+  meta(name="author" content="Petr Břenek")
+  meta(name="description" content="Osobní blog a portfolio")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/modely.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
+  link(rel='stylesheet', href='styles.css')
+  link(rel='stylesheet', href='astyles.css')
+  link(rel='stylesheet', href='img.css')
+  script(src="finder.js") 
+  meta(charset="utf-8")
+  //script aby se nanačítal dáme na konec body
+  title Portfolio post 1#
+
+  
+
+  
+
+      
+    
+
+body
+    ul#links.links 
+            li
+              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
+            li
+              a.blog(href='https://www.youtube.com/c/ViktorBřenekYT' target='_blank') Youtube
+            li
+              a.source(href='https://github.com/viktorbrenek' target='_blank') Github
+    menu
+        a.name(href='#') Viktor Břenek
+        a.name(href='blog.html') Blog
+        a.name(href='index.html') Portfolio 
+            
+    #hero
+        .layer-bg.layer(data-depth='0.10' data-type='parallax')
+        .layer-1.layer(data-depth='0.20' data-type='parallax')
+        .layer-2.layer(data-depth='0.50' data-type='parallax')
+        .layer-3.layer(data-depth='0.80' data-type='parallax')
+        .layer-4.layer(data-depth='1.00' data-type='parallax')
+        .layer-overlay.layer(data-depth='0.85' data-type='parallax')
+
+    #hero-mobile
+    #content
+        .container
+            section.first-section.gridblog.secpad
+                section.blog-grid
+                    .row
+                        .col-sm-6
+                        h1
+                            | Arcanepunk Lost 
+                    .row
+                        .col-sm-6
+                        p 
+                            | Vlastní rpg, které vytvářím nezávisle po večerech.
+                            | Zde naleznete postupně informace o průběhu vývoje a ukázky modelů.
+                            | Techničtější informace a postupy naleznete v sekci blogu pod tagem GameDev.
+                            | Toto portfolio je předmětem změny a bude se postupem času rozšiřovat.
+                    .row
+                      container#container 
+                          //script(src="three.js") 
+                          script(*="THREE" src="three.js") 
+                          script(src="GLTFLoader.js")
+                          script(src="OrbitControls.js")
+                          script(src="ImprovedNoise.js")
+                          script(src="THREE.Terrain.js")
+                          //script(type="module" src="RGBELoader.js")
+                          script(type="RGBELoader" src="RGBELoader.js")
+                          script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+                          //tady mám nějaký pokusy o import scriptu, ale moc to nejde
+                          
+                          //script(type="module") 
+                            | import { RGBELoader } from '/docs/RGBELoader.js'
+                          //<script type="module">
+                            import { RGBELoader } from 'RGBELoader.js'
+                          //</script>
+                         
+                          #threejs  
+                            script.
+                              $(document).ready(function () {
+
+                                  if (localStorage.getItem("my_app_name_here-quote-scroll") != null) {
+                                      $(window).scrollTop(localStorage.getItem("my_app_name_here-quote-scroll"));
+                                  }
+
+                                  $(window).on("scroll", function() {
+                                      localStorage.setItem("my_app_name_here-quote-scroll", $(window).scrollTop());
+                                  });
+
+                              });
+                              let scene, camera, renderer;
+
+                              function refreshPage(){
+                                  window.location.reload();
+                              } 
+
+                              function disable(){
+                                var x = document.getElementById("threejs");
+                                if (x.style.display === "none") {
+                                  x.style.display = "block";
+                                } else {
+                                  x.style.display = "none";
+                                }
+                              }
+                          
+                              function init() {
+                                container = document.getElementById("threejs");
+                                //variables
+                                const worldWidth = 256, worldDepth = 256;
+                                //color variables
+                                const color1 = "hsla(175, 100%, 50%, 1)";
+                                const color2 = "hsla(293, 52%, 48%, 1)";
+                                const color3 = "hsla(230, 55%, 54%, 1)";
+                                const color4 = "hsla(199, 72%, 54%, 1)";
+                                const color5 = "hsla(120, 57%, 47%, 1)";
+                                const color6 = "hsla(90, 68%, 45%, 1)";
+                                const color7 = "hsla(53, 90%, 49%, 1)";
+                                const color8 = "hsla(32, 95%, 45%, 1)";
+                                const color9 = "hsla(340, 66%, 47%, 1)";
+                                const color10 = "hsla(265, 57%, 55%, 1)";
+
+                                Width = container.clientWidth;
+                                Height = container.clientHeight;
+                                camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+                                camera.position.set( 2, 3, - 6 );
+                                camera.lookAt( 0, 1, 0 );
+                                //tady určíme jak bude velký box do čeho se ten render promítne.
+                                scene = new THREE.Scene();
+                                scene.background = new THREE.Color( color2 );
+                                scene.fog = new THREE.Fog( color2, 10, 50 );
+                              
+                                
+
+                                const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+                                hemiLight.position.set( 0, 20, 0 );
+                                scene.add( hemiLight );
+
+                                const dirLight = new THREE.DirectionalLight( 0xffffff );
+                                dirLight.position.set( - 3, 10, - 10 );
+                                dirLight.castShadow = true;
+                                dirLight.shadow.camera.top = 4;
+                                dirLight.shadow.camera.bottom = - 4;
+                                dirLight.shadow.camera.left = - 4;
+                                dirLight.shadow.camera.right = 4;
+                                dirLight.shadow.camera.near = 0.1;
+                                dirLight.shadow.camera.far = 40;
+                                scene.add( dirLight );
+                                
+
+
+                               
+
+                                renderer = new THREE.WebGLRenderer({antialias:true}); 
+                                //document.body.appendChild(renderer.domElement);
+                                renderer.shadowMap.enabled = true;
+                                renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
+
+                                
+
+
+                                container = document.getElementById('threejs');   //tohle určuje velikost okna                           
+                                //container = document.getElementById('threejs').innerHTML = Width + "," + Height; //Toto zobrazuje dimenze a nějak to souvisí se zobrazením
+                                threejs.appendChild(renderer.domElement); //tady tohle zobrazuje výsledek renderu
+                                renderer.setSize(Width, Height); //tohle určuje velikost renderu
+                                
+                                //ovládání myší - mobil moc nic
+                                let controls = new THREE.OrbitControls(camera, renderer.domElement);
+                                //prevents controll of camera from going into the ground
+                                controls.maxPolarAngle = Math.PI / 2.1
+                                controls.addEventListener( 'change', render );
+                                
+                                //config
+                                
+                                
+                                
+                                function render() {
+                                    renderer.render( scene, camera );
+                                }
+                                renderer.render( scene, camera )
+                                //tohle načítá můj model - kde načtu textury? hmm
+                                let loader = new THREE.GLTFLoader();
+                                loader.load('assets/images/prace.gltf', function(gltf){
+                                model = gltf.scene.children[0];
+                                model.scale.set(0.5,0.5,0.5);
+                                model.traverse( function ( object ) {
+
+                                  if ( object.isMesh ) object.castShadow = true;
+
+                                } );
+
+
+                                scene.add(gltf.scene);
+                                //car.castShadow = true; //default is false
+                                //car.receiveShadow = false; //default
+                                animate();
+                                });
+                                // ground
+
+                                const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 5000, 5000, worldWidth - 1, worldDepth - 1 ), new THREE.MeshPhongMaterial( { color: color2, depthWrite: false } ) );
+                                
+                              
+                                mesh.rotation.x = - Math.PI / 2;
+                                mesh.receiveShadow = true;
+                                scene.add( mesh );
+                                
+                                //kostka
+                                const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                                const texture = new THREE.CanvasTexture( generateTexture() );
+                                texture.magFilter = THREE.NearestFilter;
+                                texture.wrapT = THREE.RepeatWrapping;
+                                texture.wrapS = THREE.RepeatWrapping;
+                                texture.repeat.set( 1, 3.5 );
+                                //transmissive material variable
+                                const material = new THREE.MeshPhysicalMaterial( {
+                                  color: 0xffffff,
+                                  transmission: 1,
+                                  opacity: 1,
+                                  metalness: 0,
+                                  roughness: 0,
+                                  ior: 1.5,
+                                  thickness: 0.01,
+                                  specularIntensity: 1,
+                                  specularColor: 0xffffff,
+                                  envMapIntensity: 1,
+                                  lightIntensity: 1,
+                                  exposure: 1
+                                } );                            
+                                //načteme do kostky rozměr a material
+                                const cube = new THREE.Mesh( geometry, material );
+                                scene.add( cube );
+                              }
+
+                              
+                              //inicializace scriptu?
+                              
+
+                              init();
+
+                              
+
+                              //funkce která resizuje boxík a kameru v něm, ale váže se na proměnné které jsou nahoře
+                              window.addEventListener( 'resize', onWindowResize, false );
+                              function onWindowResize() {
+                                  
+                                  document.getElementById("threejs").innerHTML = "RELOAD ME IF EMPTY" ;
+                                  //document.getElementById("threejs").innerHTML = Width + "," + Height;
+                                  //renderer.setSize( container.width, container.height );
+                                  
+                                  camera.aspect = window.innerWidth / window.innerHeight;
+                                  camera.updateProjectionMatrix();
+                                  
+                                  renderer.setSize(window.innerWidth, window.innerHeight); //width, height
+
+                              }
+                              //window.onresize = onWindowResize;
+                              
+
+
+                             
+                              
+                              
+                              //netuším :D asi dělá tu animaci při ovládání
+                              function animate() {
+
+                                requestAnimationFrame(animate);
+                                scene.rotation.y += 0.005;
+                                //scene.rotation.y += 0.01;
+                                renderer.render(scene,camera);
+                                
+                                
+                              }
+                              //kostka generování textury před renderem na kostku
+                              function generateTexture() {
+
+                                const canvas = document.createElement( 'canvas' );
+                                canvas.width = 2;
+                                canvas.height = 2;
+
+                                const context = canvas.getContext( '2d' );
+                                context.fillStyle = 'white';
+                                context.fillRect( 0, 1, 2, 1 );
+
+                                return canvas;
+
+                              }
+                              
+                              //výsledek renderu 
+                              function render() {
+                                  renderer.render(scene, camera);
+                              }
+
+                          button(class="task__tag2 task__tag--copyright refresh" type="submit" onClick="refreshPage()") ⟳
+                          button(id="disena" class="task__tag2 task__tag--copyright disena" type="submit" onClick="disable()") 〤
+
+                          
+
+                              
+
+                              
+                              
+                              
+
+                              
+                              
+
+
+                            
+
+
+
