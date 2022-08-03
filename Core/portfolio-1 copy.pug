@@ -1,0 +1,84 @@
+doctype html
+head
+  title Viktor Břenek
+  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
+  meta(content="utf-8",http-equiv="encoding")
+  meta(name="author" content="Petr Břenek")
+  meta(name="description" content="Osobní blog a portfolio")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/modely.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
+  link(rel='stylesheet', href='styles.css')
+  link(rel='stylesheet', href='astyles.css')
+  link(rel='stylesheet', href='img.css')
+  script(src="finder.js")  
+  meta(charset="utf-8")
+  //script aby se nanačítal dáme na konec body
+  title Portfolio post 1#
+
+body
+    ul#links.links 
+            li
+              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
+            li
+              a.blog(href='https://www.youtube.com/c/ViktorBřenekYT' target='_blank') Youtube
+            li
+              a.source(href='https://github.com/viktorbrenek' target='_blank') Github
+    menu
+        a.name(href='#') Viktor Břenek
+        a.name(href='blog.html') Blog
+        a.name(href='index.html') Portfolio 
+            
+    #hero
+        .layer-bg.layer(data-depth='0.10' data-type='parallax')
+        .layer-1.layer(data-depth='0.20' data-type='parallax')
+        .layer-2.layer(data-depth='0.50' data-type='parallax')
+        .layer-3.layer(data-depth='0.80' data-type='parallax')
+        .layer-4.layer(data-depth='1.00' data-type='parallax')
+        .layer-overlay.layer(data-depth='0.85' data-type='parallax')
+
+    #hero-mobile
+
+    main.grid-b
+      h1.arcaneh Arcanepunk Lost
+      p.arcanep Tady bude info
+      section.project-grid-b
+        a(href='portfolio-1.html')
+          img(src="assets/images/modely.png" alt='' loading='lazy')
+          h3 Arcanepunk Lost
+          p
+            | V aktuální době pracuji na modelech do vlastní hry. Pracovní název
+            | "Arcanepunk Lost". 
+        a(href='portfolio-6.html')
+          img(src='assets/images/tescosw.png' alt='' loading='lazy')
+          h3 Affinity Designer
+          p
+            | Isometrické ilustrace ve formátu SVG optimalizované pro CSS animace
+            | i s využitím clip-path animací
+        a(href='portfolio-2.html')
+          img(src='assets/images/threejs.png' alt='' loading='lazy')
+          h3 3D portfolio
+          p
+            | 3D portfolio prací v programu Blender.
+            | Doplněno o 3D vizualizace pomocí threejs.
+        a(href='portfolio-2.html')
+          img(src="assets/images/webdesign.png" alt='' loading='lazy')
+          h3 Sketch
+          p
+            | Moderní UI/UX design s interaktivními prvky pomocí Frameru, včetně základů
+            | frontendu pomocí PUG/LESS
+        a(href='https://petrbrenek.wixsite.com/project-comics/uvodni-strana')
+          img(src="assets/images/komiks.png" alt='' loading='lazy')
+          h3 Komiks
+          p
+            | Ruční kresba převáděná do PC, oživena o interaktivní prvky v podobě
+            | vebového komiksu. Součást diplomové práce. 
+        a(href='#')
+          img(src="assets/images/ilustrace.png" alt='' loading='lazy')
+          h3 Affinity Photo
+          p
+            | Rastrové ilustrace pomocí tabletu Wacom Intuos Pro M 
+                    
+
+                
+                  
+    
