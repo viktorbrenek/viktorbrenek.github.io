@@ -43,6 +43,11 @@
     background-image: url("assets/images/threejs.png");
     background-size: cover;
   }
+
+  .layer-bg4 {
+    background-image: url("assets/images/ocean.png");
+    background-size: cover;
+  }
   
   .layer-3 {
     background-image: url("assets/images/lista.png");
@@ -55,6 +60,10 @@
   .layer-44 {
     background-image: url("assets/images/lod.png");
     background-position: right;
+  }
+  .layer-444 {
+    background-image: url("assets/images/palm.svg");
+    background-position: right bottom;
   }
   .layer-overlay {
     background-image: url("assets/images/overlay.png");
@@ -107,3 +116,20 @@
   margin-top: 20px;
 }
   
+.h1mid {
+  font-size: 8rem;
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 5%;
+}
+
+.h1mid:hover {
+  transform: scale(1.1);
+  background: linear-gradient(to right, #ff8a00, #da1b60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
