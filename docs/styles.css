@@ -415,7 +415,8 @@ h2 {
   font-size: 2.5rem;
 }
 p {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  line-height: 1.4em;
 }
 li {
   font-size: 1.5rem;

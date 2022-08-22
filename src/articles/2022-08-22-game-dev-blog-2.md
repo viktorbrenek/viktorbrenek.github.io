@@ -12,7 +12,7 @@ So... this took some time obviously. But here we are. Another gamedev blog?/log?
 I just had a lot of work around the website and other stuff. However the progress is being made. 
 For the last couple of weeks i have been extensively working on a several things. For the most 
 part i had to put all things in to place. I have created an todo-list kind off. And you can
-check that out [Here](https://trello.com/invite/b/l82Ru7VO/1aa79fab5fe0b3fca4d97c59cbe07617/arcanepunk-lost). I have also created a roadman, which you can find on this website in the
+check that out [Here](https://trello.com/invite/b/l82Ru7VO/1aa79fab5fe0b3fca4d97c59cbe07617/arcanepunk-lost). I have also created a roadmap, which you can find on this website in the
 portfolio section. All of these things doesnt seem like a lot, but trust me.. it took quite 
 some time. The planning after all is one of the most important things in the game development. 
 Because it doesnt pay off to just "do something". A man has to have a plan. 
@@ -25,6 +25,7 @@ Well.. Checkout these cool examples and be my judge. Today i focused on monsters
 find them cool! (If you wish to comment, give and advise perhaps, 
 i am working on a solution... hold on buddy - or join my [Discord](https://discord.com/invite/2Uj6N5N))
 #
+<br/><br/>
 ## Geckyena
 Hybrid of hyena and gecko. It is said that the creature combines the best 
 of survival abilities from those two amazing animals into one ultimate
@@ -36,13 +37,14 @@ cases they can be hostile even to small groups of humans. Geckyenas can
 be usually found in a desert areas. And combinations of scales and fur
 makes them completly resistant to the desert harsh environment. 
 #
+
 ![image](../assets/images/geckyena.png)
 
 ## Scorphog
 Hybrid of scorpion and a hog! Weird.. Well those animals might seem
 strange to you, but they are easy to be scientifycaly explained!
-Both of these animals were probably held in some ZOO before, next 
-to each other. the end of the world. After an intensive exposure 
+Both of these animals were probably held in some ZOO next 
+to each other, before the end of the world. After an intensive exposure 
 of radiation and other anomalies they just turned into this! 
 Nowadays they wander in the desert leaving no witness behind! 
 They are rare to be found for many reasons. They are very hostile.
@@ -53,6 +55,7 @@ avoid the stinger that replaced the usuall scorpion tail. Its
 shorter but its poison will stun your for quite some time and
 hog are pretty known for eating their victims alive. 
 #
+
 ![image](../assets/images/scorphog.png)
 
 ## Chopper
@@ -72,6 +75,7 @@ a long beak, that is used to consume sweat palm fruit that usually
 grows on the top of the desert palms. 
 
 #
+
 ![image](../assets/images/chopper.png)
 
 ## Thats it?

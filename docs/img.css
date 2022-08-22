@@ -3,7 +3,8 @@ img {
   height: auto;
 
   max-width: 100%;
-
+  margin-bottom: 4rem;
+  margin-top: 4rem;
 }
 
 .secpad {

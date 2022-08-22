@@ -15,7 +15,9 @@ jsem v této práci poměrně nováček a hry se tvoří klidně několik let. M
 hodně práce a hodně čtení. 
 #
 Tady se můžete mrknout na ukázku modelu postavy v Blenderu:
+
 ![image](../assets/images/modely.png)
+
 #
 ## Každý článek něco usefull?
 
@@ -29,5 +31,8 @@ Na další díl si nachystám sérii doporučení pro přípravu právě tohoto 
 nasbíral v celkově asi měsíční práci na něm a to od modelování po přípravu textur, animační
 kostry, či nanášení váhy pro equipment systém.  
 #
+
 ![image](../assets/images/postava1.png)
+
 ![image](../assets/images/postava2.png)
+
