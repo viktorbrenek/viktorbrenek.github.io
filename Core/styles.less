@@ -37,11 +37,12 @@ position: fixed;
 list-style: none;
 width: 120px;
 bottom: 40px;
-right: 20px;
-padding: 0;
+right: 0px;
 margin: 0;
 z-index: 998;
-
+padding: 1rem;
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
 }
 
 .links p{
@@ -180,6 +181,8 @@ menu {
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.750);
   z-index:999;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 menu a {
