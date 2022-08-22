@@ -6,7 +6,7 @@ lang: en
 tags:
   - Gamedev
 ---
-
+## What took yoo so long?
 Hi.
 So... this took some time obviously. But here we are. Another gamedev blog?/log? idk.. 
 I just had a lot of work around the website and other stuff. However the progress is being made. 
@@ -23,12 +23,9 @@ and perhaps some boundaries.
 OK... lets stop with the "blabla" informations that nobody cares about. So did the shit get done?
 Well.. Checkout these cool examples and be my judge. Today i focused on monsters. I hope you will 
 find them cool! (If you wish to comment, give and advise perhaps, 
-i am working on a solution... hold on buddy - or join my Discord)
-
-## 3 Monsters with animations and basic behaviour
-
+i am working on a solution... hold on buddy - or join my [Discord](https://discord.com/invite/2Uj6N5N))
 #
-Geckyena
+## Geckyena
 Hybrid of hyena and gecko. It is said that the creature combines the best 
 of survival abilities from those two amazing animals into one ultimate
 survivalist dog-type creature. They are usually very wild and agressive,
@@ -41,7 +38,7 @@ makes them completly resistant to the desert harsh environment.
 #
 ![image](../assets/images/geckyena.png)
 
-Scorphog
+## Scorphog
 Hybrid of scorpion and a hog! Weird.. Well those animals might seem
 strange to you, but they are easy to be scientifycaly explained!
 Both of these animals were probably held in some ZOO before, next 
@@ -58,7 +55,7 @@ hog are pretty known for eating their victims alive.
 #
 ![image](../assets/images/scorphog.png)
 
-Chopper
+## Chopper
 This time we have got something special. Choppers are alpha 
 predators of the desert. Their origin is quite unknown. They
 are very large creatures that usually occur in groups of three
@@ -77,8 +74,9 @@ grows on the top of the desert palms.
 #
 ![image](../assets/images/chopper.png)
 
-And thats it for today! I will be sure to post logs more often. 
-We gave got a whole world to talk about after all! Be ready for 
+## Thats it?
+I will be sure to post logs more often. 
+We have got a whole world to talk about after all! Be ready for 
 animals and an extensive log about player attributes. And of course
 i cannot forget about those beautiful harvestables, that are nicely
 coming trough. Stay tuned! CYA
