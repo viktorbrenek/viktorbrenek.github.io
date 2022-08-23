@@ -208,7 +208,8 @@
 }
 
 .project-grid-b a p {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  line-height: 1.4em;
   color: lightgrey;
 }
 
@@ -243,7 +244,8 @@
 }
 
 .project-grid-c a p {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  line-height: 1.4em;
   color: lightgrey;
 }
 
