@@ -3,11 +3,60 @@ import * as THREE from 'three'
 import { Mesh } from 'three'
 import gsap from "gsap"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
-import * as lil from 'lil-gui'+
+import * as lil from 'lil-gui'
+
 
 //debug
 const gui = new lil.GUI()
 
+//texture loader
+const loadingManager = new THREE.LoadingManager()
+
+loadingManager.onStart = () =>
+{
+    console.log("onStart")
+}
+
+loadingManager.onLoaded = () =>
+{
+    console.log("onLoaded")
+}
+
+loadingManager.onProgress = () =>
+{
+    console.log("onProgress")
+}
+
+loadingManager.onError = () =>
+{
+    console.log("onError")
+}
+
+const textureLoader = new THREE.TextureLoader(loadingManager)
+const colorTexture = textureLoader.load("./image.jpg")
+const alphaTexture = textureLoader.load("./image.jpg")
+const heightTexture = textureLoader.load("./image.jpg")
+const normalTexture = textureLoader.load("./image.jpg")
+const ambientOcclusionTexture = textureLoader.load("./image.jpg")
+const metalnessTexture = textureLoader.load("./image.jpg")
+const rougnessTexture = textureLoader.load("./image.jpg")
+const matcapTexture = textureLoader.load("./image.jpg")
+
+colorTexture.repeat.x = 2
+colorTexture.repeat.y = 3
+colorTexture.wrapS = THREE.RepeatWrapping
+colorTexture.wrapT = THREE.RepeatWrapping
+//colorTexture.wrapT = THREE.MirroredRepeatWrapping
+
+//colorTexture.offset.x = 0.5
+//colorTexture.offset.y = 0.5
+
+colorTexture.rotation = Math.PI / 4
+colorTexture.center.x = 0.5
+colorTexture.center.y = 0.5
+
+//colorTexture.minFilter = THREE.NearestFilter  
+colorTexture.magFilter = THREE.NearestFilter  //toto umí scalovat textury
 
 
 const parameters = {
@@ -50,6 +99,34 @@ const scene = new THREE.Scene()
 /**
  * Objects
  */
+const material = new THREE.MeshBasicMaterial()
+material.map = colorTexture
+material.color = new THREE.Color(0x00ff00)
+material.opacity = 0.5
+material.transparent = true
+//material.alphaMap = doorAlphaTexture
+material.side = THREE.DoubleSide
+
+const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 16),
+    material
+)
+sphere.position.x = - 1.5
+
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1,1),
+    material
+)
+plane.position.y = - 1
+
+const torus = new THREE.Mesh(
+    new THREE.TorusGeometry(0.3, 0.2, 16, 32),
+    material
+)
+torus.position.x = 1.5
+
+scene.add(sphere, plane, torus)
+
 const group = new THREE.Group()
 scene.add(group)
 const cube1 = new THREE.Mesh(
@@ -58,7 +135,7 @@ const cube1 = new THREE.Mesh(
 )
 const cube2 = new THREE.Mesh(
     new THREE.BoxGeometry(0.9,0.9,0.9),
-    new THREE.MeshBasicMaterial({ color: "green" })
+    new THREE.MeshBasicMaterial({ map: colorTexture })
 )
 const cube3 = new THREE.Mesh(
     new THREE.BoxGeometry(0.8,0.8,0.8),
@@ -145,10 +222,17 @@ const clock = new THREE.Clock()
 //animations
 const tick = () =>
 {
+    
+
     //time
     const elapsedTime = clock.getElapsedTime()
-    
+    //update controls
     controls.update()
+
+    //update objects
+    sphere.rotation.y = 0.15 * elapsedTime
+    torus.rotation.y = 0.15 * elapsedTime
+    plane.rotation.x = 0.15 * elapsedTime
    
     // render
     renderer.render(scene, camera)
