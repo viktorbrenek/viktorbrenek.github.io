@@ -14,9 +14,11 @@
 }
 
 body {
-    background-color: #3d3f41;
-    font-family: "Lato", sans-serif;
-    color: #c7c7b0;  
+    //background-color: #3d3f41;
+    background: rgb(2,0,36);
+    //background-color: #FF3CAC;
+    background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+    color: #c7c7b0;
 }
 
 .mainpage {
@@ -43,6 +45,7 @@ z-index: 998;
 padding: 1rem;
 backdrop-filter: blur(20px);
 -webkit-backdrop-filter: blur(20px);
+border-radius: 1rem;
 }
 
 .links p{
@@ -165,7 +168,7 @@ a {
 
 a,
 a * {
-  border-radius: 0.15rem;
+  border-radius: 1.5rem;
 }
 
 a:hover {
@@ -209,11 +212,6 @@ menu a {
   min-height: 100vh;
 }
 
-body {
-  background: #1a1a1a;
-  color: white;
-}
-
 .gridblog {
     
     grid-template-columns: repeat(6, 1fr);
@@ -244,7 +242,7 @@ body {
   grid-column-end: span 7;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-row-gap: 15rem;
+  grid-row-gap: 6rem;
   grid-column-gap: 2rem;
   margin: 1rem auto;
 }
@@ -272,6 +270,7 @@ body {
   object-fit: cover;
   width: 100%;
   height: 100%;
+  min-height: 50rem;
 }
 
 main {
@@ -548,6 +547,14 @@ label > span {
   pointer-events: none;
 }
 
+.borderdiv {
+  background-color: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 2rem;
+}
+
 @keyframes tech {
 	0% {
 		content: ' Petr Břenek ';}
@@ -582,7 +589,7 @@ label > span {
     grid-column-end: span 7;
   }
   .project-grid {
-    grid-row-gap: 16rem;
+    grid-row-gap: 6rem;
   }
   .project-grid a h3 {
     font-size: 2.5rem;
@@ -604,7 +611,7 @@ label > span {
     --padding: 2rem;
   }
   .project-grid {
-    grid-row-gap: 24rem;
+    grid-row-gap: 6rem;
   }
   .project-grid a {
     -ms-grid-column-span: 6;
@@ -618,8 +625,8 @@ label > span {
     font-size: 1.75rem;
   }
   .project-grid a img {
-    width: 100vw;
-    margin: auto calc(50% - 50vw);
+    // width: 100vw;
+    // margin: auto calc(50% - 50vw);
   }
   pre { 
     overflow: scroll ;
