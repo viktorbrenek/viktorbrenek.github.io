@@ -8,8 +8,10 @@ head
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/modely.png")
   meta(name="viewport" content="width=device-width,initial-scale=1.0")  
   link(rel='stylesheet', href='styles.css') 
+  link(rel='stylesheet', href='style.css') 
 
 body
+    canvas.webgl
     ul#links.links 
             li
               a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
@@ -68,6 +70,7 @@ body
               | Includes concept art images created with tablet. 
         
     footer
+    script(src="script.js" type="module") 
       
   
  

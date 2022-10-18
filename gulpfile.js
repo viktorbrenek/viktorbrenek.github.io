@@ -15,6 +15,8 @@ const paths = {
   pugcompile: "docs",
   lesstocompile: ['Core/*.less'],
   lesscompile: "docs",
+  scriptstocompile: ["Core/scripty/*.js"],
+  scriptscompile: "docs"
 };
 
 const mvbConf = {
@@ -90,7 +92,12 @@ gulp.task("lesscompiler", () =>
     .pipe(gulp.dest(paths.lesscompile))
 );
 
-gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles"));
+gulp.task('js', () =>
+  gulp.src(paths.scriptstocompile)
+      .pipe(gulp.dest(paths.scriptscompile))
+);
+
+gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles", "js"));
 
 
 //task na spuštění všeho najednou 
