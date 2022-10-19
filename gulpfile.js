@@ -4,6 +4,7 @@ var rename = require("gulp-rename");
 var gulp = require('gulp');
 var pug = require("gulp-pug");
 var less = require("gulp-less");
+const glsl = require("gulp-glsl");
 
 const paths = {
   articles: ['src/articles/*.md'],
@@ -16,7 +17,8 @@ const paths = {
   lesstocompile: ['Core/*.less'],
   lesscompile: "docs",
   scriptstocompile: ["Core/scripty/*.js"],
-  scriptscompile: "docs"
+  scriptscompile: "docs",
+  shaderstocompile: ["Core/*.glsl"]
 };
 
 const mvbConf = {
@@ -71,7 +73,6 @@ const mvbConf = {
   }
 }
 
-
 gulp.task('articles', () =>
   gulp.src(paths.articles)
     .pipe(mvb(mvbConf))
@@ -97,7 +98,14 @@ gulp.task('js', () =>
       .pipe(gulp.dest(paths.scriptscompile))
 );
 
-gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles", "js"));
+gulp.task("shaders", () =>
+  gulp.src(paths.shaderstocompile)
+      .pipe(glsl())
+      //.pipe(rename(path => {path.extname = ".module.min.js"}))
+      .pipe(gulp.dest(paths.scriptscompile))
+);
+
+gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles", "js", "shaders"));
 
 
 //task na spuštění všeho najednou 
