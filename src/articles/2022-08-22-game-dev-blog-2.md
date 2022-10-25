@@ -4,7 +4,7 @@ description: "Documentary of my game development."
 ogImage: gamedev
 lang: en
 tags:
-  - Gamedev
+  - 🖥️ Gamedev
 ---
 ## What took yoo so long?
 Hi.

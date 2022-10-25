@@ -100,7 +100,7 @@ gulp.task('js', () =>
 
 gulp.task("shaders", () =>
   gulp.src(paths.shaderstocompile)
-      .pipe(glsl())
+      .pipe(glsl({ format: 'module', es6: true }))
       //.pipe(rename(path => {path.extname = ".module.min.js"}))
       .pipe(gulp.dest(paths.scriptscompile))
 );

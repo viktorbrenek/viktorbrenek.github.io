@@ -4,7 +4,7 @@ description: "Documentary of my game development."
 ogImage: gamedev
 lang: en
 tags:
-  - Gamedev
+  - 🖥️ Gamedev
 ---
 
 ## Hello fellow devs and fans of steampunk and magic! 
