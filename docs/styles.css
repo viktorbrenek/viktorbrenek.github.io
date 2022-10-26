@@ -14,7 +14,7 @@
 }
 body {
   background-color: black;
-  color: #c7c7b0;
+  color: white;
 }
 .mainpage {
   display: block;
@@ -27,6 +27,7 @@ h1 {
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
+  position: sticky;
 }
 .links {
   position: fixed;
@@ -560,6 +561,9 @@ label > span {
   }
   pre {
     overflow: scroll ;
+  }
+  .lil-gui {
+    visibility: hidden;
   }
 }
 @media (min-width: 4000px) {

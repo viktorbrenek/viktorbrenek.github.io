@@ -34,7 +34,7 @@ const scene = new THREE.Scene()
  * Water
  */
 // Geometry
-const waterGeometry = new THREE.PlaneGeometry(20, 20, 512, 512)
+const waterGeometry = new THREE.TorusKnotGeometry( 10, 3, 512, 512 );
 
 //PC loader
 // renderer = new THREE.WebGLRenderer({antialias:true}); 
@@ -68,8 +68,8 @@ const waterGeometry = new THREE.PlaneGeometry(20, 20, 512, 512)
 // });
 
 //Color
-debugObject.depthColor = "#0000ff"
-debugObject.surfaceColor = "#f7a07a"
+debugObject.depthColor = "#0042aa"
+debugObject.surfaceColor = "#001e57"
 
 // Material
 const waterMaterial = new THREE.ShaderMaterial({
@@ -79,9 +79,9 @@ const waterMaterial = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
 
-        uBigWavesElevation: { value: 0.2 },
-        uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
-        uBigWavesSpeed: { value: 0.75},
+        uBigWavesElevation: { value: 0.8 },
+        uBigWavesFrequency: { value: new THREE.Vector2(6.5, 3.0) },
+        uBigWavesSpeed: { value: 2.0},
 
         uSmallWavesElevation: { value: 0.15 },
         uSmallWavesFrequency: { value: 3.0 },
@@ -189,7 +189,7 @@ const tick = () =>
     //controls.update()
     
     //animace pokus 
-    //scene.rotation.y = elapsedTime
+    water.rotation.y = elapsedTime
 
     // Render
     renderer.render(scene, camera)

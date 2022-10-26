@@ -42,9 +42,15 @@ loader.load(
         // // scale
         // // gltf.scene.scale.set(0.025, 0.025, 0.025)
         //loader.material = material
+        var model = gltf.scene;
+        var newMaterial = new THREE.LineBasicMaterial({color: 0xff8811, linewidth: 1, linecap: 'round', linejoin:  'round'});
+        model.traverse((o) => {
+        if (o.isMesh) o.material = newMaterial;
+        if (!o.isMesh) return;
+        o.material.wireframe = true;
+        });
+	
         scene.add(gltf.scene)
-       
-        console.log(gltf)
         
     }
     
