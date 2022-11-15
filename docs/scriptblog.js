@@ -152,7 +152,7 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     //Animation
-    scene.children[2].rotation.y = elapsedTime
+    scene.children[2].rotation.y = elapsedTime / 10
 
     // Update controls
     //controls.update()

@@ -79,9 +79,9 @@ const waterMaterial = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
 
-        uBigWavesElevation: { value: 0.8 },
+        uBigWavesElevation: { value: 0.4 },
         uBigWavesFrequency: { value: new THREE.Vector2(6.5, 3.0) },
-        uBigWavesSpeed: { value: 2.0},
+        uBigWavesSpeed: { value: 1.0},
 
         uSmallWavesElevation: { value: 0.15 },
         uSmallWavesFrequency: { value: 3.0 },
@@ -189,7 +189,7 @@ const tick = () =>
     //controls.update()
     
     //animace pokus 
-    water.rotation.y = elapsedTime
+    water.rotation.y = elapsedTime / 10
 
     // Render
     renderer.render(scene, camera)
