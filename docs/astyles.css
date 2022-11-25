@@ -269,6 +269,7 @@
   max-width: 150rem;
   min-height: 100vh;
   background-color: #000000;
+  text-align: center;
 }
 
 @media (max-width: 960px) {
