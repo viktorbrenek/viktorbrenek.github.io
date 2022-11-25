@@ -598,7 +598,7 @@ label > span {
   transition: transform 0.65s ease;
 }
 .viktor:after {
-  content: ' Petr Břenek ';
+  content: ' Petr Brenek ';
   animation: tech 10s infinite;
 }
 .fa {
@@ -635,7 +635,7 @@ label > span {
 }
 @keyframes tech {
   0% {
-    content: ' Petr Břenek ';
+    content: ' Petr Brenek ';
   }
   25% {
     content: ' Illustrator ';
