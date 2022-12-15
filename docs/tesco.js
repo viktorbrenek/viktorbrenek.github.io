@@ -11,6 +11,7 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+
 // Base camera
 const aspect = window.innerWidth / window.innerHeight;
 const d = 5;
@@ -28,15 +29,30 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+window.addEventListener('resize', () =>
+{
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
+
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
+
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
 
 // create an array of colors for the cube
 const colors = [
-  0xffff00, // yellow
-  0xff0000, // red
-  0x0000ff, // blue
-  0x00ff00, // green
-  0xff00ff, // magenta
-  0x00ffff, // cyan
+  0x348888, // yellow
+  0x22BABB, // red
+  0x9EF8EE, // blue
+  0xFA7F08, // green
+  0xF24405, // magenta
+  0xA52502, // cyan
 ];
 
 
@@ -99,9 +115,9 @@ function animate() {
   rotation += 0.01;
 
   // rotate the cube around the x, y, and z axes
-  scene.rotateOnAxis(new THREE.Vector3(1, 0, 0), 0.01);
-  scene.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.01);
-  scene.rotateOnAxis(new THREE.Vector3(0, 0, 1), 0.01);
+  scene.rotateOnAxis(new THREE.Vector3(1, 0, 0), 0.005);
+  scene.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.005);
+  scene.rotateOnAxis(new THREE.Vector3(0, 0, 1), 0.005);
 
   // render the scene
   renderer.render(scene, camera);

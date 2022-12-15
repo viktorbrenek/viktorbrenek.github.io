@@ -1,59 +1,110 @@
-// create an input element for the user to select an image
-const input = document.createElement('input');
-input.type = 'file';
-input.accept = 'image/*';
+// Create the SVG element
+var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
-// add an event listener that will be called when the user selects an image
-input.addEventListener('change', function() {
-  // print a message to the console
-  console.log('Image selected');
+// Set the width and height of the SVG element
+svg.setAttribute("width", 500);
+svg.setAttribute("height", 500);
 
-  // get the selected image file
-  const file = this.files[0];
+// Create a <defs> element to hold the styles
+var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
 
-  // create a FileReader to read the image file
-  const reader = new FileReader();
+// Create a <style> element to define the styles
+var style = document.createElementNS("http://www.w3.org/2000/svg", "style");
 
-  // add an event listener that will be called when the image file is loaded
-  reader.addEventListener('load', function() {
-    // print a message to the console
-    console.log('Image loaded');
+// Set the styles for the SVG element using the "style" attribute
+style.textContent = "rect.background { fill: white; }";
 
-    // get the image data as a data URL
-    const dataURL = reader.result;
+// Add the <style> element to the <defs> element
+defs.appendChild(style);
 
-    // print the data URL to the console
-    console.log(dataURL);
+// Add the <defs> element to the SVG element
+svg.appendChild(defs);
 
-    // create an image element to display the image
-    const img = document.createElement('img');
-    img.src = dataURL;
-    document.body.appendChild(img);
+// Create a rectangle for the background and apply the "background" class
+var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+rect.setAttribute("class", "background");
+rect.setAttribute("width", "100%");
+rect.setAttribute("height", "100%");
 
-    // create a canvas element to vectorize the image
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+// Add the rectangle to the SVG element
+svg.appendChild(rect);
 
-    // draw the image on the canvas
-    ctx.drawImage(img, 0, 0);
+// Generate random patterns using colors that are common in natural patterns, such as brown and green
+for (var i = 0; i < 50; i++) {
+  // Create a <line> element to generate a random line
+  var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-    // get the vectorized image data as an SVG
-    const svg = canvas.toSVG();
+  // Set the attributes of the line (e.g. start and end positions, color)
+  line.setAttribute("x1", Math.random() * 500);
+  line.setAttribute("y1", Math.random() * 500);
+  line.setAttribute("x2", Math.random() * 500);
+  line.setAttribute("y2", Math.random() * 500);
+  line.setAttribute("stroke", getRandomColor()); // Choose a random color
 
-    // print the SVG data to the console
-    console.log(svg);
+  // Add some variability to the line to make it appear more hand-drawn
+  line.setAttribute("stroke-width", Math.random() * 10);
+  line.setAttribute("stroke-dasharray", Math.random() * 10);
 
-    // create a link element to download the SVG
-    const link = document.createElement('a');
-    link.href = 'data:image/svg+xml;base64,' + btoa(svg);
-    link.download = 'vectorized.svg';
-    link.innerHTML = 'Download Vectorized Image';
-    document.body.appendChild(link);
-  });
+  // Add the line to the SVG element
+  svg.appendChild(line);
+}
 
-  // start reading the image file
-  reader.readAsDataURL(file);
+// Generate random noise using colors that are common in natural patterns, such as brown and green
+for (var i = 0; i < 50; i++) {
+  // Create a <rect> element to generate a random noise element
+  var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+
+  // Set the attributes of the rect (e.g. position, size, color)
+  rect.setAttribute("x", Math.random() * 500);
+  rect.setAttribute("y", Math.random() * 500);
+  rect.setAttribute("width", Math.random() * 10);
+  rect.setAttribute("height", Math.random() * 10);
+  rect.setAttribute("fill", getRandomColor()); // Choose a random color
+
+  // Add some variability to the rect to make it appear more hand-drawn
+  rect.setAttribute("rx", Math.random() * 10);
+  rect.setAttribute("ry", Math.random() * 10);
+
+  // Add the rect to the SVG element
+  svg.appendChild(rect);
+
+// Create a button to generate the random patterns
+var button = document.createElement("button");
+button.innerHTML = "Generate";
+
+// When the button is clicked, generate the random patterns
+button.addEventListener("click", function() {
+  // Add the SVG element to the page
+  document.body.appendChild(svg);
+
+  // Show the SVG data in the text output
+  document.getElementById("output").innerHTML = svg.outerHTML;
 });
+}
+// Add the button to the page
+document.body.appendChild(button);
 
-// add the input element to the page
-document.body.appendChild(input);
+// Create a text output element
+var output = document.createElement("pre");
+output.id = "output";
+
+// Add the text output element to the page
+document.body.appendChild(output);
+
+// Create a download link for the SVG data
+var link = document.createElement("a");
+link.innerHTML = "Download";
+link.setAttribute("download", "pattern.svg");
+link.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(svg.outerHTML));
+
+// Add the download link to the page
+document.body.appendChild(link);
+
+// Function to choose a random color that is common in natural patterns
+function getRandomColor() {
+  var colors = ["brown", "green", "tan", "maroon", "olive", "navy", "teal", "grey"];
+  var index = Math.floor(Math.random() * colors.length);
+  return colors[index];
+}
+
+
