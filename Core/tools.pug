@@ -33,29 +33,6 @@ body
     main.gridblog
         h1.intro Blog
         section.blog-grid
-          //ul
-            each tag, name in mvb.groupedArticles.byTag 
-              br
-              li.task__tag.task__tag--copyright= name 
-                  each article in tag
-                    br 
-                    li
-                      a.articlelink(href=`articles/${article.id}.html`)= article.title
-                  
-          nav.nav(role='navigation')
-            ul.nav__list
-              each tag, name in mvb.groupedArticles.byTag 
-                br
-                label.task__tag2.task__tag--copyright
-                  input#group-1(type='checkbox' hidden='')
-                  label.shrink.fa.fa-angle-right= name
-                    span
-                  ul.group-list  
-                    each article in tag
-                      br 
-                      li
-                        a.articlelink(href=`articles/${article.id}.html`)= article.title
-                
-                 
+        
     footer 
-    script(src="tesco.js" type="module") 
+    script(src="tools.js" type="module") 

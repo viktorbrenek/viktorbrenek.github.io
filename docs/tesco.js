@@ -4,54 +4,19 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
-// set up the scene
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
 
-// create the isometric camera
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-
-window.addEventListener('click', (event) => {
-    // Change the color of each box to a random color
-    boxes.forEach(box => {
-        box.material.color.set(Math.random() * 0xffffff);
-    });
-
-    // Reshuffle the boxes into random positions
-    boxes.forEach(box => {
-        box.position.x = Math.random() * 10 - 5; // Random x-coordinate between -5 and 5
-        box.position.y = Math.random() * 10 - 5; // Random y-coordinate between -5 and 5
-        box.position.z = Math.random() * 10 - 5; // Random z-coordinate between -5 and 5
-    });
-});
-
-
-
-/**
- * Camera
- */
 // Base camera
 const aspect = window.innerWidth / window.innerHeight;
 const d = 5;
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set( 5, 5, 5 ); // all components equal
+camera.position.set( 3, 3, 3 ); // all components equal
 camera.lookAt( scene.position );
 
 // create a renderer and add it to the page
@@ -64,62 +29,88 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 
-// Create a random number of boxes with random sizes, colors, and positions
-const numBoxes = Math.floor(Math.random() * 10) + 10; // Random number of boxes
-const boxes = [];
+// create an array of colors for the cube
+const colors = [
+  0xffff00, // yellow
+  0xff0000, // red
+  0x0000ff, // blue
+  0x00ff00, // green
+  0xff00ff, // magenta
+  0x00ffff, // cyan
+];
 
-for (let i = 0; i < numBoxes; i++) {
-  const size = Math.random() * 0.5 + 0.1; // Random size between 0.1 and 0.6
-  const boxGeometry = new THREE.BoxGeometry(size, size, size);
-  const boxMaterial = new THREE.MeshBasicMaterial({color: Math.random() * 0xffffff}); // Random color
-  const box = new THREE.Mesh(boxGeometry, boxMaterial);
-  box.position.x = Math.random() * 10 - 5; // Random x-coordinate between -5 and 5
-  box.position.y = Math.random() * 10 - 5; // Random y-coordinate between -5 and 5
-  box.position.z = Math.random() * 10 - 5; // Random z-coordinate between -5 and 5
-  boxes.push(box);
-  scene.add(box);
+
+// create a 3x3x3 grid of cubes
+for (let x = 0; x < 3; x++) {
+  for (let y = 0; y < 3; y++) {
+    for (let z = 0; z < 3; z++) {
+      // create a new cube
+      const cube = new THREE.Mesh(
+        new THREE.BoxGeometry(1, 1, 1),
+        new THREE.MeshBasicMaterial({ color: colors[Math.floor(Math.random() * colors.length)] })
+      
+      );
+      
+
+      // position the cube
+      cube.position.set((x - 1) * 1.2 - 0.25, (y - 1) * 1.2 - 0.25, (z - 1) * 1.2 - 0.25);
+      
+
+      // add the cube to the scene
+      scene.add(cube);
+      
+      
+
+      
+    }
+  }
+}
+// add a click event listener to the window
+// create a variable to store the current score
+let score = 0;
+
+// add a click event listener to the window
+window.addEventListener('click', function() {
+  // get a random cube from the scene
+  const randomCube = scene.children[Math.floor(Math.random() * scene.children.length)];
+
+  // get a random color from the list of colors
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+  // change the color of the random cube to the random color
+  randomCube.material.color.set(randomColor);
+
+  // increment the score
+  score++;
+
+  // update the score in the HTML
+  document.querySelector('p.score').innerHTML = 'Score: ' + score;
+});
+
+
+
+// create a variable to store the current angle of rotation
+let rotation = 0;
+
+// create a function to update the rotation and render the scene
+function animate() {
+  
+  // increase the rotation by a small amount
+  rotation += 0.01;
+
+  // rotate the cube around the x, y, and z axes
+  scene.rotateOnAxis(new THREE.Vector3(1, 0, 0), 0.01);
+  scene.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.01);
+  scene.rotateOnAxis(new THREE.Vector3(0, 0, 1), 0.01);
+
+  // render the scene
+  renderer.render(scene, camera);
+
+  // request the next animation frame
+  requestAnimationFrame(animate);
 }
 
-// Set the initial camera position
-camera.position.z = 5;
-
-// Animate the boxes by looping them from a random position to the start
-let time = 0;
-
-// Animate the boxes by looping them from a random position to the start
-// and updating their size over time
-
-
-const animate = function () {
-    requestAnimationFrame(animate);
-  
-    // Increment the time counter
-    time += 0.01;
-    if (time >= 1 / 60) {
-    boxes.forEach(box => {
-      const speed = 0.01; // Set the speed of the animation
-      box.position.x -= speed; // Move the box along the x-axis
-  
-      // Update the size of the box based on the time
-      box.scale.x = Math.sin(time) * 0.5 + 1;
-      box.scale.y = Math.sin(time) * 0.5 + 1;
-      box.scale.z = Math.sin(time) * 0.5 + 1;
-  
-      if (box.position.x < -5) { // If the box reaches the left edge
-        // Generate a new random position for the box
-        box.position.x = Math.random() * 10 - 5;
-        box.position.y = Math.random() * 10 - 5;
-        box.position.z = Math.random() * 10 - 5;
-      }
-    }
-    
-    );
-    time = 0;}
-  
-    // render the scene
-    renderer.render(scene, camera);
-  };
-  
-
-// start the animation
+// start the animation loop
 animate();
+
+
