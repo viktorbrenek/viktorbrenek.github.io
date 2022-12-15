@@ -372,7 +372,7 @@ menu a {
   border: 5px solid #cecece;
   width: 200px;
   height: 200px;
-  position: -webkit-sticky;
+  position: relative;
 }
 main {
   padding: 3rem var(--padding);
