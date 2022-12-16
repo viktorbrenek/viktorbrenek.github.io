@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 require("dotenv").config()
 const axios = require("axios")
 
+const TOKEN = "MTA1MzI3MzM3NDM1MDExODkzMg.GxAaqN.H_ah9wk58nRJdUL8aAxVCrSakOOihMyFfycbdw"
 const WEBSITE_URL = "https://brenek.art"
 
 const client = new Discord.Client({
@@ -49,4 +50,4 @@ function hash(str) {
   return hash
 }
 
-client.login(process.env.TOKEN)
+client.login(TOKEN)
