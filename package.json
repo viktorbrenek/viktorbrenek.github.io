@@ -26,6 +26,10 @@
 		"lessc": "1.0.2"
 	},
 	"dependencies": {
+		"axios": "^1.2.1",
+		"discord.js": "^13.12.0",
+		"dotenv": "^16.0.3",
+		"got": "^9.6.0",
 		"gulp-glsl": "^1.2.4",
 		"simplex-noise": "^3.0.1",
 		"three.terrain.js": "^2.0.0"
