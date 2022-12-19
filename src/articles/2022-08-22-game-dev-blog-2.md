@@ -6,7 +6,7 @@ lang: en
 tags:
   - 🖥️ Gamedev
 ---
-## What took yoo so long?
+## What took you so long?
 Hi.
 So... this took some time obviously. But here we are. Another gamedev blog?/log? idk.. 
 I just had a lot of work around the website and other stuff. However the progress is being made. 
