@@ -18,7 +18,8 @@ const paths = {
   lesscompile: "docs",
   scriptstocompile: ["Core/scripty/*.js"],
   scriptscompile: "docs",
-  shaderstocompile: ["Core/*.glsl"]
+  shaderstocompile: ["Core/*.glsl"],
+  jsonstocopy: ["Core/*.json"]
 };
 
 const mvbConf = {
@@ -98,6 +99,11 @@ gulp.task('js', () =>
       .pipe(gulp.dest(paths.scriptscompile))
 );
 
+gulp.task('json', () =>
+  gulp.src(paths.jsonstocopy)
+      .pipe(gulp.dest(paths.scriptscompile))
+);
+
 gulp.task("shaders", () =>
   gulp.src(paths.shaderstocompile)
       .pipe(glsl({ format: 'module', es6: true }))
@@ -105,7 +111,7 @@ gulp.task("shaders", () =>
       .pipe(gulp.dest(paths.scriptscompile))
 );
 
-gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles", "js", "shaders"));
+gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles", "js", "json", "shaders"));
 
 
 //task na spuštění všeho najednou 
