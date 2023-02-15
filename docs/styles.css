@@ -122,6 +122,13 @@
   src: url(https://fonts.gstatic.com/s/gochihand/v19/hES06XlsOjtJsgCkx1PkTo4.ttf) format('truetype');
 }
 @font-face {
+  font-family: 'Fugaz One';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fugazone/v15/rax_HiWKp9EAITukFslMBA.ttf) format('truetype');
+}
+@font-face {
   font-family: "CustomFont";
   src: url('assets/fonts/Mona-Sans.woff2') format("woff2");
 }
@@ -140,6 +147,12 @@ h1 {
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
+  font-variant: petite-caps;
+  font-style: oblique;
+  font-weight: 900;
+}
+h1::first-letter {
+  color: #30FFCB;
 }
 .links {
   position: fixed;
@@ -241,10 +254,6 @@ span {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-h1 {
-  font-size: 3.5rem;
-  line-height: 1.3;
-}
 a {
   text-decoration: none;
   color: white;
@@ -282,7 +291,12 @@ menu a {
   padding: 16px 14px;
   text-decoration: none;
   font-family: 'CustomFont';
-  font-weight: 400;
+  font-weight: 700;
+  font-variant: petite-caps;
+  font-style: oblique;
+}
+.name::first-letter {
+  color: #30FFCB;
 }
 .hrefa {
   font-size: 2.2rem;
@@ -328,6 +342,12 @@ menu a {
   font-size: 4.5rem;
   position: -webkit-sticky;
   position: sticky;
+  font-variant: petite-caps;
+  font-style: oblique;
+  font-weight: 900;
+}
+.intro::first-letter {
+  color: #30FFCB;
 }
 .project-grid {
   grid-column-start: 1;
@@ -347,6 +367,11 @@ menu a {
 .project-grid a h3 {
   font-size: 2.15rem;
   margin: 1.25rem 0;
+  font-variant: petite-caps;
+  font-style: oblique;
+}
+.project-grid a h3::first-letter {
+  color: #30FFCB;
 }
 .project-grid a p {
   font-size: 1.5rem;
@@ -556,6 +581,7 @@ h2 {
   margin-top: 2rem;
   margin-bottom: 2rem;
   font-size: 2.5rem;
+  font-variant: petite-caps;
 }
 p {
   font-size: 2rem;
@@ -613,6 +639,9 @@ label > span {
   border-radius: 2rem;
   height: 100%;
 }
+.borderdiv:hover {
+  background-color: rgba(18, 255, 196, 0.7);
+}
 .webgl {
   position: fixed;
   top: 0;
@@ -669,10 +698,13 @@ label > span {
   margin-bottom: 6rem;
   font-family: 'CustomFont';
   font-weight: 900;
-  text-transform: uppercase;
   margin-top: 6rem;
   font-size: 4.5rem;
   position: relative;
+  font-style: oblique;
+}
+.hillu::first-letter {
+  color: #30FFCB;
 }
 .hilluspace {
   font-size: 4rem;

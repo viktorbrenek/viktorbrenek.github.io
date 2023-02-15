@@ -16,7 +16,7 @@
 		"gulp-filter": "5.1.0",
 		"gulp-if": "^3.0.0",
 		"gulp-less": "^4.0.1",
-		"gulp-mvb": "^0.8.6",
+		"gulp-mvb": "^0.9.0",
 		"gulp-pug": "^4.0.1",
 		"gulp-remember": "^1.0.1",
 		"gulp-rename": "^1.4.0",
@@ -32,6 +32,7 @@
 		"express": "^4.18.2",
 		"got": "^9.6.0",
 		"gulp-glsl": "^1.2.4",
+		"markdown-it-anchor": "^8.6.6",
 		"simplex-noise": "^3.0.1",
 		"three.terrain.js": "^2.0.0"
 	}
