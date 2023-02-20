@@ -48,17 +48,19 @@ body
                   
           nav.nav(role='navigation')
             ul.nav__list
-              each tag, name in mvb.groupedArticles.byTag 
+              each year, name in mvb.groupedArticles.byYear 
                 br
                 label.task__tag2.task__tag--copyright
                   input#group-1(type='checkbox' hidden='')
-                  label.shrink.fa.fa-angle-right= name
+                  label.shrink.fa.fa-angle-right.year= year.year
                     span
                   ul.group-list  
-                    each article in tag
+                    each ar in year.articles
                       br 
                       li
-                        a.articlelink(href=`articles/${article.id}.html`)= article.title
+                        a.articlelink(href=`articles/${ar.id}.html`)= ar.title
+                        //each tag in article.tags
+                        span.tsg= ar.tags
                 
                  
     footer 
