@@ -1,12 +1,19 @@
 img {
-
   height: auto;
-
   max-width: 100%;
+  min-width: 100%;
   margin-bottom: 4rem;
   margin-top: 4rem;
 }
 
 .secpad {
   padding: 3rem var(--padding);
+}
+
+a {
+  color: #30FFCB;
+}
+
+h2::first-letter {
+  color: #30FFCB;
 }

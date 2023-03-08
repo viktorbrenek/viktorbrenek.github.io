@@ -88,9 +88,9 @@ for (let i = 0; i < numBoxes; i++) {
   box.position.y = Math.random() * 10 - 5; // Random y-coordinate between -5 and 5
   box.position.z = Math.random() * 10 - 5; // Random z-coordinate between -5 and 5
   box.velocity = new THREE.Vector3(
-    (Math.random() - 0.1) * 0.01,
-    (Math.random() - 0.1) * 0.01,
-    (Math.random() - 0.1) * 0.01
+    (Math.random() - 0.05) * 0.01,
+    (Math.random() - 0.05) * 0.01,
+    (Math.random() - 0.05) * 0.01
   ); // Random velocity
   boxes.push(box);
   scene.add(box);
@@ -142,7 +142,7 @@ const animate = function () {
     }
 
     // Add rotation to box
-    const rotationSpeed = 0.01; // Set the speed of the rotation
+    const rotationSpeed = 0.005; // Set the speed of the rotation
     box.rotation.x += rotationSpeed * Math.random(); // Rotate randomly on the x-axis
     box.rotation.y += rotationSpeed * Math.random(); // Rotate randomly on the y-axis
     box.rotation.z += rotationSpeed * Math.random(); // Rotate randomly on the z-axis

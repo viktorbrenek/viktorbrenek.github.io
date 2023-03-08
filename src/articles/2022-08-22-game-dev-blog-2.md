@@ -84,3 +84,9 @@ We have got a whole world to talk about after all! Be ready for
 animals and an extensive log about player attributes. And of course
 i cannot forget about those beautiful harvestables, that are nicely
 coming trough. Stay tuned! CYA
+
+---
+#
+[Youtube](https://www.youtube.com/c/ViktorBřenekYT)
+[HeroHero](https://herohero.co/viktorbrenek)
+[Discord](https://discord.com/invite/2Uj6N5N)

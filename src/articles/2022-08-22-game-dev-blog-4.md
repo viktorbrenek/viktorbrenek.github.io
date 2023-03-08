@@ -59,6 +59,8 @@ and i will let you be the judge of it. You can freely talk about this blog arcti
 #
 Follow me on my socials to get more information about the game development. Thank you. 
 #
+---
+#
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
-[Twitch](https://www.twitch.tv/viktorbrenek)
+[HeroHero](https://herohero.co/viktorbrenek)
 [Discord](https://discord.com/invite/2Uj6N5N)

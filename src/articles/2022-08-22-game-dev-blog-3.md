@@ -104,6 +104,8 @@ that seems to be impossible with my current set of skills. So maybe in future :)
 Ok.. that was exhausting and probably full of mistakes... sorry its 1 am and i dont care. 
 Follow me on my socials to get more information about the game development. Thank you. 
 
+---
+#
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
-[Twitch](https://www.twitch.tv/viktorbrenek)
+[HeroHero](https://herohero.co/viktorbrenek)
 [Discord](https://discord.com/invite/2Uj6N5N)
