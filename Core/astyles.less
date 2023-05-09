@@ -1,74 +1,75 @@
-@font-face {
-  font-family: 'Source Code Pro';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/sourcecodepro/v22/HI_diYsKILxRpg3hIP6sJ7fM7PqPMcMnZFqUwX28DMyQhM4.ttf) format('truetype');
-}
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
 #hero {
-  height: 800px;
-  overflow: hidden;
-  position: relative;
-}
-#content {
-  background-color: #000000;
-}
-.layer {
-  background-position: bottom center;
-  background-size: auto;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 800px;
-  position: fixed;
-  z-index: -1;
-}
-#hero-mobile {
-  display: none;
-  background: url("assets/images/mobile.png") no-repeat center bottom / cover;
-  height: 320px;
-}
-.first-section {
-  padding: 50px 0 20px 0;
-}
-#hero,
-.layer {
-  min-height: 800px;
-}
-.layer-bg {
-  background-image: url("assets/images/background.png");
-  background-size: cover;
-}
-.layer-bg2 {
-  background-image: url("assets/images/planeta.gif");
-  background-size: cover;
-}
-.layer-bg3 {
-  background-image: url("assets/images/threejs.png");
-  background-size: cover;
-}
-.layer-bg4 {
-  background-image: url("assets/images/ocean.png");
-  background-size: cover;
-}
-.layer-3 {
-  background-image: url("assets/images/lista.png");
-  background-size: cover;
-}
-.layer-4 {
-  background-image: url("assets/images/arcanepunk5.png");
-  background-position: right bottom;
-}
-.layer-44 {
-  background-image: url("assets/images/lod.png");
-  background-position: right;
-}
-.layer-444 {
-  background-image: url("assets/images/palm.svg");
-  background-position: right bottom;
-}
-.layer-overlay {
-  background-image: url("assets/images/overlay.png");
-}
+    height: 800px;
+    overflow: hidden;
+    position: relative;
+  }
+  #content {
+    background-color: #000000;
+  }
+  .layer {
+    background-position: bottom center;
+    background-size: auto;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 800px;
+    position: fixed;
+    z-index: -1;
+  }
+  #hero-mobile {
+    display: none;
+    background: url("assets/images/mobile.png") no-repeat center bottom / cover;
+    height: 320px;
+  }
+  .first-section {
+    padding: 50px 0 20px 0;
+  }
+
+
+  #hero, .layer {
+    min-height: 800px;
+  }
+  .layer-bg {
+    background-image: url("assets/images/background.png");
+    background-size: cover;
+  }
+  .layer-bg2 {
+    background-image: url("assets/images/planeta.gif");
+    background-size: cover;
+  }
+
+  .layer-bg3 {
+    background-image: url("assets/images/threejs.png");
+    background-size: cover;
+  }
+
+  .layer-bg4 {
+    background-image: url("assets/images/ocean.png");
+    background-size: cover;
+  }
+  
+  .layer-3 {
+    background-image: url("assets/images/lista.png");
+    background-size: cover;
+  }
+  .layer-4 {
+    background-image: url("assets/images/arcanepunk5.png");
+    background-position: right bottom;
+  }
+  .layer-44 {
+    background-image: url("assets/images/lod.png");
+    background-position: right;
+  }
+  .layer-444 {
+    background-image: url("assets/images/palm.svg");
+    background-position: right bottom;
+  }
+  .layer-overlay {
+    background-image: url("assets/images/overlay.png");
+  }
+
 #threejs {
   width: 100%;
   height: 100%;
@@ -80,6 +81,7 @@
   border-style: solid;
   margin-top: 100px;
 }
+
 .refresh {
   position: fixed;
   list-style: none;
@@ -91,6 +93,7 @@
   margin: 0;
   z-index: 998;
 }
+
 .disena {
   position: fixed;
   list-style: none;
@@ -102,6 +105,7 @@
   margin: 0;
   z-index: 998;
 }
+
 .windowdisplay {
   min-width: 100%;
   min-height: 666px;
@@ -112,6 +116,7 @@
   border-style: solid;
   margin-top: 20px;
 }
+  
 .h1mid {
   font-size: 8rem;
   text-align: center;
@@ -120,15 +125,17 @@
   top: 50%;
   left: 5%;
 }
+
 .arcaneh {
   font-size: clamp(2rem, 5cqi, 4rem);
   text-align: center;
   margin: 0;
   top: 50%;
   left: 5%;
-  font-family: 'Spectral CS';
+  font-family:'Spectral CS';
   margin-bottom: 1rem;
 }
+
 .arcanep {
   font-size: 1.5rem;
   text-align: center;
@@ -136,9 +143,10 @@
   top: 50%;
   margin-bottom: 6rem;
   left: 5%;
-  font-family: 'Spectral CS';
+  font-family:'Spectral CS';
   text-transform: uppercase;
 }
+
 .arcanepp {
   font-size: 1.5rem;
   text-align: center;
@@ -146,9 +154,10 @@
   top: 50%;
   margin-bottom: 1rem;
   left: 5%;
-  font-family: 'Spectral CS';
+  font-family:'Spectral CS';
   text-transform: uppercase;
 }
+
 .arcanei {
   font-size: 1.5rem;
   text-align: center;
@@ -156,9 +165,10 @@
   top: 10%;
   margin-bottom: 4rem;
   left: 5%;
-  font-family: 'Spectral CS';
+  font-family:'Spectral CS';
   font-style: italic;
 }
+
 .arcaimg {
   display: block;
   margin-left: auto;
@@ -167,12 +177,15 @@
   max-width: 100%;
   height: auto;
 }
+
+
 .h1mid:hover {
   transform: scale(1.1);
   background: linear-gradient(to right, #ff8a00, #da1b60);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .project-grid-b {
   grid-column-start: 1;
   grid-column-end: span 7;
@@ -183,21 +196,25 @@
   margin: 1rem auto;
   background-color: #000000;
 }
+
 .project-grid-b a {
   -ms-grid-column-span: 2;
   grid-column: span 2;
   color: white;
   min-height: 56.25%;
 }
+
 .project-grid-b a h3 {
   font-size: 2.15rem;
   margin: 1.25rem 0;
 }
+
 .project-grid-b a p {
   font-size: 2rem;
   line-height: 1.4em;
   color: lightgrey;
 }
+
 .project-grid-b a img {
   margin-bottom: 0;
   -o-object-fit: cover;
@@ -205,6 +222,7 @@
   width: 100%;
   height: 100%;
 }
+
 .project-grid-c {
   grid-column-start: 1;
   grid-column-end: span 7;
@@ -214,21 +232,25 @@
   margin: 1rem auto;
   background-color: #000000;
 }
+
 .project-grid-c a {
   -ms-grid-column-span: 2;
   grid-column: span 2;
   color: white;
   min-height: 56.25%;
 }
+
 .project-grid-c a h3 {
   font-size: 2.15rem;
   margin: 1.25rem 0;
 }
+
 .project-grid-c a p {
   font-size: 2rem;
   line-height: 1.4em;
   color: lightgrey;
 }
+
 .project-grid-c a img {
   margin-bottom: 0;
   -o-object-fit: cover;
@@ -236,6 +258,7 @@
   width: 100%;
   margin-bottom: 2.5rem;
 }
+
 .grid-b {
   display: -ms-grid;
   -ms-grid-columns: 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr 1.5rem 1fr;
@@ -250,14 +273,18 @@
   text-align: center;
   container-type: inline-size;
 }
+
 @media (max-width: 960px) {
+  
   .project-grid-b {
     grid-template-columns: repeat(4, 1fr);
   }
   .project-grid-c {
     grid-template-columns: repeat(4, 1fr);
   }
+ 
 }
+
 @media (max-width: 700px) {
   .project-grid-b {
     grid-template-columns: repeat(2, 1fr);
@@ -266,3 +293,5 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+

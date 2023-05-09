@@ -642,6 +642,7 @@ label > span {
   padding: 2rem;
   border-radius: 2rem;
   height: 100%;
+  container-type: inline-size;
 }
 
 .borderdiv:hover {
@@ -781,7 +782,7 @@ label > span {
     grid-column: span 6;
   }
   .project-grid a h3 {
-    font-size: 3rem;
+    font-size: clamp(2rem, 5cqi, 3rem);
     margin-top: 2rem;
   }
   .project-grid a p {
