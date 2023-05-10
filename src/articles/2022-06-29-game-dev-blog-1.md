@@ -50,5 +50,4 @@ Stay tunned!
 ---
 #
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
-[HeroHero](https://herohero.co/viktorbrenek)
 [Discord](https://discord.com/invite/2Uj6N5N)
