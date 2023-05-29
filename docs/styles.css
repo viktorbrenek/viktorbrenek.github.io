@@ -163,8 +163,8 @@ h1::first-letter {
   margin: 0;
   z-index: 998;
   padding: 1rem;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-radius: 1rem;
 }
 .links p {
@@ -277,10 +277,10 @@ menu {
   width: 100%;
   top: 0;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 999;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 menu a {
   font-size: 2.2rem;
@@ -611,9 +611,9 @@ li {
 }
 .nav label {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.7);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   border-radius: 2rem;
 }
 .year {
@@ -650,13 +650,15 @@ label > span {
   pointer-events: none;
 }
 .borderdiv {
-  background-color: rgba(0, 0, 0, 0.7);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
   padding: 2rem;
   border-radius: 2rem;
   height: 100%;
   container-type: inline-size;
+}
+.bcgblur {
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 .borderdiv:hover {
   background-color: rgba(18, 255, 196, 0.7);
@@ -668,17 +670,17 @@ label > span {
   outline: none;
 }
 .lil-gui {
-  --background-color: rgba(0, 0, 0, 0.746);
+  --background-color: rgba(0, 0, 0, 0.4);
   --widget-color: rgba(103, 103, 103, 0.613);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 #gui {
   top: 0.8vh;
   position: fixed;
   padding: 1rem;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   border-radius: 1rem;
   text-align: center;
 }

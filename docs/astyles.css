@@ -246,8 +246,11 @@
   margin-bottom: 10rem;
   max-width: 100rem;
   min-height: 100vh;
-  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   text-align: center;
+  border-radius: 2rem;
   container-type: inline-size;
 }
 @media (max-width: 960px) {
