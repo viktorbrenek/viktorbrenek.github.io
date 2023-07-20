@@ -13,14 +13,14 @@ to update more often. + I had a nice productive weekend. Appart from game develo
 also created a discord bot that should keep you in touch if you joined my discord server. 
 It should send a message anytime i create a new blog post, so basically you can setup
 notifications for the channel "Blog" and it will notify you directly :) 
-#
+
 ## Back to the gamedev
 Anyways. Last week i have told you that i have created a very smart system of UV wrapping. 
 Well... not really. I have to remake it all again. Luckily its not so problematic now. 
 I have realised that i need more then RGB mask. I need custom number of masked colors. 
 Which is what i have created this weekend. Sadly this means i also need to remake the UV wraps
 for my characters. 
-#
+<br></br>
 That is also not the only problem. I have realised that even though i have minified the
 amount of needed textures for the game i can do it even better. I can even simplify it to use
 only 1 texture for all objects in the game basically. (well maybe not for the lightmaps, but
@@ -35,31 +35,34 @@ same model on the top of each other in the color pool. That way the lightmaps wi
 But Harry told me that i can either just put the wrappings next to each other or i can just 
 use another wrapping for the ligtmapping. I think i will just do the first option even though
 it will be a little more time consuming in the process but will safe a lot of time in the long run.
-# 
+
 ![image](../assets/images/idea.png)
-#
+
 Here you can see how i adjusted the color masking. 
-#
+
 ![image](../assets/images/shader5.png)
-#
+
 ## New armor
 Other that i have also been working on new plate armor for imperials. This will be basic
 armor with little technical improvements like air filtering, flashlight in helm and eye 
 protection. Nothing fancy in the world. Every imperial should have this armor given by the
 Empire. This will also be lately combined with backpacks, cloaks and probably halberts as a
 two handed weapons. 
-#
+<br></br>
 The problem is that i have to remake the UV ofc.. because i have realised the problem with the 
 simplyfied textures after i already had the new armor :) Well... here you can see the new armor 
 and i will let you be the judge of it. You can freely talk about this blog arcticle on my Discord.
-#
+
+
 ![image](../assets/images/platearmor.png)
-#
+
 ![image](../assets/images/platearmor2.png)
-#
+<br></br>
 Follow me on my socials to get more information about the game development. Thank you. 
-#
+## The End :)
 ---
-#
+
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
+
+[[toc]]

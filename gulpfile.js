@@ -5,6 +5,11 @@ var gulp = require('gulp');
 var pug = require("gulp-pug");
 var less = require("gulp-less");
 const glsl = require("gulp-glsl");
+const markdownIt = require("markdown-it");
+const markdownItAnchor = require("markdown-it-anchor");
+const markdownItToc = require('markdown-it-toc');
+const string = require('string')
+const slugify = s => string(s).slugify().toString()
 
 const paths = {
   articles: ['src/articles/*.md'],
@@ -29,6 +34,10 @@ const mvbConf = {
   template: paths.articleTemplate, 
   // callback function for generating an article permalink.
   // see docs below for info on the article properties.
+  plugins: [
+    ['markdown-it-toc-done-right', { listType: "ol", slugify } ],
+    ['markdown-it-anchor', { tabIndex: false, slugify, permalink: true, permalinkSymbol: '' } ],
+  ],
   permalink(article) {
     return `/${paths.articlesBasepath}/${article.id}.html`;
   },
@@ -74,10 +83,41 @@ const mvbConf = {
   }
 }
 
+// const anchor = require('markdown-it-anchor')
+// const md = require('markdown-it')()
+//   .use(require('markdown-it-anchor'), {
+//     level: 1,
+//     permalink: true,
+//     permalinkClass: 'header-anchor',
+//     permalinkSymbol: '¶',
+//     permalinkBefore: true,
+//     html: false,
+//     xhtmlOut: true,
+//     typographer: true,
+//     tabIndex: false,
+//     slugify: true
+//   })
+//   //.use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
+//   .use( require("markdown-it-toc-done-right") )
+//   .use(anchor, {
+//     permalink: anchor.permalink.headerLink()
+//   })
+
+const anchor = require('markdown-it-anchor')
+const md = require('markdown-it')()
+
+
+
+md.use(anchor, {
+  permalink: anchor.permalink.headerLink()
+})
+
+
+
 gulp.task('articles', () =>
   gulp.src(paths.articles)
     .pipe(mvb(mvbConf))
-    .pipe(pug())
+    .pipe(pug()) 
     .pipe(gulp.dest(paths.articlesdist))
 );
 

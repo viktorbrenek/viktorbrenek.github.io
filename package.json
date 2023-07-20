@@ -23,7 +23,8 @@
 		"gulp-sourcemaps": "^2.6.5",
 		"highlight.js": "^9.12.0",
 		"less-plugin-autoprefix": "^2.0.0",
-		"lessc": "1.0.2"
+		"lessc": "1.0.2",
+		"markdown-it-toc": "^1.1.0"
 	},
 	"dependencies": {
 		"axios": "^1.2.1",
@@ -32,8 +33,11 @@
 		"express": "^4.18.2",
 		"got": "^9.6.0",
 		"gulp-glsl": "^1.2.4",
-		"markdown-it-anchor": "^8.6.6",
+		"markdown-it": "^13.0.1",
+		"markdown-it-anchor": "^8.6.7",
+		"markdown-it-toc-done-right": "^4.2.0",
 		"simplex-noise": "^3.0.1",
+		"string": "^3.3.3",
 		"three.terrain.js": "^2.0.0"
 	}
 }

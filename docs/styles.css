@@ -742,6 +742,24 @@ label > span {
 .spacersmaller {
   padding-bottom: 15rem;
 }
+.table-of-contents {
+  position: fixed;
+  list-style: none;
+  width: min(50%, 150px);
+  top: 20%;
+  left: 0px;
+  margin: 0;
+  z-index: 998;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 1rem;
+}
+@media (max-width: 1050px) {
+  .table-of-contents {
+    display: none;
+  }
+}
 @media (max-width: 4000px) {
   pre {
     overflow: hidden ;

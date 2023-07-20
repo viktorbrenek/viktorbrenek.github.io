@@ -24,8 +24,7 @@ OK... lets stop with the "blabla" informations that nobody cares about. So did t
 Well.. Checkout these cool examples and be my judge. Today i focused on monsters. I hope you will 
 find them cool! (If you wish to comment, give and advise perhaps, 
 i am working on a solution... hold on buddy - or join my [Discord](https://discord.com/invite/2Uj6N5N))
-#
-<br/><br/>
+
 ## Geckyena
 Hybrid of hyena and gecko. It is said that the creature combines the best 
 of survival abilities from those two amazing animals into one ultimate
@@ -36,7 +35,6 @@ prefer to eat corpses and leftovers after alpha predators. But in rare
 cases they can be hostile even to small groups of humans. Geckyenas can
 be usually found in a desert areas. And combinations of scales and fur
 makes them completly resistant to the desert harsh environment. 
-#
 
 ![image](../assets/images/geckyena.png)
 
@@ -54,7 +52,6 @@ used for armor crafting. If you stumble on them anyways, try to
 avoid the stinger that replaced the usuall scorpion tail. Its 
 shorter but its poison will stun your for quite some time and
 hog are pretty known for eating their victims alive. 
-#
 
 ![image](../assets/images/scorphog.png)
 
@@ -74,8 +71,6 @@ are called "choppers"... An intersting body part would also be
 a long beak, that is used to consume sweat palm fruit that usually
 grows on the top of the desert palms. 
 
-#
-
 ![image](../assets/images/chopper.png)
 
 ## Thats it?
@@ -85,7 +80,10 @@ animals and an extensive log about player attributes. And of course
 i cannot forget about those beautiful harvestables, that are nicely
 coming trough. Stay tuned! CYA
 
----
-#
+## The end :)
+
+
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
+
+[[toc]]

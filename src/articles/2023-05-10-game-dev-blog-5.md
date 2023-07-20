@@ -13,7 +13,7 @@ during past 5 months. I had been working hard on multiple fronts.. doing youtube
 servers and other community stuff. Dont take me wrong it is also important as much as 
 development of the game. Building a strong community that i can share my progress with 
 is maybe even more important. Thus i do not regret it. 
-#
+
 ## Mechanics
 However... back to the development. 
 I figured that there were some (and still are) gaps between the mechanics i want and those
@@ -28,13 +28,13 @@ mysterious extensiveness and buginess of several mechanics that create a space f
 fantasy and creativity. Dont even let me start on Kenshi. Suprisingly... those are the games
 that are loved more than some of the triple "A" titles. Because they are fun and they are not
 generic. 
-#
+<br></br>
 In my game i want to use as much inspiration from my favourite titles as possible. I want to 
 use Kenshi skill system which is kinda similar in Skyrim too. The player will have to work 
 towards the progression. (They) will have to use certain type of weapon for example to get 
 better with it. Or they will have to gamble multiple times with local thugs to get better in
 haggling and trading. 
-#
+<br></br>
 Thats why i have created a similar system. In my game there is around 31 skills. They range 
 from a combat types to more common civil skills as harvesting. Specific tasks or activities in
 the world will reward you with an XP point in certain skill. Harvesting a tree for example
@@ -44,7 +44,7 @@ i will not make a player cut so much trees. There will be quests rewarding you i
 increase and there will be multiple types of trees with different XP increase. 
 Still player should work for each improvement. The game will not give him anything granted. 
 And each upgrade will feel good, because it was earned. 
-#
+<br></br>
 This also colorates with my other intension to make game significantly harder in terms of 
 combat and dying. There will be several zones requiring player to grind a certain skill to be 
 able to enter and compete in combat. Imagine a Runescape progression for example. 
@@ -61,11 +61,10 @@ to use a prosthetics. I also kinda like the idea from Outward that you will resp
 town but your belongins might be lost on the place where you have been defeated forcing you 
 to get on your feet and try to run for them. Thats in the end pulled from Diablo franchise. 
 The possibilities are endless and the ideas too. 
-#
+<br></br>
 Nomadic human with a two handed spear in leather armor. 
-#
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1102003089818529813/image.png)
-#
+
 There is even more to combat then just bulking up the skills. I have also added a stagger bar
 (i am not sure how to call that for now - i refer to it as a fatique). It is responsible for
 your spell casting but also for your posture in combat. Posture regenerates automatically 
@@ -77,50 +76,52 @@ afford to simple walk in and kill them all even if they are on lower levels. Eac
 reduce your stagger by 10% with each attack and you would not be able to refill it that quickly
 leaving you staggered when your fatique drops on 0% for a 3 seconds unable to dodge or protect.
 After that your fatique will get back to 100% inmidiatelly so you are not stun locked on one place.
-#
+<br></br>
 Another thing i have changed recently are the weapon types. For now we have more then 10 
 weapon types with different animations when equiped. Each weapon has its own skill of course.
 And its specific style of fighting. Some are faster but on close range and with more static 
 animations and others are the complete opposite. 
 I have also added some reactions on impact. Like blood spouting, pushback, sounds and more 
 details.
-#
+
 ## UI 
 Lately i have also came across AI. Specificaly MidJourney. It helps me a lot in creating 
 interesting UI ideas for my game and generating icons. Its not always perfect but it saves
 a lot of much needed time and money. Check it out and let me know on my Discord if you like it
 more or less then before!
-#
+<br></br>
 Here you can see an inventory. 
-#
+
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1097580909194117231/image.png)
-#
+
 And there is a health bar, stagger bar and energy bar. 
-#
+
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1097580751177928795/image.png)
-#
+
 ## 3D models cleaning and remeshing
 Since there have also been a lot of old models i had to optimize them and prepare them for our
 masking shader. Thus i have remodeled all monsters and fixed various animations on them. 
 I have also prepared a lot of new armor sets for players to wear. Arent they nice? 
-#
+<br></br>
 Oh yeah.. a Kenshi inspired hat! and i have finally created beards and hairs!  
-#
+
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1102686327461388409/image.png)
-#
+
 Remodeled Chopper! Only 2,5KK quads and better animations! + new shader!  
-#
+
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1102686562921222266/image.png)
-#
+
 A Bugman(still dont have a name) in plate armor chest and ninja panths with katana!
-#
+
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1102687081374941254/image.png)
-#
+
 A Valrug with bow and very strangely deformed Asian hat :D
-#
+
 ![image](https://cdn.discordapp.com/attachments/980416693094453268/1102687511723135116/image.png)
-#
----
-#
+
+## The End :) 
+
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
+
+[[toc]]

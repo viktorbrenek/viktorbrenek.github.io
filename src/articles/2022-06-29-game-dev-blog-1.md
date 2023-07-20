@@ -17,14 +17,11 @@ Back to my game. Right now i am using Unity Engine, while creating my models in 
 on design and 3D, my programming is not so good- Atleast not on the level that i could do the whole 
 game myself. So YEA I DO USE ASSETS :) Sorry mum. Today i have got just couple screens from my early
 development. If you are insterested, please stay tunned.  
-#
+<br></br>
 Basic models of humanoid character:
 
 ![image](../assets/images/humanoid.png)
-
-#
 ## TIP: And yea... there is also something usefull!?
-#
 To develop my game i am using a 3rd party asset to Unity, which greatly increases
 my chances of finishing this project. I will do my best while utilizing this tool
 but keeping the game as originial as possible. And i will develop my own mechanics.
@@ -34,20 +31,17 @@ Since online database and other complicated stuff is too overwhelming for me, th
 is only solution viable. Please refrain from commenting about this, if you are not
 recognized indie, solo-developer yourself and you have zero clue about this problematics. 
 [THE ASSET - RPG BUILDER](https://assetstore.unity.com/publishers/49855)
-#
 <br> </br>
 
 Anyhow here i include couple more images from development. You can see the unique art
 style and shader work (in progress). I will be doing a solo post about shaders in the future.
 Stay tunned! 
 
-
 ![image](../assets/images/crooked.png)
-
 ![image](../assets/images/log.png)
 
-
----
-#
+## The End :)
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
+
+[[toc]]
