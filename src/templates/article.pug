@@ -14,6 +14,7 @@ head
   <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png"><!-- 180×180 -->
   <link rel="manifest" href="../manifest.json"> 
   meta(charset="utf-8")
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
   
   title Blog
 
@@ -40,5 +41,49 @@ body
 
         != mvb.article.content 
 
+    script.
+      // Add this code below your existing JavaScript code
+      // Počkáme, až se načte celá stránka
+      $(document).ready(function() {
+        // Při kliknutí na odkaz v menu provedeme plynulé scrollování k cíli
+        $(".table-of-contents a").on('click', function(event) {
+          // Zabraňujeme implicitnímu chování odkazu (skok na cíl)
+          event.preventDefault();
+
+          // Získáme cíl odkazu (např. #nadpis-1) a najdeme cílový element
+          var target = $(this.hash);
+
+          // Plynulé scrollování k cílovému elementu
+          $('html, body').animate({
+            scrollTop: target.offset().top
+          }, 800); // 800 milisekund pro plynulé scrollování, můžete upravit dle potřeby
+        });
+
+        // Získáme všechny odkazy v TOC
+        var tocLinks = $(".table-of-contents a");
+        var tocWrapper = $(".table-of-contents");
+
+        // Při každém scrollu provedeme aktualizaci zvýraznění aktivního odkazu v TOC
+        $(window).scroll(function() {
+          // Získáme aktuální pozici na stránce
+          var scrollPosition = $(this).scrollTop();
+
+          // Projdeme všechny odkazy v TOC a zjistíme, který je aktivní
+          tocLinks.each(function() {
+            var currentLink = $(this);
+            var targetElement = $(currentLink.attr("href"));
+
+            // Pokud jsme dosáhli nadpisu ve stránce, který odpovídá odkazu v TOC, zvýrazníme odkaz
+            if (targetElement.position().top <= scrollPosition && targetElement.position().top + targetElement.height() > scrollPosition) {
+              // Odstraníme zvýraznění ze všech odkazů
+              tocLinks.removeClass("active");
+              // Přidáme zvýraznění pouze aktivnímu odkazu
+              currentLink.addClass("active");
+            }
+          });
+        });
+      });
+
+      
     footer
         
