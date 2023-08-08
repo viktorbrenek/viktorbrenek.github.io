@@ -43,47 +43,33 @@ body
         div#utterances-container
           script(src="https://utteranc.es/client.js", repo="viktorbrenek/blogco", issue-term="pathname", theme="github-dark", crossorigin="anonymous", async) 
 
-    script.
-      // Add this code below your existing JavaScript code
-      // Počkáme, až se načte celá stránka
-      $(document).ready(function() {
-        // Při kliknutí na odkaz v menu provedeme plynulé scrollování k cíli
-        $(".table-of-contents a").on('click', function(event) {
-          // Zabraňujeme implicitnímu chování odkazu (skok na cíl)
-          event.preventDefault();
+    script. 
+      window.addEventListener('DOMContentLoaded', () => {
+        const tocLinks = document.querySelectorAll('.table-of-contents a');
+        const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-          // Získáme cíl odkazu (např. #nadpis-1) a najdeme cílový element
-          var target = $(this.hash);
+        function isElementInViewport(element) {
+          const rect = element.getBoundingClientRect();
+          return (
+            rect.top >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+          );
+        }
 
-          // Plynulé scrollování k cílovému elementu
-          $('html, body').animate({
-            scrollTop: target.offset().top
-          }, 800); // 800 milisekund pro plynulé scrollování, můžete upravit dle potřeby
-        });
-
-        // Získáme všechny odkazy v TOC
-        var tocLinks = $(".table-of-contents a");
-        var tocWrapper = $(".table-of-contents");
-
-        // Při každém scrollu provedeme aktualizaci zvýraznění aktivního odkazu v TOC
-        $(window).scroll(function() {
-          // Získáme aktuální pozici na stránce
-          var scrollPosition = $(this).scrollTop();
-
-          // Projdeme všechny odkazy v TOC a zjistíme, který je aktivní
-          tocLinks.each(function() {
-            var currentLink = $(this);
-            var targetElement = $(currentLink.attr("href"));
-
-            // Pokud jsme dosáhli nadpisu ve stránce, který odpovídá odkazu v TOC, zvýrazníme odkaz
-            if (targetElement.position().top <= scrollPosition && targetElement.position().top + targetElement.height() > scrollPosition) {
-              // Odstraníme zvýraznění ze všech odkazů
-              tocLinks.removeClass("active");
-              // Přidáme zvýraznění pouze aktivnímu odkazu
-              currentLink.addClass("active");
+        function highlightActiveHeading() {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          headings.forEach(heading => {
+            if (isElementInViewport(heading)) {
+              const correspondingLink = document.querySelector(`.table-of-contents a[href="#${heading.id}"]`);
+              if (correspondingLink) {
+                correspondingLink.classList.add('active');
+              }
             }
           });
-        });
+        }
+
+        highlightActiveHeading();
+        window.addEventListener('scroll', highlightActiveHeading);
       });
 
     footer
