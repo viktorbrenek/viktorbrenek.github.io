@@ -19,8 +19,7 @@ You might be asking why we needed this. The old RPG Builder system is just too s
 
 The Dialogue system is also powerful, and it's fully connected to Quest Machine. Thanks to this, we can do dialogues much more complex, even with conditions like time, faction, and more. The UI needs a full rework. So just ignore that for now.
 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1133882871908671549/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1133882778962895048/image.png)
+![image](../assets/images/image12.png)
 
 ## Furniture
 I have also added some furniture for my houses. I modeled some of it in Blender, and the rest comes from 3D model packs from Synty Studios, which I bought a few months ago. I figured that it's pointless to model everything from scratch since the Synty style kind of matches my style.
@@ -34,16 +33,12 @@ I will need many more models in the future, but for now, I have focused mostly o
 <br></br>
 There are some crafting stations:
 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1133882660297658541/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1135690219522371685/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1135690269459742810/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1135690355061293156/image.png)
+![image](../assets/images/image13.png)
+![image](../assets/images/image14.png)
+![image](../assets/images/image15.png)
 
 And few other models: 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1135689537503363173/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1135689401154945055/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1133883074216726579/image.png)
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1133883032911220838/image.png)
+![image](../assets/images/image16.png)
 
 ## That's it. Thank you for reading :)
 

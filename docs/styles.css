@@ -152,7 +152,7 @@ h1 {
   font-weight: 900;
 }
 h1::first-letter {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 .links {
   position: fixed;
@@ -298,10 +298,10 @@ menu a {
   font-style: oblique;
 }
 .name::first-letter {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 .dates {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 .hrefa {
   font-size: 2.2rem;
@@ -350,7 +350,7 @@ menu a {
   font-weight: 900;
 }
 .intro::first-letter {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 .project-grid {
   grid-column-start: 1;
@@ -374,7 +374,7 @@ menu a {
   font-style: oblique;
 }
 .project-grid a h3::first-letter {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 .project-grid a p {
   font-size: 1.5rem;
@@ -398,7 +398,7 @@ menu a {
 }
 .profimg {
   border-radius: 100%;
-  border: 5px solid #009a74;
+  border: 5px solid #ECAC08;
   width: 200px;
   height: 200px;
   position: relative;
@@ -520,10 +520,10 @@ li a:hover {
 }
 .task__tag--copyright:hover {
   box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
-  border-color: #30fff5 !important;
+  border-color: #a07710 !important;
 }
 .tsg {
-  background-color: #30FFCB;
+  background-color: #ECAC08;
   display: inline-block;
   padding: 0.5rem 1rem;
   border-radius: 9999px;
@@ -534,7 +534,7 @@ li a:hover {
   color: #3a0300;
 }
 .task__tag {
-  background-color: #30FFCB;
+  background-color: #ECAC08;
   display: inline-block;
   padding: 0.5rem 1rem;
   border-radius: 9999px;
@@ -550,7 +550,7 @@ li a:hover {
   display: inline-block;
   padding: 0.3em 0.85em;
   text-transform: uppercase;
-  border: 3px solid #30FFCB;
+  border: 3px solid #ECAC08;
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;
   transition: transform 0.2s;
@@ -645,7 +645,7 @@ label > span {
   display: grid;
 }
 .viktor:after {
-  content: ' Petr Brenek ';
+  content: ' Viktor Brenek ';
   animation: tech 10s infinite;
 }
 .fa {
@@ -688,7 +688,7 @@ label > span {
 }
 @keyframes tech {
   0% {
-    content: ' Petr Brenek ';
+    content: ' Viktor Brenek ';
   }
   25% {
     content: ' Illustrator ';
@@ -726,7 +726,7 @@ label > span {
   font-style: oblique;
 }
 .hillu::first-letter {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 .hilluspace {
   font-size: 4rem;
@@ -758,7 +758,7 @@ label > span {
   border-radius: 1rem;
 }
 .table-of-contents a.active {
-  color: #30FFCB;
+  color: #ECAC08;
 }
 @media (max-width: 1050px) {
   .table-of-contents {

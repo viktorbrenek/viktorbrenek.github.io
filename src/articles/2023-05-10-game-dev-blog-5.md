@@ -63,7 +63,7 @@ to get on your feet and try to run for them. Thats in the end pulled from Diablo
 The possibilities are endless and the ideas too. 
 <br></br>
 Nomadic human with a two handed spear in leather armor. 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1102003089818529813/image.png)
+![image](../assets/images/image.png)
 
 There is even more to combat then just bulking up the skills. I have also added a stagger bar
 (i am not sure how to call that for now - i refer to it as a fatique). It is responsible for
@@ -90,13 +90,9 @@ interesting UI ideas for my game and generating icons. Its not always perfect bu
 a lot of much needed time and money. Check it out and let me know on my Discord if you like it
 more or less then before!
 <br></br>
-Here you can see an inventory. 
+Here you can see an inventory. And there is also a health bar, stagger bar and energy bar. 
 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1097580909194117231/image.png)
-
-And there is a health bar, stagger bar and energy bar. 
-
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1097580751177928795/image.png)
+![image](../assets/images/image2.png)
 
 ## 3D models cleaning and remeshing
 Since there have also been a lot of old models i had to optimize them and prepare them for our
@@ -105,19 +101,15 @@ I have also prepared a lot of new armor sets for players to wear. Arent they nic
 <br></br>
 Oh yeah.. a Kenshi inspired hat! and i have finally created beards and hairs!  
 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1102686327461388409/image.png)
+![image](../assets/images/image3.png)
 
 Remodeled Chopper! Only 2,5KK quads and better animations! + new shader!  
 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1102686562921222266/image.png)
-
-A Bugman(still dont have a name) in plate armor chest and ninja panths with katana!
-
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1102687081374941254/image.png)
+![image](../assets/images/image4.png)
 
 A Valrug with bow and very strangely deformed Asian hat :D
 
-![image](https://cdn.discordapp.com/attachments/980416693094453268/1102687511723135116/image.png)
+![image](../assets/images/image5.png)
 
 ## The End :) 
 

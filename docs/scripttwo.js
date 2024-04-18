@@ -30,7 +30,7 @@ window.addEventListener('resize', () =>
 window.addEventListener('click', (event) => {
     // Change the color of each box to a random color
     boxes.forEach(box => {
-        box.material.color.set(Math.random() * 0x30FFCB);
+        box.material.color.set(Math.random() * 0xECAC08);
     });
 
     // Reshuffle the boxes into random positions and rotations
@@ -71,7 +71,7 @@ const boxes = [];
 for (let i = 0; i < numBoxes; i++) {
   const size = Math.random() * 0.5 + 0.1; // Random size between 0.1 and 0.6
   const boxGeometry = new THREE.SphereGeometry(size, size, size);
-  const baseColor = new THREE.Color("#30FFCB");
+  const baseColor = new THREE.Color("#ECAC08");
   const colorVariation = 0.1; // adjust as desired
 
   const boxMaterial = new THREE.MeshBasicMaterial({
