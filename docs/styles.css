@@ -216,6 +216,9 @@ h1::first-letter {
   content: '📹';
   float: left;
 }
+.blog {
+  color: #ECAC08 !important;
+}
 .hide {
   opacity: 0;
 }
@@ -663,7 +666,7 @@ label > span {
   backdrop-filter: blur(2px);
 }
 .borderdiv:hover {
-  background-color: rgba(18, 255, 196, 0.7);
+  background-color: #a47b12;
 }
 .webgl {
   position: fixed;
