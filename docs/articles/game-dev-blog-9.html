@@ -1,0 +1,111 @@
+<!DOCTYPE html><head><title>Viktor Brenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Viktor Brenek"><meta name="description" content="Personal blog and portfolio"><meta property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../img.css"><link rel="icon" href="../assets/images/favicon.png" sizes="any"><!-- 32×32 -->
+<link rel="icon" href="../assets/images/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png"><!-- 180×180 -->
+<link rel="manifest" href="../manifest.json"> <meta charset="utf-8"><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://instagram.com/viktorbrenek" target="_blank">Instagram</a></li><li><a class="who" href="https://facebook.com/brenekviktor/" target="_blank">Facebook</a></li><li><a class="who" href="https://twitch.tv/viktorbrenek" target="_blank">Twitch</a></li><li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBrenekYT" target="_blank">Youtube</a></li></ul><menu><a class="name" href="../about.html">Viktor Brenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Gamedev log 9# - ARPG Shift and Atmosphere</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">🖥️ Gamedev</li></ul></span></div><h2 id="youtube-is-eating-my-time-but-it-has-its-perks">Youtube is eating my time, but it has its perks! 🙂 <a class="header-anchor" href="#youtube-is-eating-my-time-but-it-has-its-perks"></a> <a class="header-anchor" href="#youtube-is-eating-my-time-but-it-has-its-perks"></a></h2>
+<p>Lately, I’ve been focusing a lot on reaching my goal of 10k subscribers on my ARPG-oriented channel. There have been a lot of updates to my favorite games, like Diablo IV, Path of Exile, Grim Dawn, and Last Epoch. Even though it may not sound that interesting for game development, it actually is.</p>
+<p>I’ve always struggled with the repetitiveness of RPG games and the limitations they often impose. I wanted to give my players something more so they could stay engaged with my RPG a little longer. That’s why I decided to implement several mechanics inspired by my favorite ARPGs.</p>
+<p>Despite having a bit less time, I’ve used it to fine-tune models, the weather system, and the overall atmosphere. Check out some of my latest additions, and get ready for an upcoming blog post about dungeon generation, which will be released soon!
+<img src="../assets/images/blogpost9/image.png" alt="image">
+<br></br></p>
+<h2 id="its-in-the-details">It’s in the details <a class="header-anchor" href="#its-in-the-details"></a> <a class="header-anchor" href="#its-in-the-details"></a></h2>
+<p>When I talk about the feeling of the game, it’s not just about colors, weather, or lighting; it’s also about the details in interiors and their interactivity. Check out some of the latest additions!
+<img src="../assets/images/blogpost9/image2.png" alt="image">
+<img src="../assets/images/blogpost9/image16.png" alt="image">
+<img src="../assets/images/blogpost9/image15.png" alt="image"></p>
+<p><br></br>
+NPCs are also more interactive now.
+<img src="../assets/images/blogpost9/image3.png" alt="image"></p>
+<p><br></br>
+The new enemy type “cannibals” will be showcased soon, in the meantime look at their village.
+<img src="../assets/images/blogpost9/image4.png" alt="image">
+<img src="../assets/images/blogpost9/image5.png" alt="image">
+<img src="../assets/images/blogpost9/image6.png" alt="image">
+<img src="../assets/images/blogpost9/image19.png" alt="image">
+<img src="../assets/images/blogpost9/image20.png" alt="image">
+<img src="../assets/images/blogpost9/image21.png" alt="image"></p>
+<p><br></br>
+New auras on magical influenced items.
+<img src="../assets/images/blogpost9/image7.png" alt="image"></p>
+<p><br></br>
+Oh yes wondering shrine. Perhaps a quicker way to teleport around the world? Maybe…
+<img src="../assets/images/blogpost9/wonderingshrine.png" alt="image"></p>
+<h2 id="magic-is-in-the-air">Magic is in the air <a class="header-anchor" href="#magic-is-in-the-air"></a> <a class="header-anchor" href="#magic-is-in-the-air"></a></h2>
+<p>I’ve completely reworked the magick system. From now on, players will have six sockets in their inventory, organized by power from left to right. Each socket represents a slot for an anomaly container that can be equipped to provide not only an active skill to the talent tree but also additional stats or act as a support gem.</p>
+<p>While players will be limited to certain combinations, they can freely mix and match any magic or anomaly school, including anomalies that simply enhance all skills or unique ones that offer temporary buffs or curses. To acquire an anomaly, players must advance in their Anomalist profession, enabling them to capture higher-level anomalies from randomly appearing sources around the world or specific dungeons. And by the way, you’ll also need container jars and other items to make it all work!
+<br></br>
+Here you can see the slots for the anomalies.
+<img src="../assets/images/blogpost9/image23.png" alt="image"></p>
+<p><br></br>
+There is an anomaly event in the world for you to capture. Beware its not simple.
+<img src="../assets/images/blogpost9/image18.png" alt="image"></p>
+<h2 id="minigames">Minigames <a class="header-anchor" href="#minigames"></a> <a class="header-anchor" href="#minigames"></a></h2>
+<p>I’ve created some minigames. Right now, they’re more of a proof of concept, but they work—I can lock certain doors or chests for the player. I plan to integrate these with the Thief profession, making them more impactful in the game. So far, sneaking, stealing, and lockpicking are implemented, though they aren’t quite working as I’d like and aren’t necessary to complete the demo locations.</p>
+<p>The lockpicking minigame is both sound-based and visual, with a 2D sprite UI where players need to move locks to randomly generated positions. I can assign different variables to adjust the difficulty of each lock, making some harder to unlock than others.
+<img src="../assets/images/blogpost9/image14.png" alt="image"></p>
+<h2 id="merchant">Merchant <a class="header-anchor" href="#merchant"></a> <a class="header-anchor" href="#merchant"></a></h2>
+<p>One of the biggest changes in development has been the introduction of a new trading mechanic. It’s simple to describe but extremely challenging to code (for me).</p>
+<p>When you approach a merchant, he’ll offer only a selection of items from his store, not everything. This encourages players to visit other merchants in different cities.
+Each merchant will also assign specific prices to his items for the week, adding an extra incentive for players to shop around.
+Merchants will evaluate the items you bring to sell and decide which ones they’re interested in buying.
+They’ll also set a purchase price for each of your items, valid only for that week.
+All of this is persistent and can’t be manipulated by reloading; it resets each week.
+This system makes trading more dynamic and strategic for players.
+<img src="../assets/images/blogpost9/image8.png" alt="image"></p>
+<h2 id="qol">QoL <a class="header-anchor" href="#qol"></a> <a class="header-anchor" href="#qol"></a></h2>
+<p>With the new merchants and item handling system, I needed to add some quality-of-life functions, like item splitting, withdrawing all items, and simple sorting.
+Nothing to show right now. Sorry.</p>
+<h2 id="fulgurites">Fulgurites <a class="header-anchor" href="#fulgurites"></a> <a class="header-anchor" href="#fulgurites"></a></h2>
+<p>Another big update includes the addition of fulgurites and other persistent bonuses. Fulgurites are similar to Path of Exile’s map modifiers, but in the form of elixirs that players can craft through a unique profession and consume to boost (or sometimes reduce) stats like XP gain, gold gain, and other attributes critical for farming and grinding. This system is currently in testing but is already implemented as a death penalty mechanic: upon death, players receive a lasting debuff (e.g., -30% XP and -30% HP) that can only be removed at a shrine of revival—for a price.
+<img src="../assets/images/blogpost9/image9.png" alt="image">
+The shrine of revival.
+<img src="../assets/images/blogpost9/image17.png" alt="image"></p>
+<h2 id="runes-and-enchants">Runes and Enchants <a class="header-anchor" href="#runes-and-enchants"></a> <a class="header-anchor" href="#runes-and-enchants"></a></h2>
+<p>Itemization is often one of the most criticized aspects of ARPG games, and I know I probably haven’t perfected it either. But I aimed to combine my favorite systems:</p>
+<p>Each item can have different rarities: normal, magic, rare, epic, cursed, legendary, unique, and more.
+Each item can have fixed (white) primary stats—these are base item stats that don’t change.
+Each item can have random (orange) stats.
+Items can be enchanted, either through crafting or naturally on unique items.
+Items can belong to a set—completing a set grants various bonuses.
+Items can have a random number of slots for runes, gems, or other enhancements.
+You can combine runes and gems to create powerful combinations or even entirely new items, similar to Diablo 2.
+There are also numerous small details, like displaying stat changes when equipping an item over another, item prices, 3D models, icons, item types, descriptions, and more. I’m also considering updating the game’s font, but that’s a plan for the future.</p>
+<p>When I say “each item can have” these features, I don’t mean every item will have them all. For instance, standard white items will never be as impressive as unique items. Balancing all of this will be a big challenge, so more work will go into refining it. My goal, however, is to make even “scrap” items like white, magic, or rare items useful—not just to sell, but to craft with, similar to Path of Exile.
+<img src="../assets/images/blogpost9/image22.png" alt="image">
+<img src="../assets/images/blogpost9/image13.png" alt="image">
+<img src="../assets/images/blogpost9/image10.png" alt="image"></p>
+<h2 id="there-is-probably-more">There is probably more… <a class="header-anchor" href="#there-is-probably-more"></a> <a class="header-anchor" href="#there-is-probably-more"></a></h2>
+<p>There’s a ton of new stuff! New music is in the works from Filip, new ragdoll animations for animals, a plugin for realistic foot landing for animals, new factions and their interactions, a fully implemented quest system, and persistent pets with threat mechanics so they can tank for you.</p>
+<p>We’ve also added a huge number of new 3D models, both original and modified versions from Synty. And there’s probably more that I’ve entirely forgotten about—it’s been half a year of solid development.</p>
+<p>I’m not making any promises this time; I probably wouldn’t stick to them anyway. So… cya when I cya!
+<img src="../assets/images/blogpost9/image24.png" alt="image"></p>
+<h2 id="thats-it-thank-you-for-reading">That’s it. Thank you for reading :) <a class="header-anchor" href="#thats-it-thank-you-for-reading"></a> <a class="header-anchor" href="#thats-it-thank-you-for-reading"></a></h2>
+<p><a href="https://www.youtube.com/c/ViktorB%C5%99enekYT">Youtube</a>
+<a href="https://discord.com/invite/2Uj6N5N">Discord</a></p>
+<nav class="table-of-contents"><ol><li><a href="#youtube-is-eating-my-time-but-it-has-its-perks">Youtube is eating my time, but it has its perks! 🙂 </a></li><li><a href="#its-in-the-details">It’s in the details </a></li><li><a href="#magic-is-in-the-air">Magic is in the air </a></li><li><a href="#minigames">Minigames </a></li><li><a href="#merchant">Merchant </a></li><li><a href="#qol">QoL </a></li><li><a href="#fulgurites">Fulgurites </a></li><li><a href="#runes-and-enchants">Runes and Enchants </a></li><li><a href="#there-is-probably-more">There is probably more… </a></li><li><a href="#thats-it-thank-you-for-reading">That’s it. Thank you for reading :) </a></li></ol></nav><div id="utterances-container"><script src="https://utteranc.es/client.js" repo="viktorbrenek/blogco" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async> </script></div></main><script>window.addEventListener('DOMContentLoaded', () => {
+  const tocLinks = document.querySelectorAll('.table-of-contents a');
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  function isElementInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+    );
+  }
+
+  function highlightActiveHeading() {
+    tocLinks.forEach(link => link.classList.remove('active'));
+    headings.forEach(heading => {
+      if (isElementInViewport(heading)) {
+        const correspondingLink = document.querySelector(`.table-of-contents a[href="#${heading.id}"]`);
+        if (correspondingLink) {
+          correspondingLink.classList.add('active');
+        }
+      }
+    });
+  }
+
+  highlightActiveHeading();
+  window.addEventListener('scroll', highlightActiveHeading);
+});
+</script><footer></footer></body>
