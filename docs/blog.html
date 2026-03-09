@@ -1,107 +1,14 @@
-<!DOCTYPE html>
-<head>
-  <title>Viktor Brenek</title>
-  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-  <meta content="utf-8" http-equiv="encoding">
-  <meta name="author" content="Viktor Brenek">
-  <meta name="description" content="Personal blog and portfolio">
-  <meta property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css"><link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
+<!DOCTYPE html><head><title>Viktor Brenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Viktor Brenek"><meta name="description" content="Personal blog and portfolio"><meta property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link rel="stylesheet" href="styles.css"><link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
 <link rel="icon" href="assets/images/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png"><!-- 180×180 -->
-<link rel="manifest" href="/manifest.json"> 
-  <meta charset="utf-8">
-  <!--script aby se nanačítal dáme na konec body-->
-  <title>Blog</title>
-</head>
-<body>
-  <canvas class="webgl"></canvas>
-  <ul class="links" id="links"> 
-    <li><a class="who" href="https://instagram.com/viktorbrenek" target="_blank">Instagram</a></li>
-    <li><a class="who" href="https://facebook.com/brenekviktor/" target="_blank">Facebook</a></li>
-    <li><a class="who" href="https://twitch.tv/viktorbrenek" target="_blank">Twitch</a></li>
-    <li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li>
-    <li><a class="blog" href="https://www.youtube.com/c/ViktorBrenekYT" target="_blank">Youtube</a></li>
-  </ul>
-  <menu><a class="name" href="about.html">Viktor Brenek</a><a class="name" href="blog.html">Blog</a><a class="name" href="index.html">Portfolio</a>
-    <!--a
-    p.name(class="score") Score: 0
-    
-    
-    
-    -->
-  </menu>
-  <main class="gridblog">
-    <h1 class="intro">Blog</h1>
-    <section class="blog-grid">
-      <!--ul
-      each tag, name in mvb.groupedArticles.byTag 
-        br
-        li.task__tag.task__tag--copyright= name 
-            each article in tag
-              br 
-              li
-                a.articlelink(href=`articles/${article.id}.html`)= article.title
-            
-      -->
-      <nav class="nav" role="navigation">
-        <ul class="nav__list"><br>
-          <label class="task__tag2 task__tag--copyright">
-            <input id="group-1" type="checkbox" hidden="">
-            <label class="shrink fa fa-angle-right year">2024<span></span></label>
-            <ul class="group-list"> <br>
-              <li><a class="articlelink" href="articles/game-dev-blog-9.html">Gamedev log 9# - ARPG Shift and Atmosphere</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/review-blog-1.html">Review 1# - No Rest For the Wicked</a>
-                <!--each tag in article.tags--><span class="tsg">📹 Game Review</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/game-dev-blog-8.html">Gamedev log 8# - Timeshift</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li>
-            </ul>
-          </label><br>
-          <label class="task__tag2 task__tag--copyright">
-            <input id="group-1" type="checkbox" hidden="">
-            <label class="shrink fa fa-angle-right year">2023<span></span></label>
-            <ul class="group-list"> <br>
-              <li><a class="articlelink" href="articles/game-dev-blog-7.html">Gamedev log 7# - Summer Heat</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/game-dev-blog-6.html">Gamedev log 6# - Grindset</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/game-dev-blog-5.html">Gamedev log 5# - I am terrible!</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li>
-            </ul>
-          </label><br>
-          <label class="task__tag2 task__tag--copyright">
-            <input id="group-1" type="checkbox" hidden="">
-            <label class="shrink fa fa-angle-right year">2022<span></span></label>
-            <ul class="group-list"> <br>
-              <li><a class="articlelink" href="articles/game-dev-blog-4.html">Gamedev log 4# - Short update!</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/game-dev-blog-3.html">Gamedev log 3# - Revamped materials, models and more!</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/game-dev-blog-2.html">Gamedev log 2# - To-Do list and Monsters!</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/talk-blog-1.html">Hello world</a>
-                <!--each tag in article.tags--><span class="tsg">💬 Talk</span>
-              </li><br>
-              <li><a class="articlelink" href="articles/game-dev-blog-1.html">Gamedev log 1# - First take on blogging?</a>
-                <!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span>
-              </li>
-            </ul>
-          </label>
-        </ul>
-      </nav>
-    </section>
-  </main>
-  <footer> </footer>
-  <script src="scripttwo.js" type="module"> </script>
-</body>
+<link rel="manifest" href="/manifest.json"> <meta charset="utf-8"><!--script aby se nanačítal dáme na konec body--><title>Blog</title></head><body><canvas class="webgl"></canvas><ul class="links" id="links"> <li><a class="who" href="https://instagram.com/viktorbrenek" target="_blank">Instagram</a></li><li><a class="who" href="https://facebook.com/brenekviktor/" target="_blank">Facebook</a></li><li><a class="who" href="https://twitch.tv/viktorbrenek" target="_blank">Twitch</a></li><li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBrenekYT" target="_blank">Youtube</a></li></ul><menu><a class="name" href="about.html">Viktor Brenek</a><a class="name" href="blog.html">Blog</a><a class="name" href="index.html">Portfolio</a><!--ap.name(class="score") Score: 0
+
+
+--></menu><main class="gridblog"><h1 class="intro">Blog</h1><section class="blog-grid"><!--uleach tag, name in mvb.groupedArticles.byTag 
+  br
+  li.task__tag.task__tag--copyright= name 
+      each article in tag
+        br 
+        li
+          a.articlelink(href=`articles/${article.id}.html`)= article.title
+      --><nav class="nav" role="navigation"><ul class="nav__list"><br><label class="task__tag2 task__tag--copyright"><input id="group-1" type="checkbox" hidden=""><label class="shrink fa fa-angle-right year">2024<span></span></label><ul class="group-list"> <br><li><a class="articlelink" href="articles/game-dev-blog-9.html">Gamedev log 9# - ARPG Shift and Atmosphere</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li><br><li><a class="articlelink" href="articles/review-blog-1.html">Review 1# - No Rest For the Wicked</a><!--each tag in article.tags--><span class="tsg">📹 Game Review</span></li><br><li><a class="articlelink" href="articles/game-dev-blog-8.html">Gamedev log 8# - Timeshift</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li></ul></label><br><label class="task__tag2 task__tag--copyright"><input id="group-1" type="checkbox" hidden=""><label class="shrink fa fa-angle-right year">2023<span></span></label><ul class="group-list"> <br><li><a class="articlelink" href="articles/game-dev-blog-7.html">Gamedev log 7# - Summer Heat</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li><br><li><a class="articlelink" href="articles/game-dev-blog-6.html">Gamedev log 6# - Grindset</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li><br><li><a class="articlelink" href="articles/game-dev-blog-5.html">Gamedev log 5# - I am terrible!</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li></ul></label><br><label class="task__tag2 task__tag--copyright"><input id="group-1" type="checkbox" hidden=""><label class="shrink fa fa-angle-right year">2022<span></span></label><ul class="group-list"> <br><li><a class="articlelink" href="articles/game-dev-blog-4.html">Gamedev log 4# - Short update!</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li><br><li><a class="articlelink" href="articles/game-dev-blog-3.html">Gamedev log 3# - Revamped materials, models and more!</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li><br><li><a class="articlelink" href="articles/game-dev-blog-2.html">Gamedev log 2# - To-Do list and Monsters!</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li><br><li><a class="articlelink" href="articles/talk-blog-1.html">Hello world</a><!--each tag in article.tags--><span class="tsg">💬 Talk</span></li><br><li><a class="articlelink" href="articles/game-dev-blog-1.html">Gamedev log 1# - First take on blogging?</a><!--each tag in article.tags--><span class="tsg">🖥️ Gamedev</span></li></ul></label></ul></nav></section></main><footer> </footer><script src="scripttwo.js" type="module"> </script></body>

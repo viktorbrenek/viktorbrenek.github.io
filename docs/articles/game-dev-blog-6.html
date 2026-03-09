@@ -1,7 +1,7 @@
 <!DOCTYPE html><head><title>Viktor Brenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Viktor Brenek"><meta name="description" content="Personal blog and portfolio"><meta property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../img.css"><link rel="icon" href="../assets/images/favicon.png" sizes="any"><!-- 32×32 -->
 <link rel="icon" href="../assets/images/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png"><!-- 180×180 -->
-<link rel="manifest" href="../manifest.json"> <meta charset="utf-8"><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><title>Blog</title></head><body><ul class="links" id="links"> <li><a class="who" href="https://instagram.com/viktorbrenek" target="_blank">Instagram</a></li><li><a class="who" href="https://facebook.com/brenekviktor/" target="_blank">Facebook</a></li><li><a class="who" href="https://twitch.tv/viktorbrenek" target="_blank">Twitch</a></li><li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBrenekYT" target="_blank">Youtube</a></li></ul><menu><a class="name" href="../about.html">Viktor Brenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Gamedev log 6# - Grindset</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">🖥️ Gamedev</li></ul></span></div><h2 id="i-dont-even-bother-to-apologize-again">I dont even bother to apologize again <a class="header-anchor" href="#i-dont-even-bother-to-apologize-again"></a> <a class="header-anchor" href="#i-dont-even-bother-to-apologize-again"></a></h2>
+<link rel="manifest" href="../manifest.json"> <meta charset="utf-8"></head><body><ul class="links" id="links"> <li><a class="who" href="https://instagram.com/viktorbrenek" target="_blank">Instagram</a></li><li><a class="who" href="https://facebook.com/brenekviktor/" target="_blank">Facebook</a></li><li><a class="who" href="https://twitch.tv/viktorbrenek" target="_blank">Twitch</a></li><li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBrenekYT" target="_blank">Youtube</a></li></ul><menu><a class="name" href="../about.html">Viktor Brenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Gamedev log 6# - Grindset</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">🖥️ Gamedev</li></ul></span></div><h2 id="i-dont-even-bother-to-apologize-again">I dont even bother to apologize again <a class="header-anchor" href="#i-dont-even-bother-to-apologize-again"></a> <a class="header-anchor" href="#i-dont-even-bother-to-apologize-again"></a></h2>
 <p>Hi.
 Oops, I did it again. I wasn’t posting much, I know. If you are a regular follower of my website,
 you must feel disappointed. However, I was posting on my Discord at least. I also made some progress
@@ -42,29 +42,47 @@ So the spider wasn’t the first idea, but I am keeping it. The Arachne race was
 <a href="https://discord.com/invite/2Uj6N5N">Discord</a></p>
 <nav class="table-of-contents"><ol><li><a href="#i-dont-even-bother-to-apologize-again">I dont even bother to apologize again </a></li><li><a href="#mechanics">Mechanics </a></li><li><a href="#i-have-been-modeling">I have been modeling! </a></li><li><a href="#weapons-redefined">Weapons redefined </a></li><li><a href="#building-redefined">Building redefined </a></li><li><a href="#thats-it-thank-you-for-reading">That’s it. Thank you for reading :) </a></li></ol></nav><div id="utterances-container"><script src="https://utteranc.es/client.js" repo="viktorbrenek/blogco" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async> </script></div></main><script>window.addEventListener('DOMContentLoaded', () => {
   const tocLinks = document.querySelectorAll('.table-of-contents a');
-  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-  function isElementInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-    );
+  if (!tocLinks.length) {
+    return;
   }
+  const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
+    .filter((heading) => heading.id);
 
-  function highlightActiveHeading() {
-    tocLinks.forEach(link => link.classList.remove('active'));
-    headings.forEach(heading => {
-      if (isElementInViewport(heading)) {
-        const correspondingLink = document.querySelector(`.table-of-contents a[href="#${heading.id}"]`);
-        if (correspondingLink) {
-          correspondingLink.classList.add('active');
-        }
-      }
+  function setActive(id) {
+    tocLinks.forEach((link) => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
     });
   }
 
-  highlightActiveHeading();
-  window.addEventListener('scroll', highlightActiveHeading);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id);
+        }
+      });
+    }, {
+      rootMargin: '-30% 0px -55% 0px'
+    });
+
+    headings.forEach((heading) => observer.observe(heading));
+  } else {
+    const highlightActiveHeading = () => {
+      let activeId = headings[0] ? headings[0].id : '';
+      const threshold = window.scrollY + (window.innerHeight * 0.35);
+
+      headings.forEach((heading) => {
+        if (heading.offsetTop <= threshold) {
+          activeId = heading.id;
+        }
+      });
+      if (activeId) {
+        setActive(activeId);
+      }
+    };
+
+    highlightActiveHeading();
+    window.addEventListener('scroll', highlightActiveHeading, { passive: true });
+  }
 });
 </script><footer></footer></body>

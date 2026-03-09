@@ -1,15 +1,13 @@
-var mvb = require('gulp-mvb');
-var highlightjs = require('highlight.js');
-var rename = require("gulp-rename");
-var gulp = require('gulp');
-var pug = require("gulp-pug");
-var less = require("gulp-less");
-const glsl = require("gulp-glsl");
-const markdownIt = require("markdown-it");
-const markdownItAnchor = require("markdown-it-anchor");
-const markdownItToc = require('markdown-it-toc');
-const string = require('string')
-const slugify = s => string(s).slugify().toString()
+const mvb = require("gulp-mvb");
+const highlightjs = require("highlight.js");
+const gulp = require("gulp");
+const pug = require("gulp-pug");
+const less = require("gulp-less");
+const cleanCSS = require("gulp-clean-css");
+const browserSync = require("browser-sync").create();
+const string = require("string");
+
+const slugify = (s) => string(s).slugify().toString();
 
 const paths = {
   articles: ['src/articles/*.md'],
@@ -23,8 +21,8 @@ const paths = {
   lesscompile: "docs",
   scriptstocompile: ["Core/scripty/*.js"],
   scriptscompile: "docs",
-  shaderstocompile: ["Core/*.glsl"],
-  jsonstocopy: ["Core/*.json"]
+  jsonstocopy: ["Core/*.json"],
+  cnametocopy: ["Core/CNAME"]
 };
 
 const mvbConf = {
@@ -83,37 +81,6 @@ const mvbConf = {
   }
 }
 
-// const anchor = require('markdown-it-anchor')
-// const md = require('markdown-it')()
-//   .use(require('markdown-it-anchor'), {
-//     level: 1,
-//     permalink: true,
-//     permalinkClass: 'header-anchor',
-//     permalinkSymbol: '¶',
-//     permalinkBefore: true,
-//     html: false,
-//     xhtmlOut: true,
-//     typographer: true,
-//     tabIndex: false,
-//     slugify: true
-//   })
-//   //.use( require("markdown-it-anchor"), { permalink: true, permalinkBefore: true, permalinkSymbol: '§' } )
-//   .use( require("markdown-it-toc-done-right") )
-//   .use(anchor, {
-//     permalink: anchor.permalink.headerLink()
-//   })
-
-const anchor = require('markdown-it-anchor')
-const md = require('markdown-it')()
-
-
-
-md.use(anchor, {
-  permalink: anchor.permalink.headerLink()
-})
-
-
-
 gulp.task('articles', () =>
   gulp.src(paths.articles)
     .pipe(mvb(mvbConf))
@@ -124,13 +91,14 @@ gulp.task('articles', () =>
 gulp.task("pugcompiler", () =>
   gulp.src(paths.pugstocompile)
     .pipe(mvb(mvbConf))
-    .pipe(pug({ pretty: true}))
+    .pipe(pug({ pretty: false }))
     .pipe(gulp.dest(paths.pugcompile))
 );
 
 gulp.task("lesscompiler", () =>
   gulp.src(paths.lesstocompile)
     .pipe(less())
+    .pipe(cleanCSS({ level: 2 }))
     .pipe(gulp.dest(paths.lesscompile))
 );
 
@@ -144,14 +112,36 @@ gulp.task('json', () =>
       .pipe(gulp.dest(paths.scriptscompile))
 );
 
-gulp.task("shaders", () =>
-  gulp.src(paths.shaderstocompile)
-      .pipe(glsl({ format: 'module', es6: true }))
-      //.pipe(rename(path => {path.extname = ".module.min.js"}))
+gulp.task('cname', () =>
+  gulp.src(paths.cnametocopy)
       .pipe(gulp.dest(paths.scriptscompile))
 );
 
-gulp.task("default",gulp.series("pugcompiler", "lesscompiler", "articles", "js", "json", "shaders"));
+gulp.task("build", gulp.series("pugcompiler", "lesscompiler", "articles", "js", "json", "cname"));
 
+gulp.task("watch", () => {
+  gulp.watch(paths.pugstocompile, gulp.series("pugcompiler"));
+  gulp.watch(["src/templates/*.pug", paths.articles], gulp.series("articles", "pugcompiler"));
+  gulp.watch(paths.lesstocompile, gulp.series("lesscompiler"));
+  gulp.watch(paths.scriptstocompile, gulp.series("js"));
+  gulp.watch(paths.jsonstocopy, gulp.series("json"));
+  gulp.watch(paths.cnametocopy, gulp.series("cname"));
+});
 
-//task na spuštění všeho najednou 
+gulp.task("serve", gulp.series("build", () => {
+  browserSync.init({
+    server: { baseDir: "docs" },
+    notify: false,
+    open: false
+  });
+
+  gulp.watch("docs/**/*").on("change", browserSync.reload);
+  gulp.watch(paths.pugstocompile, gulp.series("pugcompiler"));
+  gulp.watch(["src/templates/*.pug", paths.articles], gulp.series("articles", "pugcompiler"));
+  gulp.watch(paths.lesstocompile, gulp.series("lesscompiler"));
+  gulp.watch(paths.scriptstocompile, gulp.series("js"));
+  gulp.watch(paths.jsonstocopy, gulp.series("json"));
+  gulp.watch(paths.cnametocopy, gulp.series("cname"));
+}));
+
+gulp.task("default", gulp.series("build"));

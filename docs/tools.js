@@ -1,110 +1,79 @@
-// Create the SVG element
-var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+const SIZE = 500;
+const COLOR_PALETTE = ["brown", "green", "tan", "maroon", "olive", "navy", "teal", "grey"];
 
-// Set the width and height of the SVG element
-svg.setAttribute("width", 500);
-svg.setAttribute("height", 500);
-
-// Create a <defs> element to hold the styles
-var defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-
-// Create a <style> element to define the styles
-var style = document.createElementNS("http://www.w3.org/2000/svg", "style");
-
-// Set the styles for the SVG element using the "style" attribute
-style.textContent = "rect.background { fill: white; }";
-
-// Add the <style> element to the <defs> element
-defs.appendChild(style);
-
-// Add the <defs> element to the SVG element
-svg.appendChild(defs);
-
-// Create a rectangle for the background and apply the "background" class
-var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-rect.setAttribute("class", "background");
-rect.setAttribute("width", "100%");
-rect.setAttribute("height", "100%");
-
-// Add the rectangle to the SVG element
-svg.appendChild(rect);
-
-// Generate random patterns using colors that are common in natural patterns, such as brown and green
-for (var i = 0; i < 50; i++) {
-  // Create a <line> element to generate a random line
-  var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-
-  // Set the attributes of the line (e.g. start and end positions, color)
-  line.setAttribute("x1", Math.random() * 500);
-  line.setAttribute("y1", Math.random() * 500);
-  line.setAttribute("x2", Math.random() * 500);
-  line.setAttribute("y2", Math.random() * 500);
-  line.setAttribute("stroke", getRandomColor()); // Choose a random color
-
-  // Add some variability to the line to make it appear more hand-drawn
-  line.setAttribute("stroke-width", Math.random() * 10);
-  line.setAttribute("stroke-dasharray", Math.random() * 10);
-
-  // Add the line to the SVG element
-  svg.appendChild(line);
+function getRandomColor() {
+  const index = Math.floor(Math.random() * COLOR_PALETTE.length);
+  return COLOR_PALETTE[index];
 }
 
-// Generate random noise using colors that are common in natural patterns, such as brown and green
-for (var i = 0; i < 50; i++) {
-  // Create a <rect> element to generate a random noise element
-  var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+function buildPatternSvg() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", SIZE);
+  svg.setAttribute("height", SIZE);
 
-  // Set the attributes of the rect (e.g. position, size, color)
-  rect.setAttribute("x", Math.random() * 500);
-  rect.setAttribute("y", Math.random() * 500);
-  rect.setAttribute("width", Math.random() * 10);
-  rect.setAttribute("height", Math.random() * 10);
-  rect.setAttribute("fill", getRandomColor()); // Choose a random color
+  const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+  const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
+  style.textContent = "rect.background { fill: white; }";
+  defs.appendChild(style);
+  svg.appendChild(defs);
 
-  // Add some variability to the rect to make it appear more hand-drawn
-  rect.setAttribute("rx", Math.random() * 10);
-  rect.setAttribute("ry", Math.random() * 10);
+  const background = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  background.setAttribute("class", "background");
+  background.setAttribute("width", "100%");
+  background.setAttribute("height", "100%");
+  svg.appendChild(background);
 
-  // Add the rect to the SVG element
-  svg.appendChild(rect);
+  for (let i = 0; i < 50; i += 1) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", Math.random() * SIZE);
+    line.setAttribute("y1", Math.random() * SIZE);
+    line.setAttribute("x2", Math.random() * SIZE);
+    line.setAttribute("y2", Math.random() * SIZE);
+    line.setAttribute("stroke", getRandomColor());
+    line.setAttribute("stroke-width", Math.random() * 10);
+    line.setAttribute("stroke-dasharray", Math.random() * 10);
+    svg.appendChild(line);
+  }
 
-// Create a button to generate the random patterns
-var button = document.createElement("button");
-button.innerHTML = "Generate";
+  for (let i = 0; i < 50; i += 1) {
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", Math.random() * SIZE);
+    rect.setAttribute("y", Math.random() * SIZE);
+    rect.setAttribute("width", Math.random() * 10);
+    rect.setAttribute("height", Math.random() * 10);
+    rect.setAttribute("fill", getRandomColor());
+    rect.setAttribute("rx", Math.random() * 10);
+    rect.setAttribute("ry", Math.random() * 10);
+    svg.appendChild(rect);
+  }
 
-// When the button is clicked, generate the random patterns
-button.addEventListener("click", function() {
-  // Add the SVG element to the page
-  document.body.appendChild(svg);
-
-  // Show the SVG data in the text output
-  document.getElementById("output").innerHTML = svg.outerHTML;
-});
+  return svg;
 }
-// Add the button to the page
-document.body.appendChild(button);
 
-// Create a text output element
-var output = document.createElement("pre");
+const button = document.createElement("button");
+button.textContent = "Generate";
+
+const output = document.createElement("pre");
 output.id = "output";
 
-// Add the text output element to the page
-document.body.appendChild(output);
-
-// Create a download link for the SVG data
-var link = document.createElement("a");
-link.innerHTML = "Download";
+const link = document.createElement("a");
+link.textContent = "Download";
 link.setAttribute("download", "pattern.svg");
-link.setAttribute("href", "data:image/svg+xml," + encodeURIComponent(svg.outerHTML));
+link.setAttribute("href", "#");
 
-// Add the download link to the page
+button.addEventListener("click", () => {
+  const oldSvg = document.querySelector("svg[data-generated='true']");
+  if (oldSvg) {
+    oldSvg.remove();
+  }
+
+  const svg = buildPatternSvg();
+  svg.dataset.generated = "true";
+  document.body.appendChild(svg);
+  output.textContent = svg.outerHTML;
+  link.setAttribute("href", `data:image/svg+xml,${encodeURIComponent(svg.outerHTML)}`);
+});
+
+document.body.appendChild(button);
+document.body.appendChild(output);
 document.body.appendChild(link);
-
-// Function to choose a random color that is common in natural patterns
-function getRandomColor() {
-  var colors = ["brown", "green", "tan", "maroon", "olive", "navy", "teal", "grey"];
-  var index = Math.floor(Math.random() * colors.length);
-  return colors[index];
-}
-
-
