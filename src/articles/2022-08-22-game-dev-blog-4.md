@@ -1,66 +1,40 @@
 ---
-title: Gamedev log 4# - Short update!
-description: "Documentary of my game development."
+title: Gamedev log 4# - Krátký update!
+description: "Zápis z vývoje mé hry."
 ogImage: gamedev
-lang: en
+lang: cs
 tags:
   - 🖥️ Gamedev
 ---
-## I told you i will keep you posted! 
-Hi.
-Since my website is functional now and its connected to custom domain i feel the obligation
-to update more often. + I had a nice productive weekend. Appart from game development i have
-also created a discord bot that should keep you in touch if you joined my discord server. 
-It should send a message anytime i create a new blog post, so basically you can setup
-notifications for the channel "Blog" and it will notify you directly :) 
+## Říkal jsem, že vás budu držet v obraze!
+Ahoj.
+Když už je web funkční a připojený na vlastní doménu, cítím povinnost aktualizovat častěji. Navíc jsem měl produktivní víkend. Kromě game devu jsem vytvořil i Discord bota, který má držet lidi z komunity v obraze. Kdykoliv přidám nový blog post, pošle zprávu na server, takže si můžeš nastavit notifikace na kanál „Blog“ a dostaneš novinku hned.
 
-## Back to the gamedev
-Anyways. Last week i have told you that i have created a very smart system of UV wrapping. 
-Well... not really. I have to remake it all again. Luckily its not so problematic now. 
-I have realised that i need more then RGB mask. I need custom number of masked colors. 
-Which is what i have created this weekend. Sadly this means i also need to remake the UV wraps
-for my characters. 
+## Zpět ke gamedevu
+Minule jsem psal, že jsem vytvořil chytrý systém UV wrappingu. No... tak úplně ne. Musel jsem to celé předělat znovu. Naštěstí už to není takový problém. Ukázalo se, že mi nestačí klasická RGB maska. Potřebuju vlastní počet maskovaných barev, a právě to jsem během víkendu dodělal. Bohužel to zároveň znamená znovu předělat UVčka postav.
 <br></br>
-That is also not the only problem. I have realised that even though i have minified the
-amount of needed textures for the game i can do it even better. I can even simplify it to use
-only 1 texture for all objects in the game basically. (well maybe not for the lightmaps, but
-that is problem of future me.)
-So look at this basic scatch of my plans. On the first image you can see the textures which
-is divided into 5 colors (maybe i will add more?). Basically i can unwrap any model into this
-texture and just move the parts i want to be colored into the pool of desired color.
-The Unity shader will do the rest (you can see it on the second image). It will basically just
-mask the colors with my materials setups which are all combined in one master material. 
-The problem with lightmaps can be real if i will not pay attantion and place uv wraps of the 
-same model on the top of each other in the color pool. That way the lightmaps will be confused. 
-But Harry told me that i can either just put the wrappings next to each other or i can just 
-use another wrapping for the ligtmapping. I think i will just do the first option even though
-it will be a little more time consuming in the process but will safe a lot of time in the long run.
+To ale nebyl jediný problém. Došlo mi, že i když jsem už výrazně zmenšil množství potřebných textur, dá se to ještě zjednodušit. Reálně bych mohl skončit téměř u jedné textury pro většinu objektů ve hře. Možná ne pro lightmapy, ale to je problém budoucího já.
+
+Na prvním obrázku je základní skica plánu. Textura je rozdělená do pěti barevných zón a jakýkoliv model může být rozbalen do konkrétní barevné oblasti. Shader v Unity pak maskuje výsledné barvy přes materiálový setup. Problém může být u lightmap, pokud se UV stejného modelu překrývají. Harry mi poradil, že buď můžu jednotlivé wrapy poskládat vedle sebe, nebo mít separátní UV pro lightmapy. Zatím to chci řešit spíš první cestou.
 
 ![image](../assets/images/idea.png)
 
-Here you can see how i adjusted the color masking. 
+Tady je vidět upravené barevné maskování.
 
 ![image](../assets/images/shader5.png)
 
-## New armor
-Other that i have also been working on new plate armor for imperials. This will be basic
-armor with little technical improvements like air filtering, flashlight in helm and eye 
-protection. Nothing fancy in the world. Every imperial should have this armor given by the
-Empire. This will also be lately combined with backpacks, cloaks and probably halberts as a
-two handed weapons. 
+## Nová zbroj
+Kromě toho jsem pracoval i na nové plátové zbroji pro impérium. Má jít o základní armor s menšími technickými vylepšeními, třeba filtrováním vzduchu, světlem v helmě nebo ochranou očí. Nic přehnaného, ale ve světě hry to dává smysl. Každý imperiál by měl takovou výbavu dostat od Impéria. Později ji chci kombinovat s batohy, plášti a třeba halapartnami jako dvouruční zbraní.
 <br></br>
-The problem is that i have to remake the UV ofc.. because i have realised the problem with the 
-simplyfied textures after i already had the new armor :) Well... here you can see the new armor 
-and i will let you be the judge of it. You can freely talk about this blog arcticle on my Discord.
-
+Samozřejmě jsem pak zjistil, že musím zase předělávat UVčka, protože nápad se zjednodušenou texturou přišel až poté, co byla zbroj skoro hotová. Ale i tak ji sem házím, ať si uděláš obrázek.
 
 ![image](../assets/images/platearmor.png)
 
 ![image](../assets/images/platearmor2.png)
 <br></br>
-Follow me on my socials to get more information about the game development. Thank you. 
-## The End :)
----
+Sleduj moje sítě, pokud chceš další informace o vývoji hry.
+
+## Konec :)
 
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)

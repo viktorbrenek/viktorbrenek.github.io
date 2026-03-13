@@ -1,110 +1,57 @@
 doctype html
 head
-  title Viktor Brenek
-  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
-  meta(content="utf-8",http-equiv="encoding")
+  title Ilustrace | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
   meta(name="author" content="Viktor Brenek")
-  meta(name="description" content="Personal blog and portfolio")
+  meta(name="description" content="Osobní blog a portfolio")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
-  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
-  link(rel='stylesheet', href='styles.css')
-  link(rel='stylesheet', href='astyles.css')
-  link(rel='stylesheet', href='img.css')
-  <link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
-  <link rel="icon" href="assets/images/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png"><!-- 180×180 -->
-  <link rel="manifest" href="/manifest.json">
-  script(src="finder.js" defer)  
-  meta(charset="utf-8")
-  //script aby se nanačítal dáme na konec body
-  title Portfolio post 1#
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
 
-body
-    ul#links.links 
-            li
-              a.who(href='https://instagram.com/viktorbrenek' target='_blank') Instagram
-            li
-              a.who(href='https://facebook.com/brenekviktor/' target='_blank') Facebook
-            li
-              a.who(href='https://twitch.tv/viktorbrenek' target='_blank') Twitch
-            li
-              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
-            li
-              a.blog(href='https://www.youtube.com/c/ViktorBrenekYT' target='_blank') Youtube
-    menu
-        a.name(href='about.html') Viktor Brenek
-        a.name(href='blog.html') Blog
-        a.name(href='index.html') Portfolio 
-            
-    #content
-        .container
-          main.grid-b
-            h1.hillu Illustrations for Tesco SW
-            p.pillu Tesco SW is my current employer. All of these illustrations were created for them and official used at some point for marketing campaigns or used in applications and web designs. 
-            section.project-grid-b
-              a
-                img(src="assets/images/tsc1.png" alt='' loading='lazy')
+body(data-page="illustrations")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Archiv ilustrací
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
 
-              a
-                img(src='assets/images/tsc2.png' alt='' loading='lazy')
+  main.page-shell
+    section.page-hero
+      p.eyebrow Ilustrace
+      h1 Ilustrace pro Tesco SW
+      p.lead
+        | Tesco SW je můj současný zaměstnavatel. Všechny tyto ilustrace jsem pro ně vytvořil
+        | a byly oficiálně použité v marketingových kampaních, aplikacích nebo webových návrzích.
 
-              a
-                img(src='assets/images/tsc3.png' alt='' loading='lazy')
+    section.section-card
+      .gallery-grid
+        each image in ["tsc1.png", "tsc2.png", "tsc3.png", "tsc4.png", "tsc5.png", "tsc6.png", "tsc7.png", "tsc8.png", "tsc9.png", "tsc10.png", "tsc11.png", "tsc12.png", "tsc13.png", "tsc14.png", "tsc15.png", "tsc16.png", "tsc17.png", "tsc18.png", "tsc19.png", "tsc20.png"]
+          figure.media-card
+            .media-card__media
+              img(src=`assets/images/${image}` alt="Ilustrace pro Tesco SW" loading="lazy")
 
-              a
-                img(src="assets/images/tsc4.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc5.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc6.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc7.png" alt='' loading='lazy')
-
-              a
-                img(src='assets/images/tsc8.png' alt='' loading='lazy')
-
-              a
-                img(src='assets/images/tsc9.png' alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc10.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc11.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc12.png" alt='' loading='lazy')
-              
-              a
-                img(src="assets/images/tsc13.png" alt='' loading='lazy')
-
-              a
-                img(src='assets/images/tsc14.png' alt='' loading='lazy')
-
-              a
-                img(src='assets/images/tsc15.png' alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc16.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc17.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc18.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc19.png" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/tsc20.png" alt='' loading='lazy')
-
-
-                          
-
-                      
-                        
-          
+  footer.site-footer
+    p Ilustrační práce zobrazená v čisté responzivní galerii.

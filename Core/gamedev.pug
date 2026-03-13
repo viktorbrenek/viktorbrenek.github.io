@@ -1,140 +1,125 @@
 doctype html
 head
-  title Viktor Brenek
-  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
-  meta(content="utf-8",http-equiv="encoding")
+  title Vývoj her | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
   meta(name="author" content="Viktor Brenek")
-  meta(name="description" content="Personal blog and portfolio")
+  meta(name="description" content="Osobní blog a portfolio")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
-  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
-  link(rel='stylesheet', href='styles.css')
-  link(rel='stylesheet', href='astyles.css')
-  <link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
-  <link rel="icon" href="assets/images/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png"><!-- 180×180 -->
-  <link rel="manifest" href="/manifest.json">
-  script(src="finder.js" defer)  
-  meta(charset="utf-8")
-  //script aby se nanačítal dáme na konec body
-  title Portfolio post 1#
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
 
-body
-    ul#links.links 
-            li
-              a.who(href='https://instagram.com/viktorbrenek' target='_blank') Instagram
-            li
-              a.who(href='https://facebook.com/brenekviktor/' target='_blank') Facebook
-            li
-              a.who(href='https://twitch.tv/viktorbrenek' target='_blank') Twitch
-            li
-              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
-            li
-              a.blog(href='https://www.youtube.com/c/ViktorBrenekYT' target='_blank') Youtube
-    menu
-        a.name(href='about.html') Viktor Brenek
-        a.name(href='blog.html') Blog
-        a.name(href='index.html') Portfolio 
-            
-    #hero
-      input#item-1(type='radio' name='slider' checked='')
-      input#item-2(type='radio' name='slider')
-      input#item-3(type='radio' name='slider')
-      input#item-4(type='radio' name='slider')
-      input#item-5(type='radio' name='slider')
-      input#item-6(type='radio' name='slider')
-      input#item-7(type='radio' name='slider')
-      .cards
-        label#song-1.card(for='item-1')
-          img(class="imgslide" src='assets/images/image_1_prese.png' alt='song')
-        label#song-2.card(for='item-2')
-          img(class="imgslide" src='assets/images/image_2_prese.png' alt='song')
-        label#song-3.card(for='item-3')
-          img(class="imgslide" src='assets/images/image_3_prese.png' alt='song') 
-        label#song-4.card(for='item-4')
-          img(class="imgslide" src='assets/images/image_4_prese.png' alt='song') 
- 
-    #hero-mobile
-    #content
-        .container
-          main.grid-b
-            h1.arcaneh ARCANEPUNK LOST
-            p.arcanep "Arcanepunk Lost is an arcanepunk (obviously) inspired, indie, solo-developed RPG. It takes place in an alternative, dystopic future. But why is it 'so' alternative? This world ended roughly in the 1900s. This post-Victorian age was well known for its technological progression, weird fashion, colonialism, and much more. However, in our game, the twist arrives when unknown forces destroyed the world. Those who survived formed nations, religions, clans, or simply wandered solo in what's left of the world. Now, imagine what would happen 200 years later. Would the world be any different? Be sure it would be, especially if suspicious forces that cannot be explained by science begin to manifest. Who is to blame for the end of the world? And with whom will you side—technology, magic, or perhaps... both?"
-            img(class="arcaimg" src="assets/images/ROADMAPdate.png" alt='' loading='lazy')         
-            section.project-grid-c
-              a
-                img(src="assets/images/ROADMAP1.png" alt='' loading='lazy')
-                p.arcanep "Desert, greenlands, swamps, and definitely more—each biome will feature unique encounters, weather, art styles, and more. The world is semi-open world. You are free to explore its boundaries and navigate vertical terrains."
-              a
-                img(src='assets/images/ROADMAP2.png' alt='' loading='lazy')
-                p.arcanep "Each biome will have factions that include unique NPCs, faction-specific quests, and perhaps even a faction choice system. (The last part might be added in Q2 of 2023.)"
-              a
-                img(src='assets/images/ROADMAP3.png' alt='' loading='lazy')
-                p.arcanep "Each biome should teem with life, with some of it even being harvestable. Currently, I have several interactable objects like trees and ores, with more on the way. Some of them have a unique physics system implemented, and most importantly, time will not be merciful." 
-              a
-                img(src="assets/images/ROADMAP4.png" alt='' loading='lazy')
-                p.arcanep "Monsters and animals will populate the world of Arcanepunk Lost, just like interactables. To start, I will aim to include three unique monsters per biome and may also introduce some friendly animals. The models are custom-made, and the monsters are unique. I plan to create a bestiary for them in the future."
-              a
-                img(src="assets/images/ROADMAP5.png" alt='' loading='lazy')
-                p.arcanep "Dungeons will play a major role in obtaining the most important materials for unique armors and weapons. Some dungeons will be more magically influenced, while others will be purely steampunk. However, similarities can be found in various puzzles and mischief." 
-              a
-                img(src="assets/images/ROADMAP6.png" alt='' loading='lazy')
-                p.arcanep "Questing will eventually become the core of the replayable loop. The plan is to create a faction-specific quest system that allows players to choose quests aligned with a particular faction. In the future, I would also like to include world-changing quests that could potentially erase entire factions."
-            img(class="arcaimg" src="assets/images/ROADMAPnext.png" alt='' loading='lazy')               
-            section.project-grid-c
-              a
-                img(src="assets/images/ROADMAP9.png" alt='' loading='lazy')
-                p.arcanep "The soundtrack is not something to be rushed. The entire sound system, and music in particular, is a significant responsibility and not within my skill set. Nevertheless, I am actively trying to connect with some prospective sound artists, and we are currently working on our first tracks." 
-              a
-                img(src='assets/images/ROADMAP10.png' alt='' loading='lazy')
-                p.arcanep "The building system has always had a significant impact on all kinds of RPGs. I can imagine players being able to choose the best-looking locations and building their dream factories, player homes, or even some witch dens. All of these features are in the distant future, and in Q3 of 2023, we hope to release a playable building demo (to be decided)."
-              a
-                img(src='assets/images/ROADMAP11.png' alt='' loading='lazy')
-                p.arcanep "The world is huge and consists of chunks. The map is designed to be vertical. In some cases, players will need to travel across several floors to reach certain NPCs, quests, harvestables, or puzzles. Mounts or primitive steampunk vehicles might come in handy."
-              a
-                img(src="assets/images/ROADMAP12.png" alt='' loading='lazy')
-                p.arcanep "There is obviously a ton of work to be done... Nevertheless, I will work on the project solo since this is my dream game. Things might get delayed, and some mechanics might even get canceled, but the development will go on. The primary items on the to-do list will be optimization and localization."
-            h1.arcaneh Q&A
-            p.arcanepp   1) What will make the game unique?
-            p.arcanei "The game is my personal project, and I am heavily inspired by my favorite RPGs such as Kenshi, Outward, Arcanum of Steamworks and Magick Obscura, and more. I aim to create a world filled with lore and a great community, with the potential for a huge modding community in the future. It doesn't have to be unique; it has to be fun."
+body(data-page="gamedev")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Indie RPG
+          span.brand__name Arcanepunk Lost
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
 
-            p.arcanepp   2) What will make the game re-playable? 
-            p.arcanei "The faction system, random item stats, and perhaps even random enemies (in the future, not in the early development stages). I am even considering options like permadeath or other more interesting approaches. One of my dreams is also to implement randomly generated dungeons."
+  main.page-shell
+    section.page-hero.page-hero--split
+      div
+        p.eyebrow Vývoj her
+        h1 Arcanepunk Lost
+        p.lead
+          | Arcanepunk Lost je sólově vyvíjené indie RPG inspirované arcanepunkem. Odehrává se v alternativní dystopické budoucnosti, kde se svět zasekl někde na přelomu viktoriánské éry a pozdějšího kolapsu civilizace. Technologie, magie, anomálie, frakce, náboženství i přežívající klany tu existují vedle sebe. Po dvou stech letech od pádu světa už nejde jen o otázku přežití, ale i o to, na čí stranu se postavíš: technologie, magie, nebo obojí.
+      .hero-media
+        img(src="assets/images/ROADMAPdate.png" alt="Roadmap Arcanepunk Lost" loading="lazy")
 
-            p.arcanepp   3) Will the game be free? 
-            p.arcanei "It is yet to be decided. However, I am considering a smaller one-time purchase option via Steam after the final release."
+    section.section-card
+      h2.section-title Roadmap světa
+      .gallery-grid.gallery-grid--wide
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP1.png" alt="Koncept biomů Arcanepunk" loading="lazy")
+          p.media-card__caption Pouště, zelené oblasti, močály a další biomy. Každý z nich má mít vlastní setkání, počasí, výtvarný styl i vertikální průchod světem.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP2.png" alt="Frakce Arcanepunk" loading="lazy")
+          p.media-card__caption Každý biom má obsahovat vlastní frakce, unikátní NPC, frakční questy a časem možná i systém skutečné volby mezi frakcemi.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP3.png" alt="Interaktivní objekty Arcanepunk" loading="lazy")
+          p.media-card__caption Svět má působit živě. Stromy, rudy a další interaktivní objekty budou těžitelné, sběratelné a částečně navázané na fyziku i plynutí času.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP4.png" alt="Monstra Arcanepunk" loading="lazy")
+          p.media-card__caption Svět zaplní zvířata i monstra. Základ je několik unikátních potvor pro každý biom, vlastní modely a do budoucna také bestiář.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP5.png" alt="Dungeony Arcanepunk" loading="lazy")
+          p.media-card__caption Dungeony budou klíčové pro získávání důležitých materiálů, unikátní výbavy i řešení hádanek. Některé budou víc magické, jiné steampunkové.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP6.png" alt="Questing Arcanepunk" loading="lazy")
+          p.media-card__caption Questing má být základem znovuhratelnosti. Cíl je frakční quest systém a časem i úkoly, které dokážou změnit svět nebo vymazat celé frakce.
 
-            p.arcanepp   4) What engine do you use to develop the game? 
-            p.arcanei "I am using Unity 2021 LTS version. Additionally, a significant part of my development relies on assets like RPG Builder from Blink Studio. I am a graphic and UI designer, and my coding experience is not extensive. I hope you are not judgmental about the use of assets. All the art, such as shaders and 3D models, is my work, and I will also be implementing my own mechanics."
+    section.section-card
+      h2.section-title Další kroky
+      .gallery-grid
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP9.png" alt="Soundtrack Arcanepunk" loading="lazy")
+          p.media-card__caption Hudba a zvuk jsou velká disciplína sama o sobě. Probíhá hledání vhodných sound artistů a práce na prvních stopách.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP10.png" alt="Building Arcanepunk" loading="lazy")
+          p.media-card__caption Building systém má v budoucnu umožnit stavbu domovů, továren nebo čarodějnických doupat. Je to vzdálenější cíl, ale důležitý pro fantasy sandbox část hry.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP11.png" alt="Měřítko mapy Arcanepunk" loading="lazy")
+          p.media-card__caption Svět je rozdělený do chunků a počítá s vertikalitou. Hráč bude cestovat přes více pater, výškové úrovně a časem možná i přes primitivní vozidla nebo mounty.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/ROADMAP12.png" alt="Optimalizace Arcanepunk" loading="lazy")
+          p.media-card__caption Práce je pořád obrovské množství. Vývoj pokračuje sólo, takže prioritou zůstává optimalizace, lokalizace a stabilní základ hry.
 
-            p.arcanepp   5) Can we play the game now? 
-            p.arcanei "No, there will be scheduled time periods when the releases will be available for free testing. For more information, please join the Discord community. The final release will be announced in the future, and the Steam page or Itch page will be created."
+    section.section-card
+      h2.section-title Otázky a odpovědi
+      .qa-list
+        article.qa-item
+          h3 1) Čím má být hra unikátní?
+          p Je to osobní projekt silně inspirovaný RPG jako Kenshi, Outward nebo Arcanum. Cílem je svět s vlastním lore, silnou komunitou a prostorem pro budoucí modding. Nemusí být za každou cenu unikátní, hlavně musí být zábavná.
+        article.qa-item
+          h3 2) Co má zajistit znovuhratelnost?
+          p Frakce, náhodné statistiky předmětů, časem možná i náhodní nepřátelé, permadeath nebo generované dungeony. Důležité je, aby každé hraní nabízelo trochu jiný průběh.
+        article.qa-item
+          h3 3) Bude hra zdarma?
+          p Zatím není definitivně rozhodnuto. Po finálním vydání ale spíš počítám s menším jednorázovým nákupem, pravděpodobně přes Steam.
+        article.qa-item
+          h3 4) V jakém enginu hru vyvíjíš?
+          p Používám Unity 2021 LTS. Část vývoje stojí i na assetech jako RPG Builder od Blink Studia. Grafiku, modely i shadery si ale dělám sám a vlastní mechaniky postupně dopisuji.
+        article.qa-item
+          h3 5) Dá se hra už hrát?
+          p Zatím ne. Počítám s časově omezenými testovacími buildy zdarma. Více informací bude na Discordu, později vznikne i Steam nebo Itch stránka.
+        article.qa-item
+          h3 6) Dá se nějak pomoct?
+          p Aktivně teď nehledám tým ani vydavatele. Pokud máš ale zájem, můžeš mi napsat přes kontakty na webu. Programování i zvuk jsou pořád oblasti, kde mám největší rezervy.
+        article.qa-item
+          h3 7) Kde se o hře dozvím víc?
+          p Na webu vycházejí blog posty se štítkem arcanepunk a průběžné novinky dávám i na Discord, kde je komunikace osobnější.
 
-            p.arcanepp   6) Can we help you? 
-            p.arcanei "I am not actively looking for a crew right now, nor am I seeking a publisher. However, if you are interested, please write me an email via the contacts on this website. As I mentioned, my programming skills are not very strong, and sound work is also a challenge for me."
-
-            p.arcanepp   7) Where can we learn more about the game?
-            p.arcanei "There are blog posts with the tag 'arcanepunk' on the website. You can also follow my Discord for a more personal approach."
-
-    script. 
-      // Nastavte interval přepínání obrázků (např. každých 3 sekundy)
-      const interval = 3000;
-
-      // Funkce pro automatické přepínání
-      function autoPlay() {
-        const radios = document.querySelectorAll('input[type="radio"]');
-        let currentIndex = 0;
-
-        setInterval(() => {
-          radios[currentIndex].checked = false;
-          currentIndex = (currentIndex + 1) % radios.length;
-          radios[currentIndex].checked = true;
-        }, interval);
-      }
-
-      // Spusťte automatické přehrávání po načtení stránky
-      window.addEventListener('load', autoPlay);
-
-
-                      
-                        
-          
+  footer.site-footer
+    p Stránka o vývoji hry je převedená do čitelných sekcí se zachovaným obsahem roadmapy.

@@ -1,82 +1,108 @@
 doctype html
 head
-  title Viktor Brenek
-  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
-  meta(content="utf-8",http-equiv="encoding")
+  title Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
   meta(name="author" content="Viktor Brenek")
-  meta(name="description" content="Personal blog and portfolio")
+  meta(name="description" content="Osobní blog a portfolio")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
-  meta(name="viewport" content="width=device-width,initial-scale=1.0")  
-  link(rel='stylesheet', href='styles.css') 
-  link(rel='stylesheet', href='style.css') 
-  <link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
-  <link rel="icon" href="assets/images/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png"><!-- 180×180 -->
-  <link rel="manifest" href="/manifest.json">
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
 
-body
-    canvas.webgl
-    ul#links.links 
-            li
-              a.who(href='https://instagram.com/viktorbrenek' target='_blank') Instagram
-            li
-              a.who(href='https://facebook.com/brenekviktor/' target='_blank') Facebook
-            li
-              a.who(href='https://twitch.tv/viktorbrenek' target='_blank') Twitch
-            li
-              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
-            li
-              a.blog(href='https://www.youtube.com/c/ViktorBrenekYT' target='_blank') Youtube
-    menu
-      a.name(href='about.html') Viktor Brenek
-      a.name(href='blog.html') Blog
-      a.name(href='index.html') Portfolio
-                  
-    main.grid
-      h1.intro Portfolio
-      section.project-grid
-        a.bcgblur(href='gamedev.html')
-          div(class="borderdiv")
-            img(src="assets/images/culling.png" alt='' loading='lazy')
-            h3 Game Development
-            p
-              | I am actively developing my own indie rpg game.
-              | The game combines post-apo elements with Steampunk and Magic.
-        a.bcgblur(href='illustrations.html')
-          div(class="borderdiv")
-            img(src='assets/images/tescosw.png' alt='' loading='lazy')
-            h3 Illustrations
-            p
-              | Isometric illustrations that have been made for my current 
-              | emloyer Tesco Sw and other clients. 
-        a.bcgblur(href='youtube.html')
-          div(class="borderdiv")
-            img(src='assets/images/threejs.png' alt='' loading='lazy')
-            h3 Youtube
-            p
-              | I am creating internet content every day with focus on
-              | game-development, gaming and IT. 
-        a.bcgblur(href='design.html')
-          div(class="borderdiv")
-            img(src="assets/images/ilustrace.png" alt='' loading='lazy')
-            h3 Graphic design, Marketing
-            p
-              | Working as an UI/UX Designer i have years of experience 
-              | with designing responsive and user friendly websites/apps. 
-        a.bcgblur(href='https://petrbrenek.wixsite.com/project-comics/uvodni-strana')
-          div(class="borderdiv")
-            img(src="assets/images/komiks.png" alt='' loading='lazy')
-            h3 Comics
-            p
-              | Interactive web based comics which let you choose your destiny 
-              | and storyline. Currently on hold. 
-        a.bcgblur(href='uxdesign.html')
-          div(class="borderdiv")
-            img(src="assets/images/webdesign.png" alt='' loading='lazy')
-            h3 UX/UI Design
-            p
-              | Any kind of art created for personal business or presentation.  
-              | Includes concept art images, 3D art in Blender and more. 
-        
-    footer
-    script(src="scripttwo.js" type="module") 
+body(data-page="home")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html" aria-label="Domů Viktor Břenek")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Grimoár
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false" aria-label="Přepnout navigaci") Menu
+      nav.site-nav(aria-label="Hlavní navigace")
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://twitch.tv/viktorbrenek" target="_blank" rel="noreferrer") Twitch
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+
+  main.page-shell
+    section.page-hero.page-hero--split
+      div
+        p.eyebrow Hry, design, modding a digitální tvorba
+        h1 Grimoár
+        p.lead
+          | Místo, kde Viktor Břenek rozebírá vývoj her, design, modding, ilustraci a další digitální experimenty.
+      .grimoire-widget
+        .widget-header
+          svg.rune-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true")
+            path(d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5")
+          h3 Záznamy z archivu
+        .widget-content
+          p#loading-tip Načítám zapomenuté záznamy z archivů...
+        .widget-footer
+          button#next-tip-btn.refresh-btn(type="button") Další záznam
+          .progress-bar
+            #progress-fill.progress-fill
+
+    section.card-grid
+      article.feature-card.feature-card--feed
+        .widget-header
+          svg.rune-icon(viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true")
+            path(d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z")
+            circle(cx="12" cy="12" r="3")
+          h3 Kronika vizí
+          #loading-spinner.spinner.active
+        .widget-content.scrollable-content
+          ul#yt-list.updates-list
+        .widget-footer.widget-footer--row
+          a.status-text(href="https://www.youtube.com/@ViktorB%C5%99enekYT" target="_blank" rel="noreferrer") Zdroj: Viktor Břenek
+          button#refresh-btn.refresh-btn(type="button") Naladit znovu
+      a.feature-card(href="gamedev.html")
+        .feature-card__media
+          img(src="assets/images/culling.png" alt="Vývoj her" loading="lazy")
+        h2.feature-card__title Vývoj her
+        p.feature-card__text
+          | Aktivně vyvíjím vlastní indie RPG hru. Kombinuje post-apo prvky
+          | se steampunkem a magií.
+      a.feature-card(href="illustrations.html")
+        .feature-card__media
+          img(src="assets/images/tescosw.png" alt="Ilustrace" loading="lazy")
+        h2.feature-card__title Ilustrace
+        p.feature-card__text
+          | Izometrické ilustrace vytvořené pro mého současného zaměstnavatele Tesco SW i další klienty.
+      a.feature-card(href="design.html")
+        .feature-card__media
+          img(src="assets/images/ilustrace.png" alt="Grafický design a marketing" loading="lazy")
+        h2.feature-card__title Grafický design a marketing
+        p.feature-card__text
+          | Jako UX/UI designer mám roky zkušeností s návrhem responzivních a uživatelsky přívětivých webů i aplikací.
+      a.feature-card(href="https://petrbrenek.wixsite.com/project-comics/uvodni-strana" target="_blank" rel="noreferrer")
+        .feature-card__media
+          img(src="assets/images/komiks.png" alt="Komiksy" loading="lazy")
+        h2.feature-card__title Komiksy
+        p.feature-card__text
+          | Interaktivní webové komiksy, ve kterých si čtenář volí vlastní osud i průběh příběhu. Projekt je zatím pozastaven.
+      a.feature-card(href="uxdesign.html")
+        .feature-card__media
+          img(src="assets/images/webdesign.png" alt="UX UI design" loading="lazy")
+        h2.feature-card__title UX/UI design
+        p.feature-card__text
+          | Weby, aplikace, koncepty, prezentační grafika i další digitální výstupy pro osobní i firemní použití.
+
+  footer.site-footer
+    p Rychlé statické portfolio, blog a digitální archiv v jednom.

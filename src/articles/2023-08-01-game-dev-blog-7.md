@@ -1,50 +1,50 @@
 ---
-title: Gamedev log 7# - Summer Heat
-description: "Documentary of my game development."
+title: Gamedev log 7# - Letní vedro
+description: "Zápis z vývoje mé hry."
 ogImage: gamedev
-lang: en
+lang: cs
 tags:
   - 🖥️ Gamedev
 ---
-## Holiday Season
-Summer... The season of extreme temperatures that are more exhausting than pleasant. Sometimes the borders between the realities have been blurred, and I found myself in those very desert places that I have been painfully creating inside of Unity. The work was slow and ineffective because I felt like a Camel Spider desperately chasing a shadow... What a drama queen... right? I mean... surely the fires in Italy, USA, and Australia have nothing to do with the Fallout wasteland appearing in my backyard. Well, at least I don't have to go far for inspiration. And I have to say that in these 2 weeks, I had plenty of ideas.
+## Okurková sezóna
+Léto. Období extrémních teplot, které jsou spíš vyčerpávající než příjemné. Měl jsem občas pocit, že se hranice mezi realitou a hrou rozmazaly a já skončil v těch samých pouštích, které už měsíce vytvářím v Unity. Práce byla pomalejší a méně efektivní, protože vedro člověka totálně vysává. Na druhou stranu jsem během těch dvou týdnů dostal i spoustu nových nápadů.
 <br></br>
-## Questing and Dialog overhaul
-One of the major changes is the implementation of new Quest and Dialog systems. Those systems are both paid assets from the Unity store from Pixel Crushers and both have absolute top ratings and are used in various popular games like Disco Elysium. Thanks to a summer sale on the Assets Store, I've been able to purchase them. One of the reasons was also the full support for RPG Builder from Blink Studios, which I am also using. Even though I was really afraid of the implementation because those assets are script-heavy and even involve changing stuff with the database, the implementation was smooth and without any problems. At least the initial setup. I have been able to test out some quests and dialogues, but that's pretty much it, because I didn't want to rush it and make a mess in the database. Also, there are a lot of tutorial videos and paper manuals to read through, so I am able to fully embrace the power of these tools.
+## Questing a dialogový overhaul
+Jednou z největších změn je implementace nového quest a dialog systému. Obě řešení jsou placené assety z Unity Storu od Pixel Crushers, oba mají výborné hodnocení a používají se i v známějších hrách. Díky letním slevám se mi je podařilo koupit. Pomohlo i to, že mají podporu pro RPG Builder od Blink Studia, který už stejně používám.
+
+Bál jsem se implementace, protože jsou to dost script-heavy systémy a pracují i s databází, ale první nasazení proběhlo překvapivě hladce. Některé questy a dialogy už se podařilo otestovat, ale nechci to uspěchat a zaneřádit databázi. Je kolem toho ještě hodně videí a manuálů ke studiu.
 <br></br>
 [Quest Machine](https://assetstore.unity.com/packages/tools/game-toolkits/quest-machine-39834),
 [Dialogue Systems for Unity](https://assetstore.unity.com/packages/tools/behavior-ai/dialogue-system-for-unity-11672)
 <br></br>
-You might be asking why we needed this. The old RPG Builder system is just too simplified. Before the update, we could only have two types of quests: a "kill" type and a "bring thing" type. Now we are nearly limitless. We can do dialogue quests, follow NPC, find NPC, harvest quests, and much more. Before the update, we would also need to script every single quest by hand. Now we can generate quests from the set of properties, and we can even do that in run-time. So I can create a hunter NPC, for example, and he can generate bounties for you endlessly.
+Proč to bylo potřeba? Starý systém v RPG Builderu byl příliš jednoduchý. Dřív jsme měli v zásadě jen quest typu „zabij něco“ nebo „dones věc“. Teď už možnosti skoro nekončí. Můžu dělat dialogové questy, eskorty, hledání NPC, harvest questy a další věci. Dříve navíc bylo potřeba velkou část questů scriptovat ručně, kdežto teď je můžu skládat ze sad vlastností a některé dokonce generovat runtime. Můžu tedy vytvořit třeba lovce odměn, který ti bude donekonečna generovat bounty úkoly.
 
-The Dialogue system is also powerful, and it's fully connected to Quest Machine. Thanks to this, we can do dialogues much more complex, even with conditions like time, faction, and more. The UI needs a full rework. So just ignore that for now.
+Stejně silný je i dialog systém. Je přímo propojený s Quest Machine, takže můžu dělat mnohem komplexnější rozhovory vázané na čas, frakci nebo další podmínky. UI potřebuje ještě velký rework, takže to zatím ber spíš jako funkční základ.
 
 ![image](../assets/images/image12.png)
 
-## Furniture
-I have also added some furniture for my houses. I modeled some of it in Blender, and the rest comes from 3D model packs from Synty Studios, which I bought a few months ago. I figured that it's pointless to model everything from scratch since the Synty style kind of matches my style.
+## Nábytek
+Do domů jsem přidal i nový nábytek. Část jsem modeloval v Blenderu a část pochází z 3D packů od Synty Studios, které jsem koupil už dřív. Došlo mi, že nemá smysl modelovat úplně všechno od nuly, zvlášť když se Synty styl docela dobře potkává s tím mým.
 
-Most of them needed to be adjusted in Blender anyway so that they match the graphical style of my RGB masking. Afterward, I even added some VFX effects in Unity from the Polygon Stylized SFX pack, which go very nicely with the style of the game.
+Většinu modelů jsem stejně musel upravit v Blenderu, aby seděly RGB masking stylu hry. Potom jsem ještě přidal i pár VFX efektů v Unity z Polygon Stylized SFX packu, který se k tomu vizuálu hodí.
 
-I will need many more models in the future, but for now, I have focused mostly on the crafting stations and stuff related to some interactivity. I also plan to model a full farming set, including pots, fields, pumps, and other stuff.
+Modelů budu potřebovat ještě spoustu, ale teď jsem se soustředil hlavně na craft stanice a interaktivní objekty. Do budoucna chci namodelovat i plné farmaření, včetně květináčů, polí, pump a dalšího vybavení.
 <br></br>
 [Synty Studios](https://syntystore.com),
 [Polygon Particle FX](https://assetstore.unity.com/packages/vfx/particles/polygon-particle-fx-low-poly-3d-art-by-synty-168372)
 <br></br>
-There are some crafting stations:
+Tady jsou některé craft stanice:
 
 ![image](../assets/images/image13.png)
 ![image](../assets/images/image14.png)
 ![image](../assets/images/image15.png)
 
-And few other models: 
+A pár dalších modelů:
 ![image](../assets/images/image16.png)
 
-## That's it. Thank you for reading :)
+## To je vše, díky za přečtení :)
 
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
-
-
 
 [[toc]]

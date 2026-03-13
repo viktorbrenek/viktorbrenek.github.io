@@ -1,96 +1,56 @@
-<!DOCTYPE html><head><title>Viktor Brenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Viktor Brenek"><meta name="description" content="Personal blog and portfolio"><meta property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="../img.css"><link rel="icon" href="../assets/images/favicon.png" sizes="any"><!-- 32×32 -->
-<link rel="icon" href="../assets/images/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png"><!-- 180×180 -->
-<link rel="manifest" href="../manifest.json"> <meta charset="utf-8"></head><body><ul class="links" id="links"> <li><a class="who" href="https://instagram.com/viktorbrenek" target="_blank">Instagram</a></li><li><a class="who" href="https://facebook.com/brenekviktor/" target="_blank">Facebook</a></li><li><a class="who" href="https://twitch.tv/viktorbrenek" target="_blank">Twitch</a></li><li><a class="who" href="https://discord.com/invite/2Uj6N5N" target="_blank">Discord</a></li><li><a class="blog" href="https://www.youtube.com/c/ViktorBrenekYT" target="_blank">Youtube</a></li></ul><menu><a class="name" href="../about.html">Viktor Brenek</a><a class="name" href="../blog.html">Blog</a><a class="name" href="../index.html">Portfolio</a></menu><main class="gridblog"><h1 class="atitle">Gamedev log 3# - Revamped materials, models and more!</h1><div><span><ul class="task__tags"><li class="task__tag task__tag--copyright">🖥️ Gamedev</li></ul></span></div><h2 id="what-took-yoo-so-long-again">What took yoo so long again? <a class="header-anchor" href="#what-took-yoo-so-long-again"></a> <a class="header-anchor" href="#what-took-yoo-so-long-again"></a></h2>
-<p>Hi.
-I didnt hold up my promise and post more often. The truth is there was not much to post…
-Not because i would not work on the game every day since the last post, but because i had to
-re-do a lot of things and didnt want to share half-made products. Anyway… lets get on to it.
-Today i will over flow you with updates.</p>
-<h2 id="remade-shaders">Remade shaders <a class="header-anchor" href="#remade-shaders"></a> <a class="header-anchor" href="#remade-shaders"></a></h2>
-<p>When a creator works deeply on some project it often happens that he becomes slightly blinded
-by the vision and doesnt see the mistakes. So when i shared my visuals to the friends i was
-stuttered that they didnt like it so much as i did. After some free-time and analyzing the
-data i started realizing that i need to spice things up. So i have remade my shaders from the
-ground up. Now we are using sofisticated RGB masking shader with similar visuals as before,
-but now we can add more properties and masks let us cut some performance as before we would
-use 3 shaders instead of one like now. Here i can share with you some information about how i</p>
+<!DOCTYPE html><head><title>Viktor Břenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Viktor Brenek"><meta name="description" content="Osobní blog a portfolio"><meta property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link rel="stylesheet" href="../styles.css"><link rel="icon" href="../assets/images/favicon.png" sizes="any"><link rel="icon" href="../assets/images/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png"><link rel="manifest" href="../manifest.json"><meta charset="utf-8"><script src="../site.js" defer></script></head><body data-page="article"><header class="site-header"><div class="site-header__inner"><a class="brand" href="../index.html" aria-label="Domů Viktor Břenek"><span class="brand__sigil">V</span><span class="brand__text"><span class="brand__eyebrow">Článek</span><span class="brand__name">Viktor Břenek</span></span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-label="Přepnout navigaci">Menu</button><nav class="site-nav" aria-label="Hlavní navigace"><a href="../about.html">O mně</a><a href="../blog.html">Blog</a><a href="../gamedev.html">Vývoj her</a><a href="../design.html">Design</a><a href="../illustrations.html">Ilustrace</a><a href="../uxdesign.html">UX/UI</a></nav><ul class="social-links"><li><a href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer">Instagram</a></li><li><a href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer">Facebook</a></li><li><a href="https://twitch.tv/viktorbrenek" target="_blank" rel="noreferrer">Twitch</a></li><li><a href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer">Discord</a></li></ul></div></header><main class="article-shell"><aside class="article-sidebar"><div class="article-sidebar__panel"><p class="eyebrow">Obsah</p><p class="article-sidebar__hint">Přeskakuj mezi kapitolami i během čtení.</p></div></aside><article class="article-panel"><div class="article-header"><p class="eyebrow">Záznam</p><h1 class="atitle">Gamedev log 3# - Předělané materiály, modely a další věci</h1><ul class="tag-list"><li class="tag">🖥️ Gamedev</li></ul></div><div class="article-content"><h2 id="proc-ti-to-zase-tak-trvalo">Proč ti to zase tak trvalo? <a class="header-anchor" href="#proc-ti-to-zase-tak-trvalo"></a> <a class="header-anchor" href="#proc-ti-to-zase-tak-trvalo"></a></h2>
+<p>Ahoj.
+Nesplnil jsem slib a nepsal častěji. Pravda je, že dlouho nebylo moc co ukazovat. Ne proto, že bych na hře nepracoval každý den, ale protože jsem musel předělat spoustu věcí a nechtěl jsem sdílet polotovary. Každopádně dneska toho bude hodně.</p>
+<h2 id="predelane-shadery">Předělané shadery <a class="header-anchor" href="#predelane-shadery"></a> <a class="header-anchor" href="#predelane-shadery"></a></h2>
+<p>Když člověk dělá dlouho na jednom projektu, často trochu oslepne vůči vlastním chybám. Když jsem ukázal vizuál kamarádům, zjistil jsem, že to nefunguje tak dobře, jak jsem si myslel. Po analýze jsem došel k tomu, že je potřeba to celé posunout.</p>
+<p>Předělal jsem tedy shadery od základu. Nově používám sofistikovanější RGB masking shader. Vizuálně navazuje na předchozí směr, ale umožňuje přidávat víc vlastností a zároveň šetří výkon, protože místo tří shaderů zvládneme hodně věcí jedním.</p>
 <p><img src="../assets/images/masking.png" alt="image"></p>
-<p>On this picture you can see three color channels masking the space where the final shader will
-apply the predefined colors. In the unity we can simply use texture sample node and mask it
-outputs trough multiply node with the predefined color/texture/properties. I would share the
-whole shader, but its too complex and wouldnt work anyway since i use some code changes. So
-here is the basic principle. Hope it helps.</p>
+<p>Na obrázku je vidět, jak tři barevné kanály maskují plochy, na které se pak shader aplikuje. V Unity se to dá řešit přes texture sample a následné násobení předdefinovanými barvami, texturami nebo materiálovými vlastnostmi. Celý shader ukazovat nebudu, protože je už dost komplexní a navíc obsahuje vlastní úpravy v kódu. Ale jako základní princip to snad pomůže.</p>
 <p><img src="../assets/images/shader.png" alt="image"></p>
-<p>An here is the final image of the reptilian-bug race. Doesnt have a name yet. Feel free to
-contact me via discord and gimme a hint. I will consider all options :)</p>
+<p>A tady je výsledný vzhled reptiloidně-hmyzí rasy. Ještě nemá jméno, takže pokud tě něco napadne, klidně napiš na Discord.</p>
 <p><img src="../assets/images/repti.png" alt="image"></p>
-<h2 id="remade-models">Remade models <a class="header-anchor" href="#remade-models"></a> <a class="header-anchor" href="#remade-models"></a></h2>
-<p>As you probably guessed already i have had to remake my models of characters (and most of the
-things in the world) because the new shader doesnt only optimizes the game because you dont
-have to use multiple materials. Which is btw crucial cuz what i have learned each material
-is casting shadows and receiving lighting in the game. That means if you have 3 materials on
-your character it will need to count everything 3x times!
+<h2 id="predelane-modely">Předělané modely <a class="header-anchor" href="#predelane-modely"></a> <a class="header-anchor" href="#predelane-modely"></a></h2>
+<p>Jak asi čekáš, musel jsem předělat i modely postav a velkou část světa. Nový shader totiž nepomáhá jen vizuálně, ale i výkonově. Každý materiál na modelu totiž v praxi znamená další výpočty světel a stínů. Když má postava tři materiály, hra to řeší třikrát.
 <br></br>
-The similar problem is also with skinned meshes. I didnt know this but each skinned mesh in
-your character has its own animator in Unity… So if you character consists of 10 skinned meshes
-you are fucked. This is specially bad in games with mass population of NPCs.
-Thank you <a href="https://www.twitch.tv/thecoffeeharry">Aleš Harry Herink</a> for the tip! Saved my game probably :)
-(Harry is my dear friend who decided to dont give a fuck about people and society and just bought
-a tent and small piece of land and started developing games in the middle of forests. Also in winter!
-Please go to his twitch via the link on his name here and follow his game dev journey also! Thank you.)
+Podobný problém je u skinned meshes. Tehdy jsem netušil, že každá skinned mesh může v Unity znamenat vlastní animator. Pokud tedy postava obsahuje deset oddělených částí, je to problém. A v populovaném open world RPG ještě větší. Za tenhle tip musím poděkovat <a href="https://www.twitch.tv/thecoffeeharry">Aleši Harrymu Herinkovi</a>, který mi tím nejspíš zachránil hru.
 <br></br>
-This is not all sadly. After few attempts i have also realised that my models suck. Not only they look
-like first grader’s work, but they also werent that much optimized. I used to have like 30k verticies
-per piece of character (a hand for example). That would count as much as 150/200k verticies per character
-which is kinda unmanagable in the open world game. I had to cut it down and once again Harry came and saved
-the day. On his stream i quickly catched up some Blender lessons and started doing manual remeshing with
-shrink wrap. That is not a quick work but its definitely most efficient. I have tried to use things like
-automatic remeshers (instant meshes and stuff). But those dont compare at all to the manual work that i
-have ended up using. When doing this i have also tried to care more about UV wrapping, because of the
-future proof changes for the RGB masking. Here you can see some examples of the remeshed models with
-proper UV wrapping and 7000 verticies in total (full body).</p>
+To ale nebylo všechno. Po několika pokusech jsem došel i k tomu, že moje modely prostě nebyly dost dobré. Nejenže nevypadaly ideálně, ale byly i špatně optimalizované. Míval jsem kolem 30k vertexů na jednu část těla, třeba na ruku. To dělalo i 150 až 200k vertexů na celou postavu, což je pro open world nesmysl. Musel jsem to výrazně seříznout.</p>
+<p>Na Harryho streamu jsem rychle pochytal další Blender postupy a přešel na ruční remeshování přes shrink wrap. Není to rychlé, ale je to zatím nejefektivnější řešení. Zkoušel jsem i automatické remeshery, ale ruční práce vyhrála. Současně jsem víc řešil i UV wrapping kvůli budoucím změnám kolem RGB maskingu.</p>
 <p><img src="../assets/images/shrink.png" alt="image"></p>
-<p>On this image you can also see ± how i cut the body on the individual parts.</p>
+<p>Na obrázku je i přibližně vidět, jak jsem tělo rozřezal na jednotlivé části.</p>
 <h2 id="body-culling">Body Culling <a class="header-anchor" href="#body-culling"></a> <a class="header-anchor" href="#body-culling"></a></h2>
-<p>Individual parts of body are another super usefull thing to do in the preparation of the model because
-i hated that my equipment didnt hide the body properly in the last update. Now the equipment lines up
-with the body parts size dimensions. Because of that i can easily hide each part when its covered with
-an item. You can see that here.
+<p>Rozdělení těla na části je užitečné i kvůli equipu. Dřív mi vadilo, že vybavení neschovávalo tělo správně. Teď jednotlivé kusy zbroje sedí na rozměry konkrétních body partů a můžu je při zakrytí jednoduše vypínat.
 <img src="../assets/images/culling.png" alt="image"></p>
-<h2 id="new-nature-models-but-to-be-remodeled-optimized">New nature models (but: to be remodeled + optimized) <a class="header-anchor" href="#new-nature-models-but-to-be-remodeled-optimized"></a> <a class="header-anchor" href="#new-nature-models-but-to-be-remodeled-optimized"></a></h2>
-<p>Here are some more creative updates.
-I am not sure about the names.
-Currently we have got more that 10 kinds of trees. I will not share all of them, because i am not
-sure which i will keep in the game. And i have to remesh them. On the last picture you can also see
-an architecture protype. Its inspired by Kenshi building. But i also might remake it in the future,
-because i have finnaly connected the building system :)</p>
+<h2 id="nove-prirodni-modely">Nové přírodní modely <a class="header-anchor" href="#nove-prirodni-modely"></a> <a class="header-anchor" href="#nove-prirodni-modely"></a></h2>
+<p>Tady je pár kreativnějších novinek. Jména si ještě nejsem jistý. Aktuálně mám víc než 10 druhů stromů. Nechci je ukazovat všechny, protože ještě nevím, které ve hře zůstanou, a stejně je budu znovu remeshovat. Na posledním obrázku je i prototyp architektury inspirovaný stavbami z Kenshi. Možná ho ale taky časem předělám, protože jsem konečně napojil building systém.</p>
 <p><img src="../assets/images/models1.png" alt="image"></p>
-<h2 id="building-and-flying">Building and flying? <a class="header-anchor" href="#building-and-flying"></a> <a class="header-anchor" href="#building-and-flying"></a></h2>
-<p>Ok the best at the end? Not sure about this one but i am sure players will love to hear, that i have
-connected building system asset to my game which will lets us freely build and save player houses,
-also with crafting stations, chests and other interactive items. On the following picture you can
-see radial menu which will be remade and some premade assets to be also remade.
-You can also see the flying suit which can be used with all nomadic characters. Its super fun to use
-while developing the game, but its also hella lot buggy and i am not sure if its worth to keep.
-What i am sure about are vehicles/mounts. But i might remove flying just because its messing up
-with several systems that i have planned out like world end- masking. Which would be impossible to hide
-when flying. And that would really break any immersion. I wanted to use the suit to just glide, but sadly
-that seems to be impossible with my current set of skills. So maybe in future :)</p>
+<h2 id="building-a-letani">Building a létání? <a class="header-anchor" href="#building-a-letani"></a> <a class="header-anchor" href="#building-a-letani"></a></h2>
+<p>A to nejlepší nakonec? Možná. Do hry jsem napojil asset pro building systém, takže půjde volně stavět a ukládat hráčské domy, craft stanice, bedny i další interaktivní předměty. Na obrázku je vidět i radiální menu, které ještě projde redesignem.</p>
+<p>Je tam také létací oblek pro nomádské postavy. Při vývoji je super zábavný, ale zároveň dost rozbitý a zatím si nejsem jistý, jestli má smysl ho ve hře nechat. Co naopak smysl dává, jsou mounti nebo vozidla. Létání totiž rozbíjí některé systémy, které mám naplánované, třeba maskování okrajů světa. Klouzání by bylo ideální, ale na to mi tehdejší skillset ještě nestačil. Tak třeba někdy později.</p>
 <p><img src="../assets/images/building.png" alt="image"></p>
-<h2 id="thats-it">Thats it. <a class="header-anchor" href="#thats-it"></a> <a class="header-anchor" href="#thats-it"></a></h2>
-<p>Ok… that was exhausting and probably full of mistakes… sorry its 1 am and i dont care.
-Follow me on my socials to get more information about the game development. Thank you.</p>
-<h2 id="the-end">The end :) <a class="header-anchor" href="#the-end"></a> <a class="header-anchor" href="#the-end"></a></h2>
+<h2 id="to-je-vse">To je vše <a class="header-anchor" href="#to-je-vse"></a> <a class="header-anchor" href="#to-je-vse"></a></h2>
+<p>Bylo to dlouhé a je dost možné, že i plné chyb. Je jedna ráno a kašlu na to. Sleduj moje sítě, pokud chceš další informace o vývoji hry.</p>
+<h2 id="konec">Konec :) <a class="header-anchor" href="#konec"></a> <a class="header-anchor" href="#konec"></a></h2>
 <p><a href="https://www.youtube.com/c/ViktorB%C5%99enekYT">Youtube</a>
 <a href="https://discord.com/invite/2Uj6N5N">Discord</a></p>
-<nav class="table-of-contents"><ol><li><a href="#what-took-yoo-so-long-again">What took yoo so long again? </a></li><li><a href="#remade-shaders">Remade shaders </a></li><li><a href="#remade-models">Remade models </a></li><li><a href="#body-culling">Body Culling </a></li><li><a href="#new-nature-models-but-to-be-remodeled-optimized">New nature models (but: to be remodeled + optimized) </a></li><li><a href="#building-and-flying">Building and flying? </a></li><li><a href="#thats-it">Thats it. </a></li><li><a href="#the-end">The end :) </a></li></ol></nav><div id="utterances-container"><script src="https://utteranc.es/client.js" repo="viktorbrenek/blogco" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async> </script></div></main><script>window.addEventListener('DOMContentLoaded', () => {
+<nav class="table-of-contents"><ol><li><a href="#proc-ti-to-zase-tak-trvalo">Proč ti to zase tak trvalo? </a></li><li><a href="#predelane-shadery">Předělané shadery </a></li><li><a href="#predelane-modely">Předělané modely </a></li><li><a href="#body-culling">Body Culling </a></li><li><a href="#nove-prirodni-modely">Nové přírodní modely </a></li><li><a href="#building-a-letani">Building a létání? </a></li><li><a href="#to-je-vse">To je vše </a></li><li><a href="#konec">Konec :) </a></li></ol></nav></div><div id="utterances-container"><script src="https://utteranc.es/client.js" repo="viktorbrenek/blogco" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async></script></div></article></main><script>window.addEventListener('DOMContentLoaded', () => {
+  const toc = document.querySelector('.table-of-contents');
+  const tocPanel = document.querySelector('.article-sidebar__panel');
+
+  if (toc && tocPanel) {
+    tocPanel.appendChild(toc);
+  }
+
   const tocLinks = document.querySelectorAll('.table-of-contents a');
   if (!tocLinks.length) {
+    const sidebar = document.querySelector('.article-sidebar');
+    if (sidebar) {
+      sidebar.remove();
+    }
     return;
   }
-  const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'))
-    .filter((heading) => heading.id);
+
+  const headings = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6')).filter((heading) => heading.id);
 
   function setActive(id) {
     tocLinks.forEach((link) => {
@@ -106,12 +66,12 @@ Follow me on my socials to get more information about the game development. Than
         }
       });
     }, {
-      rootMargin: '-30% 0px -55% 0px'
+      rootMargin: '-20% 0px -60% 0px'
     });
 
     headings.forEach((heading) => observer.observe(heading));
   } else {
-    const highlightActiveHeading = () => {
+    const onScroll = () => {
       let activeId = headings[0] ? headings[0].id : '';
       const threshold = window.scrollY + (window.innerHeight * 0.35);
 
@@ -120,13 +80,14 @@ Follow me on my socials to get more information about the game development. Than
           activeId = heading.id;
         }
       });
+
       if (activeId) {
         setActive(activeId);
       }
     };
 
-    highlightActiveHeading();
-    window.addEventListener('scroll', highlightActiveHeading, { passive: true });
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 });
-</script><footer></footer></body>
+</script><footer class="site-footer"><p>Zachovaný obsah článku ve čitelném širším layoutu.</p></footer></body>

@@ -1,67 +1,65 @@
 ---
 title: Gamedev log 8# - Timeshift
-description: "Documentary of my game development."
+description: "Zápis z vývoje mé hry."
 ogImage: gamedev
-lang: en
+lang: cs
 tags:
   - 🖥️ Gamedev
 ---
-## It's been a while since the last update, but that doesn't mean nothing's been happening! 🙂
-## Update on the New Engine Version
-Preparation for alpha testing in the first quarter of 2024
-Hair and substance physics
+## Od posledního updateu uběhla doba, ale to neznamená, že se nic nedělo 🙂
+## Update k nové verzi enginu
+Příprava na alpha testing v prvním kvartálu 2024
+Fyzika vlasů a dalších materiálů
 ![image](../assets/images/image24.png)
-Inclusion of all modeled weapons into the game (+ some attacks and work on animations)
-Remodeling of the opening scene
+Začlenění všech namodelovaných zbraní do hry včetně části útoků a práce na animacích
+Předělání úvodní scény
 ![image](../assets/images/image25.png)
-Addition of over 25+ character creation backgrounds influencing character stats and story
-Revamp of resource acquisition in the game. 
+Přidání více než 25 backgroundů při tvorbě postavy, které ovlivňují staty i příběh
+Přepracování získávání surovin ve hře
 <br></br>
-## New Robot Race
-Introduced a new race of Robots, divided into two subgroups - Slaves and Pirates. Robots become pirates after encountering anomalies that can cause strange behavior and self-awareness. They involuntarily become prey to hunters of these "malfunctioning" technologies, initially created by the Imperial faction with the primary purpose of serving as slaves to operate steampunk technologies, engines, and trains. Those who manage to escape are called Pirates, as Imperials try to portray them as dangerous.
+## Nová rasa robotů
+Přibyla nová rasa robotů rozdělená do dvou skupin - Otroci a Piráti. Robot se stává pirátem ve chvíli, kdy se setká s anomáliemi, které v něm probudí podivné chování a sebeuvědomění. Takové kusy jsou pak loveny jako nebezpečné „vadné“ technologie. Původně je vytvořila Impériální frakce jako pracovní sílu pro obsluhu steampunkových technologií, strojů a vlaků. Ti, kterým se podařilo uniknout, jsou označováni za Piráty, protože je Impérium potřebuje vykreslit jako hrozbu.
 ![image](../assets/images/image17.png)
 
 <br></br>
-These robots live secluded lives in desert and marshy areas, inaccessible to ordinary people from large cities, leading a simple life full of faith in something that gave them their own sense of confidence. However, they are unable to harness this energy in its natural form, which in this world is referred to as various names... magic, anomalies, or mana.
+Tihle roboti žijí spíš stranou v poušti a močálech, kam se běžní lidé z velkých měst ani nedostanou. Vedou jednoduchý život a věří v cosi, co jim dává vlastní pocit jistoty. Zároveň ale nedokážou přirozeně využívat tu samou energii, které se v tomto světě říká magie, anomálie nebo mana.
 
-Their strengths lie in natural talent for work, science, and technology. They also possess the greatest endurance and resilience of all races. However, they face limitations in carrying certain items that are not natural for robots or possess magical abilities that may irritate them.
+Jejich silnou stránkou je talent na práci, vědu a technologii. Jsou také jednou z nejodolnějších ras ve hře. Na druhou stranu mají omezení při používání některých předmětů a hůře snášejí magii.
 
-## Progress and Challenges
-As deadlines loom and a new season of Diablo hits, managing social media and personal life alongside work becomes challenging. Despite this, progress continues, albeit at a slower pace. The plan remains to launch the game into testing mode soon. Thus, a significant amount of time has been dedicated to optimizing scenes and creating better terrain. Another focus has been the complete overhaul of the UI to resemble Zelda games.
+## Progres a problémy
+Jak se blíží deadliny a zároveň přichází nové sezóny Diabla, je těžké balancovat práci, sociální sítě i osobní život. Přesto se hra posouvá, jen pomaleji. Plán spustit testování zůstává. Hodně času tak padlo do optimalizace scén a tvorby lepšího terénu. Další velké téma je kompletní přepracování UI, které se posouvá víc směrem k Zelda feelingu.
 
-Every day brings new ideas, but there's a need to prioritize completing the basic framework, especially the game loop with a few quests and maybe a dungeon. Even so, completing at least the first island seems like six months of work, and more time is hoped for.
+Každý den přináší nové nápady, ale zároveň je potřeba dokončit základní kostru hry, hlavně gameplay loop s několika questy a možná i dungeonem. I první ostrov ale pořád vypadá minimálně na půl roku práce.
 ![image](../assets/images/image19.png)
 
 <br></br>
-## Feedback on the New UI
-What are your thoughts on the new UI?
+## Feedback na nové UI
+Co říkáš na nový směr UI?
 
 ![image](../assets/images/image2.png)
 
-## Looking Ahead
-Plans include completing the dungeon, adding quests, and examining monster AI to finalize the first island for the upcoming alpha testing phase, or rather, a pre-alpha!
+## Co bude dál
+Plán je dokončit dungeon, přidat questy a doladit AI monster tak, aby byl první ostrov připravený pro nadcházející alpha testing. Spíš tedy pre-alpha.
 
 ![image](../assets/images/image_3_prese.png)
 
-## Recent Additions
+## Poslední přírůstky
 
-Recent additions include:
+Mezi poslední novinky patří:
 
-Implementation of a GORE system - a blood system that affects everything it lands on
+Implementace GORE systému - krevní systém, který ovlivňuje vše, na co dopadne
 ![image](../assets/images/image19.png)
-Ragdoll system - some monsters fly off a bit after death, adding to the experience
-ARPG loot drop system
+Ragdoll systém - některá monstra po smrti pěkně odletí a celé to působí živěji
+ARPG loot drop systém
 ![image](../assets/images/image20.png)
-Mouse/cursor toggle system "F" to help players better collect items on the ground or interact with elements in the game.
+Přepínání myši/kurzoru klávesou „F“, aby se lépe sbíraly předměty ze země a interagovalo s prvky ve hře.
 ![image](../assets/images/image_2_prese.png)
-As progress continues, stay tuned for more updates and insights into the development journey of this exciting project!
+Jak vývoj pokračuje, budou přibývat další updatey i vhled do cesty, jak tenhle projekt vzniká.
 <br></br>
 
-## That's it. Thank you for reading :)
+## To je vše, díky za přečtení :)
 
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
-
-
 
 [[toc]]

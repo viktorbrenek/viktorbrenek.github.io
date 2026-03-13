@@ -1,109 +1,63 @@
 ---
-title: Gamedev log 3# - Revamped materials, models and more!
-description: "Documentary of my game development."
+title: Gamedev log 3# - Předělané materiály, modely a další věci
+description: "Zápis z vývoje mé hry."
 ogImage: gamedev
-lang: en
+lang: cs
 tags:
   - 🖥️ Gamedev
 ---
-## What took yoo so long again?
-Hi.
-I didnt hold up my promise and post more often. The truth is there was not much to post...
-Not because i would not work on the game every day since the last post, but because i had to
-re-do a lot of things and didnt want to share half-made products. Anyway... lets get on to it. 
-Today i will over flow you with updates. 
+## Proč ti to zase tak trvalo?
+Ahoj.
+Nesplnil jsem slib a nepsal častěji. Pravda je, že dlouho nebylo moc co ukazovat. Ne proto, že bych na hře nepracoval každý den, ale protože jsem musel předělat spoustu věcí a nechtěl jsem sdílet polotovary. Každopádně dneska toho bude hodně.
 
-## Remade shaders
-When a creator works deeply on some project it often happens that he becomes slightly blinded
-by the vision and doesnt see the mistakes. So when i shared my visuals to the friends i was
-stuttered that they didnt like it so much as i did. After some free-time and analyzing the 
-data i started realizing that i need to spice things up. So i have remade my shaders from the 
-ground up. Now we are using sofisticated RGB masking shader with similar visuals as before, 
-but now we can add more properties and masks let us cut some performance as before we would 
-use 3 shaders instead of one like now. Here i can share with you some information about how i 
+## Předělané shadery
+Když člověk dělá dlouho na jednom projektu, často trochu oslepne vůči vlastním chybám. Když jsem ukázal vizuál kamarádům, zjistil jsem, že to nefunguje tak dobře, jak jsem si myslel. Po analýze jsem došel k tomu, že je potřeba to celé posunout.
+
+Předělal jsem tedy shadery od základu. Nově používám sofistikovanější RGB masking shader. Vizuálně navazuje na předchozí směr, ale umožňuje přidávat víc vlastností a zároveň šetří výkon, protože místo tří shaderů zvládneme hodně věcí jedním.
 
 ![image](../assets/images/masking.png)
 
-On this picture you can see three color channels masking the space where the final shader will
-apply the predefined colors. In the unity we can simply use texture sample node and mask it
-outputs trough multiply node with the predefined color/texture/properties. I would share the
-whole shader, but its too complex and wouldnt work anyway since i use some code changes. So
-here is the basic principle. Hope it helps. 
+Na obrázku je vidět, jak tři barevné kanály maskují plochy, na které se pak shader aplikuje. V Unity se to dá řešit přes texture sample a následné násobení předdefinovanými barvami, texturami nebo materiálovými vlastnostmi. Celý shader ukazovat nebudu, protože je už dost komplexní a navíc obsahuje vlastní úpravy v kódu. Ale jako základní princip to snad pomůže.
 
 ![image](../assets/images/shader.png)
 
-An here is the final image of the reptilian-bug race. Doesnt have a name yet. Feel free to 
-contact me via discord and gimme a hint. I will consider all options :) 
+A tady je výsledný vzhled reptiloidně-hmyzí rasy. Ještě nemá jméno, takže pokud tě něco napadne, klidně napiš na Discord.
 
 ![image](../assets/images/repti.png)
 
-## Remade models
-As you probably guessed already i have had to remake my models of characters (and most of the
-things in the world) because the new shader doesnt only optimizes the game because you dont 
-have to use multiple materials. Which is btw crucial cuz what i have learned each material 
-is casting shadows and receiving lighting in the game. That means if you have 3 materials on
-your character it will need to count everything 3x times! 
+## Předělané modely
+Jak asi čekáš, musel jsem předělat i modely postav a velkou část světa. Nový shader totiž nepomáhá jen vizuálně, ale i výkonově. Každý materiál na modelu totiž v praxi znamená další výpočty světel a stínů. Když má postava tři materiály, hra to řeší třikrát.
 <br></br>
-The similar problem is also with skinned meshes. I didnt know this but each skinned mesh in 
-your character has its own animator in Unity... So if you character consists of 10 skinned meshes
-you are fucked. This is specially bad in games with mass population of NPCs. 
-Thank you [Aleš Harry Herink](https://www.twitch.tv/thecoffeeharry) for the tip! Saved my game probably :) 
-(Harry is my dear friend who decided to dont give a fuck about people and society and just bought
-a tent and small piece of land and started developing games in the middle of forests. Also in winter!
-Please go to his twitch via the link on his name here and follow his game dev journey also! Thank you.)
+Podobný problém je u skinned meshes. Tehdy jsem netušil, že každá skinned mesh může v Unity znamenat vlastní animator. Pokud tedy postava obsahuje deset oddělených částí, je to problém. A v populovaném open world RPG ještě větší. Za tenhle tip musím poděkovat [Aleši Harrymu Herinkovi](https://www.twitch.tv/thecoffeeharry), který mi tím nejspíš zachránil hru.
 <br></br>
-This is not all sadly. After few attempts i have also realised that my models suck. Not only they look
-like first grader's work, but they also werent that much optimized. I used to have like 30k verticies
-per piece of character (a hand for example). That would count as much as 150/200k verticies per character
-which is kinda unmanagable in the open world game. I had to cut it down and once again Harry came and saved
-the day. On his stream i quickly catched up some Blender lessons and started doing manual remeshing with 
-shrink wrap. That is not a quick work but its definitely most efficient. I have tried to use things like
-automatic remeshers (instant meshes and stuff). But those dont compare at all to the manual work that i
-have ended up using. When doing this i have also tried to care more about UV wrapping, because of the
-future proof changes for the RGB masking. Here you can see some examples of the remeshed models with 
-proper UV wrapping and 7000 verticies in total (full body).
+To ale nebylo všechno. Po několika pokusech jsem došel i k tomu, že moje modely prostě nebyly dost dobré. Nejenže nevypadaly ideálně, ale byly i špatně optimalizované. Míval jsem kolem 30k vertexů na jednu část těla, třeba na ruku. To dělalo i 150 až 200k vertexů na celou postavu, což je pro open world nesmysl. Musel jsem to výrazně seříznout.
+
+Na Harryho streamu jsem rychle pochytal další Blender postupy a přešel na ruční remeshování přes shrink wrap. Není to rychlé, ale je to zatím nejefektivnější řešení. Zkoušel jsem i automatické remeshery, ale ruční práce vyhrála. Současně jsem víc řešil i UV wrapping kvůli budoucím změnám kolem RGB maskingu.
 
 ![image](../assets/images/shrink.png)
 
-On this image you can also see +- how i cut the body on the individual parts.
+Na obrázku je i přibližně vidět, jak jsem tělo rozřezal na jednotlivé části.
 
 ## Body Culling
-Individual parts of body are another super usefull thing to do in the preparation of the model because
-i hated that my equipment didnt hide the body properly in the last update. Now the equipment lines up
-with the body parts size dimensions. Because of that i can easily hide each part when its covered with 
-an item. You can see that here. 
+Rozdělení těla na části je užitečné i kvůli equipu. Dřív mi vadilo, že vybavení neschovávalo tělo správně. Teď jednotlivé kusy zbroje sedí na rozměry konkrétních body partů a můžu je při zakrytí jednoduše vypínat.
 ![image](../assets/images/culling.png)
 
-## New nature models (but: to be remodeled + optimized)
-Here are some more creative updates.
-I am not sure about the names. 
-Currently we have got more that 10 kinds of trees. I will not share all of them, because i am not 
-sure which i will keep in the game. And i have to remesh them. On the last picture you can also see
-an architecture protype. Its inspired by Kenshi building. But i also might remake it in the future, 
-because i have finnaly connected the building system :)
+## Nové přírodní modely
+Tady je pár kreativnějších novinek. Jména si ještě nejsem jistý. Aktuálně mám víc než 10 druhů stromů. Nechci je ukazovat všechny, protože ještě nevím, které ve hře zůstanou, a stejně je budu znovu remeshovat. Na posledním obrázku je i prototyp architektury inspirovaný stavbami z Kenshi. Možná ho ale taky časem předělám, protože jsem konečně napojil building systém.
 
 ![image](../assets/images/models1.png)
 
-## Building and flying?
-Ok the best at the end? Not sure about this one but i am sure players will love to hear, that i have
-connected building system asset to my game which will lets us freely build and save player houses, 
-also with crafting stations, chests and other interactive items. On the following picture you can
-see radial menu which will be remade and some premade assets to be also remade. 
-You can also see the flying suit which can be used with all nomadic characters. Its super fun to use
-while developing the game, but its also hella lot buggy and i am not sure if its worth to keep. 
-What i am sure about are vehicles/mounts. But i might remove flying just because its messing up 
-with several systems that i have planned out like world end- masking. Which would be impossible to hide
-when flying. And that would really break any immersion. I wanted to use the suit to just glide, but sadly
-that seems to be impossible with my current set of skills. So maybe in future :) 
+## Building a létání?
+A to nejlepší nakonec? Možná. Do hry jsem napojil asset pro building systém, takže půjde volně stavět a ukládat hráčské domy, craft stanice, bedny i další interaktivní předměty. Na obrázku je vidět i radiální menu, které ještě projde redesignem.
+
+Je tam také létací oblek pro nomádské postavy. Při vývoji je super zábavný, ale zároveň dost rozbitý a zatím si nejsem jistý, jestli má smysl ho ve hře nechat. Co naopak smysl dává, jsou mounti nebo vozidla. Létání totiž rozbíjí některé systémy, které mám naplánované, třeba maskování okrajů světa. Klouzání by bylo ideální, ale na to mi tehdejší skillset ještě nestačil. Tak třeba někdy později.
 
 ![image](../assets/images/building.png)
 
-## Thats it. 
+## To je vše
+Bylo to dlouhé a je dost možné, že i plné chyb. Je jedna ráno a kašlu na to. Sleduj moje sítě, pokud chceš další informace o vývoji hry.
 
-Ok.. that was exhausting and probably full of mistakes... sorry its 1 am and i dont care. 
-Follow me on my socials to get more information about the game development. Thank you. 
-
-## The end :)
+## Konec :)
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
 

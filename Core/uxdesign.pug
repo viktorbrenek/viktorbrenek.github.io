@@ -1,66 +1,58 @@
 doctype html
 head
-  title Viktor Brenek
-  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
-  meta(content="utf-8",http-equiv="encoding")
+  title UX/UI | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
   meta(name="author" content="Viktor Brenek")
-  meta(name="description" content="Personal blog and portfolio")
+  meta(name="description" content="Osobní blog a portfolio")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
-  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
-  link(rel='stylesheet', href='styles.css')
-  link(rel='stylesheet', href='astyles.css')
-  link(rel='stylesheet', href='img.css')
-  <link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
-  <link rel="icon" href="assets/images/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png"><!-- 180×180 -->
-  <link rel="manifest" href="/manifest.json">
-  script(src="finder.js" defer)  
-  meta(charset="utf-8")
-  //script aby se nanačítal dáme na konec body
-  title Portfolio post 1#
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
 
-body
-    ul#links.links 
-            li
-              a.who(href='https://instagram.com/viktorbrenek' target='_blank') Instagram
-            li
-              a.who(href='https://facebook.com/brenekviktor/' target='_blank') Facebook
-            li
-              a.who(href='https://twitch.tv/viktorbrenek' target='_blank') Twitch
-            li
-              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
-            li
-              a.blog(href='https://www.youtube.com/c/ViktorBrenekYT' target='_blank') Youtube
-    menu
-        a.name(href='about.html') Viktor Brenek
-        a.name(href='blog.html') Blog
-        a.name(href='index.html') Portfolio 
-            
-    #content
-        .container
-          main.grid-b
+body(data-page="uxdesign")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow UX/UI a web
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
 
-            h1.hillu Webdesign | UX/UI | Three.js
-            p.pillu Here you can see some of the websites i have created or participated on. 
+  main.page-shell
+    section.page-hero
+      p.eyebrow UX/UI
+      h1 Webdesign | UX/UI | Three.js
+      p.lead Tady najdeš weby a digitální produkty, které jsem navrhl nebo na nich spolupracoval.
 
-              ul.ulgrid
-                li
-                  a.name(class="hrefa dates" href='https://www.ceskyflorbal.cz') Cesky Florbal - UI / UX design
-                li
-                  a.name(class="hrefa dates" href='https://www.czsnr.cz') Cirkevni zakladni skola Nemeckeho radu - UI / UX design
-                li
-                  a.name(class="hrefa dates" href='https://www.cgnr.cz') Cirkevni gymnazium Nemeckeho rádu - UI / UX design
-                li
-                  a.name(class="hrefa dates" href='https://www.tescosw.cz') TescoSW - Illustrations 
-                li
-                  a.name(class="hrefa dates" href='https://petrbrenek.wixsite.com/project-comics/uvodni-strana') The Last City - Personal Project / Wix Editor
-                li
-                  a.name(class="hrefa dates" href='https://www.checkaree.com') Checkaree - UI/UX of internal system
-                li
-                  a.name(class="hrefa dates" href='https://www.brenek.art') Brenek.art - Code / UI / UX design
+    section.section-card
+      .link-grid
+        a.link-pill(href="https://www.ceskyflorbal.cz" target="_blank" rel="noreferrer") Český florbal - UI / UX design
+        a.link-pill(href="https://www.czsnr.cz" target="_blank" rel="noreferrer") Církevní základní škola Německého řádu - UI / UX design
+        a.link-pill(href="https://www.cgnr.cz" target="_blank" rel="noreferrer") Církevní gymnázium Německého řádu - UI / UX design
+        a.link-pill(href="https://www.tescosw.cz" target="_blank" rel="noreferrer") TescoSW - ilustrace
+        a.link-pill(href="https://petrbrenek.wixsite.com/project-comics/uvodni-strana" target="_blank" rel="noreferrer") The Last City - osobní projekt / Wix editor
+        a.link-pill(href="https://www.checkaree.com" target="_blank" rel="noreferrer") Checkaree - UI/UX interního systému
+        a.link-pill(href="https://www.brenek.art" target="_blank" rel="noreferrer") Brenek.art - kód / UI / UX design
 
-            
-            .spacersmaller
-
-
-            
+  footer.site-footer
+    p Externí reference zachované jako responzivní odkazy.

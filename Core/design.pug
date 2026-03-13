@@ -1,103 +1,73 @@
 doctype html
 head
-  title Viktor Brenek
-  meta(content="text/html;charset=utf-8",http-equiv="Content-Type")
-  meta(content="utf-8",http-equiv="encoding")
+  title Design | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
   meta(name="author" content="Viktor Brenek")
-  meta(name="description" content="Personal blog and portfolio")
+  meta(name="description" content="Osobní blog a portfolio")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
-  meta(name="viewport" content="width=device-width,initial-scale=1.0") 
-  link(rel='stylesheet', href='styles.css')
-  link(rel='stylesheet', href='astyles.css')
-  link(rel='stylesheet', href='img.css')
-  <link rel="icon" href="assets/images/favicon.png" sizes="any"><!-- 32×32 -->
-  <link rel="icon" href="assets/images/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png"><!-- 180×180 -->
-  <link rel="manifest" href="/manifest.json">
-  script(src="finder.js" defer)  
-  meta(charset="utf-8")
-  //script aby se nanačítal dáme na konec body
-  title Portfolio post 1#
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
 
-body
-    ul#links.links 
-            li
-              a.who(href='https://instagram.com/viktorbrenek' target='_blank') Instagram
-            li
-              a.who(href='https://facebook.com/brenekviktor/' target='_blank') Facebook
-            li
-              a.who(href='https://twitch.tv/viktorbrenek' target='_blank') Twitch
-            li
-              a.who(href='https://discord.com/invite/2Uj6N5N' target='_blank') Discord
-            li
-              a.blog(href='https://www.youtube.com/c/ViktorBrenekYT' target='_blank') Youtube
-    menu
-        a.name(href='about.html') Viktor Brenek
-        a.name(href='blog.html') Blog
-        a.name(href='index.html') Portfolio 
-            
-    #content
-        .container
-          main.grid-b
-            h1.hillu Logotypes
-            p.pillu A collection of my logotypes for various companies in Czech republic.
-            section.project-grid-b
-              a
-                img(src="assets/images/huzova.jpg" alt='' loading='lazy')
+body(data-page="design")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Archiv designu
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
 
-              a
-                img(src='assets/images/mogi.jpg' alt='' loading='lazy')
+  main.page-shell
+    section.page-hero
+      p.eyebrow Grafický design
+      h1 Logotypy, plakáty a marketing
+      p.lead Kolekce mých logotypů, plakátů, bannerů a další marketingové práce.
 
-              a
-                img(src='assets/images/mor.jpg' alt='' loading='lazy')
+    section.section-card
+      h2.section-title Logotypy
+      p.hero-kicker Kolekce logotypů pro různé firmy a projekty v České republice.
+      .gallery-grid
+        each image in ["huzova.jpg", "mogi.jpg", "mor.jpg", "db.jpg", "vb.jpg", "bla.jpg", "bikes.jpg", "grow.jpg", "sante.jpg", "village.jpg", "vlach.jpg", "vyroci.jpg", "sims.jpg", "hran.jpg"]
+          figure.media-card
+            .media-card__media
+              img(src=`assets/images/${image}` alt="Návrh logotypu" loading="lazy")
 
-              a
-                img(src="assets/images/db.jpg" alt='' loading='lazy')
+    section.section-card
+      h2.section-title Marketing, plakáty, bannery
+      p.hero-kicker Kolekce plakátů, bannerů a další marketingové tvorby.
+      .gallery-grid.gallery-grid--wide
+        figure.media-card
+          .media-card__media
+            img(src="assets/images/pravek1.jpg" alt="Návrh plakátu" loading="lazy")
+        figure.media-card
+          .media-card__media
+            img(src="assets/images/pravek2.jpg" alt="Návrh plakátu" loading="lazy")
+      .gallery-grid
+        each image in ["stan.jpg", "uterka.jpg", "plakat.jpg"]
+          figure.media-card
+            .media-card__media
+              img(src=`assets/images/${image}` alt="Marketingový návrh" loading="lazy")
 
-              a
-                img(src="assets/images/vb.jpg" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/bla.jpg" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/bikes.jpg" alt='' loading='lazy')
-
-              a
-                img(src='assets/images/grow.jpg' alt='' loading='lazy')
-
-              a
-                img(src="assets/images/sante.jpg" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/village.jpg" alt='' loading='lazy')
-
-              a
-                img(src="assets/images/vlach.jpg" alt='' loading='lazy')
-              
-              a
-                img(src="assets/images/vyroci.jpg" alt='' loading='lazy')
-              
-              a
-                img(src="assets/images/sims.jpg" alt='' loading='lazy')
-              
-              a
-                img(src="assets/images/hran.jpg" alt='' loading='lazy')
-
-
-            .spacersmaller
-            h1.hilluspace Marketing, posters, banners
-            p.pillu A collection of my posters, banners and other marketing stuff.
-
-            img(class="portimg" src="assets/images/pravek1.jpg" alt='' loading='lazy')
-            img(class="portimg" src="assets/images/pravek2.jpg" alt='' loading='lazy')
-
-            section.project-grid-b
-              a
-                img(src="assets/images/stan.jpg" alt='' loading='lazy')
-
-              a
-                img(src='assets/images/uterka.jpg' alt='' loading='lazy')
-
-              a
-                img(src='assets/images/plakat.jpg' alt='' loading='lazy')
+  footer.site-footer
+    p Galerie designu zachovaná a přeuspořádaná do responzivního archivu.

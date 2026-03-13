@@ -1,32 +1,32 @@
 ---
-title: Gamedev log 9# - ARPG Shift and Atmosphere
-description: "Documentary of my game development."
+title: Gamedev log 9# - Posun k ARPG a atmosféra
+description: "Zápis z vývoje mé hry."
 ogImage: gamedev
-lang: en
+lang: cs
 tags:
   - 🖥️ Gamedev
 ---
-## Youtube is eating my time, but it has its perks! 🙂
+## YouTube mi žere čas, ale má to i svoje výhody 🙂
 
-Lately, I've been focusing a lot on reaching my goal of 10k subscribers on my ARPG-oriented channel. There have been a lot of updates to my favorite games, like Diablo IV, Path of Exile, Grim Dawn, and Last Epoch. Even though it may not sound that interesting for game development, it actually is.
+Poslední dobou jsem hodně řešil růst svého ARPG-oriented YouTube kanálu a cestu k 10k odběratelům. Vyšlo hodně updateů do mých oblíbených her jako Diablo IV, Path of Exile, Grim Dawn nebo Last Epoch. Možná to nezní jako něco, co by pomáhalo game devu, ale ve skutečnosti ano.
 
-I've always struggled with the repetitiveness of RPG games and the limitations they often impose. I wanted to give my players something more so they could stay engaged with my RPG a little longer. That's why I decided to implement several mechanics inspired by my favorite ARPGs.
+Dlouhodobě bojuju s repetitivností klasických RPG a s jejich limity. Chtěl jsem hráčům dát něco navíc, aby u mého RPG vydrželi déle. Proto jsem se rozhodl přidat několik mechanik inspirovaných mými oblíbenými ARPG.
 
-Despite having a bit less time, I've used it to fine-tune models, the weather system, and the overall atmosphere. Check out some of my latest additions, and get ready for an upcoming blog post about dungeon generation, which will be released soon!
+I když mám o něco méně času, využil jsem ho aspoň na doladění modelů, počasí a celkové atmosféry. Mrkni na některé z posledních novinek a připrav se na další blog post o generování dungeonů, který chci vydat brzy.
 ![image](../assets/images/blogpost9/image.png)
 <br></br>
-## It’s in the details
-When I talk about the feeling of the game, it’s not just about colors, weather, or lighting; it’s also about the details in interiors and their interactivity. Check out some of the latest additions!
+## Ďábel je v detailech
+Když mluvím o pocitu ze hry, nejsou to jen barvy, počasí a světlo. Hodně dělají i detaily v interiérech a jejich interaktivita. Tady je pár novějších přírůstků.
 ![image](../assets/images/blogpost9/image2.png)
 ![image](../assets/images/blogpost9/image16.png)
 ![image](../assets/images/blogpost9/image15.png)
 
 <br></br>
-NPCs are also more interactive now. 
+NPC jsou teď také interaktivnější.
 ![image](../assets/images/blogpost9/image3.png)
 
 <br></br>
-The new enemy type "cannibals" will be showcased soon, in the meantime look at their village.
+Nový typ nepřítele "kanibalové" ukážu brzy detailněji. Zatím mrkni na jejich vesnici.
 ![image](../assets/images/blogpost9/image4.png)
 ![image](../assets/images/blogpost9/image5.png)
 ![image](../assets/images/blogpost9/image6.png)
@@ -35,82 +35,81 @@ The new enemy type "cannibals" will be showcased soon, in the meantime look at t
 ![image](../assets/images/blogpost9/image21.png)
 
 <br></br>
-New auras on magical influenced items.
+Nové aury na magicky ovlivněných itemech.
 ![image](../assets/images/blogpost9/image7.png)
 
 <br></br>
-Oh yes wondering shrine. Perhaps a quicker way to teleport around the world? Maybe...
+A ano, wandering shrine. Možná rychlejší způsob cestování po světě? Možná...
 ![image](../assets/images/blogpost9/wonderingshrine.png)
 
-## Magic is in the air
-I've completely reworked the magick system. From now on, players will have six sockets in their inventory, organized by power from left to right. Each socket represents a slot for an anomaly container that can be equipped to provide not only an active skill to the talent tree but also additional stats or act as a support gem.
+## Magie je ve vzduchu
+Kompletně jsem přepracoval magický systém. Hráči budou mít v inventáři šest socketů uspořádaných zleva doprava podle síly. Každý socket představuje slot pro kontejner anomálie, který může přidat nejen aktivní skill do talent tree, ale i bonusové staty nebo fungovat jako support gem.
 
-While players will be limited to certain combinations, they can freely mix and match any magic or anomaly school, including anomalies that simply enhance all skills or unique ones that offer temporary buffs or curses. To acquire an anomaly, players must advance in their Anomalist profession, enabling them to capture higher-level anomalies from randomly appearing sources around the world or specific dungeons. And by the way, you'll also need container jars and other items to make it all work!
+Hráč bude omezený jen některými kombinacemi, jinak ale půjde míchat školy magie i anomálií poměrně volně. Některé anomálie budou čistě podpůrné, jiné dají dočasné buffy nebo kletby. Pro získání anomálií bude potřeba postupovat v profesi Anomalist, díky které půjde chytat silnější anomálie z náhodných eventů ve světě nebo z konkrétních dungeonů. A samozřejmě k tomu bude potřeba i vybavení, nádoby a další předměty.
 <br></br>
-Here you can see the slots for the anomalies.
+Tady jsou vidět sloty pro anomálie.
 ![image](../assets/images/blogpost9/image23.png)
 
 <br></br>
-There is an anomaly event in the world for you to capture. Beware its not simple. 
+A tady je anomální event ve světě, který můžeš zkusit zachytit. Není to jednoduché.
 ![image](../assets/images/blogpost9/image18.png)
 
-## Minigames
-I've created some minigames. Right now, they’re more of a proof of concept, but they work—I can lock certain doors or chests for the player. I plan to integrate these with the Thief profession, making them more impactful in the game. So far, sneaking, stealing, and lockpicking are implemented, though they aren’t quite working as I'd like and aren't necessary to complete the demo locations.
+## Minihry
+Vytvořil jsem i několik minihier. Zatím jsou to hlavně proof of concept systémy, ale fungují. Můžu jimi zamykat dveře nebo truhly. Chci je navázat na profesi zloděje, aby měly ve hře reálný dopad. Sneak, stealing i lockpicking už jsou implementované, ale ještě nefungují úplně tak, jak bych chtěl, a nejsou nutné pro dokončení demo lokací.
 
-The lockpicking minigame is both sound-based and visual, with a 2D sprite UI where players need to move locks to randomly generated positions. I can assign different variables to adjust the difficulty of each lock, making some harder to unlock than others.
+Lockpicking minihra je zvuková i vizuální. Používá 2D sprite UI, kde hráč přesouvá zámky do náhodně generovaných pozic. U každého zámku můžu nastavit jinou obtížnost.
 ![image](../assets/images/blogpost9/image14.png)
 
 ## Merchant
-One of the biggest changes in development has been the introduction of a new trading mechanic. It’s simple to describe but extremely challenging to code (for me).
+Jedna z největších změn je nový obchodní systém. Popsat se dá jednoduše, ale programoval se pro mě dost těžce.
 
-When you approach a merchant, he’ll offer only a selection of items from his store, not everything. This encourages players to visit other merchants in different cities.
-Each merchant will also assign specific prices to his items for the week, adding an extra incentive for players to shop around.
-Merchants will evaluate the items you bring to sell and decide which ones they’re interested in buying.
-They’ll also set a purchase price for each of your items, valid only for that week.
-All of this is persistent and can’t be manipulated by reloading; it resets each week.
-This system makes trading more dynamic and strategic for players.
+Když přijdeš k obchodníkovi, nenabídne ti celý svůj inventář, ale jen část. To motivuje chodit i do jiných měst.
+Každý obchodník má také vlastní týdenní ceny.
+Vyhodnocuje, které itemy od hráče chce vůbec vykoupit.
+Na každý odkupovaný item nastaví vlastní cenu, platnou jen pro daný týden.
+Celý systém je persistentní a nejde obejít reloadem. Resetuje se vždy po týdnu.
+Díky tomu působí obchodování živěji a strategičtěji.
 ![image](../assets/images/blogpost9/image8.png)
 
 ## QoL
-With the new merchants and item handling system, I needed to add some quality-of-life functions, like item splitting, withdrawing all items, and simple sorting.
-Nothing to show right now. Sorry.
+Spolu s novými obchodníky a item systémem jsem musel přidat i quality-of-life funkce jako splitování itemů, vybrání všeho nebo jednoduché řazení. Zatím na to ale nemám moc co ukázat.
 
-## Fulgurites
-Another big update includes the addition of fulgurites and other persistent bonuses. Fulgurites are similar to Path of Exile's map modifiers, but in the form of elixirs that players can craft through a unique profession and consume to boost (or sometimes reduce) stats like XP gain, gold gain, and other attributes critical for farming and grinding. This system is currently in testing but is already implemented as a death penalty mechanic: upon death, players receive a lasting debuff (e.g., -30% XP and -30% HP) that can only be removed at a shrine of revival—for a price.
+## Fulgurity
+Další velký update jsou fulgurity a další perzistentní bonusy. Fulgurity fungují trochu jako map modifikátory z Path of Exile, ale v podobě elixírů. Hráč je craftí přes speciální profesi a potom je může vypít pro bonusy, případně i postihy, třeba k XP, goldu nebo jiným statům důležitým pro farmení a grind.
+
+Tenhle systém se zároveň testuje i jako death penalty mechanika. Po smrti může hráč dostat trvalejší debuff, například -30 % XP a -30 % HP, který se odstraní až u shrine of revival a ještě za poplatek.
 ![image](../assets/images/blogpost9/image9.png)
-The shrine of revival.
+Shrine of revival.
 ![image](../assets/images/blogpost9/image17.png)
 
-## Runes and Enchants
-Itemization is often one of the most criticized aspects of ARPG games, and I know I probably haven’t perfected it either. But I aimed to combine my favorite systems:
+## Runy a enchanty
+Itemizace bývá jedna z nejkritizovanějších částí ARPG a je mi jasné, že ji ještě nemám dokonalou. Snažil jsem se ale spojit systémy, které mám nejradši.
 
-Each item can have different rarities: normal, magic, rare, epic, cursed, legendary, unique, and more.
-Each item can have fixed (white) primary stats—these are base item stats that don’t change.
-Each item can have random (orange) stats.
-Items can be enchanted, either through crafting or naturally on unique items.
-Items can belong to a set—completing a set grants various bonuses.
-Items can have a random number of slots for runes, gems, or other enhancements.
-You can combine runes and gems to create powerful combinations or even entirely new items, similar to Diablo 2.
-There are also numerous small details, like displaying stat changes when equipping an item over another, item prices, 3D models, icons, item types, descriptions, and more. I’m also considering updating the game’s font, but that’s a plan for the future.
+Každý item může mít různé rarity: normal, magic, rare, epic, cursed, legendary, unique a další.
+Každý item může mít fixní bílé primární staty.
+Každý item může mít náhodné oranžové staty.
+Itemy můžou být enchantované přes crafting nebo přirozeně u unique kusů.
+Itemy můžou patřit do setů.
+Můžou mít náhodný počet socketů pro runy, gemy nebo další enhancementy.
+Runy a gemy půjde kombinovat do silných synergií a možná i nových itemů ve stylu Diablo 2.
+K tomu spousta menších detailů jako porovnání statů při equipu, ceny, 3D modely, ikonky, typy itemů nebo popisy. Do budoucna zvažuju i změnu fontu celé hry.
 
-When I say “each item can have” these features, I don’t mean every item will have them all. For instance, standard white items will never be as impressive as unique items. Balancing all of this will be a big challenge, so more work will go into refining it. My goal, however, is to make even “scrap” items like white, magic, or rare items useful—not just to sell, but to craft with, similar to Path of Exile.
+Když říkám „může mít“, neznamená to, že každý item bude mít všechno. Bílý předmět nikdy nebude působit jako unique. Velká část práce teď půjde do balancování. Chtěl bych ale, aby i obyčejné white, magic nebo rare itemy měly smysl a nekončily jen u prodeje, ale i u craftu, podobně jako třeba v Path of Exile.
 ![image](../assets/images/blogpost9/image22.png)
 ![image](../assets/images/blogpost9/image13.png)
 ![image](../assets/images/blogpost9/image10.png)
 
-## There is probably more..
-There's a ton of new stuff! New music is in the works from Filip, new ragdoll animations for animals, a plugin for realistic foot landing for animals, new factions and their interactions, a fully implemented quest system, and persistent pets with threat mechanics so they can tank for you.
+## A to je pořád asi jen část...
+Je tam ještě hromada dalších věcí. Nová hudba od Filipa, nové ragdolly pro zvířata, plugin na realističtější došlap nohou, nové frakce a jejich interakce, plně zavedený quest systém nebo persistentní peti s threat mechanikou, aby za hráče uměli tankovat.
 
-We’ve also added a huge number of new 3D models, both original and modified versions from Synty. And there's probably more that I've entirely forgotten about—it's been half a year of solid development.
+Přibylo i obrovské množství nových 3D modelů, jak originálních, tak upravených ze Synty packů. A nejspíš jsem stejně na něco zapomněl. Je za tím půl roku poctivého vývoje.
 
-I’m not making any promises this time; I probably wouldn’t stick to them anyway. So… cya when I cya!
+Tentokrát nic neslibuju. Stejně bych to pak pravděpodobně nedodržel. Takže... zase někdy.
 ![image](../assets/images/blogpost9/image24.png)
 
-## That's it. Thank you for reading :)
+## To je vše, díky za přečtení :)
 
 [Youtube](https://www.youtube.com/c/ViktorBřenekYT)
 [Discord](https://discord.com/invite/2Uj6N5N)
-
-
 
 [[toc]]
