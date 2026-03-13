@@ -45,22 +45,28 @@ function ensureFonts() {
 }
 
 function createSpores() {
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isMobile = window.matchMedia("(max-width: 820px)").matches;
   const container = document.createElement("div");
   container.id = "spore-bg";
 
-  for (let i = 0; i < 32; i += 1) {
+  const count = reducedMotion ? 0 : isMobile ? 14 : 24;
+
+  for (let i = 0; i < count; i += 1) {
     const spore = document.createElement("span");
     spore.className = "spore";
-    spore.style.setProperty("--size", `${Math.random() * 14 + 8}px`);
+    spore.style.setProperty("--size", `${Math.random() * (isMobile ? 8 : 12) + (isMobile ? 6 : 8)}px`);
     spore.style.setProperty("--left", `${Math.random() * 100}%`);
-    spore.style.setProperty("--duration", `${Math.random() * 12 + 14}s`);
+    spore.style.setProperty("--duration", `${Math.random() * (isMobile ? 10 : 12) + 16}s`);
     spore.style.setProperty("--delay", `${Math.random() * -14}s`);
-    spore.style.setProperty("--drift", `${(Math.random() - 0.5) * 180}px`);
-    spore.style.setProperty("--alpha", `${Math.random() * 0.25 + 0.55}`);
+    spore.style.setProperty("--drift", `${(Math.random() - 0.5) * (isMobile ? 90 : 140)}px`);
+    spore.style.setProperty("--alpha", `${Math.random() * 0.18 + (isMobile ? 0.36 : 0.46)}`);
     container.appendChild(spore);
   }
 
-  document.body.prepend(container);
+  if (count > 0) {
+    document.body.prepend(container);
+  }
 }
 
 function getJsonPath(file) {
@@ -201,6 +207,7 @@ function mountPanelBorder(panel) {
 }
 
 function decoratePanels() {
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const panels = document.querySelectorAll(".page-hero, .section-card, .archive-year, .article-panel, .tool-panel");
   let frame = 0;
 
@@ -217,11 +224,9 @@ function decoratePanels() {
 
   panels.forEach((panel) => observer.observe(panel));
 
-  window.setInterval(() => {
-    if (!document.hidden) {
-      render();
-    }
-  }, 16000);
+  if (!reducedMotion) {
+    window.addEventListener("orientationchange", render, { passive: true });
+  }
 }
 
 function createActionBar() {
