@@ -13,6 +13,7 @@ head
   link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
   link(rel="manifest" href="/manifest.json")
   script(src="site.js" defer)
+  script(src="tools.js" defer)
 
 body(data-page="tools")
   header.site-header
@@ -39,12 +40,154 @@ body(data-page="tools")
           a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
 
   main.page-shell
-    section.tool-panel
+    section.page-hero
       p.eyebrow Nástroje
-      h1 Generátor SVG patternů
+      h1 Kovárna erbů
       p.lead
-       
+        | První utility sekce pro tvorbu frakcí a worldbuildingu. Tenhle nástroj generuje erb podle názvu frakce, ale zároveň ti nechá všechno doladit ručně.
 
-  script(src="tools.js" type="module")
+    section.tool-panel
+      .tool-workbench
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil 🛡️
+            h2.tool-workbench__title Kovárna Erbů
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-name") Název frakce (Seed)
+              input#crest-name.tool-workbench__input(type="text" value="Klan Žíravé Krve" autocomplete="off")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#auto-seed(type="checkbox" checked)
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Vázat vzhled na jméno (Auto-výběr)
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-shape") Tvar erbu
+              select#crest-shape.tool-workbench__input.manual-input
+                option(value="heater") Rytířský štít (Heater)
+                option(value="kite") Kapkovitý štít (Kite)
+                option(value="round") Kruhový štít (Viking)
+                option(value="banner") Prapor frakce
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-pattern") Heraldický vzor
+              select#crest-pattern.tool-workbench__input.manual-input
+                option(value="solid") Jednolitý
+                option(value="per-pale") Půlený vertikálně
+                option(value="per-fess") Půlený horizontálně
+                option(value="quarterly") Čtvrcený
+                option(value="chevron") Krokev (Chevron)
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-primary") Primární barva
+                input#color-primary.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#6b1a1a")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-secondary") Sekundární barva
+                input#color-secondary.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#1a1a1a")
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-symbol") Hlavní symbol
+              select#crest-symbol.tool-workbench__input.manual-input
+                option(value="none") Žádný (Čistý erb)
+                option(value="skull") Lebka Zkázy
+                option(value="sword") Zlomený meč
+                option(value="axe") Válečná sekera
+                option(value="eye") Vševidoucí oko
+                option(value="crown") Železná koruna
+                option(value="gear") Strojové kolo
+                option(value="anvil") Kovadlina
+                option(value="tree") Strom života
+                option(value="moon") Srp měsíce
+                option(value="sun") Žhnoucí slunce
+                option(value="star") Hvězda chaosu
+                option(value="lightning") Úder blesku
+                option(value="crystal") Magický krystal
+                option(value="tower") Strážní věž
+                option(value="fire") Očišťující plamen
+                option(value="drop") Krvavá kapka
+                option(value="chalice") Otrávený kalich
+                option(value="serpent") Svinutý had
+                option(value="raven") Letící havran
+                option(value="spider") Pavouk nákazy
+                option(value="anchor") Železná kotva
+                option(value="key") Klíč tajemství
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-symbol") Barva symbolu
+                input#color-symbol.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#d8a247")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-border") Barva rámu
+                input#color-border.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#3a3a3a")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#show-border.manual-input(type="checkbox" checked)
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Zobrazit rám erbu
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-roughness") Opotřebení / Špína
+              input#crest-roughness.tool-workbench__range.manual-input(type="range" min="0" max="100" step="5" value="60")
+            .tool-workbench__actions
+              button#btn-generate.world-map__button(type="button") Vykovat erb
+              button#btn-download.world-map__button.world-map__button--secondary(type="button") Stáhnout PNG
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell
+            p.tool-workbench__canvas-title Náhled erbu
+            p.tool-workbench__canvas-text Výsledek se generuje do transparentního PNG, takže ho můžeš použít i mimo web.
+            .tool-workbench__canvas-frame
+              canvas#icon-canvas(width="256" height="256")
+
+    section.tool-panel
+      .tool-workbench
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil ᛟ
+            h2.tool-workbench__title Kovárna Waystonů
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="stone-name") Název lokace (Seed)
+              input#stone-name.tool-workbench__input(type="text" value="Jeskyně Kotevních Krabů" autocomplete="off")
+            .tool-workbench__field
+              label.tool-workbench__label(for="stone-shape") Tvar podkladu
+              select#stone-shape.tool-workbench__input
+                option(value="stone") Úlomek skály
+                option(value="circle") Dokonalý kruh
+                option(value="medallion") Rituální medailon (zubatý)
+                option(value="square") Chrámová deska
+                option(value="rhombus") Kosočtverec
+            .tool-workbench__field
+              label.tool-workbench__label(for="rune-style") Druh písma
+              select#rune-style.tool-workbench__input
+                option(value="geometric") Geometrické (Ostré)
+                option(value="organic") Fungální (Oblé)
+                option(value="circuit") Kybernetické (Pravoúhlé)
+                option(value="waves") Prastaré vlny (Plynulé)
+                option(value="constellation") Konstelace (Hvězdné)
+            .tool-workbench__field
+              label.tool-workbench__label(for="rune-thickness") Tloušťka vrypu
+              input#rune-thickness.tool-workbench__range(type="range" min="0.4" max="2.0" step="0.1" value="1.0")
+            .tool-workbench__field
+              label.tool-workbench__label(for="stone-roughness") Hrubost kamene
+              input#stone-roughness.tool-workbench__range(type="range" min="0" max="100" step="5" value="40")
+            .tool-workbench__field
+              label.tool-workbench__label.tool-workbench__label--small(for="rune-color") Barva esence
+              input#rune-color.tool-workbench__input.tool-workbench__input--color(type="color" value="#00ff9d")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#ritual-border(type="checkbox")
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Dvojité lemování esencí
+            .tool-workbench__actions
+              button#btn-generate-stone.world-map__button(type="button") Překovat kámen
+              button#btn-download-stone.world-map__button.world-map__button--secondary(type="button") Stáhnout PNG
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell
+            p.tool-workbench__canvas-title Náhled waystonu
+            p.tool-workbench__canvas-text Magický kámen si drží vzhled podle lokace, ale styl run a rituální lemování můžeš přeladit ručně.
+            .tool-workbench__canvas-frame
+              canvas#stone-canvas(width="256" height="256")
+
+    section.tool-panel
+      p.eyebrow Další nástroje
+      h2 Postupně zde přidám další nástroje
+      p.hero-kicker
+        | Klidně používejte vygenerované zdroje v rámci svých vlastních nekomerčních projektů. 
 
   footer.site-footer
