@@ -469,6 +469,86 @@ async function initYoutubeWidget() {
   fetchYoutubeVideos();
 }
 
+function initGamedevLightbox() {
+  if (document.body.dataset.page !== "gamedev") {
+    return;
+  }
+
+  const images = document.querySelectorAll(".media-card__media img");
+  if (images.length === 0) {
+    return;
+  }
+
+  const overlay = document.createElement("div");
+  overlay.className = "media-lightbox";
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.innerHTML = `
+    <button class="media-lightbox__backdrop" type="button" aria-label="Zavřít náhled"></button>
+    <div class="media-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Náhled obrázku">
+      <div class="media-lightbox__image-wrap">
+        <img class="media-lightbox__image" alt="">
+      </div>
+      <div class="media-lightbox__footer">
+        <p class="media-lightbox__caption"></p>
+        <button class="media-lightbox__close" type="button" aria-label="Zavřít náhled">Zavřít</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const previewImage = overlay.querySelector(".media-lightbox__image");
+  const previewCaption = overlay.querySelector(".media-lightbox__caption");
+  const closeBtn = overlay.querySelector(".media-lightbox__close");
+  const backdrop = overlay.querySelector(".media-lightbox__backdrop");
+
+  let lastTrigger = null;
+
+  function closeLightbox() {
+    overlay.classList.remove("is-open");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.removeProperty("overflow");
+    if (lastTrigger) {
+      lastTrigger.focus();
+    }
+  }
+
+  function openLightbox(image) {
+    lastTrigger = image;
+    previewImage.src = image.currentSrc || image.src;
+    previewImage.alt = image.alt || "";
+    previewCaption.textContent = image.alt || "";
+    overlay.classList.add("is-open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+  }
+
+  images.forEach((image) => {
+    image.tabIndex = 0;
+    image.setAttribute("role", "button");
+    image.setAttribute("aria-label", `${image.alt || "Obrázek"} - otevřít ve větším náhledu`);
+
+    image.addEventListener("click", () => openLightbox(image));
+    image.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openLightbox(image);
+      }
+    });
+  });
+
+  closeBtn.addEventListener("click", closeLightbox);
+  backdrop.addEventListener("click", closeLightbox);
+  previewImage.addEventListener("click", closeLightbox);
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay.classList.contains("is-open")) {
+      closeLightbox();
+    }
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   ensureFonts();
   createSpores();
@@ -476,4 +556,5 @@ window.addEventListener("DOMContentLoaded", () => {
   createActionBar();
   initArchiveWidget();
   initYoutubeWidget();
+  initGamedevLightbox();
 });

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Velký Prašný Bazar",
+    "desc": "Základní výchozí bod. Křižovatka obchodních nomádských karavan, kde se pod plachtami z hmyzích blan směňuje čistá voda za prastaré křemíkové čipy."
+  },
+  {
+    "name": "Jeskyně Kotevních Krabů",
+    "desc": "Pobřežní jeskynní systém. Zmutovaní korýši zde využívají lodní kotvy a zrezivělé motory jako své ulity."
+  },
+  {
+    "name": "Chrám Zeleného Oparu",
+    "desc": "Bývalá svatyně osvícení s orientální architekturou, nyní pohlcená toxickou myceliální sítí. Mniši zde uctívají samotnou Nákazu."
+  },
+  {
+    "name": "Hvozd Zkamenělých Pletiv",
+    "desc": "Les, kde stromy nejsou ze dřeva, ale z obřích houbových vláken ztvrdlých na kámen. Vzduch je hustý spórami."
+  },
+  {
+    "name": "O-Ghat, Město Výtrusů",
+    "desc": "Sídlo vytesané do obřích zmutovaných klobouků hub. Místní obyvatelé dýchají přes filtry z broučích krunýřů."
+  },
+  {
+    "name": "Údolí Křemíkových Kostí",
+    "desc": "Pustina posetá pozůstatky gigantických strojů z dávných dob. Neopatrní poutníci tu snadno šlápnou na nevybuchlou plazmovou anomálii."
+  },
+  {
+    "name": "Terasová pole Popela",
+    "desc": "Kaskádovité orientální terasy, kde se místo rýže pěstují žáruvzdorné houby v sopečném popelu. Tvrdá práce pro zotročené droidy."
+  },
+  {
+    "name": "Klášter Rzi a Mosazi",
+    "desc": "Opevněná výspa v horách. Droidí mniši zde ve stavu meditace neustále promazávají prastaré ozubené mechanismy."
+  },
+  {
+    "name": "Jezero Žíravé Krve",
+    "desc": "Toxická vodní plocha zářící neonově zelenou barvou. Domov pijavic velikosti dospělého člověka."
+  },
+  {
+    "name": "Pagoda Zlomeného Dechu",
+    "desc": "Sedmipatrová věž tyčící se nad jedovatou mlhou. Říká se, že v nejvyšším patře stále funguje předválečný kyslíkový generátor."
+  },
+  {
+    "name": "Tržnice Odvržených Končetin",
+    "desc": "Zlověstný slum, kde pirátští-droidi na černém trhu přišívají mechanické protézy vykopané ze smetišť."
+  },
+  {
+    "name": "Pohřebiště Vzducholodí",
+    "desc": "Hřbitov parních křižníků, které se zřítily během Velké Bouře. V jejich vracích prý stále dřímou obranní droidi."
+  },
+  {
+    "name": "Myceliální Uzel",
+    "desc": "Místo, kde technologické kabely plynule srůstají s kořenovým systémem obřích hub. Slouží jako přírodní vysílač dat a jako útočiště Kabadeonů."
+  },
+  {
+    "name": "Železný Bambusový Háj",
+    "desc": "Z dálky vypadá jako tichý les. Zblízka zjistíte, že stvoly jsou z ostře řezané oceli a listy z ostnatého drátu."
+  },
+  {
+    "name": "Svatyně Dýmajícího Lotosu",
+    "desc": "Kultistické doupě provoněné halucinogenními výpary z hořících kybernetických implantátů a vzácných spór."
+  },
+  {
+    "name": "Rezavá Citadela",
+    "desc": "Těžkotonážní pevnost postavena z trupů ztroskotaných lodí. Vládnou zde baroni opírající se o hrubou sílu střelného prachu."
+  },
+  {
+    "name": "Důl Zpívajících Krystalů",
+    "desc": "Hlubinná vykopávka, ze které rezonuje podivný bzukot. Těžaři zde často zešílí z „hlasu v kameni“. Říká se, že odtud přišli Valrugové."
+  },
+  {
+    "name": "Přístav Mrtvé Vody",
+    "desc": "Zaplavené ruiny starověkého města. Místo lodí se zde používají ochočení bahenní obojživelníci s implantovanými sedly."
+  },
+  {
+    "name": "Labyrint Zrcadlových Očí",
+    "desc": "Soustava jeskyní posetá hladkými obsidiánovými plochami, které neodráží vaši současnou podobu, ale vaše nejhorší mutace."
+  },
+  {
+    "name": "Pěstitelská Stanice Omega",
+    "desc": "Skleník z dob, kdy svět ještě nebyl zkažen. Dnes z jeho rozbitých kopulí vyrůstá masožravá zeleň a brání vchod."
+  },
+  {
+    "name": "Visuté Město Zářivých Klobouků",
+    "desc": "Osada zavěšená na lanech a potrubích pod obřím převisem. Světlo zajišťují obří bioluminiscenční plísně. Domov Maorů."
+  },
+  {
+    "name": "Továrna na Masové Golemy",
+    "desc": "Zvrácená laboratoř, kde se snoubí nekromancie se zrezivělou hydraulikou. Vzduch je cítit ozónem a hnilobou."
+  },
+  {
+    "name": "Průsmyk Šeptajících Spór",
+    "desc": "Jediná cesta přes pohoří Bazaltových útesů. Vítr prohánějící se dutými skalami a póry hub zní jako lidský nářek."
+  },
+  {
+    "name": "Oltář Syntetického Boha",
+    "desc": "Kupa blikajících pradávných strojů obklopená svíčkami a dary z kostí. Občas prastarý droid napojený na systém vydá nesrozumitelné božské proroctví."
+  },
+  {
+    "name": "Lotosové Břehy Rzi",
+    "desc": "Toxické bahniště, kde kvetou podivné kovové květy. Obyvatelé je sbírají a taví je na náboje a zbraně."
+  },
+  {
+    "name": "Solná Pustina Císařů",
+    "desc": "Zaschlé dno oceánu, naprosto rovné a oslnivě bílé. Po povrchu se občas proženou autonomní písečné plachetnice pirátských droidů."
+  },
+  {
+    "name": "Most Plačících Kabadeonů",
+    "desc": "Stavba přes propast, do jejíž konstrukce byli zaživa zazděni otroci za první války. Jejich betonové těla vás stále sledují."
+  },
+  {
+    "name": "Doupat Písečných Valrugů",
+    "desc": "Oblast neustálých popelavých bouří, domov nepřátelských Valrugů, lovící vše, co nemá v jejich nehostiné zemi co dělat."
+  },
+  {
+    "name": "Věž Tisíce Odpadlíků",
+    "desc": "Hulákající slum postavený vertikálně kolem gigantického padlého Droida. Azyl pro všechny droidy, mutanty a bývalé otroky."
+  },
+  {
+    "name": "Hranice Zapomnění",
+    "desc": "Okraj mapované zóny. Dál se táhne už jen absolutní temnota Miasmatu, odkud se ještě žádná expedice nevrátila."
+  }
+]

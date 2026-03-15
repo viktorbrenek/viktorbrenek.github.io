@@ -13,6 +13,7 @@ head
   link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
   link(rel="manifest" href="/manifest.json")
   script(src="site.js" defer)
+  script(type="module" src="gamedev-map.js")
 
 body(data-page="gamedev")
   header.site-header
@@ -21,7 +22,7 @@ body(data-page="gamedev")
         span.brand__sigil V
         span.brand__text
           span.brand__eyebrow Indie RPG
-          span.brand__name Arcanepunk Lost
+          span.brand__name Mekanum
       button.nav-toggle(type="button" aria-expanded="false") Menu
       nav.site-nav
         a(href="about.html") O mně
@@ -42,59 +43,113 @@ body(data-page="gamedev")
     section.page-hero.page-hero--split
       div
         p.eyebrow Vývoj her
-        h1 Arcanepunk Lost
+        h1 Mekanum
         p.lead
-          | Arcanepunk Lost je sólově vyvíjené indie RPG inspirované arcanepunkem. Odehrává se v alternativní dystopické budoucnosti, kde se svět zasekl někde na přelomu viktoriánské éry a pozdějšího kolapsu civilizace. Technologie, magie, anomálie, frakce, náboženství i přežívající klany tu existují vedle sebe. Po dvou stech letech od pádu světa už nejde jen o otázku přežití, ale i o to, na čí stranu se postavíš: technologie, magie, nebo obojí.
+          | Mekanum je sólově vyvíjené indie RPG inspirované klasickými rpg a survival tituly jako je Arcanum, Outward nebo Kenshi. Odehrává se v alternativní dystopické budoucnosti, kde se svět zasekl někde na přelomu viktoriánské éry a pozdějšího kolapsu civilizace. Technologie, magie, anomálie, frakce, náboženství i přežívající klany tu existují vedle sebe. Po dvou stech letech od pádu světa už nejde jen o otázku přežití, ale i o to, na čí stranu se postavíš: technologie, magie, nebo obojí.
       .hero-media
-        img(src="assets/images/ROADMAPdate.png" alt="Roadmap Arcanepunk Lost" loading="lazy")
+        img(src="assets/images/gamedev/2.webp" alt="Roadmap Mekanum" loading="lazy")
 
     section.section-card
-      h2.section-title Roadmap světa
+      h2.section-title Mapa světa
+      p.hero-kicker
+        | Procedurálně generovaná cestovní mapa je pro každého hráče individuální a přesto může být stejná. Generuje se totiž na základě jména tvojí postavy. Zde se můžeš podívat jak bude tvoje dobrodružství vypadat.
+      .world-map(data-map-root)
+        .world-map__sidebar
+          header.world-map__sidebar-header
+            .world-map__sigil ᚠ
+            h3.world-map__sidebar-title Nachový Opar
+          .world-map__sidebar-body
+            label.world-map__label(for="character-name") Jméno postavy
+            input#character-name.world-map__input(type="text" value="Aragorn" autocomplete="off")
+            button#btn-generate.world-map__button(type="button") Dekódovat mapu
+            p.world-map__hint Lokace světa, jenž se nazývá Nachový Opar jsou stejné, nehledě na tom jak se svět zrovna rozhodne rozmístit. Jejich pozice se ale změnit může. Některé lokace také mění tvar, počet monster a nebo počasí. Tvoje jméno má prostě velkou moc.
+          footer.world-map__sidebar-footer
+            span#map-sync-status Synchronizováno
+        .world-map__canvas-shell
+          .map-wrapper
+            canvas#world-canvas(width="700" height="700")
+            svg#path-layer(viewBox="0 0 700 700" aria-hidden="true")
+            #poi-layer
+        #info-widget.grimoire-widget.hidden(aria-live="polite")
+          .widget-header
+            h3#w-title Nahlížení...
+          .widget-content.scrollable-content
+            p#w-desc.lead
+          .widget-footer
+            span.status-text#w-status Pouto navázáno
+            button#map-close-button.world-map__button.world-map__button--secondary(type="button") Zavřít svitek
+
+    section.section-card
+      h2.section-title Co nás čeká?
       .gallery-grid.gallery-grid--wide
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP1.png" alt="Koncept biomů Arcanepunk" loading="lazy")
-          p.media-card__caption Pouště, zelené oblasti, močály a další biomy. Každý z nich má mít vlastní setkání, počasí, výtvarný styl i vertikální průchod světem.
+            img(src="assets/images/gamedev/11.webp" alt="Svět" loading="lazy")
+          p.media-card__caption Pouště, zelené oblasti, močály a další biomy. Každá oblast představuje unikátní zážitek pro hráče. Některé slouží pouze jako průchody do těch dalších, jiné jako více patrové dungeony, ale nejdeme zde i velké města plné úkolů.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP2.png" alt="Frakce Arcanepunk" loading="lazy")
-          p.media-card__caption Každý biom má obsahovat vlastní frakce, unikátní NPC, frakční questy a časem možná i systém skutečné volby mezi frakcemi.
+            img(src="assets/images/gamedev/19.webp" alt="Frakce" loading="lazy")
+          p.media-card__caption Ve hře je několik frakcí mezi nimiž panují velmi křehké, ale i někdy velmi napjaté vztahy. Hráč má svobodu se k frakcím přidávat a plnit pro ně úkoly.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP3.png" alt="Interaktivní objekty Arcanepunk" loading="lazy")
-          p.media-card__caption Svět má působit živě. Stromy, rudy a další interaktivní objekty budou těžitelné, sběratelné a částečně navázané na fyziku i plynutí času.
+            img(src="assets/images/gamedev/13.webp" alt="Příběh" loading="lazy")
+          p.media-card__caption Příběh je důležitou součástí, ale zde si příběh vytváříš sám. Není tu jedna hlavní linka a pokud chceš, můžeš rovnou přeskočit do endgame.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP4.png" alt="Monstra Arcanepunk" loading="lazy")
-          p.media-card__caption Svět zaplní zvířata i monstra. Základ je několik unikátních potvor pro každý biom, vlastní modely a do budoucna také bestiář.
+            img(src="assets/images/gamedev/12.webp" alt="Endgame" loading="lazy")
+          p.media-card__caption Endgame je navázán na kotevní atlas. Spouštění map pomocí vstupních klíčů je může várazně proměnit, ale stejně tak i tvoje schopnosti, nebo zisk za dokončení.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP5.png" alt="Dungeony Arcanepunk" loading="lazy")
-          p.media-card__caption Dungeony budou klíčové pro získávání důležitých materiálů, unikátní výbavy i řešení hádanek. Některé budou víc magické, jiné steampunkové.
+            img(src="assets/images/gamedev/1.webp" alt="Diverzita buildů" loading="lazy")
+          p.media-card__caption Mekanum je menší hrou, ale diverzita postav je naprostým základem, stejně tak, jak to máš rád u akčních RPG.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP6.png" alt="Questing Arcanepunk" loading="lazy")
-          p.media-card__caption Questing má být základem znovuhratelnosti. Cíl je frakční quest systém a časem i úkoly, které dokážou změnit svět nebo vymazat celé frakce.
+            img(src="assets/images/gamedev/16.webp" alt="Souboje" loading="lazy")
+          p.media-card__caption Soubojový systém spíše odpovídá ARPG, nečekej souls-like i když možnosti úhybu tu samozřejmě jsou. Celkově je souboj pomalejší, ale jen do chvíle, kdy na sobě nemáš extrémní výbavu.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/gamedev/5.webp" alt="Crafting" loading="lazy")
+          p.media-card__caption Crafting je velkou nutností, pramení z něj dost síly tvého charakteru. Ve hře najdeš runy, sety, unique itemy, augmentační orby, ale i třeba systém enchantů.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/gamedev/18.webp" alt="Skilly" loading="lazy")
+          p.media-card__caption V rámci Early Accessu(Dema) bude ve hře dostupných zhruba 15 skillů. Tvoje postava se v nich zlepšuje podle toho, co ve světě dělá. Žádné nudné rozdělování bodů.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/gamedev/7.webp" alt="Život" loading="lazy")
+          p.media-card__caption NPC ve hře mají simulovaný život. Reagují na tvůj útok, na počasí a nebo chodí pracovat. Někteří z nich, tě také můžou naučit speciální pasivní dovednosti. Pokud zabiješ důležité NPC, máš smůlu.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/gamedev/20.webp" alt="Anomálie" loading="lazy")
+          p.media-card__caption Anomálie ve světě vytvářejí velký rozkol. Odvážní se ale můžou pokusit je chytit a využít jako unikátní systém magie, či craftingu.
 
     section.section-card
       h2.section-title Další kroky
       .gallery-grid
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP9.png" alt="Soundtrack Arcanepunk" loading="lazy")
-          p.media-card__caption Hudba a zvuk jsou velká disciplína sama o sobě. Probíhá hledání vhodných sound artistů a práce na prvních stopách.
+            img(src="assets/images/gamedev/10.webp" alt="Soundtrack Mekanum" loading="lazy")
+          p.media-card__caption Hudba bude tvořena s pomocí profesionálního tvůrce Filipa Stejskala. Některé soundtracky dočasně používáme ze zakoupených assetů. Hudba je bezpečná pro podklad videí na recenze.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP10.png" alt="Building Arcanepunk" loading="lazy")
-          p.media-card__caption Building systém má v budoucnu umožnit stavbu domovů, továren nebo čarodějnických doupat. Je to vzdálenější cíl, ale důležitý pro fantasy sandbox část hry.
+            img(src="assets/images/gamedev/8.webp" alt="Building a player house" loading="lazy")
+          p.media-card__caption Building systém byl původní součástí hry. Nyní se zjednodušil na vylepšování hráčského domu a možnosti zakoupit domy nové. 
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP11.png" alt="Měřítko mapy Arcanepunk" loading="lazy")
-          p.media-card__caption Svět je rozdělený do chunků a počítá s vertikalitou. Hráč bude cestovat přes více pater, výškové úrovně a časem možná i přes primitivní vozidla nebo mounty.
+            img(src="assets/images/gamedev/6.webp" alt="Sezóny" loading="lazy")
+          p.media-card__caption V plné verzi hry je plánováno více systémů, od mountů, přes přes "sezónní" eventové updaty (bez resetu postav a postupu), až po systém úpravy charakteru.
         article.media-card
           .media-card__media
-            img(src="assets/images/ROADMAP12.png" alt="Optimalizace Arcanepunk" loading="lazy")
-          p.media-card__caption Práce je pořád obrovské množství. Vývoj pokračuje sólo, takže prioritou zůstává optimalizace, lokalizace a stabilní základ hry.
+            img(src="assets/images/gamedev/4.webp" alt="Vydání dema Mekanum" loading="lazy")
+          p.media-card__caption Práce je pořád obrovské množství. Vývoj pokračuje sólo. Vydání dema není přesně stanoveno. V blízké budoucnosti spustím sérii dev blogů, a devlog videí.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/gamedev/3.webp" alt="Itemizace" loading="lazy")
+          p.media-card__caption Neustále pracuji na nových systémech itemizace a zábavnosti. Je ale stále potřeba vytvářet velké množství variablity od modelů až po mechaniky.
+        article.media-card
+          .media-card__media
+            img(src="assets/images/gamedev/14.webp" alt="Multiplayer" loading="lazy")
+          p.media-card__caption Multiplayer zatím není v plánu. Hra na to není připravena a autor taky ne. Zvažuji alternativní možnosti, jako žebříčky nebo peer-to-peer trading předmětů přes Steam.
 
     section.section-card
       h2.section-title Otázky a odpovědi
@@ -104,22 +159,21 @@ body(data-page="gamedev")
           p Je to osobní projekt silně inspirovaný RPG jako Kenshi, Outward nebo Arcanum. Cílem je svět s vlastním lore, silnou komunitou a prostorem pro budoucí modding. Nemusí být za každou cenu unikátní, hlavně musí být zábavná.
         article.qa-item
           h3 2) Co má zajistit znovuhratelnost?
-          p Frakce, náhodné statistiky předmětů, časem možná i náhodní nepřátelé, permadeath nebo generované dungeony. Důležité je, aby každé hraní nabízelo trochu jiný průběh.
+          p Frakce, náhodné statistiky předmětů, náhodní nepřátelé s již plně funkční systémem elitních monster, permadeath mód (již funkční) nebo generované dungeony a generovaná mapa. Důležité je, aby každé hraní nabízelo trochu jiný průběh.
         article.qa-item
           h3 3) Bude hra zdarma?
-          p Zatím není definitivně rozhodnuto. Po finálním vydání ale spíš počítám s menším jednorázovým nákupem, pravděpodobně přes Steam.
+          p Zatím není stále definitivně rozhodnuto. Po finálním vydání ale spíš počítám s menším jednorázovým nákupem přes Steam. Cenovka bude nejspíše do 10 euro.
         article.qa-item
           h3 4) V jakém enginu hru vyvíjíš?
-          p Používám Unity 2021 LTS. Část vývoje stojí i na assetech jako RPG Builder od Blink Studia. Grafiku, modely i shadery si ale dělám sám a vlastní mechaniky postupně dopisuji.
+          p Používám Unity 2026 LTS. Část vývoje stojí i na assetech jako Open Source - RPG Builder od Blink Studia. Grafiku, modely i shadery si ale dělám sám a vlastní mechaniky postupně dopisuji. Pomáhá mi také AI. Je to škoda, ale bez toho by to nevzniklo.
         article.qa-item
           h3 5) Dá se hra už hrát?
-          p Zatím ne. Počítám s časově omezenými testovacími buildy zdarma. Více informací bude na Discordu, později vznikne i Steam nebo Itch stránka.
+          p Zatím ne. Ale první lokace, napojení na steam, ovládání přes gamepad, nebo UI je plně funkční. Systémově je hra také téměř kompletní. Chybí doplnit obsah, questy a vyladit zábavnost.
         article.qa-item
           h3 6) Dá se nějak pomoct?
           p Aktivně teď nehledám tým ani vydavatele. Pokud máš ale zájem, můžeš mi napsat přes kontakty na webu. Programování i zvuk jsou pořád oblasti, kde mám největší rezervy.
         article.qa-item
           h3 7) Kde se o hře dozvím víc?
-          p Na webu vycházejí blog posty se štítkem arcanepunk a průběžné novinky dávám i na Discord, kde je komunikace osobnější.
+          p Na webu vycházejí blog posty se štítkem Mekanum(historický název hry) a průběžné novinky dávám i na Discord, kde je komunikace osobnější. Chystám sérii videí na youtube.
 
   footer.site-footer
-    p Stránka o vývoji hry je převedená do čitelných sekcí se zachovaným obsahem roadmapy.
