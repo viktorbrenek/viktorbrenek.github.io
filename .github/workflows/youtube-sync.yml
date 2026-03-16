@@ -19,7 +19,7 @@ jobs:
           node-version: '18'
           
       - name: Stažení YouTube dat
-        run: node core/scripty/update-youtube.js
+        run: node docs/update-youtube.js
         
       - name: Uložení a nahrání změn (Commit & Push)
         run: |
