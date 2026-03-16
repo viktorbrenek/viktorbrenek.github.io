@@ -418,9 +418,8 @@ async function initYoutubeWidget() {
     return;
   }
 
-  const channelId = "UCtU9oaLRlJDKtEJlHMPjckw";
-  const rssUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
-  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
+  // Načítáme už jen náš vlastní, automaticky generovaný soubor
+  const apiUrl = getJsonPath("youtube-data.json");
 
   async function fetchYoutubeVideos() {
     spinner.classList.add("active");
@@ -430,8 +429,9 @@ async function initYoutubeWidget() {
       const response = await fetch(apiUrl, { cache: "no-cache" });
       const data = await response.json();
 
-      if (data.status === "ok") {
-        data.items.slice(0, 5).forEach((video, index) => {
+      // Náš skript ukládá rovnou pole videí, takže už nekontrolujeme data.status === "ok"
+      if (Array.isArray(data) && data.length > 0) {
+        data.forEach((video, index) => {
           const item = document.createElement("a");
           item.href = video.link;
           item.target = "_blank";
@@ -444,14 +444,14 @@ async function initYoutubeWidget() {
             <img class="yt-thumbnail" src="${video.thumbnail}" alt="Náhled videa" loading="lazy">
             <div class="yt-info">
               <span class="yt-title">${video.title}</span>
-              <span class="yt-date">Publikováno: </span>
+              <span class="yt-date">Publikováno: ${pubDate}</span>
             </div>
           `;
 
           listContainer.appendChild(item);
         });
       } else {
-        listContainer.innerHTML = '<li class="widget-error">Krystal neodpověděl. Zkus to později.</li>';
+        listContainer.innerHTML = '<li class="widget-error">Archiv videí je momentálně prázdný.</li>';
       }
     } catch (error) {
       listContainer.innerHTML = '<li class="widget-error">Signál se ztratil v mlze. Zkus to později.</li>';
