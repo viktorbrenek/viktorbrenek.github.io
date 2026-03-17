@@ -337,10 +337,6 @@ function drawSymbol(ctx, type, color) {
 }
 
 function initCrestForge() {
-  if (document.body.dataset.page !== "tools") {
-    return;
-  }
-
   const canvas = document.getElementById("icon-canvas");
   const ctx = canvas?.getContext("2d");
   const autoSeedCheckbox = document.getElementById("auto-seed");
@@ -520,10 +516,6 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function initWaystoneForge() {
-  if (document.body.dataset.page !== "tools") {
-    return;
-  }
-
   const canvas = document.getElementById("stone-canvas");
   const ctx = canvas?.getContext("2d");
   if (!canvas || !ctx) {

@@ -1,0 +1,150 @@
+doctype html
+head
+  title Vendigroth Sonics | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Generátor ambientních soundtracků a herních smyček")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+  script(src="vendigroth-sonics.js" defer)
+
+body(data-page="tool-sonics")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Nástroje
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Nástroje
+      h1 Vendigroth Sonics
+      p.lead
+        | Generátor dark fantasy ambientních smyček pro game dev, prototypy i worldbuilding. Každý seed mění náladu, instrumentaci i rytmus větru, ale všechno jde zároveň doladit ručně.
+      p.hero-kicker
+        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+
+    section.tool-panel
+      .tool-workbench.tool-workbench--sonics
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil 🎛️
+            h2.tool-workbench__title Vendigroth Sonics
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="track-name") Název stopy (seed)
+              input#track-name.tool-workbench__input(type="text" value="Vítr nad popelem" autocomplete="off")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#auto-seed(type="checkbox" checked)
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Vázat mixáž na název
+            .tool-workbench__field
+              label.tool-workbench__label(for="audio-biome") Atmosféra
+              select#audio-biome.tool-workbench__input.manual-input
+                option(value="ashlands") Terasové pole popela
+                option(value="bamboo") Lotosové břehy rzi
+                option(value="dunes") Pohřebiště vzducholodí
+                option(value="fungal") Visuté město
+                option(value="ruins") Průsmyk šeptajících spór
+                option(value="catacombs") Labyrint zrcadlových očí
+            .tool-workbench__field
+              label.tool-workbench__label(for="audio-mood") Hudební tah
+              select#audio-mood.tool-workbench__input.manual-input
+                option(value="meditative") Meditativní
+                option(value="pilgrim") Poutnický
+                option(value="ominous") Zlověstný
+                option(value="ritual") Rituální
+              .tool-workbench__field
+              label.tool-workbench__label(for="composition-style") Kompoziční styl
+              select#composition-style.tool-workbench__input.manual-input
+                option(value="wandering") Poutnický / osamělý
+                option(value="desolate") Pustý / melancholický
+                option(value="epic") Filmový / epický
+                option(value="ritualistic") Rituální / starobylý
+            
+              // PŘIDEJ TENTO NOVÝ BLOK:
+              .tool-workbench__field
+                label.tool-workbench__label(for="story-curve") Vývojová křivka (Příběh)
+                select#story-curve.tool-workbench__input.manual-input
+                  option(value="slow_burn") Pomalé probuzení (Klasika)
+                  option(value="sudden_danger") Náhlá hrozba (Rychlý start)
+                  option(value="ambient_waves") Temné vlny (Zklidněné)
+                  option(value="constant_tension") Trvalé napětí (Agresivní)
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-drone") Drony
+                input#vol-drone.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.55")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-wind") Vítr / opar
+                input#vol-wind.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.4")
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="freq-pluck") Struny
+                input#freq-pluck.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.4")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="freq-flute") Flétna
+                input#freq-flute.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.25")
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="freq-bells") Smyčce / doprovod
+                input#freq-bells.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.2")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="tempo-density") Hustota motivů
+                input#tempo-density.tool-workbench__range.manual-input(type="range" min="0.2" max="1.4" step="0.05" value="0.8")
+            .tool-workbench__field
+              label.tool-workbench__label(for="strings-mode") Režim strun
+              select#strings-mode.tool-workbench__input.manual-input
+                option(value="lead") Lead strings
+                option(value="rhythmic") Rhythmic strings
+            .tool-workbench__field
+              label.tool-workbench__label(for="reverb-depth") Hloubka ozvěny
+              input#reverb-depth.tool-workbench__range.manual-input(type="range" min="0.1" max="1" step="0.05" value="0.65")
+            .tool-workbench__actions
+              button#btn-play.world-map__button(type="button") Zahájit syntézu
+              button#btn-record.world-map__button.world-map__button--secondary(type="button") Nahrát 120s smyčku
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell.tool-workbench__canvas-shell--sonics
+            p.tool-workbench__canvas-title Náhled zvukové krajiny
+            p.tool-workbench__canvas-text#status-text Neaktivní. Spusť syntézu a nech nástroj vytvořit vlastní temný soundscape.
+            .tool-workbench__canvas-frame.tool-workbench__canvas-frame--wide
+              canvas#audio-canvas(width="560" height="360")
+            .sonics-meta-grid
+              article.sonics-meta-card
+                p.sonics-meta-card__label Aktivní režim
+                p#biome-readout.sonics-meta-card__value Popelavé pláně
+              article.sonics-meta-card
+                p.sonics-meta-card__label Hudební tah
+                p#mood-readout.sonics-meta-card__value Meditativní
+              article.sonics-meta-card
+                p.sonics-meta-card__label Nahrávání
+                p#record-progress.sonics-meta-card__value Skryto
+              article.sonics-meta-card
+                p.sonics-meta-card__label Poznámka
+                p#pattern-readout.sonics-meta-card__value Vítr, drony a motivy se průběžně proměňují.
+
+  footer.site-footer

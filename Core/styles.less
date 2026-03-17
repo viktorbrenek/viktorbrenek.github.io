@@ -665,6 +665,51 @@ h3 {
   color: var(--text-soft);
 }
 
+.feature-card--tool-link {
+  min-height: 280px;
+  align-content: start;
+  text-decoration: none;
+}
+
+.feature-card--tool-note {
+  pointer-events: none;
+}
+
+.feature-card__rune {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(194, 181, 163, 0.16);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(0, 255, 157, 0.16), transparent 55%),
+    linear-gradient(180deg, rgba(30, 24, 22, 0.96), rgba(7, 7, 7, 0.98));
+  color: var(--heading);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 3.6rem;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 24px rgba(0, 0, 0, 0.22);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.feature-card--tool-link:hover .feature-card__rune,
+.feature-card--tool-link:focus-visible .feature-card__rune {
+  transform: translateY(-2px);
+  border-color: rgba(0, 255, 157, 0.34);
+  color: var(--fungal);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 22px rgba(0, 255, 157, 0.12),
+    0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
 .gallery-grid {
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
@@ -1287,6 +1332,57 @@ body[data-page="gamedev"] .media-card__media img {
   transform: scale(1.04);
 }
 
+.tool-workbench--sonics {
+  grid-template-columns: 390px minmax(0, 1fr);
+}
+
+.tool-workbench__canvas-shell--sonics {
+  max-width: 780px;
+}
+
+.tool-workbench__canvas-frame--wide {
+  min-height: 420px;
+}
+
+.tool-workbench__canvas-frame--wide canvas {
+  max-width: 560px;
+  aspect-ratio: 14 / 9;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(0, 255, 157, 0.06), transparent 40%),
+    linear-gradient(180deg, rgba(15, 13, 12, 0.98), rgba(6, 6, 6, 0.98));
+}
+
+.sonics-meta-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sonics-meta-card {
+  padding: 16px 18px;
+  border: 1px solid rgba(194, 181, 163, 0.12);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top left, rgba(0, 255, 157, 0.06), transparent 42%),
+    linear-gradient(180deg, rgba(28, 24, 22, 0.96), rgba(10, 10, 10, 0.98));
+}
+
+.sonics-meta-card__label {
+  margin-bottom: 6px;
+  color: var(--text-soft);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sonics-meta-card__value {
+  color: var(--heading);
+  font-size: 1.9rem;
+}
+
 footer.site-footer {
   width: calc(100vw - 32px);
   max-width: var(--content-width);
@@ -1322,6 +1418,10 @@ footer.site-footer {
   }
 
   .tool-workbench {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tool-workbench--sonics {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -1487,6 +1587,14 @@ footer.site-footer {
 
   .tool-workbench__canvas-frame {
     padding: 24px;
+  }
+
+  .tool-workbench__canvas-frame--wide {
+    min-height: 320px;
+  }
+
+  .sonics-meta-grid {
+    grid-template-columns: 1fr;
   }
 
   .page-hero--split,

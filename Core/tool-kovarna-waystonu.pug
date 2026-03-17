@@ -1,0 +1,101 @@
+doctype html
+head
+  title Kovárna waystonů | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Generátor runových kamenů a waystonů")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+  script(src="tools.js" defer)
+
+body(data-page="tool-waystone")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Nástroje
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Nástroje
+      h1 Kovárna waystonů
+      p.lead
+        | Generátor runových kamenů a magických pečetí. Vzhled se váže na lokaci, ale styl vrypu, esenci i ritualní lemování si můžeš doladit ručně.
+      p.hero-kicker
+        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+
+    section.tool-panel
+      .tool-workbench
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil ᛟ
+            h2.tool-workbench__title Kovárna waystonů
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="stone-name") Název lokace (seed)
+              input#stone-name.tool-workbench__input(type="text" value="Jeskyně Kotevních Krabů" autocomplete="off")
+            .tool-workbench__field
+              label.tool-workbench__label(for="stone-shape") Tvar podkladu
+              select#stone-shape.tool-workbench__input
+                option(value="stone") Úlomek skály
+                option(value="circle") Dokonalý kruh
+                option(value="medallion") Rituální medailon
+                option(value="square") Chrámová deska
+                option(value="rhombus") Kosočtverec
+            .tool-workbench__field
+              label.tool-workbench__label(for="rune-style") Druh písma
+              select#rune-style.tool-workbench__input
+                option(value="geometric") Geometrické
+                option(value="organic") Fungální
+                option(value="circuit") Kybernetické
+                option(value="waves") Prastaré vlny
+                option(value="constellation") Konstelace
+            .tool-workbench__field
+              label.tool-workbench__label(for="rune-thickness") Tloušťka vrypu
+              input#rune-thickness.tool-workbench__range(type="range" min="0.4" max="2.0" step="0.1" value="1.0")
+            .tool-workbench__field
+              label.tool-workbench__label(for="stone-roughness") Hrubost kamene
+              input#stone-roughness.tool-workbench__range(type="range" min="0" max="100" step="5" value="40")
+            .tool-workbench__field
+              label.tool-workbench__label.tool-workbench__label--small(for="rune-color") Barva esence
+              input#rune-color.tool-workbench__input.tool-workbench__input--color(type="color" value="#00ff9d")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#ritual-border(type="checkbox")
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Dvojité lemování esencí
+            .tool-workbench__actions
+              button#btn-generate-stone.world-map__button(type="button") Překovat kámen
+              button#btn-download-stone.world-map__button.world-map__button--secondary(type="button") Stáhnout PNG
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell
+            p.tool-workbench__canvas-title Náhled waystonu
+            p.tool-workbench__canvas-text Magický kámen si drží vzhled podle lokace, ale styl run a rituální lemování můžeš přeladit ručně.
+            .tool-workbench__canvas-frame
+              canvas#stone-canvas(width="256" height="256")
+
+  footer.site-footer

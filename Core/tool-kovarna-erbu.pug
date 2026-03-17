@@ -1,0 +1,139 @@
+doctype html
+head
+  title Kovárna erbů | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Generátor frakčních erbů a heraldických znaků")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+  script(src="tools.js" defer)
+
+body(data-page="tool-crest")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Nástroje
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Nástroje
+      h1 Kovárna erbů
+      p.lead
+        | Generátor frakčních erbů pro klany, guildy, rody a worldbuilding. Výsledný znak můžeš nechat určit podle názvu, nebo si celý motiv přeladit ručně.
+      p.hero-kicker
+        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+
+    section.tool-panel
+      .tool-workbench
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil 🛡️
+            h2.tool-workbench__title Kovárna erbů
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-name") Název frakce (seed)
+              input#crest-name.tool-workbench__input(type="text" value="Klan Žíravé Krve" autocomplete="off")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#auto-seed(type="checkbox" checked)
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Vázat vzhled na jméno (auto-výběr)
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-shape") Tvar erbu
+              select#crest-shape.tool-workbench__input.manual-input
+                option(value="heater") Rytířský štít (heater)
+                option(value="kite") Kapkovitý štít (kite)
+                option(value="round") Kruhový štít (viking)
+                option(value="banner") Prapor frakce
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-pattern") Heraldický vzor
+              select#crest-pattern.tool-workbench__input.manual-input
+                option(value="solid") Jednolitý
+                option(value="per-pale") Půlený vertikálně
+                option(value="per-fess") Půlený horizontálně
+                option(value="quarterly") Čtvrcený
+                option(value="chevron") Krokev
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-primary") Primární barva
+                input#color-primary.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#6b1a1a")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-secondary") Sekundární barva
+                input#color-secondary.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#1a1a1a")
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-symbol") Hlavní symbol
+              select#crest-symbol.tool-workbench__input.manual-input
+                option(value="none") Žádný
+                option(value="skull") Lebka zkázy
+                option(value="sword") Zlomený meč
+                option(value="axe") Válečná sekera
+                option(value="eye") Vševidoucí oko
+                option(value="crown") Železná koruna
+                option(value="gear") Strojové kolo
+                option(value="anvil") Kovadlina
+                option(value="tree") Strom života
+                option(value="moon") Srp měsíce
+                option(value="sun") Žhnoucí slunce
+                option(value="star") Hvězda chaosu
+                option(value="lightning") Úder blesku
+                option(value="crystal") Magický krystal
+                option(value="tower") Strážní věž
+                option(value="fire") Očišťující plamen
+                option(value="drop") Krvavá kapka
+                option(value="chalice") Otrávený kalich
+                option(value="serpent") Svinutý had
+                option(value="raven") Letící havran
+                option(value="spider") Pavouk nákazy
+                option(value="anchor") Železná kotva
+                option(value="key") Klíč tajemství
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-symbol") Barva symbolu
+                input#color-symbol.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#d8a247")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="color-border") Barva rámu
+                input#color-border.tool-workbench__input.tool-workbench__input--color.manual-input(type="color" value="#3a3a3a")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#show-border.manual-input(type="checkbox" checked)
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Zobrazit rám erbu
+            .tool-workbench__field
+              label.tool-workbench__label(for="crest-roughness") Opotřebení / špína
+              input#crest-roughness.tool-workbench__range.manual-input(type="range" min="0" max="100" step="5" value="60")
+            .tool-workbench__actions
+              button#btn-generate.world-map__button(type="button") Vykovat erb
+              button#btn-download.world-map__button.world-map__button--secondary(type="button") Stáhnout PNG
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell
+            p.tool-workbench__canvas-title Náhled erbu
+            p.tool-workbench__canvas-text Výsledek se generuje do transparentního PNG, takže ho můžeš použít i mimo web.
+            .tool-workbench__canvas-frame
+              canvas#icon-canvas(width="256" height="256")
+
+  footer.site-footer
