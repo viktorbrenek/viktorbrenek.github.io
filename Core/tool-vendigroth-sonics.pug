@@ -66,6 +66,7 @@ body(data-page="tool-sonics")
             .tool-workbench__field
               label.tool-workbench__label(for="audio-biome") Atmosféra
               select#audio-biome.tool-workbench__input.manual-input
+                option(value="tavern") Bazar
                 option(value="ashlands") Terasové pole popela
                 option(value="bamboo") Lotosové břehy rzi
                 option(value="dunes") Pohřebiště vzducholodí
@@ -75,26 +76,26 @@ body(data-page="tool-sonics")
             .tool-workbench__field
               label.tool-workbench__label(for="audio-mood") Hudební tah
               select#audio-mood.tool-workbench__input.manual-input
+                option(value="joyful") Radostný
                 option(value="meditative") Meditativní
                 option(value="pilgrim") Poutnický
                 option(value="ominous") Zlověstný
                 option(value="ritual") Rituální
-              .tool-workbench__field
+            .tool-workbench__field
               label.tool-workbench__label(for="composition-style") Kompoziční styl
               select#composition-style.tool-workbench__input.manual-input
+                option(value="lively") Krčemný / Rušný
                 option(value="wandering") Poutnický / osamělý
                 option(value="desolate") Pustý / melancholický
                 option(value="epic") Filmový / epický
                 option(value="ritualistic") Rituální / starobylý
-            
-              // PŘIDEJ TENTO NOVÝ BLOK:
-              .tool-workbench__field
-                label.tool-workbench__label(for="story-curve") Vývojová křivka (Příběh)
-                select#story-curve.tool-workbench__input.manual-input
-                  option(value="slow_burn") Pomalé probuzení (Klasika)
-                  option(value="sudden_danger") Náhlá hrozba (Rychlý start)
-                  option(value="ambient_waves") Temné vlny (Zklidněné)
-                  option(value="constant_tension") Trvalé napětí (Agresivní)
+            .tool-workbench__field
+              label.tool-workbench__label(for="story-curve") Vývojová křivka (Příběh)
+              select#story-curve.tool-workbench__input.manual-input
+                option(value="slow_burn") Pomalé probuzení (Klasika)
+                option(value="sudden_danger") Náhlá hrozba (Rychlý start)
+                option(value="ambient_waves") Temné vlny (Zklidněné)
+                option(value="constant_tension") Trvalé napětí (Agresivní)
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="vol-drone") Drony
@@ -146,5 +147,10 @@ body(data-page="tool-sonics")
               article.sonics-meta-card
                 p.sonics-meta-card__label Poznámka
                 p#pattern-readout.sonics-meta-card__value Vítr, drony a motivy se průběžně proměňují.
+          .sonics-timeline-panel
+            p.sonics-timeline-title Vývoj příběhu
+            .sonics-timeline
+              canvas#timeline-canvas(width="800" height="60")
+              .sonics-timeline__labels#timeline-labels
 
   footer.site-footer
