@@ -21,27 +21,28 @@
   }
 
   // === HUDEBNÍ TEORIE A FREKVENCE S UNIKÁTNÍMI NÁSTROJI ===
+  // BIOMY JSOU NYNÍ EXTRÉMNĚ ODLIŠENÉ
   const BIOME_CONFIG = {
-    tavern: { label: "Bazar", scale: [130.81, 146.83, 164.81, 174.61, 196.00, 220.00, 246.94], baseFreq: 130.81, windCenter: 400, windRange: 200, droneFilter: 320, colors: ["#ffdd55", "#d8a247"], pluckMult: 1.8, fluteMult: 1.2, celloMult: 0.2, drumMult: 1.4,
-      samples: { pluck: "acousticGuitar", flute: "fluteA4v2", pad: "arcoF5", drum: "drum1", texture: "guzhengTex" } },
+    tavern: { label: "Bazar", scale: [130.81, 146.83, 164.81, 174.61, 196.00, 220.00, 246.94], baseFreq: 130.81, windCenter: 400, windRange: 200, droneFilter: 320, colors: ["#ffdd55", "#d8a247"], pluckMult: 1.8, fluteMult: 1.2, celloMult: 0.2, drumMult: 1.8,
+      samples: { pluck: "acousticGuitar", flute: "oudTex", pad: "arcoF5", drum: "doumbek", texture: "oudTex" } }, // Živé, kytara a oud
     
-    ashlands: { label: "Terasové pole popela", scale: [73.42, 82.41, 87.31, 103.83, 110.00, 123.47, 138.59], baseFreq: 73.42, windCenter: 380, windRange: 420, droneFilter: 165, colors: ["#d8a247", "#6b5131"], pluckMult: 1.5, fluteMult: 0.2, celloMult: 0.8, drumMult: 0.4,
-      samples: { pluck: "acousticGuitar", flute: "fluteA4", pad: "arcoF5", drum: "drum1", texture: "violinTex2" } }, // NOVÉ HOUSLE
+    ashlands: { label: "Terasové pole popela", scale: [73.42, 82.41, 87.31, 103.83, 110.00, 123.47, 138.59], baseFreq: 73.42, windCenter: 380, windRange: 420, droneFilter: 165, colors: ["#d8a247", "#6b5131"], pluckMult: 1.5, fluteMult: 0.8, celloMult: 0.8, drumMult: 0.4,
+      samples: { pluck: "koto", flute: "shakuTex", pad: "arcoF5", drum: "drumMuted", texture: "shakuTex" } }, // Temné koto a táhlé shakuhachi
     
-    bamboo: { label: "Lotosové břehy rzi", scale: [98.00, 103.83, 123.47, 130.81, 146.83, 155.56, 185.00], baseFreq: 98, windCenter: 620, windRange: 260, droneFilter: 240, colors: ["#00ff9d", "#7ab37d"], pluckMult: 1.2, fluteMult: 1.8, celloMult: 0.5, drumMult: 0.6,
-      samples: { pluck: "koto", flute: "dizzi", pad: "arcoF5", drum: "drumHard", texture: "shakuTex" } },
+    bamboo: { label: "Lotosové břehy rzi", scale: [98.00, 103.83, 123.47, 130.81, 146.83, 155.56, 185.00], baseFreq: 98, windCenter: 620, windRange: 260, droneFilter: 240, colors: ["#00ff9d", "#7ab37d"], pluckMult: 1.2, fluteMult: 1.8, celloMult: 0.5, drumMult: 0.8,
+      samples: { pluck: "kayageum", flute: "fluteTex", pad: "arcoF5", drum: "drumHard", texture: "guzhengTex" } }, // Epické asijské plochy
     
-    dunes: { label: "Pohřebiště vzducholodí", scale: [69.30, 73.42, 87.31, 98.00, 103.83, 123.47, 138.59], baseFreq: 69.3, windCenter: 500, windRange: 600, droneFilter: 140, colors: ["#ffbb6b", "#8b6132"], pluckMult: 1.1, fluteMult: 0.8, celloMult: 0.7, drumMult: 1.2,
-      samples: { pluck: "oudC3", flute: "dudukC3", pad: "arcoF5", drum: "doumbek", texture: "oudTex" } },
+    dunes: { label: "Pohřebiště vzducholodí", scale: [69.30, 73.42, 87.31, 98.00, 103.83, 123.47, 138.59], baseFreq: 69.3, windCenter: 500, windRange: 600, droneFilter: 140, colors: ["#ffbb6b", "#8b6132"], pluckMult: 1.4, fluteMult: 1.0, celloMult: 0.7, drumMult: 1.5,
+      samples: { pluck: "oudC3", flute: "fluteTex3", pad: "arcoF5", drum: "doumbek", texture: "shakuTex" } }, // Pouštní putování, rytmický doumbek
     
-    fungal: { label: "Visuté město", scale: [82.41, 92.50, 103.83, 116.54, 123.47, 138.59, 155.56], baseFreq: 82.41, windCenter: 320, windRange: 180, droneFilter: 200, colors: ["#5effd1", "#7b5d9c"], pluckMult: 0.6, fluteMult: 1.2, celloMult: 1.2, drumMult: 0.5,
-      samples: { pluck: "harpC5", flute: "fluteE6", pad: "arcoF5", drum: "drumMuted", texture: "bowlLong" } },
+    fungal: { label: "Visuté město", scale: [82.41, 92.50, 103.83, 116.54, 123.47, 138.59, 155.56], baseFreq: 82.41, windCenter: 320, windRange: 180, droneFilter: 200, colors: ["#5effd1", "#7b5d9c"], pluckMult: 1.2, fluteMult: 1.2, celloMult: 1.2, drumMult: 0.3,
+      samples: { pluck: "acousticGuitar", flute: "violinTex2", pad: "arcoF5", drum: "drumMuted", texture: "bowlLong" } }, // Meditativní, zpívající mísy a kytara
     
-    ruins: { label: "Průsmysk šeptajících spór", scale: [65.41, 73.42, 77.78, 92.50, 98.00, 103.83, 123.47], baseFreq: 65.41, windCenter: 240, windRange: 160, droneFilter: 120, colors: ["#ff7e62", "#c2b5a3"], pluckMult: 0.4, fluteMult: 0.1, celloMult: 1.6, drumMult: 1.8,
-      samples: { pluck: "kayageum", flute: "fluteA4v2", pad: "arcoF5", drum: "guitarImpact", texture: "fluteTex2" } }, // NOVÁ FLÉTNA 2
+    ruins: { label: "Průsmyk šeptajících spór", scale: [65.41, 73.42, 77.78, 92.50, 98.00, 103.83, 123.47], baseFreq: 65.41, windCenter: 240, windRange: 160, droneFilter: 120, colors: ["#ff7e62", "#c2b5a3"], pluckMult: 0.9, fluteMult: 0.8, celloMult: 1.6, drumMult: 0.6,
+      samples: { pluck: "guitar", flute: "violinTex2", pad: "arcoF5", drum: "drum1", texture: "scrapeLow" } }, // Zlověstné rozvaliny, skřípání, temná kytara
     
-    catacombs: { label: "Labyrint zrcadlových očí", scale: [61.74, 65.41, 77.78, 87.31, 92.50, 103.83, 116.54], baseFreq: 61.74, windCenter: 180, windRange: 140, droneFilter: 100, colors: ["#8eff78", "#73644b"], pluckMult: 0.7, fluteMult: 0.5, celloMult: 1.4, drumMult: 1.1,
-      samples: { pluck: "pizzG5", flute: "fluteA4", pad: "arcoF5", drum: "drumMuted", texture: "fluteTex3" } } // NOVÁ FLÉTNA 3
+    catacombs: { label: "Labyrint zrcadlových očí", scale: [61.74, 65.41, 77.78, 87.31, 92.50, 103.83, 116.54], baseFreq: 61.74, windCenter: 180, windRange: 140, droneFilter: 100, colors: ["#8eff78", "#73644b"], pluckMult: 0.7, fluteMult: 1.4, celloMult: 1.4, drumMult: 1.1,
+      samples: { pluck: "pizzE4", flute: "fluteTex3", pad: "arcoF5", drum: "drumMuted", texture: "scrape" } } // Tichá plíživá nálada, pizzicato a ozvěny
   };
 
   const MOOD_CONFIG = {
@@ -121,7 +122,6 @@
     scrape: { url: "assets/zvuky/violin-broken-string.wav", baseFreq: null, buffer: null },
     scrapeLow: { url: "assets/zvuky/violing-broken-string-a3.wav", baseFreq: null, buffer: null },
     
-    // TVÉ NOVÉ TEXTURY (Housle a Flétny)
     violinTex2: { url: "assets/zvuky/violin-melody-2.wav", baseFreq: null, buffer: null },
     fluteTex2: { url: "assets/zvuky/flute-melody-2.wav", baseFreq: null, buffer: null },
     fluteTex3: { url: "assets/zvuky/flute-melody-3.wav", baseFreq: null, buffer: null }
@@ -138,7 +138,7 @@
   let masterGain, masterFilter, droneGain, windGain, instrumentGain, textureGain, delayNode, feedbackNode, delayFilter;
   let mediaRecorder, recordedChunks = [], recordingTimer, stopRecordingTimeout, recordGain;
   let engineTimeout, windTimeout, droneOscillators = [], droneFilter, windNodes = {};
-  let ambientTimer; // NOVÉ: Časovač pro veselé arpeggio
+  let ambientTimer; 
   let isPlaying = false, isRecording = false, visualFrame = 0;
   let engineStartedAt = 0, phraseStep = 0, compositionState = null, measureCount = 0;
   const MEASURES_PER_PHASE = 16; 
@@ -402,14 +402,13 @@
     baseFb = Math.max(0.01, Math.min(0.96, baseFb)); 
 
     let baseDrone = parseFloat(els.volDrone?.value || 0.5);
-    // V radostném módu a u Andělského padu nechceme moc agresivní basy
     if (isHappyMode()) baseDrone *= 0.15; 
     if (jNx < 0) baseDrone += Math.abs(jNx) * 0.4; 
 
     droneGain.gain.setTargetAtTime(baseDrone, now, 0.2);
     windGain.gain.setTargetAtTime(parseFloat(els.volWind?.value || 0.4), now, 0.4);
-    instrumentGain.gain.setTargetAtTime(0.85, now, 0.3);
-    textureGain.gain.setTargetAtTime(0.45, now, 0.5); 
+    instrumentGain.gain.setTargetAtTime(0.7, now, 0.3); // Sníženo z 0.85
+    textureGain.gain.setTargetAtTime(0.55, now, 0.5); // Textury mohou být mírně přítomnější 
     feedbackNode.gain.setTargetAtTime(baseFb, now, 0.2);
     delayNode.delayTime.setTargetAtTime(0.55 + (parseFloat(els.reverb?.value || 0.5)) * 1.2, now, 0.4);
     updateReadout();
@@ -435,10 +434,10 @@
     masterFilter.type = "lowpass";
     masterFilter.frequency.value = 20000;
 
-    compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value = -12; compressor.ratio.value = 10;
+    compressor = audioCtx.createDynamicsCompressor(); compressor.threshold.value = -16; compressor.ratio.value = 8; // Větší komprese špiček
 
     delayNode = audioCtx.createDelay(3); feedbackNode = audioCtx.createGain();
-    delayFilter = audioCtx.createBiquadFilter(); delayFilter.type = "lowpass";
+    delayFilter = audioCtx.createBiquadFilter(); delayFilter.type = "lowpass"; delayFilter.frequency.value = 2500;
 
     droneGain.connect(masterGain); windGain.connect(masterGain); instrumentGain.connect(masterGain); textureGain.connect(masterGain);
     instrumentGain.connect(delayNode); droneGain.connect(delayNode); textureGain.connect(delayNode); 
@@ -471,14 +470,12 @@
     droneOscillators.push({ osc, gain });
   }
 
-  // === NOVÝ CHAMELEON NA POZADÍ (Background Ambient) ===
   function startAmbientBackground() {
     const biome = currentBiome();
     const mood = currentMood();
     const isHappy = isHappyMode();
-    const isMeditative = (mood.label === "Meditativní" || mood.label === "Rituální" || biome.label === "Houbové bažiny");
+    const isMeditative = (mood.label === "Meditativní" || mood.label === "Rituální" || biome.label === "Visuté město");
 
-    // Filtr pro drony/pad, který se použije pro všechny
     droneFilter = audioCtx.createBiquadFilter();
     droneFilter.type = "lowpass";
     droneFilter.frequency.value = biome.droneFilter;
@@ -486,29 +483,26 @@
     droneFilter.connect(droneGain);
 
     if (isHappy) {
-      // 1. RADOSTNÝ MÓD: Pohodové sinusové arpeggio (jako lesní klid Tone.js)
-      droneFilter.frequency.value = 1200; // Čistší a jasnější zvuk
+      droneFilter.frequency.value = 1200; 
       runHappyArpLoop();
     } else if (isMeditative) {
-      // 2. MEDITATIVNÍ MÓD: Andělský Pad (Sbor) - Zvuk dýchající ve 4 oktávách
       droneFilter.frequency.value = 800;
       const baseFreq = biome.baseFreq;
-      const freqs = [baseFreq, baseFreq * 1.498, baseFreq * 2, baseFreq * 2.996]; // Root, kvinta, oktáva, kvinta nad oktávou
+      const freqs = [baseFreq, baseFreq * 1.498, baseFreq * 2, baseFreq * 2.996]; 
       
       freqs.forEach((f, i) => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = "sine"; // Extrémně čistý zvuk
+        osc.type = "sine"; 
         osc.frequency.value = f;
         
-        // Extrémně pomalé pulzování (dýchání)
         const lfo = audioCtx.createOscillator();
         const lfoGain = audioCtx.createGain();
         lfo.type = "sine";
         lfo.frequency.value = 0.03 + Math.random() * 0.04; 
         lfoGain.gain.value = 0.08;
         
-        gain.gain.value = 0.12 - (i * 0.02); // Vyšší tóny jsou tišší
+        gain.gain.value = 0.12 - (i * 0.02); 
 
         lfo.connect(lfoGain); lfoGain.connect(gain.gain);
         osc.connect(gain); gain.connect(droneFilter);
@@ -517,7 +511,6 @@
         droneOscillators.push({ osc, gain }, { osc: lfo, gain: lfoGain });
       });
     } else {
-      // 3. TEMNÝ MÓD: Původní hutné a děsivé hučení do pozadí
       createDroneVoice(biome.baseFreq, "triangle", -4, 0.13);
       createDroneVoice(biome.baseFreq * 0.5, "sine", 2, 0.21);
       createDroneVoice(biome.baseFreq * 1.498, "sine", -2, 0.045);
@@ -529,12 +522,10 @@
     }
   }
 
-  // Funkce, která pomalu vybrnkává pohodové sinusové akordy (lo-fi vibe) na pozadí hospody
   function runHappyArpLoop() {
     if (!isPlaying || !audioCtx) return;
     const scale = currentBiome().scale;
     
-    // Tvorba uklidňujících akordů ze stupnice (durové devítky atd.)
     const chord1 = [scale[0], scale[2], scale[4], scale[1] * 2, scale[3] * 2];
     const chord2 = [scale[3], scale[5], scale[0] * 2, scale[2] * 2, scale[4] * 2];
     const chosenChord = Math.random() > 0.5 ? chord1 : chord2;
@@ -543,15 +534,14 @@
     
     chosenChord.forEach((noteFreq, i) => {
       if (!noteFreq) return;
-      const humanDelay = i * 0.2 + (Math.random() * 0.1); // Simulace přejetí prstem
-      const velocity = 0.15 + Math.random() * 0.1;
+      const humanDelay = i * 0.2 + (Math.random() * 0.1); 
+      const velocity = 0.10 + Math.random() * 0.05; // Snížena hlasitost arpeggia
       
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = "sine"; // Měkký zvuk tónu
+      osc.type = "sine"; 
       osc.frequency.value = noteFreq;
       
-      // Pomalý náběh (Attack) a hodně dlouhé doznění (Release)
       gain.gain.setValueAtTime(0.001, now + humanDelay);
       gain.gain.linearRampToValueAtTime(velocity, now + humanDelay + 0.5);
       gain.gain.setTargetAtTime(0.001, now + humanDelay + 0.5 + 0.2, 2.0);
@@ -560,10 +550,9 @@
       gain.connect(droneFilter);
       
       osc.start(now + humanDelay);
-      osc.stop(now + humanDelay + 6); // Zvuk se po čase uklidí z paměti
+      osc.stop(now + humanDelay + 6); 
     });
 
-    // Další akord přijde za cca 3 až 4 sekundy
     ambientTimer = window.setTimeout(runHappyArpLoop, 3000 + Math.random() * 1500);
   }
 
@@ -609,6 +598,11 @@
     const bankItem = SOUND_BANK[bankKey];
     if (!bankItem || !bankItem.buffer) return;
 
+    // Hardcode omezení pro původní nepříjemné flétny a harfu, kdyby se náhodou vyvolaly
+    if (bankKey === "dizzi" || bankKey === "fluteE6" || bankKey === "harpC5") {
+      volumeMultiplier *= 0.2;
+    }
+
     const source = audioCtx.createBufferSource();
     source.buffer = bankItem.buffer;
     
@@ -616,22 +610,27 @@
       source.playbackRate.value = customRate;
     } else if (bankItem.baseFreq && freq && !isTexture) {
       source.playbackRate.value = freq / bankItem.baseFreq;
-    } else if (isTexture && Math.random() > 0.5) {
-      source.playbackRate.value = 0.5;
+    } else if (isTexture) {
+      // Texturám náhodně přiřadíme hudební posun (např. o kvartu nebo kvintu níž), aby tvořily melodie samy
+      const shifts = [0.5, 0.75, 0.8, 1.0, 1.25];
+      source.playbackRate.value = shifts[Math.floor(Math.random() * shifts.length)];
     }
 
     const gainNode = audioCtx.createGain();
+    const peakVol = (isTexture ? 0.35 : 0.45) * volumeMultiplier; // Snížené hodnoty proti uřvanosti
     
     if (isTexture) {
       gainNode.gain.setValueAtTime(0.001, time);
-      gainNode.gain.linearRampToValueAtTime(0.4 * volumeMultiplier, time + 2.0); 
+      gainNode.gain.linearRampToValueAtTime(peakVol, time + 2.0); 
       gainNode.gain.setTargetAtTime(0.001, time + source.buffer.duration - 2.0, 1.5);
       source.connect(gainNode);
       gainNode.connect(textureGain);
     } else {
       gainNode.gain.setValueAtTime(0.001, time);
-      gainNode.gain.linearRampToValueAtTime(0.6 * volumeMultiplier, time + 0.02);
-      gainNode.gain.setTargetAtTime(0.001, time + source.buffer.duration - 0.1, 0.1);
+      gainNode.gain.linearRampToValueAtTime(peakVol, time + 0.05); // Pomalejší attack pro zjemnění
+      // Rychlejší útlum pro ostré zvuky
+      const decayTime = (bankKey === "dizzi" || bankKey === "fluteE6") ? 1.0 : source.buffer.duration;
+      gainNode.gain.setTargetAtTime(0.001, time + decayTime - 0.2, 0.3);
       source.connect(gainNode);
       gainNode.connect(instrumentGain);
     }
@@ -640,39 +639,53 @@
   }
 
   function playPluck(freq, time, rng) { 
-    playSample(currentBiome().samples.pluck, freq, time, rng.rangeFloat(0.8, 1.2)); 
+    playSample(currentBiome().samples.pluck, freq, time, rng.rangeFloat(0.7, 1.0)); 
   }
   
-  function playFlute(freq, time, rng) { playSample(currentBiome().samples.flute, freq, time, rng.rangeFloat(0.7, 1.0)); }
+  function playFlute(freq, time, rng) { 
+    const fluteSample = currentBiome().samples.flute;
+    // Pokud je "flétna" vlastně textura (podle nového nastavení biomes), pošleme jako texturu s customRate
+    const isTex = fluteSample.toLowerCase().includes("tex");
+    if (isTex) {
+      // Tvoří melodie z textur
+      const rate = freq / 440.0; // Odhad pro posun
+      playSample(fluteSample, freq, time, rng.rangeFloat(0.6, 0.9), true, rate);
+    } else {
+      playSample(fluteSample, freq, time, rng.rangeFloat(0.6, 0.9)); 
+    }
+  }
 
   function playDrumCluster(time, rng, phase) {
     const isHappy = isHappyMode();
     const biome = currentBiome();
     let drumSample = biome.samples.drum;
+
+    // Rytmičtější loop pro živé nebo epické biomy (Bazar, Dunes)
+    const isRhythmic = (biome.label === "Bazar" || biome.label === "Pohřebiště vzducholodí" || phase.drums > 0.5);
     
-    if (isHappy && rng.value() > 0.75) {
-       drumSample = "doumbek"; 
-    }
-
-    const hitCount = isHappy ? rng.pick([3, 4, 5, 6]) : rng.pick([2, 3, 4]);
-    const hitSpacing = isHappy ? rng.pick([0.12, 0.15]) : rng.pick([0.15, 0.2, 0.25]); 
-
-    for(let i = 0; i < hitCount; i++) {
-      const isAccent = (i === 0 || (isHappy && i % 3 === 0 && rng.value() > 0.5));
-      const vol = isAccent ? rng.rangeFloat(0.4, 0.6) : rng.rangeFloat(0.05, 0.2); 
-      
-      let pitchMulti = isAccent ? rng.rangeFloat(0.95, 1.05) : rng.rangeFloat(1.1, 1.4);
-      
-      let sample = drumSample;
-      if (!isAccent && (sample === "drumHard" || sample === "drum1" || sample === "guitarImpact")) {
-        sample = "drumMuted"; 
+    if (isRhythmic) {
+      // Smyčka 4 až 8 úderů
+      const steps = rng.pick([4, 6, 8]);
+      const tempo = rng.pick([0.2, 0.25]); // Rovnější tempo
+      for (let i = 0; i < steps; i++) {
+        const isAccent = (i === 0 || i === steps / 2);
+        const vol = isAccent ? rng.rangeFloat(0.3, 0.5) : rng.rangeFloat(0.05, 0.15); 
+        let pitchMulti = isAccent ? rng.rangeFloat(0.9, 1.0) : rng.rangeFloat(1.2, 1.5);
+        
+        const hitTime = time + (i * tempo);
+        playSample(drumSample, null, hitTime, vol, false, pitchMulti);
       }
-      if (!isAccent && sample === "doumbek") {
-        pitchMulti = rng.rangeFloat(1.4, 1.6); 
+    } else {
+      // Shluk (původní chování pro temné biomy)
+      const hitCount = rng.pick([2, 3]);
+      const hitSpacing = rng.pick([0.15, 0.25]); 
+      for(let i = 0; i < hitCount; i++) {
+        const isAccent = (i === 0);
+        const vol = isAccent ? rng.rangeFloat(0.2, 0.4) : rng.rangeFloat(0.05, 0.1); 
+        let pitchMulti = isAccent ? rng.rangeFloat(0.95, 1.05) : rng.rangeFloat(1.1, 1.3);
+        const hitTime = time + (i * hitSpacing);
+        playSample("drumMuted", null, hitTime, vol, false, pitchMulti);
       }
-
-      const hitTime = time + (i * hitSpacing);
-      playSample(sample, null, hitTime, vol, false, pitchMulti);
     }
   }
 
@@ -686,16 +699,17 @@
     const gainNode = audioCtx.createGain();
     
     gainNode.gain.setValueAtTime(0.001, time);
-    gainNode.gain.linearRampToValueAtTime(0.4 * swell, time + 0.4); 
-    gainNode.gain.setTargetAtTime(0.001, time + 2.5, 0.5);
+    gainNode.gain.linearRampToValueAtTime(0.3 * swell, time + 0.6); // Sníženo pro klidnější mix
+    gainNode.gain.setTargetAtTime(0.001, time + 3.0, 0.8);
 
     source.connect(gainNode); gainNode.connect(instrumentGain); source.start(time);
   }
   
   function scheduleTexture(time, phase, rng) {
-    const chance = (currentMood().label === "Meditativní" || currentMood().label === "Rituální") ? 0.65 : 0.40;
+    // Textury hrají mnohem častěji, tvoří atmosféru
+    const chance = 0.75; 
     if (rng.value() < chance) {
-      playSample(currentBiome().samples.texture, null, time, rng.rangeFloat(0.3, 0.6), true);
+      playSample(currentBiome().samples.texture, null, time, rng.rangeFloat(0.3, 0.5), true);
     }
   }
 
@@ -704,7 +718,7 @@
     const chordIndexes = buildChordIndexes(note.index, currentBiome().scale.length);
     chordIndexes.slice(0, 2).forEach((index, offset) => {
       const scale = currentBiome().scale; let f = scale[Math.min(scale.length - 1, index)];
-      playPluck(f, time + (offset * 28)/1000, getRng(index + phraseStep * 113));
+      playPluck(f, time + (offset * 35)/1000, getRng(index + phraseStep * 113));
     });
   }
 
@@ -712,7 +726,7 @@
     const shouldPlay = rng.value() < parseFloat(els.freqBells?.value || 0.1) * phase.cello;
     if (!shouldPlay) return;
     const rootFreq = scale[chord.rootIndex] * 0.5;
-    scheduleVoice(answerStart + rng.rangeInt(120, 320), (t) => { playCello(rootFreq, t, getRng(phraseStep * 59), 0.82 + phase.ensemble); });
+    scheduleVoice(answerStart + rng.rangeInt(120, 320), (t) => { playCello(rootFreq, t, getRng(phraseStep * 59), 0.7 + phase.ensemble); });
   }
 
   function scheduleLeadLine(motif, phase, rng, spacing, startOffset = 0) {
@@ -724,7 +738,7 @@
         scheduleVoice(cursor, (t) => {
           const phraseRng = getRng(index + phraseStep * 31);
           const useChord = els.stringsMode?.value === "rhythmic" && phase.ensemble > 0.16 && index === 0 && phraseRng.value() > 0.4;
-          if (index === 0 && phase.name !== "Pustina" && phraseRng.value() > 0.6) playCello(note.freq * 0.5, t, phraseRng, 0.38 + phase.ensemble * 0.2);
+          if (index === 0 && phase.name !== "Pustina" && phraseRng.value() > 0.6) playCello(note.freq * 0.5, t, phraseRng, 0.3 + phase.ensemble * 0.2);
           performPluckPhrase(note, t, phraseRng, useChord);
         });
       }
@@ -739,7 +753,7 @@
     let cursor = answerStart;
     response.forEach((note, index) => {
       if (phraseActive && (index === 0 || rng.value() < 0.85)) {
-        scheduleVoice(cursor, (t) => { playFlute(note.freq * (index === 0 ? 1 : rng.rangeFloat(0.98, 1.02)), t, getRng(index + phraseStep * 43)); });
+        scheduleVoice(cursor, (t) => { playFlute(note.freq * (index === 0 ? 1 : rng.rangeFloat(0.95, 1.05)), t, getRng(index + phraseStep * 43)); });
       }
       cursor += note.duration * spacing;
     });
@@ -750,7 +764,7 @@
     if (!(phase.ensemble > 0.01 && rng.value() < parseFloat(els.freqBells?.value || 0.1) * phase.ensemble)) return;
     const chordIndexes = chord.tones;
     scheduleVoice(answerStart + spacing, (t) => {
-      chordIndexes.forEach((idx, chordOffset) => { playCello(scale[idx], t + (chordOffset * 160)/1000, getRng(phraseStep * (71 + chordOffset)), 0.58 + phase.ensemble * 0.55); });
+      chordIndexes.forEach((idx, chordOffset) => { playCello(scale[idx], t + (chordOffset * 160)/1000, getRng(phraseStep * (71 + chordOffset)), 0.4 + phase.ensemble * 0.4); });
     });
   }
 
@@ -785,16 +799,13 @@
       scheduleBassLine(scale, localChord, phase, localRng, spacing, answerStart);
       scheduleStringsPad(scale, localChord, response, phase, localRng, spacing, answerStart);
 
+      // Přídavné vrstvy "drama" pro temnější biomy
       const biomeKey = els.biome?.value || "ashlands";
-      if (biomeKey === "ruins" && localRng.value() < 0.35 * phase.drums) {
-        scheduleVoice(bundleCursor, (t) => playSample("drumMuted", null, t, localRng.rangeFloat(0.3, 0.5), false, 0.7)); 
-      } else if (biomeKey === "bamboo" && localRng.value() < 0.3 * phase.drums) {
-        scheduleVoice(bundleCursor + spacing * 2, (t) => playSample("drumMuted", null, t, localRng.rangeFloat(0.2, 0.4), false, 1.3)); 
-      } else if (biomeKey === "catacombs" && localRng.value() < 0.2 * phase.cello) {
-        scheduleVoice(bundleCursor, (t) => playSample("drumMuted", null, t, localRng.rangeFloat(0.4, 0.6), false, 0.6)); 
+      if ((biomeKey === "ruins" || biomeKey === "catacombs") && localRng.value() < 0.25) {
+        scheduleVoice(bundleCursor + spacing, (t) => playSample(localRng.value() > 0.5 ? "scrape" : "pizzE4", null, t, localRng.rangeFloat(0.2, 0.4), false, localRng.rangeFloat(0.8, 1.2)));
       }
 
-      if (phase.drums > 0.01 && localRng.value() < phase.drums * (bundleIndex === bundleCount - 1 ? 1.2 : 0.75)) {
+      if (phase.drums > 0.01 && localRng.value() < phase.drums * (bundleIndex === bundleCount - 1 ? 1.2 : 0.8)) {
         scheduleVoice(bundleCursor + Math.max(180, spacing * 2), (t) => { playDrumCluster(t, getRng(phraseStep * 97 + bundleIndex * 29), phase); });
       }
 
@@ -826,7 +837,7 @@
 
   function stopAll() {
     window.clearTimeout(engineTimeout); window.clearTimeout(windTimeout);
-    window.clearTimeout(ambientTimer); // Vypnutí šťastného arpeggia
+    window.clearTimeout(ambientTimer); 
     if(stopRecordingTimeout) window.clearTimeout(stopRecordingTimeout);
     droneOscillators.forEach((node) => { try { node.osc.stop(); } catch (error) { return; } }); droneOscillators = [];
     if (windNodes.source) { try { windNodes.source.stop(); } catch (error) { return; } } windNodes = {};
@@ -834,7 +845,6 @@
     updateTimelineLabelsActive(-1);
   }
 
-  // === VIZUALIZACE S JOYSTICKEM A HADÍ TIMELINE ===
   function drawVisualizer() {
     if (!isPlaying || !analyser) return;
     visualFrame = requestAnimationFrame(drawVisualizer);
