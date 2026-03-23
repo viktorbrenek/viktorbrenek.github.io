@@ -13,6 +13,7 @@ head
   link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
   link(rel="manifest" href="/manifest.json")
   script(src="site.js" defer)
+  script(src="tools-directory.js" defer)
 
 body(data-page="tools")
   header.site-header
@@ -45,27 +46,42 @@ body(data-page="tools")
       p.lead
         | Rozcestník pro utility, generátory a menší worldbuilding nástroje. Každý tool má vlastní stránku, takže je ovládání přehlednější a časem sem můžu přidávat další bez toho, aby se všechno mačkalo do jednoho panelu.
 
-    section.card-grid
-      a.feature-card.feature-card--tool-link(href="tool-kovarna-erbu.html")
-        .feature-card__rune(aria-hidden="true") ᛞ
-        h2.feature-card__title Kovárna erbů
-        p.feature-card__text
-          | Generátor frakčních erbů a znaků. Vhodné pro worldbuilding, guildy, klany i menší herní projekty.
-      a.feature-card.feature-card--tool-link(href="tool-kovarna-waystonu.html")
-        .feature-card__rune(aria-hidden="true") ᛟ
-        h2.feature-card__title Kovárna waystonů
-        p.feature-card__text
-          | Generátor runových kamenů a magických pečetí podle názvu lokace, stylu vrypu a síly esence.
-      a.feature-card.feature-card--tool-link(href="tool-vendigroth-sonics.html")
-        .feature-card__rune(aria-hidden="true") ᚱ
-        h2.feature-card__title Vendigroth Sonics
-        p.feature-card__text
-          | Generátor temných ambientních soundtracků a smyček pro wasteland, ruiny, houby, vítr, drony i rituální melodie.
-      a.feature-card.feature-card--tool-link(href="tool-generator-avataru.html")
-        .feature-card__rune(aria-hidden="true") ᚷ
-        h2.feature-card__title Generátor avatarů
-        p.feature-card__text
-          | Seedovaný portrétní generátor z vrstev SVG. Mění barvy kůže, vlasů, očí, oděvu i pozadí a umí rychlé iterace.
+    section.card-grid.tools-directory
+      article.feature-card.feature-card--tool-link(data-tool-id="kovarna-erbu")
+        button.feature-card__pin(type="button" aria-pressed="false" aria-label="Připnout nástroj Kovárna erbů") Připnout
+        a.feature-card__link-shell(href="tool-kovarna-erbu.html")
+          .feature-card__rune(aria-hidden="true") ᛞ
+          h2.feature-card__title Kovárna erbů
+          p.feature-card__text
+            | Generátor frakčních erbů a znaků. Vhodné pro worldbuilding, guildy, klany i menší herní projekty.
+      article.feature-card.feature-card--tool-link(data-tool-id="kovarna-waystonu")
+        button.feature-card__pin(type="button" aria-pressed="false" aria-label="Připnout nástroj Kovárna waystonů") Připnout
+        a.feature-card__link-shell(href="tool-kovarna-waystonu.html")
+          .feature-card__rune(aria-hidden="true") ᛟ
+          h2.feature-card__title Kovárna waystonů
+          p.feature-card__text
+            | Generátor runových kamenů a magických pečetí podle názvu lokace, stylu vrypu a síly esence.
+      article.feature-card.feature-card--tool-link(data-tool-id="vendigroth-sonics")
+        button.feature-card__pin(type="button" aria-pressed="false" aria-label="Připnout nástroj Vendigroth Sonics") Připnout
+        a.feature-card__link-shell(href="tool-vendigroth-sonics.html")
+          .feature-card__rune(aria-hidden="true") ᚱ
+          h2.feature-card__title Vendigroth Sonics
+          p.feature-card__text
+            | Generátor temných ambientních soundtracků a smyček pro wasteland, ruiny, houby, vítr, drony i rituální melodie.
+      article.feature-card.feature-card--tool-link(data-tool-id="generator-avataru")
+        button.feature-card__pin(type="button" aria-pressed="false" aria-label="Připnout nástroj Generátor avatarů") Připnout
+        a.feature-card__link-shell(href="tool-generator-avataru.html")
+          .feature-card__rune(aria-hidden="true") ᚷ
+          h2.feature-card__title Generátor avatarů
+          p.feature-card__text
+            | Seedovaný portrétní generátor z vrstev SVG. Mění barvy kůže, vlasů, očí, oděvu i pozadí a umí rychlé iterace.
+      article.feature-card.feature-card--tool-link(data-tool-id="youtube-exporter")
+        button.feature-card__pin(type="button" aria-pressed="false" aria-label="Připnout nástroj Export členů YouTube") Připnout
+        a.feature-card__link-shell(href="tool-export-clenu-youtube.html")
+          .feature-card__rune(aria-hidden="true") ᛉ
+          h2.feature-card__title Export členů YouTube
+          p.feature-card__text
+            | CSV exporter členů z YouTube Studia. Rozpozná úrovně, případně je nechá ručně seřadit, a vygeneruje čistý text po skupinách.
       article.feature-card.feature-card--tool-link.feature-card--tool-note
         .feature-card__rune(aria-hidden="true") ᚨ
         h2.feature-card__title Další nástroje přibudou

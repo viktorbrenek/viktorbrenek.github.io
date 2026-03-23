@@ -229,6 +229,45 @@ function decoratePanels() {
   }
 }
 
+function initHeaderMenu() {
+  const headerInner = document.querySelector(".site-header__inner");
+  const nav = document.querySelector(".site-nav");
+  const social = document.querySelector(".social-links");
+  const toggle = document.querySelector(".nav-toggle");
+
+  if (!headerInner || !nav || !social || !toggle) {
+    return;
+  }
+
+  document.body.classList.add("header-menu-ready");
+  toggle.setAttribute("aria-controls", "header-social-links");
+  social.id = "header-social-links";
+
+  function setExpanded(isExpanded) {
+    toggle.setAttribute("aria-expanded", String(isExpanded));
+    social.classList.toggle("is-open", isExpanded);
+  }
+
+  setExpanded(false);
+
+  toggle.addEventListener("click", () => {
+    const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+    setExpanded(!isExpanded);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!headerInner.contains(event.target)) {
+      setExpanded(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setExpanded(false);
+    }
+  });
+}
+
 function createActionBar() {
   const nav = document.querySelector(".site-nav");
   const social = document.querySelector(".social-links");
@@ -552,8 +591,8 @@ function initGamedevLightbox() {
 window.addEventListener("DOMContentLoaded", () => {
   ensureFonts();
   createSpores();
+  initHeaderMenu();
   decoratePanels();
-  createActionBar();
   initArchiveWidget();
   initYoutubeWidget();
   initGamedevLightbox();

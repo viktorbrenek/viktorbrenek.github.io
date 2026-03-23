@@ -1,0 +1,88 @@
+doctype html
+head
+  title Export členů YouTube | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Exporter členů z YouTube Studio CSV do přehledného textu podle úrovní")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer)
+  script(src="youtube-member-exporter.js" defer)
+
+body(data-page="tool-youtube-members")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Nástroje
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Nástroje
+      h1 Export členů YouTube
+      p.lead
+        | Nahraj CSV export z YouTube Studia a nástroj ti z něj připraví přehledný text členů podle úrovní. Když úrovně nepozná automaticky, nechá tě je před exportem ručně seřadit.
+      p.hero-kicker
+        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+
+    section.tool-panel
+      .tool-workbench.tool-workbench--youtube-members
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil ᛉ
+            h2.tool-workbench__title Export členů YouTube
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="csv-file") CSV export z YouTube Studia
+              input#csv-file.tool-workbench__input(type="file" accept=".csv,text/csv")
+            p.tool-workbench__help
+              | Nástroj hledá sloupce se jménem člena a aktuální úrovní. Pokud je YouTube pojmenuje trochu jinak, zkusím je rozpoznat i bez diakritiky.
+
+            section#step-upload.youtube-exporter-step.youtube-exporter-step--active
+              p.tool-workbench__status Připraveno na nahrání souboru.
+
+            section#step-sort.youtube-exporter-step
+              p.tool-workbench__status.tool-workbench__status--warning
+                | Našel jsem neznámé úrovně. Seřaď je shora dolů tak, jak mají být ve výsledném exportu.
+              ul#sortable-list.youtube-exporter-list
+              button#btn-confirm-sort.world-map__button(type="button") Potvrdit řazení a vygenerovat
+
+            section#step-result.youtube-exporter-step
+              p.tool-workbench__status.tool-workbench__status--success Export je připravený.
+              .tool-workbench__actions
+                button#btn-copy.world-map__button(type="button") Kopírovat text
+                button#btn-download.world-map__button.world-map__button--secondary(type="button") Stáhnout TXT
+                button#btn-reset.world-map__button.world-map__button--secondary(type="button") Nahrát nový soubor
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell.tool-workbench__canvas-shell--youtube-members
+            p.tool-workbench__canvas-title Výstup exportu
+            p.tool-workbench__canvas-text
+              | Výsledek se skládá po úrovních a uvnitř každé úrovně se členové seřadí podle češtiny abecedně. Můžeš ho rovnou zkopírovat nebo stáhnout jako `.txt`.
+            .tool-workbench__canvas-frame.tool-workbench__canvas-frame--text
+              textarea#output-text.youtube-exporter-output(readonly spellcheck="false" placeholder="Po nahrání CSV se tu objeví výsledek exportu.")
+
+  footer.site-footer
