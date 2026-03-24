@@ -1016,10 +1016,9 @@ function buildPlanarCleanupGeometry(sourceMesh, geometry, bakedSources, groups, 
       });
     }
 
+    // ... (tady nahoře končí while (queue.length > 0) cyklus)
+
     const dominantPaletteId = [...paletteCounts.entries()].sort((left, right) => right[1] - left[1])[0]?.[0] ?? seed.paletteId;
-    const dominantEntry = palette.find((entry) => entry.id === dominantPaletteId)
-      || palette.find((entry) => entry.id === settings.fallbackId)
-      || palette[0];
 
     if (region.length > 1) {
       stats.cleanedRegions += 1;
@@ -1029,13 +1028,106 @@ function buildPlanarCleanupGeometry(sourceMesh, geometry, bakedSources, groups, 
       if (triangle.paletteId !== dominantPaletteId) {
         stats.reassignedTriangles += 1;
       }
-
+      
+      // Přiřadíme barvu celému regionu
       triangle.paletteId = dominantPaletteId;
-      triangle.vertices.forEach((vertex) => {
-        vertex.uv = [dominantEntry.uv.x, dominantEntry.uv.y];
-      });
+      
+      // ZMĚNA: UV souřadnice tady zatím nevyplňujeme. Necháme to až po topologickém vyhlazení!
     });
+  } // <-- Tady končí hlavní cyklus `for (let triangleIndex = 0...`
+
+  // ----------------------------------------------------------------------
+  // NOVINKA: 3D Topologické vyhlazení (Majority Vote na úrovni meshů)
+  // ----------------------------------------------------------------------
+  // Použijeme hodnotu ze slideru "Cleanup průchodů" a přidáme 1 defaultní, 
+  // aby to automaticky "sežralo" to nejhorší smetí i na nule.
+  const topologyPasses = settings.majorityPasses + 1; 
+
+  let currentPaletteIds = new Uint16Array(triangleCount);
+  for (let i = 0; i < triangleCount; i += 1) {
+    currentPaletteIds[i] = triangles[i].paletteId;
   }
+
+  for (let pass = 0; pass < topologyPasses; pass += 1) {
+    const nextPaletteIds = new Uint16Array(currentPaletteIds);
+    let changed = false;
+
+    for (let i = 0; i < triangleCount; i += 1) {
+      const neighborSet = neighbors[i];
+      if (neighborSet.size === 0) continue;
+
+      const counts = new Map();
+      // Přidáme vlastní barvu s malou vahou (1), abychom neblikali tam a zpět
+      counts.set(currentPaletteIds[i], 1);
+
+      neighborSet.forEach((nIndex) => {
+        const pid = currentPaletteIds[nIndex];
+        counts.set(pid, (counts.get(pid) || 0) + 1);
+      });
+
+      let maxCount = 0;
+      let bestId = currentPaletteIds[i];
+
+      // Kdo má v sousedství nejvíc hlasů?
+      counts.forEach((count, pid) => {
+        if (count > maxCount) {
+          maxCount = count;
+          bestId = pid;
+        }
+      });
+
+      // Změníme barvu trojúhelníku, pokud ho sousedi jasně převálcovali
+      if (bestId !== currentPaletteIds[i]) {
+        nextPaletteIds[i] = bestId;
+        changed = true;
+      }
+    }
+
+    currentPaletteIds = nextPaletteIds;
+    // Pokud se v tomto průchodu už nic nezměnilo, můžeme skončit dřív a ušetřit výkon
+    if (!changed) break; 
+  }
+
+  // ----------------------------------------------------------------------
+  // FINÁLNÍ ZÁPIS: Proměněné barvy zapíšeme zpět a aplikujeme UV
+  // ----------------------------------------------------------------------
+  
+  // 1. Zjistíme globální velikost a střed všech původních UVček na modelu
+  const originalUvs = geometry.getAttribute("uv");
+  let minUvX = Infinity, minUvY = Infinity, maxUvX = -Infinity, maxUvY = -Infinity;
+  for (let i = 0; i < originalUvs.count; i += 1) {
+    minUvX = Math.min(minUvX, originalUvs.getX(i));
+    minUvY = Math.min(minUvY, originalUvs.getY(i));
+    maxUvX = Math.max(maxUvX, originalUvs.getX(i));
+    maxUvY = Math.max(maxUvY, originalUvs.getY(i));
+  }
+  
+  const sizeX = maxUvX - minUvX;
+  const sizeY = maxUvY - minUvY;
+  const maxSize = Math.max(sizeX, sizeY) || 1;
+  const centerX = minUvX + sizeX / 2;
+  const centerY = minUvY + sizeY / 2;
+  
+  // 2. Vypočítáme bezpečné měřítko (buňka má 33.3 %, my použijeme cca 28 % a zbytek bude padding)
+  const safeArea = (1 / 3) * 0.85; 
+  const globalUvScale = safeArea / maxSize;
+
+  triangles.forEach((triangle, i) => {
+    triangle.paletteId = currentPaletteIds[i];
+    
+    const finalEntry = palette.find((entry) => entry.id === triangle.paletteId)
+      || palette.find((entry) => entry.id === settings.fallbackId)
+      || palette[0];
+
+    triangle.vertices.forEach((vertex) => {
+      const uv = vertex.uv || [0.5, 0.5];
+      // 3. Posuneme UV do středu buňky a aplikujeme globální zmenšení.
+      // Tím se zachová původní tvar i proporce celého UV layoutu!
+      const mappedX = finalEntry.uv.x + (uv[0] - centerX) * globalUvScale;
+      const mappedY = finalEntry.uv.y + (uv[1] - centerY) * globalUvScale;
+      vertex.uv = [mappedX, mappedY];
+    });
+  });
 
   const cleanedGeometry = geometry.clone();
   const cleanedUvs = cleanedGeometry.getAttribute("uv");
@@ -1552,14 +1644,8 @@ function initUvPaletteMapper() {
   }
 
   function normalizeLoadedRoot(root) {
-    const box = new THREE.Box3().setFromObject(root);
-    const center = box.getCenter(new THREE.Vector3());
-    root.position.sub(center);
-
-    const size = box.getSize(new THREE.Vector3());
-    const maxSide = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 2.8 / maxSide;
-    root.scale.setScalar(scale);
+    // Tady už žádné škálování ani centrování neděláme, 
+    // aby si model do exportu zachoval transformaci 1, 1, 1.
     assignRemapIds(root);
     root.updateMatrixWorld(true);
     return root;

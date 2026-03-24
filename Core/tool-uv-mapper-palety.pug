@@ -117,26 +117,26 @@ body(data-page="tool-uv-mapper")
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-majority-passes") Cleanup průchodů
                 .tool-workbench__range-row
-                  input#uv-majority-passes.tool-workbench__range(type="range" min="0" max="3" step="1" value="1")
+                  input#uv-majority-passes.tool-workbench__range(type="range" min="0" max="3" step="1" value="3")
                   output.tool-workbench__range-value(for="uv-majority-passes") 1
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-color-tolerance") Tolerance odstínů
                 .tool-workbench__range-row
-                  input#uv-color-tolerance.tool-workbench__range(type="range" min="0" max="180" step="5" value="60")
+                  input#uv-color-tolerance.tool-workbench__range(type="range" min="0" max="180" step="5" value="90")
                   output.tool-workbench__range-value(for="uv-color-tolerance") 60
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-shadow-threshold") Potlačení stínů
                 .tool-workbench__range-row
-                  input#uv-shadow-threshold.tool-workbench__range(type="range" min="0" max="140" step="5" value="55")
+                  input#uv-shadow-threshold.tool-workbench__range(type="range" min="0" max="140" step="5" value="140")
                   output.tool-workbench__range-value(for="uv-shadow-threshold") 55
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-normal") Normal tolerance
                 .tool-workbench__range-row
-                  input#uv-planar-normal.tool-workbench__range(type="range" min="2" max="45" step="1" value="12")
+                  input#uv-planar-normal.tool-workbench__range(type="range" min="2" max="45" step="1" value="36")
                   output.tool-workbench__range-value(for="uv-planar-normal") 12
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-distance") Planar tolerance
@@ -153,7 +153,7 @@ body(data-page="tool-uv-mapper")
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-rescue") Low-confidence rescue
                 .tool-workbench__range-row
-                  input#uv-planar-rescue.tool-workbench__range(type="range" min="0" max="100" step="5" value="35")
+                  input#uv-planar-rescue.tool-workbench__range(type="range" min="0" max="100" step="5" value="100")
                   output.tool-workbench__range-value(for="uv-planar-rescue") 35
 
             p.tool-workbench__help
