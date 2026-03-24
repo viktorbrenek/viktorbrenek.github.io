@@ -82,6 +82,13 @@ body(data-page="tools")
           h2.feature-card__title Export členů YouTube
           p.feature-card__text
             | CSV exporter členů z YouTube Studia. Rozpozná úrovně, případně je nechá ručně seřadit, a vygeneruje čistý text po skupinách.
+      article.feature-card.feature-card--tool-link(data-tool-id="uv-mapper")
+        button.feature-card__pin(type="button" aria-pressed="false" aria-label="Připnout nástroj UV Mapper shader palety") Připnout
+        a.feature-card__link-shell(href="tool-uv-mapper-palety.html")
+          .feature-card__rune(aria-hidden="true") ᛋ
+          h2.feature-card__title UV Mapper shader palety
+          p.feature-card__text
+            | Přemapování UV podle původní textury do omezené 3x3 palety. Umí import GLB i FBX, fallback texturu, vlastní paletu a export hotového GLB.
       article.feature-card.feature-card--tool-link.feature-card--tool-note
         .feature-card__rune(aria-hidden="true") ᚨ
         h2.feature-card__title Další nástroje přibudou

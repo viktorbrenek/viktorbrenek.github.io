@@ -1,0 +1,207 @@
+doctype html
+head
+  title UV Mapper shader palety | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Přemapování UV modelu do omezené shader palety podle původní textury")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+  script(type="importmap").
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  script(type="module" src="uv-palette-mapper.js")
+
+body(data-page="tool-uv-mapper")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Nástroje
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Nástroje
+      h1 UV Mapper shader palety
+      p.lead
+        | Automatizované přemapování UV podle původní textury do omezené 3x3 palety pro shader workflow v Unity. Tool načte model, změří dominantní barvy trojúhelníků a přepne je na správné paletové UV souřadnice.
+      p.hero-kicker
+        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+
+    section.tool-panel
+      .tool-workbench.tool-workbench--uv-mapper
+        .tool-workbench__sidebar
+          header.tool-workbench__header
+            .tool-workbench__sigil ᛋ
+            h2.tool-workbench__title UV Mapper shader palety
+          .tool-workbench__body
+            .tool-workbench__field
+              label.tool-workbench__label(for="uv-model-file") Model
+              input#uv-model-file.tool-workbench__input(type="file" accept=".glb,.fbx")
+            .tool-workbench__field
+              label.tool-workbench__label(for="uv-fallback-texture") Fallback / override textura
+              input#uv-fallback-texture.tool-workbench__input(type="file" accept="image/png,image/jpeg,image/webp")
+            .tool-workbench__field
+              label.tool-workbench__label(for="uv-palette-file") Vlastní paleta 3x3
+              input#uv-palette-file.tool-workbench__input(type="file" accept="image/png,image/jpeg,image/webp")
+            .tool-workbench__checkbox-row
+              label.tool-workbench__checkbox
+                input#uv-force-texture(type="checkbox")
+                span.tool-workbench__checkbox-box
+                span.tool-workbench__checkbox-text Přepsat všechny materiály fallback texturou
+
+            .tool-workbench__field
+              label.tool-workbench__label(for="uv-workflow") Výstupní workflow
+              select#uv-workflow.tool-workbench__input
+                option(value="baked_texture") Zachovat unwrap a upéct paletovou texturu
+                option(value="baked_to_triangle_uv") Upéct paletu a z ní udělat paletová UV
+                option(value="triangle_uv") Přesunout trojúhelníky na paletová UV
+                option(value="adaptive_submesh") Adaptive sub-meshing do paletových UV
+                option(value="planar_cleanup") Planar cleanup + paletová UV
+
+            .tool-workbench__field
+              label.tool-workbench__label(for="uv-mode") Způsob vyhodnocení
+              select#uv-mode.tool-workbench__input
+                option(value="dominant") Dominantní barva plochy
+                option(value="average") Nejbližší barva průměru
+                option(value="hybrid") Hybrid dominantní + průměr
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-density") Hustota vzorkování
+                input#uv-density.tool-workbench__range(type="range" min="4" max="12" step="1" value="7")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-alpha-threshold") Alpha práh
+                input#uv-alpha-threshold.tool-workbench__range(type="range" min="0" max="255" step="1" value="32")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-analysis-size") Analytické rozlišení
+                input#uv-analysis-size.tool-workbench__range(type="range" min="256" max="2048" step="128" value="1024")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-cluster-count") Redukce barev
+                input#uv-cluster-count.tool-workbench__range(type="range" min="8" max="48" step="2" value="18")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-blur-radius") Vyhlazení textury
+                input#uv-blur-radius.tool-workbench__range(type="range" min="0" max="4" step="1" value="1")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-majority-passes") Cleanup průchodů
+                input#uv-majority-passes.tool-workbench__range(type="range" min="0" max="3" step="1" value="1")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-color-tolerance") Tolerance odstínů
+                input#uv-color-tolerance.tool-workbench__range(type="range" min="0" max="180" step="5" value="60")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-shadow-threshold") Potlačení stínů
+                input#uv-shadow-threshold.tool-workbench__range(type="range" min="0" max="140" step="5" value="55")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-depth") Max depth
+                input#uv-submesh-depth.tool-workbench__range(type="range" min="0" max="5" step="1" value="3")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-tolerance") Edge tolerance
+                input#uv-submesh-tolerance.tool-workbench__range(type="range" min="0" max="35" step="1" value="6")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-min-area") Min UV area
+                input#uv-submesh-min-area.tool-workbench__range(type="range" min="0" max="500" step="5" value="20")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-budget") Max triangle budget
+                input#uv-submesh-budget.tool-workbench__range(type="range" min="2000" max="80000" step="1000" value="24000")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-normal") Normal tolerance
+                input#uv-planar-normal.tool-workbench__range(type="range" min="2" max="45" step="1" value="12")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-distance") Planar tolerance
+                input#uv-planar-distance.tool-workbench__range(type="range" min="1" max="120" step="1" value="18")
+
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-region") Max region size
+                input#uv-planar-region.tool-workbench__range(type="range" min="8" max="600" step="4" value="120")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-rescue") Low-confidence rescue
+                input#uv-planar-rescue.tool-workbench__range(type="range" min="0" max="100" step="5" value="35")
+
+            .tool-workbench__field
+              label.tool-workbench__label(for="uv-fallback-color") Fallback paletová buňka
+              select#uv-fallback-color.tool-workbench__input
+                option(value="7") Bílá
+                option(value="6") Černá
+                option(value="4") Žlutá
+                option(value="8") Oranžová
+
+            p.tool-workbench__help
+              | Doporučené je workflow, které zachová původní unwrap a jen upeče novou paletovou texturu. Import `FBX` i `GLB` je podporovaný, export jde do `GLB`.
+            p#uv-status.tool-workbench__status Připraveno. Nahraj model a případně fallback texturu nebo vlastní paletu.
+
+            .tool-workbench__actions
+              button#uv-process-btn.world-map__button(type="button" disabled) Redukovat barvy a přemapovat UV
+              button#uv-reset-btn.world-map__button.world-map__button--secondary(type="button" disabled) Obnovit originál
+              button#uv-export-btn.world-map__button.world-map__button--secondary(type="button" disabled) Stáhnout GLB
+              button#uv-export-png-btn.world-map__button.world-map__button--secondary(type="button" disabled) Stáhnout PNG textury
+              button#uv-report-btn.world-map__button.world-map__button--secondary(type="button" disabled) Stáhnout report JSON
+        .tool-workbench__canvas-panel
+          .tool-workbench__canvas-shell.tool-workbench__canvas-shell--uv-mapper
+            p.tool-workbench__canvas-title Náhled modelu a palety
+            p.tool-workbench__canvas-text
+              | V náhledu vidíš model už s paletovou texturou. Statistiky ukazují, kolik trojúhelníků se přemapovalo, kde chyběla textura a jak jisté bylo rozhodnutí při vzorkování.
+            .tool-workbench__canvas-frame.tool-workbench__canvas-frame--viewport
+              #uv-mapper-stage.uv-mapper-stage
+            .uv-mapper-meta
+              article.sonics-meta-card
+                p.sonics-meta-card__label Meshes
+                p#uv-stat-meshes.sonics-meta-card__value 0
+              article.sonics-meta-card
+                p.sonics-meta-card__label Trojúhelníky
+                p#uv-stat-triangles.sonics-meta-card__value 0
+              article.sonics-meta-card
+                p.sonics-meta-card__label Bez textury
+                p#uv-stat-fallback.sonics-meta-card__value 0
+              article.sonics-meta-card
+                p.sonics-meta-card__label Průměrná jistota
+                p#uv-stat-confidence.sonics-meta-card__value 0 %
+            .uv-mapper-secondary
+              article.uv-mapper-card
+                p.uv-mapper-card__label Aktivní paleta
+                canvas#uv-palette-preview.uv-mapper-palette(width="240" height="240")
+              article.uv-mapper-card
+                p.uv-mapper-card__label Analytická textura
+                canvas#uv-analysis-preview.uv-mapper-palette(width="240" height="240")
+              article.uv-mapper-card
+                p.uv-mapper-card__label Poslední report
+                pre#uv-report-preview.uv-mapper-report Čekám na zpracování...
