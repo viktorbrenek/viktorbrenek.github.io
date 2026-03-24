@@ -3,6 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
 const DEFAULT_PALETTE_COLORS = [
   { name: "Red", color: "#ff0000" },
@@ -77,6 +78,10 @@ function createPaletteTexture(canvas) {
   return texture;
 }
 
+function createIdentityPaletteRemap() {
+  return DEFAULT_PALETTE_COLORS.map((_, index) => index);
+}
+
 function readFileAsArrayBuffer(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -111,23 +116,29 @@ function imageToCanvas(image) {
   return canvas;
 }
 
-function textureToSource(texture, fallbackCanvas = null) {
-  if (!texture?.image && !fallbackCanvas) {
+function textureToSource(originalTexture, fallbackCanvas = null) {
+  const sourceImage = fallbackCanvas !== null ? fallbackCanvas : originalTexture?.image;
+
+  if (!sourceImage) {
     return null;
   }
 
-  const sourceImage = texture?.image || fallbackCanvas;
   const canvas = document.createElement("canvas");
   canvas.width = sourceImage.width;
   canvas.height = sourceImage.height;
   const context = canvas.getContext("2d", { willReadFrequently: true });
-
-  if (texture?.flipY) {
-    context.translate(0, canvas.height);
-    context.scale(1, -1);
-  }
-
   context.drawImage(sourceImage, 0, 0);
+
+  // Zjistíme rotaci: JEN pro případ, že model PŮVODNĚ NEMĚL texturu
+  let needsManualFlip = false; 
+  if (!originalTexture) {
+    // Pro modely úplně bez textur tipneme formát (GLB se netočí, FBX jo)
+    const fileInput = document.getElementById("uv-model-file");
+    const fileName = fileInput.files?.[0]?.name || "";
+    if (!fileName.toLowerCase().endsWith(".glb")) {
+      needsManualFlip = true;
+    }
+  }
 
   return {
     canvas,
@@ -137,10 +148,16 @@ function textureToSource(texture, fallbackCanvas = null) {
     data: context.getImageData(0, 0, canvas.width, canvas.height).data,
     transformUv(uv) {
       const transformed = uv.clone();
-      if (texture) {
-        texture.updateMatrix();
-        texture.transformUv(transformed);
+      
+      if (originalTexture) {
+        // Tady to zařídí všechno původní ThreeJS! Žádný ruční obrat.
+        originalTexture.updateMatrix();
+        originalTexture.transformUv(transformed);
+      } else if (needsManualFlip) {
+        // Tohle zachrání jen naše FBX overridy bez původní textury
+        transformed.y = 1 - transformed.y;
       }
+      
       return transformed;
     }
   };
@@ -488,7 +505,7 @@ function createAnalysisSource(source, settings) {
   };
 }
 
-function createBakedPaletteCanvas(analysisSource, palette) {
+function createBakedPaletteCanvas(analysisSource, palette, remap = null) {
   if (!analysisSource) {
     return null;
   }
@@ -511,7 +528,7 @@ function createBakedPaletteCanvas(analysisSource, palette) {
     }
 
     const cluster = analysisSource.clusters[clusterIndex];
-    const paletteEntry = getNearestPaletteEntry(cluster, palette);
+    const paletteEntry = resolvePaletteEntry(getNearestPaletteEntry(cluster, palette), palette, remap);
     paletteIdMap[pixelIndex] = paletteEntry.id;
 
     imageData.data[targetIndex] = paletteEntry.r;
@@ -549,6 +566,11 @@ function getNearestPaletteEntry(color, palette) {
   return bestEntry;
 }
 
+function resolvePaletteEntry(entry, palette, remap) {
+  const remappedId = remap?.[entry.id] ?? entry.id;
+  return palette.find((candidate) => candidate.id === remappedId) || entry;
+}
+
 function generateBarycentricSamples(divisions) {
   const samples = [];
 
@@ -575,13 +597,13 @@ function interpolateUv(uv0, uv1, uv2, barycentric) {
 
 function sampleClusterIndex(source, uv) {
   const x = Math.min(source.width - 1, Math.max(0, Math.floor(uv.x * (source.width - 1))));
-  const y = Math.min(source.height - 1, Math.max(0, Math.floor((1 - uv.y) * (source.height - 1))));
+  const y = Math.min(source.height - 1, Math.max(0, Math.floor(uv.y * (source.height - 1))));
   return source.clusterMap[y * source.width + x];
 }
 
 function samplePaletteId(source, uv) {
   const x = Math.min(source.width - 1, Math.max(0, Math.floor(uv.x * (source.width - 1))));
-  const y = Math.min(source.height - 1, Math.max(0, Math.floor((1 - uv.y) * (source.height - 1))));
+  const y = Math.min(source.height - 1, Math.max(0, Math.floor(uv.y * (source.height - 1))));
   return source.paletteIdMap[y * source.width + x];
 }
 
@@ -1069,7 +1091,6 @@ function initUvPaletteMapper() {
   const planarDistanceInput = document.getElementById("uv-planar-distance");
   const planarRegionInput = document.getElementById("uv-planar-region");
   const planarRescueInput = document.getElementById("uv-planar-rescue");
-  const fallbackColorInput = document.getElementById("uv-fallback-color");
   const statusEl = document.getElementById("uv-status");
   const processButton = document.getElementById("uv-process-btn");
   const resetButton = document.getElementById("uv-reset-btn");
@@ -1079,16 +1100,33 @@ function initUvPaletteMapper() {
   const reportPreview = document.getElementById("uv-report-preview");
   const palettePreview = document.getElementById("uv-palette-preview");
   const analysisPreview = document.getElementById("uv-analysis-preview");
+  const secondaryPanel = analysisPreview?.closest(".uv-mapper-card")?.parentElement || null;
 
   const statMeshes = document.getElementById("uv-stat-meshes");
   const statTriangles = document.getElementById("uv-stat-triangles");
   const statFallback = document.getElementById("uv-stat-fallback");
   const statConfidence = document.getElementById("uv-stat-confidence");
-
+  const rangeInputs = [
+    densityInput,
+    alphaThresholdInput,
+    analysisSizeInput,
+    clusterCountInput,
+    blurRadiusInput,
+    majorityPassesInput,
+    colorToleranceInput,
+    shadowThresholdInput,
+    planarNormalInput,
+    planarDistanceInput,
+    planarRegionInput,
+    planarRescueInput
+  ];
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(stage.clientWidth || 720, stage.clientHeight || 520);
+  renderer.setSize(stage.clientWidth || 720, stage.clientHeight || 520, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.domElement.style.width = "100%";
+  renderer.domElement.style.height = "100%";
+  renderer.domElement.style.display = "block";
   stage.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -1100,6 +1138,7 @@ function initUvPaletteMapper() {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.target.set(0, 0.8, 0);
+  controls.screenSpacePanning = true;
 
   scene.add(new THREE.AmbientLight(0xffffff, 1.5));
 
@@ -1125,7 +1164,138 @@ function initUvPaletteMapper() {
   let lastReport = null;
   let lastAnalysisCanvas = null;
   let lastBakedCanvas = null;
+  let paletteRemap = createIdentityPaletteRemap();
+ const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  let colorPickerPopup = null;
+  let pickedCurrentId = null;
 
+  // Funkce, která vyrobí to plovoucí okýnko s 9 barvami
+  // Funkce, která vyrobí to plovoucí okýnko s 9 barvami
+  function buildColorPickerPopup() {
+    colorPickerPopup = document.createElement("div");
+    Object.assign(colorPickerPopup.style, {
+      position: "fixed",
+      display: "none",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "4px",
+      background: "#1a1a1a",
+      padding: "8px",
+      borderRadius: "8px",
+      border: "1px solid #333",
+      zIndex: 1000,
+      boxShadow: "0 4px 12px rgba(0,0,0,0.5)"
+    });
+
+    // HACK: Vizuální prohození horní a dolní řady
+    // Klíče jsou logická ID, hodnoty jsou ID barev, které chceme ukázat očím.
+    const visualMap = {
+      0: 6, // target 0 (Red) se vykreslí jako Black
+      1: 7, // target 1 (Green) se vykreslí jako White
+      2: 8, // target 2 (Blue) se vykreslí jako Orange
+      3: 3, // Magenta zůstává
+      4: 4, // Yellow zůstává
+      5: 5, // Cyan zůstává
+      6: 0, // target 6 (Black) se vykreslí jako Red
+      7: 1, // target 7 (White) se vykreslí jako Green
+      8: 2  // target 8 (Orange) se vykreslí jako Blue
+    };
+
+    // Vygenerujeme tlačítka pro každou barvu v paletě
+    DEFAULT_PALETTE_COLORS.forEach((color, targetId) => {
+      // Vytáhneme si barvu, kterou reálně chceme ukázat
+      const visualColorHex = DEFAULT_PALETTE_COLORS[visualMap[targetId]].color;
+
+      const btn = document.createElement("button");
+      Object.assign(btn.style, {
+        width: "32px",
+        height: "32px",
+        background: visualColorHex, // Tady aplikujeme náš vizuální hack
+        border: "1px solid rgba(255,255,255,0.1)",
+        borderRadius: "4px",
+        cursor: "pointer"
+      });
+
+      // Co se stane, když vybereš novou barvu (logika pracuje s původním targetId!)
+      btn.addEventListener("click", () => {
+        if (pickedCurrentId !== null) {
+          // Najdeme všechny barvy, které se teď mapují na to, na co jsi kliknul, a přepíšeme je na novou
+          for (let originalId = 0; originalId < paletteRemap.length; originalId += 1) {
+            if (paletteRemap[originalId] === pickedCurrentId) {
+              paletteRemap[originalId] = targetId;
+              
+              // Rovnou aktualizujeme i ten postranní panel, ať je to synchro
+              const selects = document.querySelectorAll(".uv-remap-select");
+              if (selects[originalId]) {
+                selects[originalId].value = targetId;
+              }
+            }
+          }
+          colorPickerPopup.style.display = "none";
+          setStatus("Aplikuju novou barvu na model...", "success");
+          window.setTimeout(processSourceModel, 24); // Spustí remap
+        }
+      });
+
+      colorPickerPopup.appendChild(btn);
+    });
+
+    document.body.appendChild(colorPickerPopup);
+
+    // Zavření okýnka při kliknutí jinam
+    window.addEventListener("pointerdown", (e) => {
+      if (e.target.closest("#uv-mapper-stage") === null && e.target.closest("div") !== colorPickerPopup) {
+        colorPickerPopup.style.display = "none";
+      }
+    });
+  }
+
+  buildColorPickerPopup();
+
+  // Událost kliknutí přímo do 3D scény
+  stage.addEventListener("pointerdown", (event) => {
+    // Reagovat jen na levé tlačítko a jen když je hotový model
+    if (event.button !== 0 || !previewRoot || exportButton.disabled) {
+      return;
+    }
+
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObject(previewRoot, true);
+
+    if (intersects.length > 0) {
+      const hit = intersects[0];
+      const uv = hit.uv;
+
+      if (!uv) {
+        return;
+      }
+
+      // Zjistíme, jaká je to teď barva podle UV souřadnice faceu
+      let nearestDist = Number.POSITIVE_INFINITY;
+      let nearestId = 0;
+
+      palette.forEach((entry) => {
+        const dist = uv.distanceToSquared(entry.uv);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearestId = entry.id;
+        }
+      });
+
+      pickedCurrentId = nearestId; // Zapamatujeme si, na co se kliklo
+
+      // Otevřeme plovoucí paletu kousek od kurzoru
+      colorPickerPopup.style.display = "grid";
+      colorPickerPopup.style.left = `${event.clientX + 15}px`;
+      colorPickerPopup.style.top = `${event.clientY + 15}px`;
+    } else {
+      colorPickerPopup.style.display = "none";
+    }
+  });
   function drawPalettePreview() {
     const context = palettePreview.getContext("2d");
     context.clearRect(0, 0, palettePreview.width, palettePreview.height);
@@ -1142,7 +1312,67 @@ function initUvPaletteMapper() {
       return;
     }
 
+    context.save();
+    context.translate(0, analysisPreview.height);
+    context.scale(1, -1);
     context.drawImage(canvas, 0, 0, analysisPreview.width, analysisPreview.height);
+    context.restore();
+  }
+
+  function buildRemapControls() {
+    if (!secondaryPanel) {
+      return;
+    }
+
+    const previousPanel = document.getElementById("uv-remap-panel");
+    if (previousPanel) {
+      previousPanel.remove();
+    }
+
+    const panel = document.createElement("article");
+    panel.className = "uv-mapper-card uv-remap-panel";
+    panel.id = "uv-remap-panel";
+
+    const title = document.createElement("p");
+    title.className = "uv-mapper-card__label";
+    title.textContent = "Paletovy remap";
+    panel.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "uv-remap-grid";
+
+    DEFAULT_PALETTE_COLORS.forEach((entry, index) => {
+      const row = document.createElement("label");
+      row.className = "uv-remap-row";
+
+      const label = document.createElement("span");
+      label.className = "uv-remap-label";
+      label.textContent = entry.name;
+
+      const select = document.createElement("select");
+      select.className = "uv-remap-select";
+
+      DEFAULT_PALETTE_COLORS.forEach((target, targetIndex) => {
+        const option = document.createElement("option");
+        option.value = String(targetIndex);
+        option.textContent = target.name;
+        option.selected = paletteRemap[index] === targetIndex;
+        select.appendChild(option);
+      });
+
+      select.addEventListener("change", () => {
+        paletteRemap[index] = Number(select.value);
+        if (sourceRoot) {
+          setStatus("Paletovy remap je zmeneny. Spust znovu premapovani, aby se propsal do modelu.", "success");
+        }
+      });
+
+      row.append(label, select);
+      grid.appendChild(row);
+    });
+
+    panel.appendChild(grid);
+    secondaryPanel.insertBefore(panel, reportPreview.closest(".uv-mapper-card"));
   }
 
   function setStatus(message, tone = "default") {
@@ -1225,14 +1455,28 @@ function initUvPaletteMapper() {
     const sphere = box.getBoundingSphere(new THREE.Sphere());
     const center = sphere.center.clone();
     const radius = sphere.radius || 2;
-    const distance = radius * 2.25;
+    const aspect = Math.max(1, renderer.domElement.clientWidth / Math.max(renderer.domElement.clientHeight, 1));
+    const halfFov = THREE.MathUtils.degToRad(camera.fov * 0.5);
+    const verticalDistance = radius / Math.tan(halfFov);
+    const horizontalDistance = radius / (Math.tan(halfFov) * aspect);
+    const distance = Math.max(verticalDistance, horizontalDistance) * 1.35;
 
     controls.target.copy(center);
-    camera.position.copy(center.clone().add(new THREE.Vector3(distance, distance * 0.62, distance)));
+    camera.position.copy(center.clone().add(new THREE.Vector3(distance * 0.72, distance * 0.48, distance)));
     camera.near = Math.max(0.01, radius / 100);
     camera.far = Math.max(100, radius * 18);
     camera.updateProjectionMatrix();
     controls.update();
+  }
+
+  function updateRangeValue(input) {
+    const valueEl = input?.parentElement?.querySelector(".tool-workbench__range-value");
+
+    if (!input || !valueEl) {
+      return;
+    }
+
+    valueEl.textContent = input.value;
   }
 
   function createPreviewMaterial(sourceMesh) {
@@ -1287,9 +1531,13 @@ function initUvPaletteMapper() {
   function resizeRenderer() {
     const width = stage.clientWidth || 720;
     const height = stage.clientHeight || 520;
-    renderer.setSize(width, height);
+    renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+
+    if (previewRoot) {
+      frameObject(previewRoot);
+    }
   }
 
   function assignRemapIds(root) {
@@ -1336,8 +1584,8 @@ function initUvPaletteMapper() {
 
   function getProcessingSettings() {
     return {
-      workflow: workflowInput.value,
-      mode: modeInput.value,
+      workflow: "planar_cleanup",
+      mode: "dominant",
       sampleDensity: Number(densityInput.value),
       alphaThreshold: Number(alphaThresholdInput.value),
       analysisSize: Number(analysisSizeInput.value),
@@ -1346,15 +1594,16 @@ function initUvPaletteMapper() {
       majorityPasses: Number(majorityPassesInput.value),
       colorTolerance: Number(colorToleranceInput.value),
       shadowThreshold: Number(shadowThresholdInput.value),
-      fallbackId: Number(fallbackColorInput.value),
-      submeshMaxDepth: Number(submeshDepthInput.value),
-      edgeTolerance: Number(submeshToleranceInput.value) / 100,
-      submeshMinArea: Number(submeshMinAreaInput.value),
-      submeshBudget: Number(submeshBudgetInput.value),
+      fallbackId: 7,
+      submeshMaxDepth: 0,
+      edgeTolerance: 0.06,
+      submeshMinArea: 20,
+      submeshBudget: 24000,
       planarNormalTolerance: Number(planarNormalInput.value),
       planarDistanceTolerance: Number(planarDistanceInput.value) / 100,
       planarMaxRegionSize: Number(planarRegionInput.value),
-      planarRescueConfidence: Number(planarRescueInput.value) / 100
+      planarRescueConfidence: Number(planarRescueInput.value) / 100,
+      paletteRemap: [...paletteRemap]
     };
   }
 
@@ -1372,7 +1621,11 @@ function initUvPaletteMapper() {
 
 function analyzeTriangle(uv0, uv1, uv2, analysisSource, settings) {
     if (!analysisSource) {
-      const fallbackEntry = palette.find((entry) => entry.id === settings.fallbackId) || palette[0];
+      const fallbackEntry = resolvePaletteEntry(
+        palette.find((entry) => entry.id === settings.fallbackId) || palette[0],
+        palette,
+        settings.paletteRemap
+      );
       return { entry: fallbackEntry, confidence: 0, usedFallback: true };
     }
 
@@ -1399,7 +1652,11 @@ function analyzeTriangle(uv0, uv1, uv2, analysisSource, settings) {
     });
 
     if (usedSamples === 0) {
-      const fallbackEntry = palette.find((entry) => entry.id === settings.fallbackId) || palette[0];
+      const fallbackEntry = resolvePaletteEntry(
+        palette.find((entry) => entry.id === settings.fallbackId) || palette[0],
+        palette,
+        settings.paletteRemap
+      );
       return { entry: fallbackEntry, confidence: 0, usedFallback: true };
     }
 
@@ -1409,8 +1666,8 @@ function analyzeTriangle(uv0, uv1, uv2, analysisSource, settings) {
 
     const dominantClusterIndex = [...clusterCounts.entries()].sort((a, b) => b[1] - a[1])[0][0];
     const dominantCluster = analysisSource.clusters[dominantClusterIndex];
-    const dominantEntry = getNearestPaletteEntry(dominantCluster, palette);
-    const averageEntry = getNearestPaletteEntry(average, palette);
+    const dominantEntry = resolvePaletteEntry(getNearestPaletteEntry(dominantCluster, palette), palette, settings.paletteRemap);
+    const averageEntry = resolvePaletteEntry(getNearestPaletteEntry(average, palette), palette, settings.paletteRemap);
     const dominantConfidence = (clusterCounts.get(dominantClusterIndex) || 0) / usedSamples;
 
     if (settings.mode === "average") {
@@ -1426,7 +1683,11 @@ function analyzeTriangle(uv0, uv1, uv2, analysisSource, settings) {
 
 function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, palette) {
   if (!bakedSource) {
-    const fallbackEntry = palette.find((entry) => entry.id === settings.fallbackId) || palette[0];
+    const fallbackEntry = resolvePaletteEntry(
+      palette.find((entry) => entry.id === settings.fallbackId) || palette[0],
+      palette,
+      settings.paletteRemap
+    );
     return { entry: fallbackEntry, confidence: 0, usedFallback: true };
   }
 
@@ -1448,12 +1709,20 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
   });
 
   if (usedSamples === 0) {
-    const fallbackEntry = palette.find((entry) => entry.id === settings.fallbackId) || palette[0];
+    const fallbackEntry = resolvePaletteEntry(
+      palette.find((entry) => entry.id === settings.fallbackId) || palette[0],
+      palette,
+      settings.paletteRemap
+    );
     return { entry: fallbackEntry, confidence: 0, usedFallback: true };
   }
 
   const dominantPaletteId = [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
-  const dominantEntry = palette.find((entry) => entry.id === dominantPaletteId) || palette[0];
+  const dominantEntry = resolvePaletteEntry(
+    palette.find((entry) => entry.id === dominantPaletteId) || palette[0],
+    palette,
+    settings.paletteRemap
+  );
   const confidence = (counts.get(dominantPaletteId) || 0) / usedSamples;
   return { entry: dominantEntry, confidence, usedFallback: false };
 }
@@ -1507,7 +1776,7 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
 
       if (!uvs) {
         report.skippedMeshes += 1;
-        child.geometry = geometry;
+        child.geometry = BufferGeometryUtils.mergeVertices(geometry);
         child.material = createPreviewMaterial(child);
         report.meshes.push({
           name: child.name || child.userData.remapId,
@@ -1519,7 +1788,9 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
 
       const materials = Array.isArray(child.material) ? child.material : [child.material];
       const analysisSources = materials.map((material) => createAnalysisSource(getMaterialTextureSource(material), settings));
-      const bakedSources = analysisSources.map((analysisSource) => createBakedPaletteCanvas(analysisSource, palette));
+      const bakedSources = analysisSources.map((analysisSource) =>
+        createBakedPaletteCanvas(analysisSource, palette, settings.paletteRemap)
+      );
       const primarySource = analysisSources.find(Boolean);
 
       if (!firstAnalysisCanvas && primarySource?.canvas) {
@@ -1544,7 +1815,7 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
           ? result.stats.confidenceTotal / resultingTriangleCount
           : 0;
 
-        child.geometry = result.geometry;
+        child.geometry = BufferGeometryUtils.mergeVertices(result.geometry);
         child.material = createPreviewMaterial(child);
         report.remappedTriangles += resultingTriangleCount;
         report.planarRegions += result.stats.cleanedRegions;
@@ -1563,7 +1834,7 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
           ? result.stats.confidenceTotal / result.stats.generatedTriangles
           : 0;
 
-        child.geometry = result.geometry;
+        child.geometry = BufferGeometryUtils.mergeVertices(result.geometry);
         child.material = createPreviewMaterial(child);
         report.remappedTriangles += result.stats.generatedTriangles;
         report.totalTriangles += result.stats.generatedTriangles - triangleCount;
@@ -1613,7 +1884,7 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
         }
 
         geometry.attributes.uv.needsUpdate = true;
-        child.geometry = geometry;
+        child.geometry = BufferGeometryUtils.mergeVertices(geometry);
         child.material = createPreviewMaterial(child);
       } else {
         const bakedTextures = bakedSources.map((bakedSource) => {
@@ -1626,7 +1897,7 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
           return bakedTexture;
         });
 
-        child.geometry = geometry;
+        child.geometry = BufferGeometryUtils.mergeVertices(geometry);
         child.material = Array.isArray(child.material)
           ? child.material.map((material, materialIndex) =>
               createPreviewMaterialWithMap(child, bakedTextures[materialIndex] || paletteTexture)
@@ -1833,7 +2104,6 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
   modelInput.addEventListener("change", handleModelChange);
   fallbackTextureInput.addEventListener("change", handleFallbackTextureChange);
   paletteInput.addEventListener("change", handlePaletteChange);
-
   processButton.addEventListener("click", () => {
     if (!sourceRoot) {
       return;
@@ -1863,11 +2133,16 @@ function analyzeTriangleFromBakedPalette(uv0, uv1, uv2, bakedSource, settings, p
   exportButton.addEventListener("click", exportProcessedGlb);
   exportPngButton.addEventListener("click", exportBakedPng);
   reportButton.addEventListener("click", exportReport);
+  rangeInputs.forEach((input) => {
+    updateRangeValue(input);
+    input.addEventListener("input", () => updateRangeValue(input));
+  });
 
   window.addEventListener("resize", resizeRenderer);
 
   drawPalettePreview();
   drawAnalysisPreview(null);
+  buildRemapControls();
   updateStats(null);
   resizeRenderer();
 

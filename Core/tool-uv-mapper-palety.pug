@@ -44,7 +44,11 @@ body(data-page="tool-uv-mapper")
         li
           a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
         li
+          a(href="https://twitch.tv/viktorbrenek" target="_blank" rel="noreferrer") Twitch
+        li
           a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+        li
+          a(href="https://www.youtube.com/ViktorBrenekYT" target="_blank" rel="noreferrer") Youtube
 
   main.page-shell
     section.page-hero
@@ -77,96 +81,83 @@ body(data-page="tool-uv-mapper")
                 span.tool-workbench__checkbox-box
                 span.tool-workbench__checkbox-text Přepsat všechny materiály fallback texturou
 
-            .tool-workbench__field
-              label.tool-workbench__label(for="uv-workflow") Výstupní workflow
-              select#uv-workflow.tool-workbench__input
-                option(value="baked_texture") Zachovat unwrap a upéct paletovou texturu
-                option(value="baked_to_triangle_uv") Upéct paletu a z ní udělat paletová UV
-                option(value="triangle_uv") Přesunout trojúhelníky na paletová UV
-                option(value="adaptive_submesh") Adaptive sub-meshing do paletových UV
-                option(value="planar_cleanup") Planar cleanup + paletová UV
-
-            .tool-workbench__field
-              label.tool-workbench__label(for="uv-mode") Způsob vyhodnocení
-              select#uv-mode.tool-workbench__input
-                option(value="dominant") Dominantní barva plochy
-                option(value="average") Nejbližší barva průměru
-                option(value="hybrid") Hybrid dominantní + průměr
+            p.tool-workbench__workflow-note
+              | Tool je zjednoduseny jen pro `planar cleanup + paletova UV`, takze nize zustavaji jen relevantni slidery pro tenhle workflow.
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-density") Hustota vzorkování
-                input#uv-density.tool-workbench__range(type="range" min="4" max="12" step="1" value="7")
+                .tool-workbench__range-row
+                  input#uv-density.tool-workbench__range(type="range" min="4" max="12" step="1" value="7")
+                  output.tool-workbench__range-value(for="uv-density") 7
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-alpha-threshold") Alpha práh
-                input#uv-alpha-threshold.tool-workbench__range(type="range" min="0" max="255" step="1" value="32")
+                .tool-workbench__range-row
+                  input#uv-alpha-threshold.tool-workbench__range(type="range" min="0" max="255" step="1" value="32")
+                  output.tool-workbench__range-value(for="uv-alpha-threshold") 32
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-analysis-size") Analytické rozlišení
-                input#uv-analysis-size.tool-workbench__range(type="range" min="256" max="2048" step="128" value="1024")
+                .tool-workbench__range-row
+                  input#uv-analysis-size.tool-workbench__range(type="range" min="256" max="2048" step="128" value="1024")
+                  output.tool-workbench__range-value(for="uv-analysis-size") 1024
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-cluster-count") Redukce barev
-                input#uv-cluster-count.tool-workbench__range(type="range" min="8" max="48" step="2" value="18")
+                .tool-workbench__range-row
+                  input#uv-cluster-count.tool-workbench__range(type="range" min="8" max="48" step="2" value="18")
+                  output.tool-workbench__range-value(for="uv-cluster-count") 18
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-blur-radius") Vyhlazení textury
-                input#uv-blur-radius.tool-workbench__range(type="range" min="0" max="4" step="1" value="1")
+                .tool-workbench__range-row
+                  input#uv-blur-radius.tool-workbench__range(type="range" min="0" max="4" step="1" value="1")
+                  output.tool-workbench__range-value(for="uv-blur-radius") 1
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-majority-passes") Cleanup průchodů
-                input#uv-majority-passes.tool-workbench__range(type="range" min="0" max="3" step="1" value="1")
+                .tool-workbench__range-row
+                  input#uv-majority-passes.tool-workbench__range(type="range" min="0" max="3" step="1" value="1")
+                  output.tool-workbench__range-value(for="uv-majority-passes") 1
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-color-tolerance") Tolerance odstínů
-                input#uv-color-tolerance.tool-workbench__range(type="range" min="0" max="180" step="5" value="60")
+                .tool-workbench__range-row
+                  input#uv-color-tolerance.tool-workbench__range(type="range" min="0" max="180" step="5" value="60")
+                  output.tool-workbench__range-value(for="uv-color-tolerance") 60
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-shadow-threshold") Potlačení stínů
-                input#uv-shadow-threshold.tool-workbench__range(type="range" min="0" max="140" step="5" value="55")
-
-            .tool-workbench__row
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-depth") Max depth
-                input#uv-submesh-depth.tool-workbench__range(type="range" min="0" max="5" step="1" value="3")
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-tolerance") Edge tolerance
-                input#uv-submesh-tolerance.tool-workbench__range(type="range" min="0" max="35" step="1" value="6")
-
-            .tool-workbench__row
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-min-area") Min UV area
-                input#uv-submesh-min-area.tool-workbench__range(type="range" min="0" max="500" step="5" value="20")
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="uv-submesh-budget") Max triangle budget
-                input#uv-submesh-budget.tool-workbench__range(type="range" min="2000" max="80000" step="1000" value="24000")
+                .tool-workbench__range-row
+                  input#uv-shadow-threshold.tool-workbench__range(type="range" min="0" max="140" step="5" value="55")
+                  output.tool-workbench__range-value(for="uv-shadow-threshold") 55
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-normal") Normal tolerance
-                input#uv-planar-normal.tool-workbench__range(type="range" min="2" max="45" step="1" value="12")
+                .tool-workbench__range-row
+                  input#uv-planar-normal.tool-workbench__range(type="range" min="2" max="45" step="1" value="12")
+                  output.tool-workbench__range-value(for="uv-planar-normal") 12
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-distance") Planar tolerance
-                input#uv-planar-distance.tool-workbench__range(type="range" min="1" max="120" step="1" value="18")
+                .tool-workbench__range-row
+                  input#uv-planar-distance.tool-workbench__range(type="range" min="1" max="120" step="1" value="18")
+                  output.tool-workbench__range-value(for="uv-planar-distance") 18
 
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-region") Max region size
-                input#uv-planar-region.tool-workbench__range(type="range" min="8" max="600" step="4" value="120")
+                .tool-workbench__range-row
+                  input#uv-planar-region.tool-workbench__range(type="range" min="8" max="600" step="4" value="120")
+                  output.tool-workbench__range-value(for="uv-planar-region") 120
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="uv-planar-rescue") Low-confidence rescue
-                input#uv-planar-rescue.tool-workbench__range(type="range" min="0" max="100" step="5" value="35")
-
-            .tool-workbench__field
-              label.tool-workbench__label(for="uv-fallback-color") Fallback paletová buňka
-              select#uv-fallback-color.tool-workbench__input
-                option(value="7") Bílá
-                option(value="6") Černá
-                option(value="4") Žlutá
-                option(value="8") Oranžová
+                .tool-workbench__range-row
+                  input#uv-planar-rescue.tool-workbench__range(type="range" min="0" max="100" step="5" value="35")
+                  output.tool-workbench__range-value(for="uv-planar-rescue") 35
 
             p.tool-workbench__help
-              | Doporučené je workflow, které zachová původní unwrap a jen upeče novou paletovou texturu. Import `FBX` i `GLB` je podporovaný, export jde do `GLB`.
+              | Import `FBX` i `GLB` je podporovany, export jde do `GLB`. Tool ted cili ciste na co nejlepsi planar cleanup workflow.
             p#uv-status.tool-workbench__status Připraveno. Nahraj model a případně fallback texturu nebo vlastní paletu.
 
             .tool-workbench__actions

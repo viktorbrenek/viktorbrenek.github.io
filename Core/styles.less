@@ -1314,8 +1314,20 @@ body[data-page="gamedev"] .media-card__media img {
   gap: 12px;
 }
 
+.tool-workbench__row--compact {
+  margin-top: -2px;
+}
+
 .tool-workbench__checkbox-row {
   margin-top: -4px;
+}
+
+.tool-workbench__toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  min-height: 42px;
+  align-items: center;
 }
 
 .tool-workbench__checkbox {
@@ -1368,6 +1380,30 @@ body[data-page="gamedev"] .media-card__media img {
 .tool-workbench__range {
   width: 100%;
   accent-color: var(--accent);
+}
+
+.tool-workbench__range-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.tool-workbench__range-value {
+  min-width: 6.2rem;
+  padding: 7px 10px;
+  border: 1px solid rgba(194, 181, 163, 0.16);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at top left, rgba(216, 162, 71, 0.08), transparent 45%),
+    rgba(0, 0, 0, 0.42);
+  color: var(--heading);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .tool-workbench__actions {
@@ -1472,6 +1508,7 @@ body[data-page="gamedev"] .media-card__media img {
 
 .tool-workbench__canvas-frame--viewport {
   min-height: 520px;
+  width: 100%;
   padding: 0;
   overflow: hidden;
 }
@@ -1480,6 +1517,12 @@ body[data-page="gamedev"] .media-card__media img {
   margin: -4px 0 2px;
   color: var(--text-soft);
   font-size: 1.75rem;
+}
+
+.tool-workbench__workflow-note {
+  margin: -2px 0 4px;
+  color: var(--fungal);
+  font-size: 1.7rem;
 }
 
 .tool-workbench__status {
@@ -1586,12 +1629,21 @@ body[data-page="gamedev"] .media-card__media img {
 .uv-mapper-stage {
   width: 100%;
   min-height: 520px;
+  height: 520px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
 }
 
 .uv-mapper-stage canvas {
   display: block;
   width: 100%;
   height: 520px;
+  min-width: 100%;
+  max-width: none;
+  flex: 1 1 auto;
+  filter: none;
+  transition: none;
 }
 
 .uv-mapper-meta {
@@ -1625,6 +1677,40 @@ body[data-page="gamedev"] .media-card__media img {
   font-size: 1.1rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.uv-remap-panel {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+}
+
+.uv-remap-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.uv-remap-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 160px);
+  gap: 10px;
+  align-items: center;
+}
+
+.uv-remap-label {
+  color: var(--heading);
+  font-size: 1.65rem;
+}
+
+.uv-remap-select {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid rgba(194, 181, 163, 0.14);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.42);
+  color: var(--heading);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.7rem;
 }
 
 .uv-mapper-palette {
