@@ -1057,6 +1057,7 @@ body[data-page="gamedev"] .media-card__media img {
 .tag {
   display: inline-flex;
   align-items: center;
+  gap: 0.45em;
   min-height: 32px;
   padding: 6px 12px;
   border: 1px solid rgba(0, 255, 157, 0.22);
@@ -1067,6 +1068,7 @@ body[data-page="gamedev"] .media-card__media img {
   font-size: 1.2rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .article-shell {
@@ -1485,6 +1487,10 @@ body[data-page="gamedev"] .media-card__media img {
   grid-template-columns: 420px minmax(0, 1fr);
 }
 
+.tool-workbench--image-convertor {
+  grid-template-columns: 380px minmax(0, 1fr);
+}
+
 .tool-workbench__canvas-shell--sonics {
   max-width: 780px;
 }
@@ -1495,6 +1501,10 @@ body[data-page="gamedev"] .media-card__media img {
 
 .tool-workbench__canvas-shell--uv-mapper {
   max-width: 980px;
+}
+
+.tool-workbench__canvas-shell--image-convertor {
+  max-width: 920px;
 }
 
 .tool-workbench__canvas-frame--wide {
@@ -1545,6 +1555,67 @@ body[data-page="gamedev"] .media-card__media img {
 .tool-workbench__status--success {
   border-color: rgba(0, 255, 157, 0.2);
   color: var(--fungal);
+}
+
+.image-convertor-preview-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.image-convertor-preview {
+  display: grid;
+  gap: 10px;
+}
+
+.image-convertor-preview__label {
+  margin: 0;
+  color: var(--heading);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.image-convertor-preview__frame {
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(194, 181, 163, 0.14);
+  border-radius: 18px;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+    linear-gradient(180deg, rgba(18, 16, 14, 0.98), rgba(7, 7, 7, 0.98));
+  background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px, auto;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0, 0 0;
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.image-convertor-preview__image {
+  width: 100%;
+  height: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.image-convertor-preview__image.is-ready {
+  opacity: 1;
+}
+
+.image-convertor-meta {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .youtube-exporter-step {
@@ -1826,6 +1897,11 @@ footer.site-footer {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .image-convertor-meta,
+  .image-convertor-preview-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .page-hero--split {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
@@ -2004,6 +2080,14 @@ footer.site-footer {
 
   .tool-workbench__canvas-frame--wide {
     min-height: 320px;
+  }
+
+  .image-convertor-preview__frame {
+    min-height: 220px;
+  }
+
+  .image-convertor-preview__image {
+    max-height: 280px;
   }
 
   .tool-workbench__canvas-frame--viewport,

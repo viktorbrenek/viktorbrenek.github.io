@@ -21,7 +21,7 @@ Proč to bylo potřeba? Starý systém v RPG Builderu byl příliš jednoduchý.
 
 Stejně silný je i dialog systém. Je přímo propojený s Quest Machine, takže můžu dělat mnohem komplexnější rozhovory vázané na čas, frakci nebo další podmínky. UI potřebuje ještě velký rework, takže to zatím ber spíš jako funkční základ.
 
-![image](../assets/images/image12.png)
+![image](../assets/images/image12.webp)
 
 ## Nábytek
 Do domů jsem přidal i nový nábytek. Část jsem modeloval v Blenderu a část pochází z 3D packů od Synty Studios, které jsem koupil už dřív. Došlo mi, že nemá smysl modelovat úplně všechno od nuly, zvlášť když se Synty styl docela dobře potkává s tím mým.
@@ -35,12 +35,12 @@ Modelů budu potřebovat ještě spoustu, ale teď jsem se soustředil hlavně n
 <br></br>
 Tady jsou některé craft stanice:
 
-![image](../assets/images/image13.png)
-![image](../assets/images/image14.png)
-![image](../assets/images/image15.png)
+![image](../assets/images/image13.webp)
+![image](../assets/images/image14.webp)
+![image](../assets/images/image15.webp)
 
 A pár dalších modelů:
-![image](../assets/images/image16.png)
+![image](../assets/images/image16.webp)
 
 ## To je vše, díky za přečtení :)
 

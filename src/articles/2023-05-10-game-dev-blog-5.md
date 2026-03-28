@@ -24,7 +24,7 @@ To souvisí i s dalším cílem: udělat hru výrazně tvrdší v soubojích a u
 Umírání je ale složitější problém. Nechci klasický jednoduchý respawn. Na druhou stranu nechci hráče ani jen trestat game overem. Líbí se mi třeba Arcanum, kde smrt znamená konec a load, ale i Kenshi, kde většinou neumřeš úplně, spíš zůstaneš zraněný, vykrvácený někde v pustině a čekáš, jestli tě někdo zachrání, sežere nebo prodá do otroctví. Z toho všeho si chci vzít inspiraci, ale nemůžu to jen zkopírovat. Moje programátorské schopnosti mají limity. Hledám proto střední cestu, třeba formou debuffu po smrti, ztráty věcí nebo malou šancí na fatální zranění končetiny, které by tě donutilo použít protézu.
 <br></br>
 Nomádský člověk s dvouručním kopím v kožené zbroji:
-![image](../assets/images/image.png)
+![image](../assets/images/image.webp)
 
 Ale boj není jen o skillech. Přidal jsem i stagger bar, který zatím pracovně nazývám fatigue. Ovlivňuje sesílání kouzel i držení postoje v boji. Mimo boj se regeneruje rychleji, v boji jen po menších dávkách. Každý zásah od nepřítele ti sníží stagger o 10 %, naopak vlastní útok ti ho může doplnit. Pointa je, že když vlezeš třeba do doupěte hyen, nestačí být silnější než ony. Každá další rána tě dostane blíž k tomu, že spadneš na nulu a na pár sekund se staneš zcela zranitelným.
 <br></br>
@@ -35,22 +35,22 @@ V poslední době jsem narazil i na AI, konkrétně MidJourney. Pomáhá mi gene
 <br></br>
 Tady je inventář a nad ním health bar, stagger bar i energy bar.
 
-![image](../assets/images/image2.png)
+![image](../assets/images/image2.webp)
 
 ## Čištění a remeshování 3D modelů
 Protože bylo potřeba optimalizovat spoustu starších modelů a připravit je na nový masking shader, předělal jsem všechna monstra a opravil různé animace. Zároveň jsem připravil i nové armor sety pro hráče.
 <br></br>
 A jo, konečně i klobouk inspirovaný Kenshi. A taky vousy a vlasy.
 
-![image](../assets/images/image3.png)
+![image](../assets/images/image3.webp)
 
 Předělaný Chopper. Méně polygonů, lepší animace a nový shader.
 
-![image](../assets/images/image4.png)
+![image](../assets/images/image4.webp)
 
 Valrug s lukem a hodně podivně deformovaným asijským kloboukem :D
 
-![image](../assets/images/image5.png)
+![image](../assets/images/image5.webp)
 
 ## Konec :)
 

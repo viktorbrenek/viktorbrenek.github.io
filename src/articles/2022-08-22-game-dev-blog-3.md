@@ -15,15 +15,15 @@ Když člověk dělá dlouho na jednom projektu, často trochu oslepne vůči vl
 
 Předělal jsem tedy shadery od základu. Nově používám sofistikovanější RGB masking shader. Vizuálně navazuje na předchozí směr, ale umožňuje přidávat víc vlastností a zároveň šetří výkon, protože místo tří shaderů zvládneme hodně věcí jedním.
 
-![image](../assets/images/masking.png)
+![image](../assets/images/masking.webp)
 
 Na obrázku je vidět, jak tři barevné kanály maskují plochy, na které se pak shader aplikuje. V Unity se to dá řešit přes texture sample a následné násobení předdefinovanými barvami, texturami nebo materiálovými vlastnostmi. Celý shader ukazovat nebudu, protože je už dost komplexní a navíc obsahuje vlastní úpravy v kódu. Ale jako základní princip to snad pomůže.
 
-![image](../assets/images/shader.png)
+![image](../assets/images/shader.webp)
 
 A tady je výsledný vzhled reptiloidně-hmyzí rasy. Ještě nemá jméno, takže pokud tě něco napadne, klidně napiš na Discord.
 
-![image](../assets/images/repti.png)
+![image](../assets/images/repti.webp)
 
 ## Předělané modely
 Jak asi čekáš, musel jsem předělat i modely postav a velkou část světa. Nový shader totiž nepomáhá jen vizuálně, ale i výkonově. Každý materiál na modelu totiž v praxi znamená další výpočty světel a stínů. Když má postava tři materiály, hra to řeší třikrát.
@@ -34,25 +34,25 @@ To ale nebylo všechno. Po několika pokusech jsem došel i k tomu, že moje mod
 
 Na Harryho streamu jsem rychle pochytal další Blender postupy a přešel na ruční remeshování přes shrink wrap. Není to rychlé, ale je to zatím nejefektivnější řešení. Zkoušel jsem i automatické remeshery, ale ruční práce vyhrála. Současně jsem víc řešil i UV wrapping kvůli budoucím změnám kolem RGB maskingu.
 
-![image](../assets/images/shrink.png)
+![image](../assets/images/shrink.webp)
 
 Na obrázku je i přibližně vidět, jak jsem tělo rozřezal na jednotlivé části.
 
 ## Body Culling
 Rozdělení těla na části je užitečné i kvůli equipu. Dřív mi vadilo, že vybavení neschovávalo tělo správně. Teď jednotlivé kusy zbroje sedí na rozměry konkrétních body partů a můžu je při zakrytí jednoduše vypínat.
-![image](../assets/images/culling.png)
+![image](../assets/images/culling.webp)
 
 ## Nové přírodní modely
 Tady je pár kreativnějších novinek. Jména si ještě nejsem jistý. Aktuálně mám víc než 10 druhů stromů. Nechci je ukazovat všechny, protože ještě nevím, které ve hře zůstanou, a stejně je budu znovu remeshovat. Na posledním obrázku je i prototyp architektury inspirovaný stavbami z Kenshi. Možná ho ale taky časem předělám, protože jsem konečně napojil building systém.
 
-![image](../assets/images/models1.png)
+![image](../assets/images/models1.webp)
 
 ## Building a létání?
 A to nejlepší nakonec? Možná. Do hry jsem napojil asset pro building systém, takže půjde volně stavět a ukládat hráčské domy, craft stanice, bedny i další interaktivní předměty. Na obrázku je vidět i radiální menu, které ještě projde redesignem.
 
 Je tam také létací oblek pro nomádské postavy. Při vývoji je super zábavný, ale zároveň dost rozbitý a zatím si nejsem jistý, jestli má smysl ho ve hře nechat. Co naopak smysl dává, jsou mounti nebo vozidla. Létání totiž rozbíjí některé systémy, které mám naplánované, třeba maskování okrajů světa. Klouzání by bylo ideální, ale na to mi tehdejší skillset ještě nestačil. Tak třeba někdy později.
 
-![image](../assets/images/building.png)
+![image](../assets/images/building.webp)
 
 ## To je vše
 Bylo to dlouhé a je dost možné, že i plné chyb. Je jedna ráno a kašlu na to. Sleduj moje sítě, pokud chceš další informace o vývoji hry.

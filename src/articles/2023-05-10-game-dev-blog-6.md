@@ -28,25 +28,25 @@ Aby to nevypadalo, že jen přemýšlím, něco konkrétního přibylo. Přidal 
 <br></br>
 Nejdřív fauna. Tohle je nový pták. Jméno zatím nemá. Pokud na něj nezaútočíš, zůstává neutrální. Podobně jako goatzelly má sloužit jako zdroj materiálu a menšího množství XP. Časem možná půjde ochočit nebo i osedlat. Animace jsou zatím dost slabé, ale to se dá časem vylepšit.
 
-![image](../assets/images/image6.png)
+![image](../assets/images/image6.webp)
 
 Přibylo i nové monstrum: pavouk. Ano, není to nijak originální, ale pavouci k RPG prostě patří. Zároveň jsem chtěl vrátit do hry starou fantasy rasu Arachne. Původní představa byla humanoidní vršek ženské postavy napojený na tělo pavouka. Model samotného pavouka šel vytvořit poměrně snadno, ale animace byla mimo moje možnosti. Takže jsem si ten model nakonec koupil jako asset a upravil ho pro svoje potřeby. Animace byly výrazně lepší, než bych zvládl já.
 <br></br>
 Arachne byly nakonec složitější. Prakticky by to znamenalo napojit lidské animace horní poloviny těla na zbytek pavoučí kostry. To jsem nerozchodil. Po třech dnech boje jsem si udělal vlastní verzi Arachne: humanoidní postavy s pavoučíma nohama připojenýma na záda. Fungují ofenzivně, částečně reagují na pohyb rukou a výsledek vypadá dostatečně dobře i trochu děsivě. Umí dokonce nosit i zbroj. Můžou být nazí, v ninja armoru nebo v nomádské zbroji. Budou žít pouze v poušti a používat jak luk, tak melee útoky přes pavoučí nohy. AI je díky tomu složitější, ale většina už funguje.
 
-![image](../assets/images/image7.png)
+![image](../assets/images/image7.webp)
 
 ## Nově definované zbraně
 Předělal jsem i zbraně. Většina z nich zatím nejde vybavit, ale přibylo hodně nových variant a jsem s nimi spokojený. Hlavně steampunkové střelné zbraně dopadly dobře, zejména puška a plamenomet. Každý typ zbraně bude mít i vlastní styl pohybu a bojových animací.
 
-![image](../assets/images/image8.png)
-![image](../assets/images/image9.png)
+![image](../assets/images/image8.webp)
+![image](../assets/images/image9.webp)
 
 ## Nově definované budovy
 Podobně jsem předělal i budovy. Většinou jde o moje starší modely, které jsem pročistil, zremeshoval a přetexturoval tak, aby byly lépe optimalizované a seděly novému vizuálnímu stylu. Všechny budovy jsou plně průchozí pro hráče i AI. NPC se po nich umí pohybovat přes schody i mezi patry a hráč může skákat z oken nebo ze střech.
 
-![image](../assets/images/image10.png)
-![image](../assets/images/image11.png)
+![image](../assets/images/image10.webp)
+![image](../assets/images/image11.webp)
 
 ## To je vše, díky za přečtení :)
 

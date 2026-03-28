@@ -17,20 +17,20 @@ To ale nebyl jediný problém. Došlo mi, že i když jsem už výrazně zmenši
 
 Na prvním obrázku je základní skica plánu. Textura je rozdělená do pěti barevných zón a jakýkoliv model může být rozbalen do konkrétní barevné oblasti. Shader v Unity pak maskuje výsledné barvy přes materiálový setup. Problém může být u lightmap, pokud se UV stejného modelu překrývají. Harry mi poradil, že buď můžu jednotlivé wrapy poskládat vedle sebe, nebo mít separátní UV pro lightmapy. Zatím to chci řešit spíš první cestou.
 
-![image](../assets/images/idea.png)
+![image](../assets/images/idea.webp)
 
 Tady je vidět upravené barevné maskování.
 
-![image](../assets/images/shader5.png)
+![image](../assets/images/shader5.webp)
 
 ## Nová zbroj
 Kromě toho jsem pracoval i na nové plátové zbroji pro impérium. Má jít o základní armor s menšími technickými vylepšeními, třeba filtrováním vzduchu, světlem v helmě nebo ochranou očí. Nic přehnaného, ale ve světě hry to dává smysl. Každý imperiál by měl takovou výbavu dostat od Impéria. Později ji chci kombinovat s batohy, plášti a třeba halapartnami jako dvouruční zbraní.
 <br></br>
 Samozřejmě jsem pak zjistil, že musím zase předělávat UVčka, protože nápad se zjednodušenou texturou přišel až poté, co byla zbroj skoro hotová. Ale i tak ji sem házím, ať si uděláš obrázek.
 
-![image](../assets/images/platearmor.png)
+![image](../assets/images/platearmor.webp)
 
-![image](../assets/images/platearmor2.png)
+![image](../assets/images/platearmor2.webp)
 <br></br>
 Sleduj moje sítě, pokud chceš další informace o vývoji hry.
 
