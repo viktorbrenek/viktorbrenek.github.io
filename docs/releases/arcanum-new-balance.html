@@ -362,13 +362,21 @@
   const EN_KEY = 'endorse';
   const BASE = 'https://api.counterapi.dev/v1';
 
-  function fmt(n) { return typeof n === 'number' ? n.toLocaleString('cs-CZ') : '—'; }
+  function fmt(n) { return typeof n === 'number' ? n.toLocaleString('cs-CZ') : '0'; }
 
   async function getCount(key) {
-    try { const r = await fetch(BASE + '/' + NS + '/' + key); return (await r.json()).count; } catch(_) { return null; }
+    try {
+      const r = await fetch(BASE + '/' + NS + '/' + key);
+      const d = await r.json();
+      return typeof d.count === 'number' ? d.count : 0;
+    } catch(_) { return 0; }
   }
   async function hitCount(key) {
-    try { const r = await fetch(BASE + '/' + NS + '/' + key + '/up'); return (await r.json()).count; } catch(_) { return null; }
+    try {
+      const r = await fetch(BASE + '/' + NS + '/' + key + '/up');
+      const d = await r.json();
+      return typeof d.count === 'number' ? d.count : 0;
+    } catch(_) { return 0; }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
