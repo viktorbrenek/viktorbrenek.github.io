@@ -1,0 +1,222 @@
+<!DOCTYPE html><head><title>Arcanum New Balance | Viktor Břenek</title><meta content="text/html;charset=utf-8" http-equiv="Content-Type"><meta content="utf-8" http-equiv="encoding"><meta name="author" content="Viktor Brenek"><meta name="description" content="Arcanum CE — ARPG Obscura. Comprehensive gameplay overhaul for Arcanum: Of Steamworks and Magick Obscura."><meta property="og:title" content="Arcanum New Balance — ARPG Obscura"><meta property="og:description" content="Comprehensive ARPG overhaul for Arcanum CE. ARPG itemization, crafting, magic overhaul, monster rarity, new races and more."><meta property="og:image" content="https://viktorbrenek.github.io/assets/images/arcanum-nb/imagepreview.webp"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link rel="stylesheet" href="../styles.css"><link rel="icon" href="../assets/images/favicon.png" sizes="any"><link rel="icon" href="../assets/images/icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png"><link rel="manifest" href="../manifest.json"><script src="../site.js" defer></script></head><body data-page="article"><header class="site-header"><div class="site-header__inner"><a class="brand" href="../index.html" aria-label="Domů Viktor Břenek"><span class="brand__sigil">V</span><span class="brand__text"><span class="brand__eyebrow">Releasy</span><span class="brand__name">Viktor Břenek</span></span></a><button class="nav-toggle" type="button" aria-expanded="false" aria-label="Přepnout navigaci">Menu</button><nav class="site-nav" aria-label="Hlavní navigace"><a href="../about.html">O mně</a><a href="../blog.html">Blog</a><a href="../gamedev.html">Vývoj her</a><a href="../design.html">Design</a><a href="../illustrations.html">Ilustrace</a><a href="../uxdesign.html">UX/UI</a></nav><ul class="social-links"><li><a href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer">Instagram</a></li><li><a href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer">Facebook</a></li><li><a href="https://twitch.tv/viktorbrenek" target="_blank" rel="noreferrer">Twitch</a></li><li><a href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer">Discord</a></li><li><a href="https://www.youtube.com/ViktorBrenekYT" target="_blank" rel="noreferrer">Youtube</a></li></ul></div></header><main class="article-shell anb-shell"><aside class="article-sidebar"><div class="article-sidebar__panel"><p class="eyebrow">Obsah</p><p class="article-sidebar__hint">Přeskakuj mezi sekcemi.</p><nav class="table-of-contents"><ol><li><a href="#itemizace">ARPG Itemizace</a></li><li><a href="#crafting">Crafting</a></li><li><a href="#magie">Přepracovaná Magie</a></li><li><a href="#blood-magic">Blood Magic</a></li><li><a href="#tech">Tech Rebalance</a></li><li><a href="#rarity">Monster Rarity</a></li><li><a href="#rasy">Nové Rasy</a></li><li><a href="#zbrane">Nové Zbrane</a></li><li><a href="#qol">Quality of Life</a></li><li><a href="#screenshoty">Screenshoty</a></li><li><a href="#instalace">Instalace</a></li><li><a href="#shoutouts">Shoutouts</a></li></ol></nav></div></aside><article class="article-panel anb-panel"><div class="article-header"><p class="eyebrow">Mod — Arcanum: Of Steamworks and Magick Obscura</p><h1 class="atitle">Arcanum New Balance<br><span class="anb-subtitle">ARPG Obscura</span></h1><ul class="tag-list"><li class="tag">⚙️ Mod</li><li class="tag">🗡️ ARPG</li><li class="tag">🧙 Arcanum CE</li></ul><p class="anb-notice">NOT FINAL VERSION — Please save often, test, and report bugs. AI helped elevate this. I've modded Arcanum for 15+ years. It's free. :)</p></div>
+
+<div class="anb-hero-media"><img src="../assets/images/arcanum-nb/imagepreview.webp" alt="Arcanum New Balance — preview"></div>
+
+<div class="anb-actions">
+  <div class="anb-action-block">
+    <a class="anb-download-btn" id="downloadBtn" href="../assets/downloads/arcanum-new-balance.zip" download="Arcanum-New-Balance.zip">
+      <span class="anb-btn-icon">⬇</span>
+      <span class="anb-btn-text">Stáhnout mod</span>
+      <span class="anb-btn-count" id="dlCount">—</span>
+    </a>
+  </div>
+  <div class="anb-action-block">
+    <button class="anb-endorse-btn" id="endorseBtn" type="button">
+      <span class="anb-btn-icon" id="endorseIcon">♡</span>
+      <span class="anb-btn-text">Endorse</span>
+      <span class="anb-btn-count" id="endorseCount">—</span>
+    </button>
+  </div>
+</div>
+
+<div class="article-content">
+
+<p>Arcanum CE — ARPG Obscura je komplexní gameplay overhaul pro <strong>Arcanum: Of Steamworks and Magick Obscura</strong>, postavený na open-source Community Edition reimplementaci (od Alexandra Batalova). Transformuje klasické RPG systémy Arcana do hluboké ARPG zkušenosti bez změny původního příběhu, světa nebo textů.</p>
+
+<h2 id="itemizace">ARPG Itemizace</h2>
+<p>Každý item ve světě má nyní vrhanou <strong>rarity tier</strong> — Common, Uncommon, Rare, Epic, Unique, Set a Cursed — každá přidává náhodné afixy upravující staty, rezistence, damage a skilly. Šest item setů je skrytých po světě; equipování více kusů setu odemyká eskalující bonusy a on-hit procy. Bosové mají garantované unique dropy (zatím neimplementováno). Nový floating tooltip zobrazuje všechny staty, afixy a set progress najednou. Unique itemy jsou build enabling a velmi silné — šance na jejich výskyt v shopech/NPC inventářích je 0.1%.</p>
+
+<h2 id="crafting">ARPG Crafting</h2>
+<p>Monstra s raritou mohou dropovat magické orby (na zemi na těle). Orby se používají přetažením v inventáři na equipovatelný (non-quest) item. K dispozici je 8+ orbů:</p>
+<ul>
+<li><strong>Orb of Awakening</strong> — rerolluje bílý item s raritou</li>
+<li><strong>Identification Scroll</strong> — odhalí raritu na itemu</li>
+<li><strong>Cursed Orb</strong> — modifikuje item nepředvídatelně</li>
+<li><strong>Orb of Cleansing</strong> — odstraní raritu</li>
+<li>A další... inspirace Path of Exile (Divine Orbs atd.)</li>
+</ul>
+<p>Craftem lze dosáhnout až EPIC quality. Sets a Uniques lze pouze dropovat.</p>
+
+<h2 id="magie">Přepracovaná Magie</h2>
+<p>Všech <strong>16 škol magie</strong> má nyní vlastní combat identity. Každá signaturní kouzlo školy dělí damage unikátním mechanismem: Fire zapaluje burn-over-time, Force řetězí blesky na okolní nepřátele, Water zpomaluje a zmrazuje, Earth otravuje, Mental mate, Phantasm děsí, Temporal pálí kyselinou a stunuje, a tak dále. Nature transform formy (Vlk, Ještěrka, Medvěd) jsou kompletně přepracovány jako melee-damage škola — každá forma obchoduje mobilitu nebo survivabilitu za silné on-hit efekty.</p>
+<p><em>Inspirace: Arcanum Equalibrium/Terror's Arcanum od TheDragon13 (výrazně přepracováno). Ne všechna kouzla jsou změněna.</em></p>
+
+<h2 id="blood-magic">Blood Magic</h2>
+<p>Škola Necromagie byla vždy příliš silná — proto jsem zaměnil manu za život. Funguje překvapivě dobře a zůstává stále silná.</p>
+
+<h2 id="tech">Tech Rebalance</h2>
+<p>Střelné zbraně jsou výrazně rebalancovány s unikátní combat identity:</p>
+<ul>
+<li><strong>Knockback</strong> — 15% knock prone, 5% knockdown (sniper/elephant gun/tech hammer)</li>
+<li><strong>Shotgun</strong> — multi-target spread hit</li>
+<li><strong>Flamethrower</strong> — AoE splash dmg a burn ticky</li>
+<li><strong>Pyro axe/gun</strong> — bonus fire damage</li>
+<li>A další...</li>
+</ul>
+<p><em>Inspirace: Shark (community member na Arcanum Discord serveru) — s povolením. Díky!</em></p>
+
+<h2 id="rarity">Monster Rarity</h2>
+<p>Nepřátelé se hazují jako <strong>Magic, Rare nebo Unique</strong> s náhodnými bonus typy: Vampiric, Thorned, Swift, Berserker, Shielded a další. Unique monstra mají procedurálně generované tituly. Obtížnost a loot quality se škálují s raritou monstra. Rare monstra jsou klíčová pro orb dropy.</p>
+
+<h2 id="rasy">Nové Hratelné Rasy</h2>
+<p><strong>Dark Elf, Half-Ogre, Orc a Lizard Man</strong> jsou obnoveny ze střiženého obsahu a plně hratelné — s funkčními body types, portréty a dialog reakcemi. Každá rasa má unikátní rasové staty odpovídající jejich lore.</p>
+<p><em>Implementováno z UAP od Drog Black Tooth + další Orc art files od F-mana (Discord community) — s povolením. Díky!</em></p>
+
+<h2 id="zbrane">Nové Třídy Zbraní</h2>
+<ul>
+<li><strong>Unarmed zbraně</strong> (gauntlety, drápy) se škálujícím damage a on-hit efekty</li>
+<li><strong>Throwing zbraně</strong> s damage-over-time vlastnostmi (bleed, poison, fire)</li>
+<li><strong>Staves</strong> channelující kouzla při equipu, dávající nižší college kouzla jako aktivní schopnosti</li>
+<li><strong>Thorns items</strong> (hruď, boty, helma, štít)</li>
+</ul>
+
+<h2 id="qol">Quality of Life</h2>
+<p>In-game F9 overlay dokumentuje všechny mod systémy pro nové hráče. Engine bugy z originální hry jsou opraveny. Mnoho UAP fixů re-aplikováno na CE.</p>
+<p><strong>Nové Staty:</strong> Life on Hit, Poison on Hit, Fire on Hit, Acid on Hit, Bleed on Hit, Thorns a další — viditelné v character sheetu.</p>
+<p><strong>Tooltip systém:</strong> Custom tooltipy mohou zobrazit mnohem více textu. Existuje bug s grafickými fragmenty při hoveru nad itemem (dokud se nezavře inventář) — bude opraveno.</p>
+<p><strong>Map System a Endgame:</strong> Proof of concept systém podobný Path of Exile mapám. Vormatown implementován do base game (F-Man, s povolením). Level cap 99. Po slideshow tě hra portuje zpět do Shrouded Hills a dá první mapu. Mapa se používá jako orb → přesun na equipovatelný item → port do "mapy" se silnými nepřáteli.</p>
+
+<h2 id="screenshoty">Screenshoty</h2>
+<div class="gallery-grid gallery-grid--wide anb-gallery">
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca1.webp" alt="Screenshot 1" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca2.webp" alt="Screenshot 2" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca3.webp" alt="Screenshot 3" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca4.webp" alt="Screenshot 4" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca5.webp" alt="Screenshot 5" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca6.webp" alt="Screenshot 6" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca7.webp" alt="Screenshot 7" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca8.webp" alt="Screenshot 8" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca9.webp" alt="Screenshot 9" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca10.webp" alt="Screenshot 10" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca11.webp" alt="Screenshot 11" loading="lazy"></div></div>
+<div class="media-card"><div class="media-card__media"><img src="../assets/images/arcanum-nb/arca12.webp" alt="Screenshot 12" loading="lazy"></div></div>
+</div>
+
+<h2 id="instalace">Instalace</h2>
+<p>Vše zkopíruj do game dir a přepiš vše. Jednoduché.</p>
+
+<h2 id="instalace">Požadavky</h2>
+<p>Stejné jako originální hra.</p>
+
+<h2 id="shoutouts">Shoutouts</h2>
+<p>Velké díky všem, kteří drží Arcanum při životě:</p>
+<ul>
+<li><strong>Alexander Batalov</strong> — Arcanum Community Edition</li>
+<li><strong>Drog Black Tooth</strong> — UAP</li>
+<li><strong>F-Man</strong> — Orcs art, Vormatown</li>
+<li><strong>Shark</strong> — Tech rebalance inspirace</li>
+<li><strong>TheDragon13</strong> — Arcanum Equalibrium/Terror's Arcanum</li>
+<li>CDude, harleyfolgado, Barbarbrick, Jen a celá community Discord komunita</li>
+</ul>
+
+</div>
+
+<div id="utterances-container"><script src="https://utteranc.es/client.js" repo="viktorbrenek/blogco" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async></script></div>
+</article></main>
+
+<style>
+.anb-shell { max-width: 1220px; }
+@media (min-width: 1080px) {
+  .anb-shell { grid-template-columns: minmax(0, 260px) minmax(0, 1fr); }
+}
+.anb-panel { padding: 32px; }
+.anb-subtitle { display: block; font-size: 0.52em; color: var(--accent); letter-spacing: .18em; margin-top: 8px; }
+.anb-notice { margin: 0; padding: 12px 16px; border: 1px solid rgba(216,162,71,.28); border-radius: 12px; background: rgba(216,162,71,.06); color: var(--text-soft); font-size: 1.85rem; font-style: italic; }
+.anb-hero-media { margin: 24px 0; border-radius: var(--radius-md); border: 1px solid var(--line); overflow: hidden; box-shadow: var(--shadow-md); }
+.anb-hero-media img { width: 100%; display: block; aspect-ratio: 2.1; object-fit: cover; }
+.anb-actions { display: flex; gap: 16px; margin: 28px 0; flex-wrap: wrap; }
+.anb-action-block { flex: 1 1 180px; }
+.anb-download-btn, .anb-endorse-btn {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 16px 20px; border-radius: var(--radius-md);
+  border: 1px solid rgba(0,255,157,.3);
+  background: radial-gradient(circle at 50% 0, rgba(0,255,157,.12), transparent 55%), linear-gradient(180deg, rgba(44,36,29,.95), rgba(12,10,9,.98));
+  color: var(--heading); font-family: Cinzel, Georgia, serif;
+  font-size: 1.4rem; letter-spacing: .1em; text-transform: uppercase;
+  cursor: pointer; text-decoration: none;
+  transition: transform 160ms, border-color 160ms, box-shadow 160ms;
+  box-shadow: 0 8px 20px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.anb-download-btn:hover, .anb-endorse-btn:hover {
+  transform: translateY(-2px); border-color: rgba(0,255,157,.5);
+  box-shadow: 0 0 28px rgba(0,255,157,.14), 0 8px 20px rgba(0,0,0,.28);
+}
+.anb-endorse-btn { border-color: rgba(194,181,163,.2); background: radial-gradient(circle at 50% 0, rgba(216,162,71,.1), transparent 55%), linear-gradient(180deg, rgba(44,36,29,.95), rgba(12,10,9,.98)); }
+.anb-endorse-btn:hover { border-color: rgba(216,162,71,.5); box-shadow: 0 0 28px rgba(216,162,71,.12), 0 8px 20px rgba(0,0,0,.28); }
+.anb-endorse-btn.is-endorsed { border-color: rgba(216,162,71,.5); color: var(--accent); box-shadow: 0 0 22px rgba(216,162,71,.16); }
+.anb-endorse-btn.is-endorsed .anb-btn-icon { color: var(--accent); }
+.anb-btn-icon { font-size: 2rem; line-height: 1; flex: 0 0 auto; }
+.anb-btn-text { flex: 1 1 auto; }
+.anb-btn-count { flex: 0 0 auto; padding: 4px 10px; border: 1px solid rgba(194,181,163,.16); border-radius: 999px; background: rgba(0,0,0,.3); font-size: 1.1rem; letter-spacing: .06em; min-width: 48px; text-align: center; }
+.anb-gallery { margin-top: 16px; }
+.anb-gallery .media-card__media { aspect-ratio: 1.77; }
+@media (max-width: 820px) {
+  .anb-actions { gap: 12px; }
+  .anb-hero-media img { aspect-ratio: 1.6; }
+}
+</style>
+
+<script>
+(function () {
+  const NS = 'viktorbrenek.github.io';
+  const DL_KEY = 'arcanum-nb-dl';
+  const EN_KEY = 'arcanum-nb-endorse';
+  const BASE = 'https://api.countapi.xyz';
+
+  function fmt(n) { return typeof n === 'number' ? n.toLocaleString('cs-CZ') : '—'; }
+
+  async function getCount(key) {
+    try {
+      const r = await fetch(BASE + '/get/' + NS + '/' + key);
+      const d = await r.json();
+      return d.value;
+    } catch { return null; }
+  }
+
+  async function hitCount(key) {
+    try {
+      const r = await fetch(BASE + '/hit/' + NS + '/' + key);
+      const d = await r.json();
+      return d.value;
+    } catch { return null; }
+  }
+
+  async function init() {
+    const dlBtn = document.getElementById('downloadBtn');
+    const dlCount = document.getElementById('dlCount');
+    const endorseBtn = document.getElementById('endorseBtn');
+    const endorseCount = document.getElementById('endorseCount');
+    const endorseIcon = document.getElementById('endorseIcon');
+
+    const endorsed = localStorage.getItem('anb-endorsed') === '1';
+    if (endorsed) {
+      endorseBtn.classList.add('is-endorsed');
+      endorseIcon.textContent = '♥';
+    }
+
+    const [dlVal, enVal] = await Promise.all([getCount(DL_KEY), getCount(EN_KEY)]);
+    dlCount.textContent = fmt(dlVal);
+    endorseCount.textContent = fmt(enVal);
+
+    dlBtn.addEventListener('click', async () => {
+      dlCount.textContent = '…';
+      const v = await hitCount(DL_KEY);
+      dlCount.textContent = fmt(v);
+    });
+
+    endorseBtn.addEventListener('click', async () => {
+      if (localStorage.getItem('anb-endorsed') === '1') return;
+      localStorage.setItem('anb-endorsed', '1');
+      endorseBtn.classList.add('is-endorsed');
+      endorseIcon.textContent = '♥';
+      endorseCount.textContent = '…';
+      const v = await hitCount(EN_KEY);
+      endorseCount.textContent = fmt(v);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+
+<footer class="site-footer"></footer></body>
