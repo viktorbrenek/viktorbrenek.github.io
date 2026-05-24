@@ -509,11 +509,16 @@ async function initYoutubeWidget() {
 }
 
 function initGamedevLightbox() {
-  if (document.body.dataset.page !== "gamedev") {
+  const isGamedev = document.body.dataset.page === "gamedev";
+  const hasArcanum = !!document.querySelector(".anb-gallery");
+
+  if (!isGamedev && !hasArcanum) {
     return;
   }
 
-  const images = document.querySelectorAll(".media-card__media img");
+  const images = document.querySelectorAll(
+    isGamedev ? ".media-card__media img" : ".anb-gallery .media-card__media img"
+  );
   if (images.length === 0) {
     return;
   }
