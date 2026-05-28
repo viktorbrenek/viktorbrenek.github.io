@@ -21,6 +21,7 @@
         <li><a href="#screenshots">Screenshots</a></li>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#shoutouts">Shoutouts</a></li>
+        <li><a href="#changelog">Changelog</a></li>
       </ol>
       <ol id="toc-cs" style="display:none">
         <li><a href="#itemization-cs">ARPG Itemizace</a></li>
@@ -36,6 +37,7 @@
         <li><a href="#screenshots-cs">Screenshoty</a></li>
         <li><a href="#installation-cs">Instalace</a></li>
         <li><a href="#shoutouts-cs">Shoutouts</a></li>
+        <li><a href="#changelog-cs">Changelog</a></li>
       </ol>
     </nav>
   </div>
@@ -190,6 +192,27 @@
       <li>CDude, harleyfolgado, Barbarbrick, Jen, and everyone on the community Discord. Viktor</li>
     </ul>
 
+    <h2 id="changelog">Changelog</h2>
+
+    <h3>1. Blood Magic</h3>
+    <ul>
+      <li><strong>Cast Costs:</strong> Harm cost set to 7 HP (from 12). Finger of Death (Quench Life) cost set to 70 HP (from 120). Tooltips updated.</li>
+      <li><strong>Lifetaker Siphon:</strong> Implemented maintained AoE siphon — drains/heals 5–10 HP every 10s from surrounding enemies.</li>
+      <li><strong>Summon Undead Maintain:</strong> Fixed maintenance tick to pay 5 HP per summoned creature every 10s (rerouted through <code>magictech.c</code> loops).</li>
+    </ul>
+
+    <h3>2. Graphics Optimization</h3>
+    <ul>
+      <li><strong>Tint Lag:</strong> Hardcoded XRGB masks/shifts in <code>video.c</code> screen tint loops to enable compiler vectorization.</li>
+      <li><strong>Alpha Blending:</strong> Replaced global variable reads with literal constants in <code>color.h</code> helpers to speed up <code>art_blit</code> loops — fixes poison gas / trap overlay lag.</li>
+    </ul>
+
+    <h3>3. Lizard Throwing</h3>
+    <ul>
+      <li><strong>Art Fallback:</strong> Added fallback checks in <code>anim.c</code> to redirect missing <code>TIG_ART_ANIM_THROW</code> to unarmed attacks.</li>
+      <li><strong>Quickbar Lock / Reset:</strong> Added <code>sub_465020</code> call to throw cleanup to restore equipped weapon/shield sprite after throwing finishes.</li>
+    </ul>
+
   </div>
   <!-- ═══ END ENGLISH ═══ -->
 
@@ -300,6 +323,27 @@
       <li><strong>Shark</strong> — Tech rebalance inspirace</li>
       <li><strong>TheDragon13</strong> — Arcanum Equalibrium / Terror's Arcanum</li>
       <li>CDude, harleyfolgado, Barbarbrick, Jen a celá community Discord komunita. Viktor</li>
+    </ul>
+
+    <h2 id="changelog-cs">Changelog</h2>
+
+    <h3>1. Blood Magic</h3>
+    <ul>
+      <li><strong>Cena sesílání:</strong> Harm cost snížen na 7 HP (z 12). Finger of Death (Quench Life) cost snížen na 70 HP (z 120). Tooltipy aktualizovány.</li>
+      <li><strong>Lifetaker Siphon:</strong> Implementován udržovaný AoE siphon — drainuje/healuje 5–10 HP každých 10s od okolních nepřátel.</li>
+      <li><strong>Summon Undead Maintain:</strong> Opraven maintenance tick — platí 5 HP za každého přivolaného tvora každých 10s (přesměrováno přes smyčky v <code>magictech.c</code>).</li>
+    </ul>
+
+    <h3>2. Grafická optimalizace</h3>
+    <ul>
+      <li><strong>Tint Lag:</strong> Hardcoded XRGB masky/shifty ve screen tint smyčkách v <code>video.c</code> pro povolení compiler vectorization.</li>
+      <li><strong>Alpha Blending:</strong> Nahrazeny globální proměnné literálními konstantami v helperech <code>color.h</code> pro urychlení smyček <code>art_blit</code> — opravuje lag overlay jedovatého plynu a pastí.</li>
+    </ul>
+
+    <h3>3. Házení ještěrkou</h3>
+    <ul>
+      <li><strong>Art Fallback:</strong> Přidány fallback kontroly v <code>anim.c</code> pro přesměrování chybějícího <code>TIG_ART_ANIM_THROW</code> na unarmed útoky.</li>
+      <li><strong>Quickbar Lock / Reset:</strong> Přidáno volání <code>sub_465020</code> do throw cleanup pro obnovení sprite equipované zbraně/štítu po dokončení hodu.</li>
     </ul>
 
   </div>
