@@ -124,7 +124,7 @@
     <p>Enemies roll as <strong>Magic, Rare, or Unique</strong> with randomized bonus types: Vampiric, Thorned, Swift, Berserker, Shielded, and more. Unique monsters have procedurally generated titles. Difficulty and loot quality scale with monster rarity. Rare monsters are especially important for orb drops used in crafting.</p>
 
     <h2 id="races">New Playable Races</h2>
-    <p><strong>Dark Elf, Half-Ogre, Orc, and Lizard Man</strong> are restored from cut content and fully playable, with working body types, portraits, and dialog reactions. Each has unique racial stats matching their lore.</p>
+    <p><strong>Dark Elf, Ogre, Orc, and Lizard Man</strong> are restored from cut content and fully playable, with working body types, portraits, and dialog reactions. Each has unique racial stats matching their lore.</p>
     <p><em>Implemented from UAP by Drog Black Tooth + additional Orc art files from F-man (Discord community) — with permission. Thank you!</em></p>
 
     <h2 id="weapons">New Weapon Classes</h2>
@@ -194,6 +194,63 @@
 
     <h2 id="changelog">Changelog</h2>
 
+    <h3>2026-06-17</h3>
+    <h4>Uniques</h4>
+    <ul>
+      <li>Uniques expanded 5 → 10 (5 weapon / 5 armor) with affixes + build-enabling procs. World-random drop only (2% base).</li>
+    </ul>
+    <h4>Main-Menu Background</h4>
+    <ul>
+      <li><strong>Fullscreen custom BG:</strong> Art over 600px tall now stretches across the whole screen; buttons stay centered. Two windows — opaque fullscreen BG + transparent centered menu overlay.</li>
+      <li><strong>True-color path:</strong> 8-bit .ART rendered brown → added true-color BMP path (<code>tig_video_buffer_load_from_bmp</code> + bilinear blit). menu.bmp → MainMenuBack.bmp across 4 data roots.</li>
+      <li><strong>Follow-up fixes:</strong> (a) action bar visible/clickable at bottom → BG window ALWAYS_ON_BOTTOM → ALWAYS_ON_TOP; (b) BG vanished on Single Player submenu → gate widened to MAINMENU / SINGLE_PLAYER / PICK_NEW_OR_PREGEN.</li>
+      <li><strong>Aspect fix:</strong> On 4:3 (800×600) the 16:9 image was squished → CSS-cover style crop (no float drift).</li>
+    </ul>
+    <h4>Options</h4>
+    <ul>
+      <li><strong>Scroll Speed reset bug:</strong> Getter read perception-based scroll distance (0 in menu) so the slider snapped to min. Now reads/persists the highres config ScrollDist and applies live.</li>
+    </ul>
+    <h4>Debug Hotkeys (testing)</h4>
+    <ul>
+      <li><strong>Ctrl+F10:</strong> Boost character to level 30.</li>
+      <li><strong>Ctrl+F11:</strong> Force-complete the main story — drops you back to the start with the game flagged as finished. Testing only.</li>
+    </ul>
+    <h4>Spells</h4>
+    <ul>
+      <li><strong>Swarm of Spiders:</strong> Count 9 → ~4–5. Summons now reliably dismiss on spell end and always render visible (no more invisible or stuck spiders).</li>
+      <li><strong>Read Aura:</strong> Cost 15 → 20.</li>
+      <li><strong>Divination:</strong> Slot 5 → "Identify".</li>
+    </ul>
+    <h4>Engine Crash Fixes</h4>
+    <ul>
+      <li>World-map random encounters no longer crash: skip-and-log on object create failure, zero all 5 encounter slots (was leaving slots 1–4 as garbage), and fixed spawn-offset coordinate packing for larger groups.</li>
+    </ul>
+    <h4>Performance</h4>
+    <ul>
+      <li><strong>King's Inn (Dernholm) FPS 60 → 5 → 0:</strong> Root cause was stat queries running ~63× O(inventory) passes per stat lookup. Fix: single inventory pass dispatched by item location. ~9× faster, FPS restored, functionally identical. All perf instrumentation removed.</li>
+    </ul>
+    <h4>Meditation + Read Aura</h4>
+    <ul>
+      <li><strong>Meditation (self-target):</strong> Did nothing — self-target spells never reach the on-target hook. Moved to BEGIN hook. 15 HP → 30 fatigue.</li>
+      <li><strong>Read Aura:</strong> Description fixed (no longer claims damage).</li>
+    </ul>
+    <h4>NPC Rarity Level Gate</h4>
+    <ul>
+      <li>UNIQUE/SET rolls only on NPC critters level ≥ 30.</li>
+    </ul>
+    <h4>Resist Affix Nerf</h4>
+    <ul>
+      <li>11 resist affixes pulled from 15–40% down to an 8–15% band. Lesser (Fireproof / Insulated / Venomproof) → 10, Spellward → 8, Sanctified → 12, Grounded / Blazeward → 15, cursed (Wraithforged / Abyssal / Stygian / Thunderclad) capped → 15. Values + descriptions updated.</li>
+    </ul>
+
+    <h3>2026-06-14 — Player House + Spell Rework Batch</h3>
+    <ul>
+      <li><strong>Player house (Ctrl+F8):</strong> Void-map clone of the endgame dungeon. Teleport in/out, return + built flag stored on PC pad fields. Chest persists via map sector delta. (Per-save state must live on the saved object — cfg files don't survive save/load.)</li>
+      <li><strong>Lifetaker:</strong> Maintained AoE HP siphon via the summon-undead maintenance hook.</li>
+      <li><strong>Summon Tiger → Swarm of Spiders:</strong> Summons a lesser spider per empty tile in radius.</li>
+      <li><strong>Options UI + hotkeys:</strong> Crash fix (missing options_ui.mes); added Resolution / Window Mode / Scroll Speed / Skip Intro+Logos controls, 8-slot tab limit, Ctrl+F10 level-30 boost, WASD camera remap.</li>
+    </ul>
+
     <h3>1. Blood Magic</h3>
     <ul>
       <li><strong>Cast Costs:</strong> Harm cost set to 7 HP (from 12). Finger of Death (Quench Life) cost set to 70 HP (from 120). Tooltips updated.</li>
@@ -257,7 +314,7 @@
     <p>Nepřátelé se hazují jako <strong>Magic, Rare nebo Unique</strong> s náhodnými bonus typy: Vampiric, Thorned, Swift, Berserker, Shielded a další. Unique monstra mají procedurálně generované tituly. Obtížnost a loot quality se škálují s raritou monstra. Rare monstra jsou klíčová pro orb dropy potřebné ke craftingu.</p>
 
     <h2 id="races-cs">Nové Hratelné Rasy</h2>
-    <p><strong>Dark Elf, Half-Ogre, Orc a Lizard Man</strong> jsou obnoveny ze střiženého obsahu a plně hratelné — s funkčními body types, portréty a dialog reakcemi. Každá rasa má unikátní rasové staty odpovídající jejich lore.</p>
+    <p><strong>Dark Elf, Ogre, Orc a Lizard Man</strong> jsou obnoveny ze střiženého obsahu a plně hratelné — s funkčními body types, portréty a dialog reakcemi. Každá rasa má unikátní rasové staty odpovídající jejich lore.</p>
     <p><em>Implementováno z UAP od Drog Black Tooth + další Orc art files od F-mana (Discord community) — s povolením. Díky!</em></p>
 
     <h2 id="weapons-cs">Nové Třídy Zbraní</h2>
@@ -326,6 +383,63 @@
     </ul>
 
     <h2 id="changelog-cs">Changelog</h2>
+
+    <h3>2026-06-17</h3>
+    <h4>Uniky</h4>
+    <ul>
+      <li>Uniky rozšířeny 5 → 10 (5 zbraní / 5 armorů) s afixy + build-enabling procy. Drop jen world-random (2% base).</li>
+    </ul>
+    <h4>Background hlavního menu</h4>
+    <ul>
+      <li><strong>Fullscreen custom BG:</strong> Art vyšší než 600px se nyní roztáhne přes celou obrazovku; buttony zůstávají centrované. Dvě okna — opaque fullscreen BG + transparent centered menu overlay.</li>
+      <li><strong>True-color cesta:</strong> 8-bit .ART byl hnědý → přidána true-color BMP cesta (<code>tig_video_buffer_load_from_bmp</code> + bilinear blit). menu.bmp → MainMenuBack.bmp ve 4 data rootech.</li>
+      <li><strong>Follow-up fixy:</strong> (a) action bar viditelný/klikací dole → BG okno ALWAYS_ON_BOTTOM → ALWAYS_ON_TOP; (b) BG zmizel na Single Player submenu → gate rozšířen na MAINMENU / SINGLE_PLAYER / PICK_NEW_OR_PREGEN.</li>
+      <li><strong>Aspect fix:</strong> Na 4:3 (800×600) byl 16:9 obrázek squished → CSS-cover crop (bez float driftu).</li>
+    </ul>
+    <h4>Options</h4>
+    <ul>
+      <li><strong>Scroll Speed reset bug:</strong> Getter četl perception-based scroll distance (0 v menu), takže slider snapnul na min. Nyní čte/persistuje highres config ScrollDist a aplikuje live.</li>
+    </ul>
+    <h4>Debug hotkeys (testing)</h4>
+    <ul>
+      <li><strong>Ctrl+F10:</strong> Boost postavy na level 30.</li>
+      <li><strong>Ctrl+F11:</strong> Force-complete hlavního příběhu — hodí tě zpět na start, hra je flagnutá jako dohraná. Jen pro testing.</li>
+    </ul>
+    <h4>Kouzla</h4>
+    <ul>
+      <li><strong>Swarm of Spiders:</strong> Počet 9 → ~4–5. Summony se nyní spolehlivě dismissnou na konci kouzla a vždy se vykreslí viditelně (žádní neviditelní nebo zaseklí pavouci).</li>
+      <li><strong>Read Aura:</strong> Cost 15 → 20.</li>
+      <li><strong>Divination:</strong> Slot 5 → "Identify".</li>
+    </ul>
+    <h4>Opravy crashů enginu</h4>
+    <ul>
+      <li>World-map random encounters už necrashují: skip-and-log při selhání object create, zero všech 5 encounter slotů (předtím zůstávaly sloty 1–4 jako garbage) a oprava spawn-offset coord packingu pro větší skupiny.</li>
+    </ul>
+    <h4>Výkon</h4>
+    <ul>
+      <li><strong>King's Inn (Dernholm) FPS 60 → 5 → 0:</strong> Root cause — stat queries běžely ~63× O(inventory) passes per stat lookup. Fix: single inventory pass dispatch by item location. ~9× rychlejší, FPS obnoveno, funkčně identické. Veškerá perf instrumentace odstraněna.</li>
+    </ul>
+    <h4>Meditation + Read Aura</h4>
+    <ul>
+      <li><strong>Meditation (self-target):</strong> Nedělalo nic — self-target kouzla nedosáhnou on-target hooku. Přesunuto na BEGIN hook. 15 HP → 30 fatigue.</li>
+      <li><strong>Read Aura:</strong> Popisek opraven (už netvrdí damage).</li>
+    </ul>
+    <h4>NPC rarity level gate</h4>
+    <ul>
+      <li>UNIQUE/SET roll jen na NPC critterech level ≥ 30.</li>
+    </ul>
+    <h4>Nerf resist afixů</h4>
+    <ul>
+      <li>11 resist afixů staženo z 15–40% na band 8–15%. Lesser (Fireproof / Insulated / Venomproof) → 10, Spellward → 8, Sanctified → 12, Grounded / Blazeward → 15, cursed (Wraithforged / Abyssal / Stygian / Thunderclad) capped → 15. Hodnoty + popisky aktualizovány.</li>
+    </ul>
+
+    <h3>2026-06-14 — Player House + Spell Rework Batch</h3>
+    <ul>
+      <li><strong>Player house (Ctrl+F8):</strong> Void-mapa klon endgame dungeonu. Teleport in/out, return + built flag uložen na PC pad fields. Chest persist přes map sector delta. (Per-save stav musí žít na uloženém objektu — cfg soubory nepřežijí save/load.)</li>
+      <li><strong>Lifetaker:</strong> Udržovaný AoE HP siphon přes summon-undead maintenance hook.</li>
+      <li><strong>Summon Tiger → Swarm of Spiders:</strong> Summonuje lesser spidera per prázdný tile v radiusu.</li>
+      <li><strong>Options UI + hotkeys:</strong> Crash fix (chybějící options_ui.mes); přidány Resolution / Window Mode / Scroll Speed / Skip Intro+Logos controls, 8-slot tab limit, Ctrl+F10 level-30 boost, WASD camera remap.</li>
+    </ul>
 
     <h3>1. Blood Magic</h3>
     <ul>
