@@ -145,7 +145,7 @@
     <h3>Entering the Rift</h3>
     <ul>
       <li><strong>Obtain Map:</strong> Hunt high-level monsters (Level 30+) in the main world. Magic, Rare, and Unique enemies have increased drop rates for the <em>Map of the Void</em>.</li>
-      <li><strong>Activate:</strong> Right-click the Map of the Void to consume it and open a Rift.</li>
+      <li><strong>Activate:</strong> Drag the Map of the Void onto any equippable item to consume it and open a Rift.</li>
     </ul>
     <h3>Inside the Rift</h3>
     <ul>
@@ -155,7 +155,7 @@
     <h3>Rewards &amp; Exit</h3>
     <ul>
       <li><strong>Loot Chest:</strong> Clearing all monsters spawns a Reward Chest containing scaling gold, crafting orbs, high-rarity equipment, a new Map of the Void (pre-upgraded to the next Tier), and a Void Portal Stone.</li>
-      <li><strong>Return Home:</strong> Right-click the Void Portal Stone (consumed) or the Map of the Void to teleport back to your exact entry point in the main world.</li>
+      <li><strong>Return Home:</strong> Drag the Void Portal Stone (consumed) or the Map of the Void onto any equippable item to teleport back to your exact entry point in the main world.</li>
     </ul>
 
     <h2 id="screenshots">Screenshots</h2>
@@ -194,51 +194,87 @@
 
     <h2 id="changelog">Changelog</h2>
 
+    <h3>2026-06-21</h3>
+    <h3>✨ New</h3>
+    <ul>
+      <li><strong>Custom fullscreen main-menu background</strong> — the image stretches across the whole screen at any resolution, buttons stay centered. Switched to true-color BMP (sharp colors), "cover" aspect (no 4:3 distortion), hid the leftover in-menu game bar, background applied in the Single Player submenu too.</li>
+      <li><strong>Imbue runes</strong> — 5 elemental runes (fire/poison/lightning/physical/void). Drag a rune onto a weapon → engraves a permanent bonus. Elemental runes convert all of the weapon's damage to their type + a flat bonus; the void rune = utility (fatigue). Max 1 rune per weapon, icon + description in the tooltip.</li>
+      <li><strong>Quest "Five Sigils" (Viktor)</strong> — clear one rift of each of the 5 types → Viktor unlocks selling imbue runes. Progress is reported on every rift entry.</li>
+      <li><strong>Endgame swarm rifts</strong> — physical and poison rifts are now hordes (more enemies, closer to the player) instead of a slow trickle.</li>
+    </ul>
+    <h3>🔧 Fixes</h3>
+    <ul>
+      <li><strong>Gate to Gilbert Bates' estate</strong> — the guard let you in but the fence gate stayed locked. Now it unlocks after permission ("The gate unlocks.").</li>
+      <li><strong>Set items from endgame chests</strong> showed no set bonus (turquoise name but no set info). Fixed — they now show piece count and bonuses and count toward set effects.</li>
+      <li><strong>Weapon speed affixes were reversed</strong> — "Swift"/"Fleet" weapons made the weapon slower instead of faster. Now correct (higher speed = faster).</li>
+      <li><strong>Merchant empty after a few days</strong> (Shrouded Hills general store) — completely empty stock after a few in-game days. Fixed, restock works.</li>
+      <li><strong>Five Sigils couldn't be completed</strong> — reward/progress didn't count for most rift enemies (boars, spiders, elementals). Now the rift completes on killing any type.</li>
+      <li><strong>Runes didn't unlock</strong> in the shop after turning in the quest. Fixed — they appear on the next restock.</li>
+      <li><strong>Five Sigils</strong> — the dialog was missing the option to accept the quest. Fixed.</li>
+      <li><strong>Reward chest didn't spawn</strong> after save/load mid-rift. Fixed.</li>
+      <li><strong>Master Rune duplicated</strong> on repeated rift entry. Fixed.</li>
+      <li><strong>Crashes on random encounters</strong> — fixed 3 causes (uninitialized slots, hard exit on spawn failure, bad coordinates). Encounters no longer crash.</li>
+      <li><strong>Swarm of Spiders didn't disappear</strong> after fatigue ran out (invisible live spiders, lingering portraits). Fixed — the spell ends before you fall unconscious, summons vanish cleanly. Plus an invisible-summon fix.</li>
+      <li><strong>Meditation didn't work</strong> (self-target) — fixed (15 HP → 30 fatigue).</li>
+      <li><strong>Read Aura</strong> description fixed (leftover damage text).</li>
+      <li><strong>Scroll Speed</strong> in settings reset when leaving the menu. Fixed.</li>
+    </ul>
+    <h3>⚖️ Balance</h3>
+    <ul>
+      <li><strong>Endgame reward scaling</strong> — the first chest no longer dumps uniques/sets right away (previously ~39% chance). Gentler curve with a cap, max 1 set/unique per chest. First chests are mainly rare/epic; rare drops are genuinely rare and don't flood into all-set at high tier.</li>
+      <li><strong>Rune prices</strong> (~2g → 350–400g) and XP for Viktor's quest 4× (2500 → 9900).</li>
+      <li><strong>Read Aura</strong> cost 15 → 20.</li>
+    </ul>
+    <h3>⚡ Performance</h3>
+    <ul>
+      <li><strong>King's Inn (Dernholm) FPS drop (60→0)</strong> — rarity/set stats scanned NPC inventory dozens of times per tick. Single-pass fix, ~9× faster, FPS restored.</li>
+    </ul>
+
     <h3>2026-06-17</h3>
-    <h4>Uniques</h4>
+    <h3>Uniques</h3>
     <ul>
       <li>Uniques expanded 5 → 10 (5 weapon / 5 armor) with affixes + build-enabling procs. World-random drop only (2% base).</li>
     </ul>
-    <h4>Main-Menu Background</h4>
+    <h3>Main-Menu Background</h3>
     <ul>
       <li><strong>Fullscreen custom BG:</strong> Art over 600px tall now stretches across the whole screen; buttons stay centered. Two windows — opaque fullscreen BG + transparent centered menu overlay.</li>
       <li><strong>True-color path:</strong> 8-bit .ART rendered brown → added true-color BMP path (<code>tig_video_buffer_load_from_bmp</code> + bilinear blit). menu.bmp → MainMenuBack.bmp across 4 data roots.</li>
       <li><strong>Follow-up fixes:</strong> (a) action bar visible/clickable at bottom → BG window ALWAYS_ON_BOTTOM → ALWAYS_ON_TOP; (b) BG vanished on Single Player submenu → gate widened to MAINMENU / SINGLE_PLAYER / PICK_NEW_OR_PREGEN.</li>
       <li><strong>Aspect fix:</strong> On 4:3 (800×600) the 16:9 image was squished → CSS-cover style crop (no float drift).</li>
     </ul>
-    <h4>Options</h4>
+    <h3>Options</h3>
     <ul>
       <li><strong>Scroll Speed reset bug:</strong> Getter read perception-based scroll distance (0 in menu) so the slider snapped to min. Now reads/persists the highres config ScrollDist and applies live.</li>
     </ul>
-    <h4>Debug Hotkeys (testing)</h4>
+    <h3>Debug Hotkeys (testing)</h3>
     <ul>
       <li><strong>Ctrl+F10:</strong> Boost character to level 30.</li>
       <li><strong>Ctrl+F11:</strong> Force-complete the main story — drops you back to the start with the game flagged as finished. Testing only.</li>
     </ul>
-    <h4>Spells</h4>
+    <h3>Spells</h3>
     <ul>
       <li><strong>Swarm of Spiders:</strong> Count 9 → ~4–5. Summons now reliably dismiss on spell end and always render visible (no more invisible or stuck spiders).</li>
       <li><strong>Read Aura:</strong> Cost 15 → 20.</li>
       <li><strong>Divination:</strong> Slot 5 → "Identify".</li>
     </ul>
-    <h4>Engine Crash Fixes</h4>
+    <h3>Engine Crash Fixes</h3>
     <ul>
       <li>World-map random encounters no longer crash: skip-and-log on object create failure, zero all 5 encounter slots (was leaving slots 1–4 as garbage), and fixed spawn-offset coordinate packing for larger groups.</li>
     </ul>
-    <h4>Performance</h4>
+    <h3>Performance</h3>
     <ul>
       <li><strong>King's Inn (Dernholm) FPS 60 → 5 → 0:</strong> Root cause was stat queries running ~63× O(inventory) passes per stat lookup. Fix: single inventory pass dispatched by item location. ~9× faster, FPS restored, functionally identical. All perf instrumentation removed.</li>
     </ul>
-    <h4>Meditation + Read Aura</h4>
+    <h3>Meditation + Read Aura</h3>
     <ul>
       <li><strong>Meditation (self-target):</strong> Did nothing — self-target spells never reach the on-target hook. Moved to BEGIN hook. 15 HP → 30 fatigue.</li>
       <li><strong>Read Aura:</strong> Description fixed (no longer claims damage).</li>
     </ul>
-    <h4>NPC Rarity Level Gate</h4>
+    <h3>NPC Rarity Level Gate</h3>
     <ul>
       <li>UNIQUE/SET rolls only on NPC critters level ≥ 30.</li>
     </ul>
-    <h4>Resist Affix Nerf</h4>
+    <h3>Resist Affix Nerf</h3>
     <ul>
       <li>11 resist affixes pulled from 15–40% down to an 8–15% band. Lesser (Fireproof / Insulated / Venomproof) → 10, Spellward → 8, Sanctified → 12, Grounded / Blazeward → 15, cursed (Wraithforged / Abyssal / Stygian / Thunderclad) capped → 15. Values + descriptions updated.</li>
     </ul>
@@ -264,8 +300,9 @@
       <li><strong>Alpha Blending:</strong> Replaced global variable reads with literal constants in <code>color.h</code> helpers to speed up <code>art_blit</code> loops — fixes poison gas / trap overlay lag.</li>
     </ul>
 
-    <h3>3. Lizard Throwing</h3>
+    <h3>3. Lizard Race Throwing</h3>
     <ul>
+      <li><strong>Throw bug:</strong> The Lizard Man race couldn't throw items (missing throw animation). Fixed.</li>
       <li><strong>Art Fallback:</strong> Added fallback checks in <code>anim.c</code> to redirect missing <code>TIG_ART_ANIM_THROW</code> to unarmed attacks.</li>
       <li><strong>Quickbar Lock / Reset:</strong> Added <code>sub_465020</code> call to throw cleanup to restore equipped weapon/shield sprite after throwing finishes.</li>
     </ul>
@@ -335,7 +372,7 @@
     <h3>Vstup do Riftu</h3>
     <ul>
       <li><strong>Získání Mapy:</strong> Lovte high-level monstra (Level 30+) v hlavním světě. Magic, Rare a Unique nepřátelé mají zvýšenou drop rate pro <em>Map of the Void</em>.</li>
-      <li><strong>Aktivace:</strong> Klikni pravým tlačítkem na Map of the Void — spotřebuje ji a otevře Rift.</li>
+      <li><strong>Aktivace:</strong> Přetáhni Map of the Void na equipovatelný item — spotřebuje ji a otevře Rift.</li>
     </ul>
     <h3>Uvnitř Riftu</h3>
     <ul>
@@ -345,7 +382,7 @@
     <h3>Odměny a Odchod</h3>
     <ul>
       <li><strong>Loot Chest:</strong> Zabití všech monster spawnuje Reward Chest s gold, crafting orby, high-rarity equipment, novou Map of the Void (předupgradovaná na další Tier) a Void Portal Stone.</li>
-      <li><strong>Návrat Domů:</strong> Klikni pravým na Void Portal Stone (spotřebuje se) nebo na Map of the Void → teleport zpět na přesné místo vstupu v hlavním světě.</li>
+      <li><strong>Návrat Domů:</strong> Přetáhni Void Portal Stone (spotřebuje se) nebo Map of the Void na equipovatelný item → teleport zpět na přesné místo vstupu v hlavním světě.</li>
     </ul>
 
     <h2 id="screenshots-cs">Screenshoty</h2>
@@ -384,51 +421,87 @@
 
     <h2 id="changelog-cs">Changelog</h2>
 
+    <h3>2026-06-21</h3>
+    <h3>✨ Nové</h3>
+    <ul>
+      <li><strong>Vlastní fullscreen pozadí hlavního menu</strong> — obrázek se roztáhne přes celou obrazovku v jakémkoli rozlišení, tlačítka zůstávají vycentrovaná. Přepnuto na true-color BMP (ostré barvy), aspect „cover" (bez deformace na 4:3), skryta zbytková herní lišta v menu, pozadí i v Single Player podmenu.</li>
+      <li><strong>Imbue runy</strong> — 5 elementálních run (oheň/jed/blesk/fyzická/void). Přetáhni runu na zbraň → vryje permanentní bonus. Elementální runy převedou veškerý damage zbraně na svůj typ + plochý bonus; void runa = utility (fatigue). Max 1 runa na zbraň, ikona + popis v tooltipu.</li>
+      <li><strong>Quest „Five Sigils" (Viktor)</strong> — vyčisti po jednom rift od každého z 5 typů → Viktor odemkne prodej imbue run. Průběh se hlásí při každém vstupu do riftu.</li>
+      <li><strong>Endgame swarm rifty</strong> — fyzický a jedový rift jsou teď hordy (víc nepřátel, blíž k hráči) místo pomalého kapání.</li>
+    </ul>
+    <h3>🔧 Opravy</h3>
+    <ul>
+      <li><strong>Brána k sídlu Gilberta Batese</strong> — stráž tě pustila dovnitř, ale plotová brána zůstala zamčená. Teď se po svolení odemkne (hláška „The gate unlocks.").</li>
+      <li><strong>Set itemy z endgame beden</strong> neukazovaly set bonus (tyrkysový název, ale žádné info o setu). Opraveno — ukazují počet kusů i bonusy a počítají se do set efektů.</li>
+      <li><strong>Speed affixy zbraní byly obrácené</strong> — „Swift"/„Fleet" zbraně dělaly zbraň pomalejší místo rychlejší. Teď fungují správně (vyšší speed = rychlejší).</li>
+      <li><strong>Obchodník prázdný po pár dnech</strong> (Shrouded Hills general store) — kompletně prázdný bazar po pár herních dnech. Opraveno, restock funguje.</li>
+      <li><strong>Five Sigils nešlo dokončit</strong> — odměna/postup se nezapočítával u většiny riftových nepřátel (boaři, pavouci, elementálové). Teď se rift dokončí po zabití jakéhokoli typu.</li>
+      <li><strong>Runy se neodemkly</strong> v obchodě po odevzdání questu. Opraveno — naskočí při dalším restocku.</li>
+      <li><strong>Five Sigils</strong> — chyběla možnost přijmout quest v dialogu. Opraveno.</li>
+      <li><strong>Reward bedna se nespawnla</strong> po save/load uprostřed riftu. Opraveno.</li>
+      <li><strong>Master Rune se duplikovala</strong> při opakovaném vstupu do riftu. Opraveno.</li>
+      <li><strong>Padání hry na náhodných encounterech</strong> — opraveny 3 příčiny (neinicializované sloty, tvrdý exit při selhání spawnu, špatné souřadnice). Encountery už nepadají.</li>
+      <li><strong>Swarm of Spiders nemizeli</strong> po vyčerpání fatigue (neviditelní živí pavouci, visící portréty). Opraveno — kouzlo se ukončí dřív než upadneš do bezvědomí, sumony zmizí čistě. Plus oprava neviditelných sumonů.</li>
+      <li><strong>Meditation nefungovala</strong> (self-target) — opraveno (15 HP → 30 fatigue).</li>
+      <li><strong>Read Aura</strong> popis opraven (zbytkový text o damage).</li>
+      <li><strong>Scroll Speed</strong> v nastavení se resetoval při odchodu z menu. Opraveno.</li>
+    </ul>
+    <h3>⚖️ Balanc</h3>
+    <ul>
+      <li><strong>Endgame reward scaling</strong> — první bedna už nesype unikáty/sety hned (dřív ~39% šance). Pozvolnější křivka se stropem, max 1 set/unique na bednu. První bedny hlavně rare/epic, vzácné dropy jsou skutečně vzácné a netonou do all-set při vysokém tieru.</li>
+      <li><strong>Ceny run</strong> (~2g → 350–400g) a XP za Viktorův quest 4× (2500 → 9900).</li>
+      <li><strong>Read Aura</strong> cena 15 → 20.</li>
+    </ul>
+    <h3>⚡ Výkon</h3>
+    <ul>
+      <li><strong>King's Inn (Dernholm) propad FPS (60→0)</strong> — rarity/set staty skenovaly inventář NPC desítkykrát za tick. Single-pass fix, ~9× rychlejší, FPS obnoveno.</li>
+    </ul>
+
     <h3>2026-06-17</h3>
-    <h4>Uniky</h4>
+    <h3>Uniky</h3>
     <ul>
       <li>Uniky rozšířeny 5 → 10 (5 zbraní / 5 armorů) s afixy + build-enabling procy. Drop jen world-random (2% base).</li>
     </ul>
-    <h4>Background hlavního menu</h4>
+    <h3>Background hlavního menu</h3>
     <ul>
       <li><strong>Fullscreen custom BG:</strong> Art vyšší než 600px se nyní roztáhne přes celou obrazovku; buttony zůstávají centrované. Dvě okna — opaque fullscreen BG + transparent centered menu overlay.</li>
       <li><strong>True-color cesta:</strong> 8-bit .ART byl hnědý → přidána true-color BMP cesta (<code>tig_video_buffer_load_from_bmp</code> + bilinear blit). menu.bmp → MainMenuBack.bmp ve 4 data rootech.</li>
       <li><strong>Follow-up fixy:</strong> (a) action bar viditelný/klikací dole → BG okno ALWAYS_ON_BOTTOM → ALWAYS_ON_TOP; (b) BG zmizel na Single Player submenu → gate rozšířen na MAINMENU / SINGLE_PLAYER / PICK_NEW_OR_PREGEN.</li>
       <li><strong>Aspect fix:</strong> Na 4:3 (800×600) byl 16:9 obrázek squished → CSS-cover crop (bez float driftu).</li>
     </ul>
-    <h4>Options</h4>
+    <h3>Options</h3>
     <ul>
       <li><strong>Scroll Speed reset bug:</strong> Getter četl perception-based scroll distance (0 v menu), takže slider snapnul na min. Nyní čte/persistuje highres config ScrollDist a aplikuje live.</li>
     </ul>
-    <h4>Debug hotkeys (testing)</h4>
+    <h3>Debug hotkeys (testing)</h3>
     <ul>
       <li><strong>Ctrl+F10:</strong> Boost postavy na level 30.</li>
       <li><strong>Ctrl+F11:</strong> Force-complete hlavního příběhu — hodí tě zpět na start, hra je flagnutá jako dohraná. Jen pro testing.</li>
     </ul>
-    <h4>Kouzla</h4>
+    <h3>Kouzla</h3>
     <ul>
       <li><strong>Swarm of Spiders:</strong> Počet 9 → ~4–5. Summony se nyní spolehlivě dismissnou na konci kouzla a vždy se vykreslí viditelně (žádní neviditelní nebo zaseklí pavouci).</li>
       <li><strong>Read Aura:</strong> Cost 15 → 20.</li>
       <li><strong>Divination:</strong> Slot 5 → "Identify".</li>
     </ul>
-    <h4>Opravy crashů enginu</h4>
+    <h3>Opravy crashů enginu</h3>
     <ul>
       <li>World-map random encounters už necrashují: skip-and-log při selhání object create, zero všech 5 encounter slotů (předtím zůstávaly sloty 1–4 jako garbage) a oprava spawn-offset coord packingu pro větší skupiny.</li>
     </ul>
-    <h4>Výkon</h4>
+    <h3>Výkon</h3>
     <ul>
       <li><strong>King's Inn (Dernholm) FPS 60 → 5 → 0:</strong> Root cause — stat queries běžely ~63× O(inventory) passes per stat lookup. Fix: single inventory pass dispatch by item location. ~9× rychlejší, FPS obnoveno, funkčně identické. Veškerá perf instrumentace odstraněna.</li>
     </ul>
-    <h4>Meditation + Read Aura</h4>
+    <h3>Meditation + Read Aura</h3>
     <ul>
       <li><strong>Meditation (self-target):</strong> Nedělalo nic — self-target kouzla nedosáhnou on-target hooku. Přesunuto na BEGIN hook. 15 HP → 30 fatigue.</li>
       <li><strong>Read Aura:</strong> Popisek opraven (už netvrdí damage).</li>
     </ul>
-    <h4>NPC rarity level gate</h4>
+    <h3>NPC rarity level gate</h3>
     <ul>
       <li>UNIQUE/SET roll jen na NPC critterech level ≥ 30.</li>
     </ul>
-    <h4>Nerf resist afixů</h4>
+    <h3>Nerf resist afixů</h3>
     <ul>
       <li>11 resist afixů staženo z 15–40% na band 8–15%. Lesser (Fireproof / Insulated / Venomproof) → 10, Spellward → 8, Sanctified → 12, Grounded / Blazeward → 15, cursed (Wraithforged / Abyssal / Stygian / Thunderclad) capped → 15. Hodnoty + popisky aktualizovány.</li>
     </ul>
@@ -454,8 +527,9 @@
       <li><strong>Alpha Blending:</strong> Nahrazeny globální proměnné literálními konstantami v helperech <code>color.h</code> pro urychlení smyček <code>art_blit</code> — opravuje lag overlay jedovatého plynu a pastí.</li>
     </ul>
 
-    <h3>3. Házení ještěrkou</h3>
+    <h3>3. Házení pro rasu Lizard</h3>
     <ul>
+      <li><strong>Bug s házením:</strong> Rasa Lizard Man nemohla házet předměty (chyběla animace hodu). Opraveno.</li>
       <li><strong>Art Fallback:</strong> Přidány fallback kontroly v <code>anim.c</code> pro přesměrování chybějícího <code>TIG_ART_ANIM_THROW</code> na unarmed útoky.</li>
       <li><strong>Quickbar Lock / Reset:</strong> Přidáno volání <code>sub_465020</code> do throw cleanup pro obnovení sprite equipované zbraně/štítu po dokončení hodu.</li>
     </ul>
