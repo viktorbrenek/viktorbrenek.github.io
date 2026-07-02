@@ -206,6 +206,33 @@
 
     <h2 id="changelog">Changelog</h2>
 
+    <h3>2026-07-02</h3>
+    <h3>Mannox Vault restored (Ring of Brodar / Roseborough)</h3>
+    <ul>
+      <li><strong>Cut-content quest reward reconnected.</strong> Speak "Truth" at the vault → no teleport, the tomb opens in place and Mannox's Sword and Journal drop at your feet; quest flag set so it advances with Gunther/Alexander.</li>
+      <li><strong>The Journal is now readable</strong> — full restored diary text (K'irynn Urden, K'ian Hua, the vision of Nasrudin, the exile).</li>
+    </ul>
+    <h3>Crash &amp; hang fixes</h3>
+    <ul>
+      <li><strong>Ring of Brodar hard freeze fixed</strong> — teleporting to a non-existent ("Unused") map no longer destroys the live map and hangs; the bad teleport now aborts cleanly.</li>
+      <li><strong>Tsen Ang crash-on-entry fixed</strong> — the map-load rarity roll ran before the map was valid, corrupting terrain load (blank map / CTD). Moved to run after the map is fully loaded; also stops rarity needlessly re-rolling on every save.</li>
+      <li><strong>terrain_sector_path hardened</strong> against a null terrain-base crash (defense-in-depth safety net).</li>
+    </ul>
+    <h3>Rendering</h3>
+    <ul>
+      <li><strong>Ported upstream fix (PR #152):</strong> transparent walls under inside-corner roof pieces no longer vanish when the roof fades (fixes see-through gaps at building corners).</li>
+      <li><strong>Mouse-wheel scrolling</strong> (upstream PR #144) was trialed and reverted — not in this build.</li>
+    </ul>
+
+    <h3>2026-06-25</h3>
+    <h3>UAP gap audit</h3>
+    <ul>
+      <li><strong>Combat music toggle</strong> — added a working Options → Sound "Combat Music" switch (UAP installer option had no effect before).</li>
+      <li><strong>Follower schemes editable</strong> — the follower sheet was locked read-only; you can now switch schemes and distribute follower points manually.</li>
+      <li><strong>Follower spell-casting</strong> — followers now cast low-level college spells in situations where vanilla AI made them conserve and never cast.</li>
+      <li><strong>Small text @1080p</strong> noted as out of scope (needs scalable UI; no exe fix).</li>
+    </ul>
+
     <h3>Version 0.6.1 — 2026-06-27</h3>
     <p><strong>Experimental compatibility with UAP 2.0.2!</strong></p>
     <h3>✨ New</h3>
@@ -467,6 +494,33 @@
     </ul>
 
     <h2 id="changelog-cs">Changelog</h2>
+
+    <h3>2026-07-02</h3>
+    <h3>Obnovena Mannoxova hrobka (Ring of Brodar / Roseborough)</h3>
+    <ul>
+      <li><strong>Odměna ze střiženého questu znovu propojena.</strong> Řekni „Truth" u hrobky → žádný teleport, hrobka se otevře na místě a Mannoxův meč a deník padnou k nohám; quest flag nastaven, takže postupuje s Guntherem/Alexanderem.</li>
+      <li><strong>Deník je nyní čitelný</strong> — plný obnovený text deníku (K'irynn Urden, K'ian Hua, vize Nasrudina, vyhnanství).</li>
+    </ul>
+    <h3>Opravy crashů a zamrznutí</h3>
+    <ul>
+      <li><strong>Tvrdé zamrznutí u Ring of Brodar opraveno</strong> — teleport na neexistující („Unused") mapu už neničí živou mapu a nezasekne hru; špatný teleport se teď čistě zruší.</li>
+      <li><strong>Crash při vstupu do Tsen Ang opraven</strong> — rarity roll při načtení mapy běžel dřív, než byla mapa validní, což poškozovalo načtení terénu (prázdná mapa / CTD). Přesunuto tak, aby běžel až po plném načtení mapy; také zastaveno zbytečné re-rollování rarity při každém save.</li>
+      <li><strong>terrain_sector_path zpevněn</strong> proti crashi z null terrain-base (defense-in-depth pojistka).</li>
+    </ul>
+    <h3>Rendering</h3>
+    <ul>
+      <li><strong>Portnut upstream fix (PR #152):</strong> transparentní zdi pod rohovými díly střechy už nemizí, když střecha vybledne (opravuje průhledné díry v rozích budov).</li>
+      <li><strong>Scrollování kolečkem myši</strong> (upstream PR #144) bylo vyzkoušeno a vráceno — v tomto buildu není.</li>
+    </ul>
+
+    <h3>2026-06-25</h3>
+    <h3>Audit mezer v UAP</h3>
+    <ul>
+      <li><strong>Přepínač bojové hudby</strong> — přidán funkční přepínač Options → Sound „Combat Music" (možnost v UAP instalátoru předtím nic nedělala).</li>
+      <li><strong>Editovatelná schémata společníků</strong> — sheet společníka byl zamčený jen pro čtení; nyní lze přepínat schémata a ručně rozdělovat body společníka.</li>
+      <li><strong>Sesílání kouzel společníky</strong> — společníci teď sesílají nízkoúrovňová college kouzla v situacích, kdy je vanilla AI nutila šetřit a nikdy nesesílat.</li>
+      <li><strong>Malý text @1080p</strong> označen jako mimo rozsah (potřebuje škálovatelné UI; není exe fix).</li>
+    </ul>
 
     <h3>Verze 0.6.1 — 2026-06-27</h3>
     <p><strong>Experimentální kompatibilita s UAP 2.0.2!</strong></p>
