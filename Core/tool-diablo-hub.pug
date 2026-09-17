@@ -1,0 +1,95 @@
+doctype html
+head
+  title Diablo Hub — Runewords | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Přehled receptů na runewords v Diablu IV — pořadí run, item a tooltip s efektem a staty.")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+  script(src="runewords.js" defer)
+
+body(data-page="tool-diablo-hub")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Nástroje
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://twitch.tv/viktorbrenek" target="_blank" rel="noreferrer") Twitch
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+        li
+          a(href="https://www.youtube.com/ViktorBrenekYT" target="_blank" rel="noreferrer") Youtube
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Diablo Hub
+      h1 Runewords — Diablo IV
+      p.lead
+        | Recept vždycky vedle výsledku: pořadí run do soketů nalevo, kompletní tooltip s efektem, vzácností a staty napravo. Označ runy, který máš — dokreslí se, co ti chybí do jakého runewordu.
+      p.hero-kicker
+        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+
+    section.tool-panel.rw-callout
+      h2 Jak runewords fungují
+      ul.rw-callout__list
+        li Runeword = 2 až 5 run vložených do itemu se stejným počtem soketů, přesně v tomhle pořadí zleva doprava.
+        li Skládá se přes Horadric Cube recept — každý recept existuje ve verzi normal i ancestral.
+        li Výsledný item je Unique s pevnými afixy, nejde temperovat.
+        li.
+          Otazník (#[span.rw-unknown ?]) u statu = hodnota zatím není v datech vyčíslená, dorovná se před vydáním.
+
+    section.tool-panel
+      h2 Vaše runy
+      p.hero-kicker Klikni na runy, který máš v truhle — dole se přepočítá, co je hotový a čemu chybí jedna runa. (Bere se jen to, jestli runu vlastníš, ne kolik kusů.)
+      .rw-legend#rune-legend
+      button#rw-owned-reset.world-map__button.world-map__button--secondary(type="button") Odznačit všechny runy
+
+    section.tool-panel
+      .rw-tabs#rw-tabs
+        button.rw-tabs__btn(type="button" data-tab="all" aria-pressed="true") Všechna slova #[span.rw-tabs__count#rw-count-all]
+        button.rw-tabs__btn(type="button" data-tab="ready" aria-pressed="false") Hotovo #[span.rw-tabs__count#rw-count-ready]
+        button.rw-tabs__btn(type="button" data-tab="short" aria-pressed="false") Chybí 1 runa #[span.rw-tabs__count#rw-count-short]
+      .rw-controls
+        input#rw-search.tool-workbench__input(type="search" placeholder="Hledej podle jména, itemu nebo runy…" autocomplete="off")
+        select#rw-itemtype.tool-workbench__input
+          option(value="") Všechny typy itemů
+        .rw-controls__sockets#rw-sockets
+        button#rw-reset.world-map__button.world-map__button--secondary(type="button") Zrušit filtry
+      p.rw-controls__count#rw-count
+
+      .rw-list#rw-list
+
+    section.tool-panel
+      h2 Vylepšování run v Horadric Cube
+      p.hero-kicker Nižší runy se dají postupně přetavit na vyšší — vezmi daný počet stejných run (a případně gemu) a vyrob vyšší runu.
+      .rw-upgrades#rw-upgrades
+
+    section.tool-panel
+      h2 Další (quest) recepty
+      p.hero-kicker Tyhle recepty zatím nemají obrázky itemů — jen text, doplní se, až budou k dispozici.
+      .rw-other-recipes#rw-other-recipes
+
+  footer.site-footer
