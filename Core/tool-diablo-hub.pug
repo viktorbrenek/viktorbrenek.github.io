@@ -43,53 +43,321 @@ body(data-page="tool-diablo-hub")
         li
           a(href="https://www.youtube.com/ViktorBrenekYT" target="_blank" rel="noreferrer") Youtube
 
-  main.page-shell
-    section.page-hero
-      p.eyebrow Diablo Hub
-      h1 Runewords — Diablo IV
-      p.lead
-        | Recept vždycky vedle výsledku: pořadí run do soketů nalevo, kompletní tooltip s efektem, vzácností a staty napravo. Označ runy, který máš — dokreslí se, co ti chybí do jakého runewordu.
-      p.hero-kicker
-        a.link-pill(href="tools.html") Zpět na přehled nástrojů
+  main.page-shell.rw-page-shell
+    aside.rw-quest-nav
+      .rw-quest-nav__panel
+        p.eyebrow Rychlá navigace
+        nav.rw-quest-nav__list(aria-label="Rychlá navigace mezi sekcemi")
+          a(href="#rw-sec-intro") Jak runewords fungují
+          a(href="#rw-sec-runes") Kalkulačka run
+          a(href="#rw-sec-upgrades") Vylepšení run
+          a(href="#rw-sec-other") Další recepty
+          a(href="#rw-sec-whimsy") Whimsyshire
+          a(href="#rw-sec-tristram") Echo of Tristram
+          a(href="#rw-sec-ogden") Ogden's Sign
+          a(href="#rw-sec-videos") Videa
+    .rw-page-content
+      section.page-hero
+        p.eyebrow Diablo Hub
+        h1 Runewords a legacy obsah Season 15 — Diablo IV
+        p.lead
+          | Recepty na runewords (pořadí run do soketů nalevo, kompletní tooltip s efektem, vzácností a staty napravo, označ runy, který máš — dokreslí se, co ti chybí), plus skrytý legacy obsah, co Season 15 vrátila ze starších Diablovek — Whimsyshire, Pandemonium Event v Tristramu a Ogdenova cedule.
+        p.hero-kicker
+          a.link-pill(href="tools.html") Zpět na přehled nástrojů
 
-    section.tool-panel.rw-callout
-      h2 Jak runewords fungují
-      ul.rw-callout__list
-        li Runeword = 2 až 5 run vložených do itemu se stejným počtem soketů, přesně v tomhle pořadí zleva doprava.
-        li Skládá se přes Horadric Cube recept — každý recept existuje ve verzi normal i ancestral.
-        li Výsledný item je Unique s pevnými afixy, nejde temperovat.
-        li.
-          Otazník (#[span.rw-unknown ?]) u statu = hodnota zatím není v datech vyčíslená, dorovná se před vydáním.
+      section.tool-panel.rw-callout#rw-sec-intro
+        h2 Jak runewords fungují
+        ul.rw-callout__list
+          li Runeword = 2 až 5 run vložených do itemu se stejným počtem soketů, přesně v tomhle pořadí zleva doprava.
+          li Skládá se přes Horadric Cube recept — každý recept existuje ve verzi normal i ancestral.
+          li Výsledný item je Unique s pevnými afixy, nejde temperovat.
+          li.
+            Otazník (#[span.rw-unknown ?]) u statu = hodnota zatím není v datech vyčíslená, dorovná se před vydáním.
 
-    section.tool-panel
-      h2 Vaše runy
-      p.hero-kicker Klikni na runy, který máš v truhle — dole se přepočítá, co je hotový a čemu chybí jedna runa. (Bere se jen to, jestli runu vlastníš, ne kolik kusů.)
-      .rw-legend#rune-legend
-      button#rw-owned-reset.world-map__button.world-map__button--secondary(type="button") Odznačit všechny runy
+      section.tool-panel#rw-sec-runes
+        h2 Vaše runy
+        p.hero-kicker Klikni na runy, který máš v truhle — dole se přepočítá, co je hotový a čemu chybí jedna runa. (Bere se jen to, jestli runu vlastníš, ne kolik kusů.)
+        .rw-legend#rune-legend
+        button#rw-owned-reset.world-map__button.world-map__button--secondary(type="button") Odznačit všechny runy
 
-    section.tool-panel
-      .rw-tabs#rw-tabs
-        button.rw-tabs__btn(type="button" data-tab="all" aria-pressed="true") Všechna slova #[span.rw-tabs__count#rw-count-all]
-        button.rw-tabs__btn(type="button" data-tab="ready" aria-pressed="false") Hotovo #[span.rw-tabs__count#rw-count-ready]
-        button.rw-tabs__btn(type="button" data-tab="short" aria-pressed="false") Chybí 1 runa #[span.rw-tabs__count#rw-count-short]
-      .rw-controls
-        input#rw-search.tool-workbench__input(type="search" placeholder="Hledej podle jména, itemu nebo runy…" autocomplete="off")
-        select#rw-itemtype.tool-workbench__input
-          option(value="") Všechny typy itemů
-        .rw-controls__sockets#rw-sockets
-        button#rw-reset.world-map__button.world-map__button--secondary(type="button") Zrušit filtry
-      p.rw-controls__count#rw-count
+      section.tool-panel
+        .rw-tabs#rw-tabs
+          button.rw-tabs__btn(type="button" data-tab="all" aria-pressed="true") Všechna slova #[span.rw-tabs__count#rw-count-all]
+          button.rw-tabs__btn(type="button" data-tab="ready" aria-pressed="false") Hotovo #[span.rw-tabs__count#rw-count-ready]
+          button.rw-tabs__btn(type="button" data-tab="short" aria-pressed="false") Chybí 1 runa #[span.rw-tabs__count#rw-count-short]
+        .rw-controls
+          input#rw-search.tool-workbench__input(type="search" placeholder="Hledej podle jména, itemu nebo runy…" autocomplete="off")
+          select#rw-itemtype.tool-workbench__input
+            option(value="") Všechny typy itemů
+          .rw-controls__sockets#rw-sockets
+          button#rw-reset.world-map__button.world-map__button--secondary(type="button") Zrušit filtry
+        p.rw-controls__count#rw-count
 
-      .rw-list#rw-list
+        .rw-list#rw-list
 
-    section.tool-panel
-      h2 Vylepšování run v Horadric Cube
-      p.hero-kicker Nižší runy se dají postupně přetavit na vyšší — vezmi daný počet stejných run (a případně gemu) a vyrob vyšší runu.
-      .rw-upgrades#rw-upgrades
+      section.tool-panel#rw-sec-upgrades
+        h2 Vylepšování run v Horadric Cube
+        p.hero-kicker Nižší runy se dají postupně přetavit na vyšší — vezmi daný počet stejných run (a případně gemu) a vyrob vyšší runu.
+        .rw-upgrades#rw-upgrades
 
-    section.tool-panel
-      h2 Další (quest) recepty
-      p.hero-kicker Tyhle recepty zatím nemají obrázky itemů — jen text, doplní se, až budou k dispozici.
-      .rw-other-recipes#rw-other-recipes
+      section.tool-panel#rw-sec-other
+        h2 Další (quest) recepty
+        p.hero-kicker Tyhle recepty zatím nemají obrázky itemů — jen text, doplní se, až budou k dispozici.
+        .rw-other-recipes#rw-other-recipes
+
+      section.tool-panel.rw-whimsy#rw-sec-whimsy
+        h2 Whimsyshire se vrací (Season 15)
+        p.lead
+          | Diablo IV přineslo v Season 15 kus legacy obsahu z Diabla III — a hráči objevili Whimsyshire. Duhy, zlí plyšáci a jednorožci, původně jenom vtip v D3, teď (o něco míň psychedelicky) i v D4.
+        .rw-whimsy-hero
+          img(src="assets/images/runewords/whimsyshire/hero.webp" alt="Whimsyshire — duha, mráčky a nepřátelé" loading="lazy")
+        p Whimsyshire je level plný přesně toho, co název slibuje — duhy, zlí plyšový medvídci a jednorožci. Originál byl v Diablu III jenom easter egg, teď se s návratem legacy obsahu v Season 15 dá zažít i v Diablu IV.
+
+        h3 Jak se tam dostat
+        .rw-whimsy-methods
+          article.rw-whimsy-method
+            h4 Dokonči Waking Nightmare
+            p Hráči hlásí, že po dokončení Waking Nightmare se jim náhodně otevřel portál do Whimsyshire. Vypadá to na náhodnou událost bez způsobu, jak si ji vynutit.
+            img(src="assets/images/runewords/whimsyshire/portal.webp" alt="Portál do Whimsyshire po vyčištění nightmare dungeonu" loading="lazy")
+          article.rw-whimsy-method
+            h4 Vypij Liquid Rainbow
+            p Liquid Rainbow je consumable, který může náhodně dropnout kdekoliv ve světě. Garantovaně ho dostaneš i za 5. tier Season Journey. Po vypití se otevře portál do Whimsyshire rovnou tam, kde stojíš.
+            img(src="assets/images/runewords/whimsyshire/liquid-rainbow.avif" alt="Liquid Rainbow" loading="lazy")
+          article.rw-whimsy-method
+            h4 Zabij Goblina
+            p Hráči hlásí Goblina v Helltide, po jehož zabití se otevře portál do Whimsyshire. Potvrzeno u Murla (Obols Goblin), zatím se ověřuje, jestli to jde i s ostatními.
+            img(src="assets/images/runewords/whimsyshire/goblins.webp" alt="Přehled goblinů z Diabla IV — March of the Goblins" loading="lazy")
+        p.hero-kicker Info se sbírá průběžně z hlášení hráčů, ještě se může upřesnit.
+
+        h3 Kompletní postup (patch 3.2.1)
+        ol.rw-whimsy-steps
+          li Dokonči kapitolu 5 Season Journey — Liquid Rainbow je jedna z odměn (samotný popis kapitoly mluví jen o vyčištění Worldstone Keep, o lektvaru mlčí).
+          li Vypij Liquid Rainbow — "The colors swirl and twist in hypnotic patterns."
+          li Otevře se portál jménem Whimsyshire.
+          li Dojdi do Den of Whimsy a zabij bosse Neigh'relle — čeká tam v questu "Sparkling Happiness and Rainbows".
+
+        h3 Co tě uvnitř čeká
+        ul.rw-callout__list
+          li Unicorns, Cuddle Bears, Twinkleroot a Happy Clouds
+          li Candy Jars a dárkové truhly s Armor and Weapon Gifts
+          li Truhly Soup a Resplendent Soup
+          li Dva pojmenovaní jednorožci: Donut a Lore-ass
+
+      section.tool-panel.rw-tristram#rw-sec-tristram
+        h2 Echo of Tristram — návrat Pandemonium Eventu
+        p.lead
+          | Season 15 vrací starý Pandemonium Event z Diabla II — Diablo, Baal a Mephisto najednou v jedné aréně, za portálem, který otevřeš mincí hozenou do kašny v Tristramu.
+
+        h3 O co jde
+        p
+          | Echo of Tristram je skrytá lokace mimo běžnou sezónní verzi Tristramu, navázaná na quest „No prayer reaches this place“. Aby se zpřístupnila, musíš nejdřív posbírat tři konzumovatelné itemy (Splintery), přetavit je v Horadric Cube na Wirt's Lucky Coins a jeden hodit do kašny uprostřed města. V aréně na tebe pak čekají ozvěny všech tří Prime Evils naráz.
+
+        h3 Krok 1 — Seber všechny tři Splintery
+        p
+          | Splintery dropují z Capstone dungeonů na Torment X — Diablo nechává Splinter of Terror, Baal Splinter of Destruction a Mephisto Splinter of Hatred. Podmínky dropu: ještě ho nesmíš mít, musí být aktivní Season 15 a dungeon musí být na dostatečně vysokém Tormentu. Hra to interně váže na Torment 10, reálně ale hráči hlásí droppy i z nižšího Tormentu (Torment 7), takže na to číslo úplně nespoléhej.
+        p
+          | Splinter je Unique Consumable, nejde ho prodat ani rozložit, a najdeš ho v záložce lektvarů vedle elixírů. Použitím se přepneš na daný "pledge" a hra ti nedovolí použít ten, na kterém už jsi. Používat je ale nemusíš vůbec — klidně si drž všechny tři najednou, dokud je nebudeš potřebovat do kostky.
+        .rw-item-row
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/splinter-terror.webp" alt="Splinter of Terror" loading="lazy")
+            figcaption Splinter of Terror — Diablo
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/splinter-destruction.webp" alt="Splinter of Destruction" loading="lazy")
+            figcaption Splinter of Destruction — Baal
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/splinter-hatred.webp" alt="Splinter of Hatred" loading="lazy")
+            figcaption Splinter of Hatred — Mephisto
+
+        h3 Krok 2 — Slož je na Wirt's Lucky Coins
+        p
+          | V Horadric Cube je skrytý recept — po jednom kuse Terror, Destruction a Hatred dohromady dají Wirt's Lucky Coins. Recept se v kostce neukáže, dokud nemáš všechny tři suroviny najednou, stejně jako u runewords v Diablu II.
+        figure.rw-figure
+          img(src="assets/images/runewords/tristram/wirts-coin.webp" alt="Wirt's Lucky Coins" loading="lazy")
+          figcaption
+            | „Občas dokáže smysl některých věcí najít jen ten pravý.“ — Wirt, jednonohý chlapec
+
+        h3 Krok 3 — Otevři cestu do Tristramu
+        p
+          | Tristram je tuhle sezónu samostatná zóna. Dostaneš se do ní portálem Deckard's Memory v Imperiální knihovně v Caldeu, hned u waypointu — jenže ten portál neexistuje, dokud nedokončíš vedlejší quest Deckard's Journey. Ten quest nikde v hlavní příběhové lince nenajdeš, nikdo tě k němu nenasměruje.
+        p
+          | Po dohrání úvodu v hospodě v Tarsaraku se po Sanctuary rozmístí deset váčků s Deckardovým deníkem (otevřený váček se svitkem). Jakmile přečteš všech deset, quest se spustí sám, Cain ti ukáže poslední vzpomínku a ta vzpomínka je portál do verze Tristramu z prvního Diabla. Zůstane pak otevřený natrvalo.
+        .rw-tristram-map
+          img(src="assets/images/runewords/tristram/map.webp" alt="Mapa Sanctuary s deseti místy Deckardových deníků" loading="lazy")
+          p.hero-kicker Čísla na mapě odpovídají pořadí deníkových útržků níž — polohy podle nejbližšího waypointu nebo vchodu do doupěte, sever nahoře.
+
+        .rw-audio-player
+          button.rw-audio-player__btn#rw-journal-audio-btn(type="button" aria-pressed="false")
+            span.rw-audio-player__icon ▶
+            span.rw-audio-player__text Přehrát namluvený deník
+          span.rw-audio-player__meta Deckard Cain — celý deník namluvený, cca 8 min
+          audio#rw-journal-audio(src="assets/audio/runewords/decardcain.mp3" preload="none")
+
+        .rw-journal-list
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 1
+              span.rw-journal-entry__place Gea Kul, Kehjistan
+            p.rw-journal-entry__note Jihozápadně od waypointu Gea Kul — plavba přes moře.
+            blockquote.
+              Tolik velkých příběhů začíná plavbou přes moře. Vasilyho cesta, Rakkisova křížová výprava... Žádný z nich ale doopravdy nevystihl, jak se člověku dělá špatně od žaludku s každým příklonem vln.
+              Ach, Amélie... Potěšilo by tě, že jsem konečně opustil svou studovnu, abych poznal svět venku? Nebo by ses na mě zlobila, že jsem čekal, až zemřeš ty i náš chlapec?
+              Psaní nepomáhá. Modlím se jen, abychom se do Gea Kulu dostali v pořádku. Pevná zem, čerstvý vzduch a brzy... nádherná, suchá knihovna.
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 2
+              span.rw-journal-entry__place Imperiální knihovna, Caldeum — Kehjistan
+            p.rw-journal-entry__note U waypointu Imperiální knihovny — dveře se otevřou na jméno Cain.
+            blockquote.
+              Od chvíle, co jsem vystoupil na břeh, jsem nedočkavě čekal, až budu moct požádat o přístup do Imperiální knihovny. Přijímají opravdu jen málokoho, takže si představte moje překvapení, když se mi dveře otevřely dokořán... ve chvíli, kdy jsem vyslovil jméno „Cain“.
+              Zdá se, že i po dvou stech letech tu Jered Cain a jeho Horadrimové stále něco znamenají. Dobré znamení, mám-li najít pravdu o jejich příbězích... a možná i své místo v nich.
+              Jered často psal o „truhlici nebezpečných divů“ ukryté v Šassarském moři. Díky těmto topografickým mapám možná konečně vím, kde hledat.
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 3
+              span.rw-journal-entry__place Hřeben v kehjistanské poušti
+            p.rw-journal-entry__note Severně od doupěte Andariel — hodiny bloudění pouští, karavana na obzoru.
+            blockquote.
+              (povzdech) Bloudíme touhle spalující pustinou už celé hodiny, a přesto po té „truhlici“ nikde ani stopy. Můj průvodce je připravený odtáhnout mě zpátky do Caldea. Sbalit to a vrátit se domů — ale to nejde. Doma na mě nic nečeká.
+              Na sousední duně jsme zahlédli karavanu vozů. Myslím, že by to mohli být Vecinové — potulní mystikové, o kterých Jered často psal. Ostatně jedny z mých oblíbených jeho příběhů.
+              Můj průvodce říká, že jedou na východ „vnucovat své čarodějnictví“ bažinnému lidu. Uvidím sám.
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 4
+              span.rw-journal-entry__place Wejinhani, Hawezar
+            p.rw-journal-entry__note Severně od waypointu Wejinhani — Zakarumská inkvizice a hledání klidu.
+            blockquote.
+              Ach, jaký krásný čas mi Vecinové ukázali. Zpěv u ohniště, příběhy o magii pod hvězdami... ale ve Wejinhani na nás čekalo jen ponuré ticho.
+              Na tuhle zemi dolehla Zakarumská inkvizice. A příchod vyčerpaného, západního učence vzbudil nejedno pozdvižené obočí. Bude lepší, když půjdu dál, než svým novým přátelům přivodím potíže — i když mě to srdce bolí.
+              (povzdech) Potřebuji přemýšlet. Někde v tichu a o samotě, kde se rozhodnu, co vlastně na tomhle nerozvážném dobrodružství ještě dělám. Snad na severu?
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 5
+              span.rw-journal-entry__place Lorathova chata, jižní Taiga — Fractured Peaks
+            p.rw-journal-entry__note Jihozápadně od doupěte Beast in Ice — útočiště před mrazem.
+            blockquote.
+              (chvěje se) Díky nebesům jsem našel tuhle chatu, jinak bych určitě zmrzl. Teprve teď, když jsem konečně roztál, si vzpomínám, proč jsem vlastně Tristram opustil. Sedět sám ve své studovně, uši zvonící tichem, které jsi po sobě zanechala.
+              Pořád slyším tvůj hlas, Amélie. Jak mě prosíš, ať odložím knihy a jsem manželem, otcem. Ale teď... čím mám vlastně být teď?
+              Začínám pochybovat, že Jeredovy spisy skrývají odpověď, ale lepšího průvodce nemám. Píše o velkolepém městě travin, starém jako Starý Kehjan. Se štěstím tam bude i hospoda.
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 6
+              span.rw-journal-entry__place Jakha Basin, Dry Steppes
+            p.rw-journal-entry__note Jihozápadně od waypointu Hidden Overlook — svatba v cizí vesnici.
+            blockquote.
+              Našel jsem hospodu! A nechal se strhnout do nějaké svatby, tady v... Goolronu? Gu-Gulranu? Ach, tak živé místo, to se budu muset naučit vyslovit!
+              Sotva mě ti lidé zahlédli, nasadili mi na hlavu věnec z obilí a vtáhli mě přímo z ulice dovnitř. (uchechtne se) Zdá se, že tu západňáky moc nevídají, takže jsem tu tak trochu celebrita!
+              Posadili mě vedle dalšího cizince. Chlapa jako medvěd, jménem „Vasily“. Škádlivě jsem se ho zeptal, jestli není ten dávný otec druidů, a on se smíchy celý zrůžověl! (smích)
+              Ach jo, teď na mě křičí, ať už zavřu tu svou zatracenou knihu! Chce mi ukázat, jak se pije jako „pravý námořník z Glenu“. Budiž tedy! Ehm — na Tristram! (uchechtne se)
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 7
+              span.rw-journal-entry__place Marowen, Scosglen
+            p.rw-journal-entry__note Jihozápadně od waypointu Marowen — probuzení v cizí posteli.
+            blockquote.
+              Probudil jsem se s pocitem, že mám v lebce hrom, dokud jsem neuviděl vlny tříštící se o kamenitý břeh. Zdá se, že jsem to přebral a probral se ve Scosglenu... v cizí posteli, v cizím domě.
+              Opatrně jsem vyšel z pokoje a zahlédl svého přítele Vasilyho, jak sedí u stolu se svou ženou. Rozpaky mě přešly, jakmile se ke mně otočili. Ve tvářích měli naději.
+              Říkají mi, že posvátná mohyla jejich předků byla „poznamenána pekelnou mocí“. A že proto se ztrácejí děti — včetně jejich vlastního syna.
+              Zjevně jsem se v opilosti prohlásil za „učence okultna“ a slíbil pomoc. Jen se modlím, abych ji dokázal splnit.
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 8
+              span.rw-journal-entry__place Dead Valley, the Hills — Scosglen
+            p.rw-journal-entry__note Severně od waypointu Braestaig — rituál Triune mezi kameny.
+            blockquote.
+              Dorazili jsme mezi kameny a našli tam shromážděné druidské starší, klečící kolem děsivé scény. Kosti a rozčtvrcené mrtvoly, rozložené v kruhu z hrubých symbolů. Triunské glyfy.
+              Poznal jsem je z Jeredova „Honu na Trojici“. Vyvolávací rituál. Nejprve je znesvěcen prach dávno mrtvých, poté se z mladých stávají „nádoby“.
+              Prý si rituál žádá úrodnou půdu a odlehlé místo, kde nikdo nebude rušit. Zeptal jsem se Vasilyho, kde by takové místo mohlo být. „Fiefdom House,“ odpověděl.
+              Modlím se, abychom ty děti našli živé. A o nic jiného už nežádám.
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 9
+              span.rw-journal-entry__place Oldstones, the Downs — Scosglen
+            p.rw-journal-entry__note Jihozápadně od waypointu Tirmair — kaple, kultisté, zachráněné děti.
+            blockquote.
+              Viděli nás přicházet. Šílení kultisté ve špinavých hadrech se na naši skupinu vrhli, jen aby je zdrtily zuřivé rány druidů. Jednomu jsem se podíval do očí, když umíral. Žádný démon. Jen obyčejný člověk.
+              Pak jsme z ticha zaslechli pláč. Šest dětí — vyděšených, ale živých, uvnitř kaple. Když Vasily objal svého syna, otočil jsem se, abych skryl slzy. Zachránil jsem tohoto chlapce, ale nic to nezměnilo na tom, že jsem selhal u svého vlastního.
+              Ucítil jsem na rameni mohutnou tlapu a setkal se s usměvavýma očima druidky. „Ty jsi Deckard Cain. Potomek Jereda Caina,“ řekla. „Naši předkové jsou ti vděční. Říkají, ať toho svého hledáš v lesích Mistral.“
+          article.rw-journal-entry
+            .rw-journal-entry__head
+              span.rw-journal-entry__num 10
+              span.rw-journal-entry__place Illusion Woods, Gale Valley — Fractured Peaks
+            p.rw-journal-entry__note Severozápadně od waypointu Yelesna — třítvárná socha v temném lese.
+            blockquote.
+              (uchechtne se) Ach, je nejvyšší čas přiznat, že jsem mizerný dobrodruh. Bloudím touhle temnou hvozdem už celé hodiny a moje jediné vodítko? Ta zatracená třítvárná socha.
+              „Spatři pravdy, jež leží uvnitř,“ stálo na nápisu. Jsou to tvá slova, Jerede? Říkáš mi, že jsem tu odpověď měl celou dobu? Že to byla moje vlastní sobeckost, co odehnala mou rodinu? Že jsem sám... ztracený.
+              Ztracený jsem byl už dávno předtím, než jsem opustil Tristram. Konečně jsem se našel — na ten nádherný okamžik, kdy jsem odložil své nesmysly a udělal se užitečným pro druhé.
+              Bylo dobré cestovat s tebou, Jerede. Ale věřím, že je čas jít domů, k lidem, které jsem opustil, a být užitečný tam.
+
+        h3 Krok 4 — Mince do kašny
+        p
+          | Než mincí hodíš, přepni si obtížnost na Torment 6 nebo výš — níž se portál neotevře. Kašna stojí v jihovýchodní části Tristramu. Vhoď dovnitř jednu Wirt's Lucky Coin (spotřebuje se jen jedna na pokus, klidně to zkus znovu s další). Otevře se portál Tristram Fountain Portal — vypadá stejně jako Mephistův červený pekelný portál a vede přímo do Echo of Tristram.
+        p.hero-kicker Nefunguje to spolehlivě stoprocentně — voda zčervená vždycky, ale pár hráčů hlásí, že jim i tak portál neotevřel a mince přesto zmizela.
+
+        h3 Krok 5 — Souboj s Prime Evils
+        p
+          | Dojdi do středu Tristramu a boj začne sám — všichni tři Prime Evils naráz. Každého jsi v příběhu potkal zvlášť: Diablo na dně Labyrintu, Baal u Worldstone, Mephisto v Durance of Hate pod Zčernalým chrámem. Teď je máš na krku všechny najednou — Baalovy blesky a chapadla útočí nezávisle na sobě, takže běží pořád, zatímco tě mezitím zpracovávají zbylí dva. Mephisto má tři fáze, Diablo je verze bosse z Labyrintu. Všechny tři jde staggerovat.
+        p
+          | Loot z bosse má 15minutový cooldown — zabiješ-li je znovu dřív, nedostaneš nic a časovač se resetuje, takže na plných 15 minut počkej, pokud chceš odměnu. Za zabití padá hromada Mythiců, questovní item Standard of Heroes a unikátní charm Hellfire Torch. Po zabití tě quest pošle zpátky do centra Tristramu.
+        figure.rw-figure
+          img(src="assets/images/runewords/tristram/hellfire-torch-tooltip.webp" alt="Hellfire Torch — Mythic Charm" loading="lazy")
+          figcaption Hellfire Torch — jedna z odměn za Prime Evils
+        p.hero-kicker
+          | Diablo a Diablo IV jsou ochranné známky Blizzard Entertainment, Inc. Tahle stránka je neoficiální fanouškovský projekt a není s Blizzard Entertainment nijak spojená ani jím podporovaná. Herní data podle veřejně dostupného datamining projektu DiabloTools/d4data (licence MIT).
+
+      section.tool-panel.rw-ogden#rw-sec-ogden
+        h2 Ogden's Sign — návrat hospodského
+        p.lead
+          | Vedlejší quest v sezónním Tristramu — pomůžeš hospodskému Ogdenovi získat zpátky jeho ukradenou hospodskou ceduli, a jako díky si odneseš jednu z nejsilnějších helem ve hře.
+
+        h3 Jak úkol odemknout
+        p
+          | Quest se objeví, jakmile v Tristramu promluvíš s Ogdenem. K tomu ale nejdřív potřebuješ mít otevřený portál do Tristramu — a ten se odemyká až po sesbírání všech deseti Deckardových deníků popsaných v sekci Echo of Tristram výš.
+        figure.rw-figure
+          img(src="assets/images/runewords/tristram/ogden-1.webp" alt="Ogden's Sign v questovém deníku" loading="lazy")
+          figcaption Ogden's Sign se objeví v deníku vedlejších questů
+
+        h3 Postup
+        ol.rw-whimsy-steps
+          li
+            | Najdi Snotspilla v dungeonu The Labyrinth (Cathedral: Level 2) — je to Capstone dungeon Diabla, takže na cestu tam bude potřeba i solidní vybavení.
+          li
+            | Promluv se Snotspillem o Ogdenově ceduli — spustí ti to hledání uvnitř dungeonu.
+          li
+            | V další místnosti Cathedral: Level 2 najdi truhlu uprostřed — obsahuje Tavern Sign, kterou hledáš.
+          li
+            | Vrať se do Tristramu a ceduli odevzdej Ogdenovi.
+        .rw-item-row
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/ogden-2.webp" alt="Capstone dungeon The Labyrinth na mapě" loading="lazy")
+            figcaption The Labyrinth — kde hledat Snotspilla
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/ogden-3.webp" alt="Cathedral: Level 2 se sledovaným questem Ogden's Sign" loading="lazy")
+            figcaption Cathedral: Level 2 — cesta k truhle
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/ogden-4.webp" alt="Nalezení Tavern Sign v Labyrinthu" loading="lazy")
+            figcaption Truhla s Tavern Sign nalezena
+          figure.rw-figure
+            img(src="assets/images/runewords/tristram/ogden-5.webp" alt="Návrat do Tristramu s cedulí" loading="lazy")
+            figcaption Zpátky v Tristramu za Ogdenem
+
+        h3 Odměna
+        p
+          | Za vrácení cedule dostaneš Harlequin Crest — Mythic Unique helmu, která dává +6 Rank to All Skills. Jedna z nejvyhledávanějších helem v aktuální sezóně.
+        figure.rw-figure
+          img(src="assets/images/runewords/tristram/harlequin.webp" alt="Harlequin Crest" loading="lazy")
+          figcaption Harlequin Crest — odměna za Ogden's Sign
+
+      section.tool-panel.rw-videos#rw-sec-videos
+        h2 Videa k tématu
+        p.hero-kicker Pár videí z mýho kanálu, co se týkají runewords a legacy obsahu Season 15.
+        .gallery-grid.gallery-grid--wide
+          a.media-card.rw-video-card(href="https://youtu.be/hyewJXuMrus" target="_blank" rel="noreferrer")
+            .media-card__media
+              img(src="https://i.ytimg.com/vi/hyewJXuMrus/hqdefault.jpg" alt="Náhled videa: 15. sezóna je brutální! Runewordy z Diabla II!" loading="lazy")
+            p.media-card__caption 15. sezóna je brutální! Runewordy z Diabla II! Nové expanzi a spousta tajemství!
+          a.media-card.rw-video-card(href="https://youtu.be/n66ok0g_-OE" target="_blank" rel="noreferrer")
+            .media-card__media
+              img(src="https://i.ytimg.com/vi/n66ok0g_-OE/hqdefault.jpg" alt="Náhled videa: Našel jsem UBER Tristram v Diablu IV!" loading="lazy")
+            p.media-card__caption Našel jsem UBER Tristram v Diablu IV! Legacy lokace a jejich tajemství S15
 
   footer.site-footer

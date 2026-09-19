@@ -347,7 +347,7 @@ const RUNEWORDS = [
     runes: ["Eth", "Tal"],
     slots: ["chest"],
     variants: null,
-    power: "Tvůj Evade je nahrazen Sorcererovým Teleportem a stojí 33 primárního zdroje.",
+    power: null,
     inherent: null,
     stats: [
       "+[1,831–2,200] Maximum Life",
@@ -804,4 +804,66 @@ function initRunewordsHub() {
   applyFilters();
 }
 
+function initJournalAudio() {
+  const audio = document.getElementById("rw-journal-audio");
+  const btn = document.getElementById("rw-journal-audio-btn");
+  if (!audio || !btn) {
+    return;
+  }
+  const icon = btn.querySelector(".rw-audio-player__icon");
+  const text = btn.querySelector(".rw-audio-player__text");
+
+  const setPlaying = (isPlaying) => {
+    btn.setAttribute("aria-pressed", isPlaying ? "true" : "false");
+    icon.textContent = isPlaying ? "⏸" : "▶";
+    text.textContent = isPlaying ? "Pozastavit" : "Přehrát namluvený deník";
+  };
+
+  btn.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  });
+
+  audio.addEventListener("play", () => setPlaying(true));
+  audio.addEventListener("pause", () => setPlaying(false));
+  audio.addEventListener("ended", () => setPlaying(false));
+}
+
 window.addEventListener("DOMContentLoaded", initRunewordsHub);
+window.addEventListener("DOMContentLoaded", initJournalAudio);
+
+function initQuestNav() {
+  const links = document.querySelectorAll(".rw-quest-nav__list a");
+  if (!links.length) {
+    return;
+  }
+
+  const sections = Array.from(links)
+    .map((link) => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  function setActive(id) {
+    links.forEach((link) => {
+      link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+    });
+  }
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id);
+        }
+      });
+    }, {
+      rootMargin: "-20% 0px -60% 0px"
+    });
+
+    sections.forEach((section) => observer.observe(section));
+  }
+}
+
+window.addEventListener("DOMContentLoaded", initQuestNav);

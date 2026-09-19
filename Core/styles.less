@@ -4243,6 +4243,7 @@ body::after {
   background: var(--bg-panel);
   color: var(--text-soft);
   font-family: "Cinzel", Georgia, serif;
+  font-size: 1.4rem;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
@@ -4263,11 +4264,11 @@ body::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  padding: 0 5px;
+  min-width: 24px;
+  padding: 0 6px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
-  font-size: 0.78rem;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 
@@ -4281,14 +4282,14 @@ body::after {
 
 .rw-card__code {
   font-family: "Cinzel", Georgia, serif;
-  font-size: 0.95rem;
+  font-size: 1.4rem;
   letter-spacing: 0.08em;
   color: #c9a3ff;
 }
 
 .rw-card__bases {
   color: var(--text-soft);
-  font-size: 0.92rem;
+  font-size: 1.4rem;
   margin: 6px 0 12px;
 }
 
@@ -4348,21 +4349,21 @@ body::after {
 
 .rw-upgrade-row__count {
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.8rem;
   color: var(--heading);
 }
 
 .rw-upgrade-row__name,
 .rw-upgrade-row__gem-name {
   color: var(--text);
-  font-size: 1.15rem;
+  font-size: 1.8rem;
 }
 
 .rw-upgrade-row__plus,
 .rw-upgrade-row__arrow {
   color: var(--accent);
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1.9rem;
 }
 
 .rw-other-recipes {
@@ -4380,7 +4381,7 @@ body::after {
   border: 1px dashed var(--line);
   border-radius: var(--radius-md, 10px);
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 1.8rem;
 }
 
 .rw-other-recipe__result {
@@ -4398,4 +4399,324 @@ body::after {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* ---------------------------------------------------------------- */
+/* Diablo Hub — Whimsyshire sekce                                    */
+/* ---------------------------------------------------------------- */
+
+.rw-whimsy-hero img {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius-lg, 14px);
+  border: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+
+.rw-whimsy-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 14px 0;
+}
+
+.rw-whimsy-method {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 10px);
+  padding: 16px;
+  background: var(--bg-panel);
+}
+
+.rw-whimsy-method h4 {
+  margin: 0 0 8px;
+  color: var(--heading);
+  font-family: "Cinzel", Georgia, serif;
+}
+
+.rw-whimsy-method p {
+  color: var(--text);
+  font-size: 1.8rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.rw-whimsy-method img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.rw-whimsy-steps {
+  margin: 10px 0 0 22px;
+  padding: 0;
+  color: var(--text);
+}
+
+.rw-whimsy-steps li {
+  margin-bottom: 10px;
+  font-size: 1.9rem;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------------- */
+/* Echo of Tristram + Ogden's Sign — obrázky, mapa, deníkové zápisy  */
+/* ---------------------------------------------------------------- */
+
+.rw-figure {
+  text-align: center;
+  margin: 0;
+}
+
+.rw-figure img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  display: block;
+  margin: 0 auto;
+}
+
+.rw-figure figcaption {
+  margin-top: 8px;
+  color: var(--text-soft);
+  font-size: 1.5rem;
+}
+
+.rw-item-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin: 18px 0;
+}
+
+.rw-tristram-map {
+  margin: 18px 0;
+}
+
+.rw-tristram-map img {
+  width: 100%;
+  border-radius: var(--radius-lg, 14px);
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.rw-tristram-map figcaption {
+  margin-top: 8px;
+  color: var(--text-soft);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.rw-journal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 16px 0;
+}
+
+.rw-journal-entry {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 10px);
+  padding: 16px 18px;
+  background: var(--bg-panel);
+}
+
+.rw-journal-entry__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.rw-journal-entry__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #1a120a;
+  font-weight: 700;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.5rem;
+  flex: none;
+}
+
+.rw-journal-entry__place {
+  color: var(--heading);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.8rem;
+}
+
+.rw-journal-entry__note {
+  color: var(--text-soft);
+  font-size: 1.6rem;
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+.rw-journal-entry blockquote {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--accent);
+  color: var(--text);
+  font-style: italic;
+  font-size: 1.75rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 820px) {
+  .rw-item-row {
+    gap: 14px;
+  }
+  .rw-figure img {
+    max-width: 260px;
+  }
+}
+
+.rw-audio-player {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 16px 0;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 10px);
+  background: var(--bg-panel);
+}
+
+.rw-audio-player__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: rgba(216, 162, 71, 0.12);
+  color: var(--heading);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.rw-audio-player__btn:hover {
+  background: var(--accent);
+  color: #1a120a;
+}
+
+.rw-audio-player__btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: #1a120a;
+}
+
+.rw-audio-player__icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.rw-audio-player__meta {
+  color: var(--text-soft);
+  font-size: 1.5rem;
+}
+
+/* ---------------------------------------------------------------- */
+/* Diablo Hub — boční rychlá navigace mezi sekcemi (dle Blogu/TOC)   */
+/* ---------------------------------------------------------------- */
+
+.rw-page-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.rw-quest-nav {
+  display: none;
+}
+
+.rw-quest-nav__panel {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md, 10px);
+  background: var(--bg-panel);
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+}
+
+.rw-quest-nav__list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.rw-quest-nav__list a {
+  color: var(--text-soft);
+  font-size: 1.6rem;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.rw-quest-nav__list a:hover,
+.rw-quest-nav__list a.active {
+  color: var(--fungal);
+}
+
+@media (min-width: 1080px) {
+  .rw-page-shell {
+    grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  }
+
+  .rw-quest-nav {
+    display: block;
+    position: sticky;
+    top: 96px;
+    align-self: start;
+    height: max-content;
+  }
+
+  .rw-page-content {
+    min-width: 0;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Diablo Hub — galerie videí                                       */
+/* ---------------------------------------------------------------- */
+
+.rw-video-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.rw-video-card .media-card__media {
+  position: relative;
+}
+
+.rw-video-card .media-card__media::after {
+  content: "▶";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: auto;
+  border-radius: 50%;
+  background: rgba(12, 10, 9, 0.72);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 1.8rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.rw-video-card:hover .media-card__media::after {
+  background: var(--accent);
+  color: #1a120a;
 }
