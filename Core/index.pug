@@ -8,6 +8,9 @@ head
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
   meta(name="viewport" content="width=device-width,initial-scale=1.0")
   link(rel="stylesheet", href="styles.css")
+  link(rel="stylesheet", href="sporium-promo.css")
+  link(rel="preconnect" href="https://fonts.googleapis.com")
+  link(href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@700;800&family=Grenze+Gotisch:wght@700&display=swap" rel="stylesheet")
   link(rel="icon" href="assets/images/favicon.png" sizes="any")
   link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
   link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
@@ -123,5 +126,24 @@ body(data-page="home")
         h2.feature-card__title Releasy
         p.feature-card__text
           | Vydané hry, mody a hratelné projekty. Indie tituly, mody do existujících her a další veřejné buildy.
+
+  //- Sporium promo (styl: sporium-promo.less)
+  a.sporium-promo(href="game/index.html" aria-label="Hrát Sporium – Sezóna 1: Obchod se štěstím")
+    span.sp-spores(aria-hidden="true")
+      i
+      i
+      i
+      i
+      i
+      i
+      i
+      i
+    span.sp-media
+      img(src="game/assets/promo.webp" alt="" loading="lazy")
+    img.sp-icon(src="game/assets/icon.png" alt="")
+    span.sp-logo Sporium
+    span.sp-season Sezóna 1
+    span.sp-name Obchod se štěstím
+    span.sp-play ▶ Hrát
 
   footer.site-footer

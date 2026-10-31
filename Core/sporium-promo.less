@@ -1,0 +1,189 @@
+// Sporium – plovoucí promo karta na hlavní stránce (Core/index.pug)
+@sp-green: #9df07a;
+@sp-gold: #f2d36b;
+@sp-text: #e8d7b0;
+
+.sporium-promo {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  z-index: 40;
+  width: 200px;
+  margin-top: -175px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: @sp-text;
+  padding: 0 0 18px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(157, 240, 122, 0.10), transparent 60%),
+    linear-gradient(180deg, rgba(22, 19, 15, 0.94), rgba(10, 9, 8, 0.96));
+  border: 1px solid rgba(157, 240, 122, 0.22);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 30px rgba(157, 240, 122, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: sp-float 7s ease-in-out infinite;
+  transition: box-shadow 0.3s, border-color 0.3s;
+  overflow: hidden;
+
+  &:hover,
+  &:focus-visible {
+    border-color: rgba(157, 240, 122, 0.5);
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6), 0 0 44px rgba(157, 240, 122, 0.22);
+    outline: none;
+    .sp-media img { transform: scale(1.12); filter: brightness(1.05) saturate(1.1); }
+    .sp-play { filter: brightness(1.15); transform: scale(1.04); }
+  }
+}
+
+.sp-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 116px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+  mask-image: linear-gradient(180deg, #000 55%, transparent);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 62%;
+    display: block;
+    filter: brightness(0.82) saturate(0.95);
+    animation: sp-pan 18s ease-in-out infinite alternate;
+    transition: transform 0.6s, filter 0.6s;
+  }
+}
+
+.sp-icon {
+  width: 54px;
+  height: 54px;
+  margin: -34px 0 -2px;
+  position: relative;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 12px rgba(157, 240, 122, 0.25));
+  animation: sp-bob 3.4s ease-in-out infinite;
+}
+
+.sp-logo {
+  font: 700 34px/1 "Grenze Gotisch", "Cinzel", Georgia, serif;
+  letter-spacing: 3px;
+  color: #d9e8b0;
+  text-shadow: 0 0 16px rgba(157, 240, 122, 0.45), 0 0 40px rgba(111, 138, 60, 0.4);
+  animation: sp-glow 4s ease-in-out infinite;
+}
+
+.sp-season {
+  margin-top: 8px;
+  font: 700 11px/1 "Alegreya Sans", system-ui, sans-serif;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: @sp-green;
+}
+
+.sp-name {
+  margin-top: 4px;
+  font: 700 20px/1.1 "Grenze Gotisch", "Cinzel", Georgia, serif;
+  color: @sp-gold;
+  text-shadow: 0 0 12px rgba(242, 211, 107, 0.3);
+}
+
+.sp-play {
+  margin-top: 14px;
+  min-width: 132px;
+  padding: 3px 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 9px 24px;
+  border-image: url(game/assets/ui/btn.webp) 40 170 fill / 9px 24px stretch;
+  font: 800 16px/1.2 "Alegreya Sans", system-ui, sans-serif;
+  letter-spacing: 1px;
+  color: @sp-text;
+  text-shadow: 0 1px 2px #000;
+  animation: sp-pulse 2.6s ease-in-out infinite;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+// výtrusy
+.sp-spores {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+
+  i {
+    position: absolute;
+    bottom: -6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #d6ff9e;
+    box-shadow: 0 0 6px 2px rgba(157, 240, 122, 0.55);
+    opacity: 0;
+    animation: sp-spore 9s linear infinite;
+
+    &:nth-child(1) { left: 12%; animation-delay: 0s; }
+    &:nth-child(2) { left: 28%; animation-delay: 2.1s; animation-duration: 11s; width: 3px; height: 3px; }
+    &:nth-child(3) { left: 46%; animation-delay: 4.4s; }
+    &:nth-child(4) { left: 63%; animation-delay: 1.2s; animation-duration: 12s; background: #ffd98a; box-shadow: 0 0 6px 2px rgba(242, 211, 107, 0.5); }
+    &:nth-child(5) { left: 78%; animation-delay: 5.6s; width: 3px; height: 3px; }
+    &:nth-child(6) { left: 90%; animation-delay: 3.3s; animation-duration: 10s; }
+    &:nth-child(7) { left: 36%; animation-delay: 7s; animation-duration: 13s; width: 2px; height: 2px; }
+    &:nth-child(8) { left: 70%; animation-delay: 8.2s; width: 2px; height: 2px; }
+  }
+}
+
+@keyframes sp-float {
+  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+  50% { transform: translateY(-10px) rotate(0.6deg); }
+}
+@keyframes sp-bob {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-4px) rotate(4deg); }
+}
+@keyframes sp-pan {
+  from { transform: scale(1.04) translate(-2%, 1%); }
+  to { transform: scale(1.1) translate(2%, -2%); }
+}
+@keyframes sp-glow {
+  0%, 100% { text-shadow: 0 0 14px rgba(157, 240, 122, 0.35), 0 0 36px rgba(111, 138, 60, 0.35); }
+  50% { text-shadow: 0 0 22px rgba(157, 240, 122, 0.65), 0 0 50px rgba(111, 138, 60, 0.5); }
+}
+@keyframes sp-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(157, 240, 122, 0)); }
+  50% { filter: drop-shadow(0 0 8px rgba(157, 240, 122, 0.45)); }
+}
+@keyframes sp-spore {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 0.9; }
+  50% { transform: translate(10px, -190px); }
+  90% { opacity: 0.6; }
+  100% { transform: translate(-6px, -380px); opacity: 0; }
+}
+
+// menší obrazovky: kompaktní plovoucí odznak vpravo dole
+@media (max-width: 1699px) {
+  .sporium-promo {
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+    margin-top: 0;
+    width: auto;
+    flex-direction: row;
+    gap: 10px;
+    padding: 8px 10px 8px 8px;
+    border-radius: 40px;
+    .sp-media, .sp-season { display: none; }
+    .sp-icon { width: 40px; height: 40px; margin: 0; }
+    .sp-logo { font-size: 24px; letter-spacing: 1px; }
+    .sp-name { display: none; }
+    .sp-play { margin: 0; min-width: 0; font-size: 14px; border-width: 7px 18px; border-image-width: 7px 18px; padding: 1px 4px; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sporium-promo, .sporium-promo *, .sp-spores i { animation: none !important; }
+  .sp-spores { display: none; }
+}

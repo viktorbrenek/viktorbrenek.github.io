@@ -121,7 +121,7 @@ gulp.task("build", gulp.series("pugcompiler", "lesscompiler", "articles", "js", 
 
 gulp.task("watch", () => {
   gulp.watch(paths.pugstocompile, gulp.series("pugcompiler"));
-  gulp.watch(["src/templates/*.pug", paths.articles], gulp.series("articles", "pugcompiler"));
+  gulp.watch(["src/templates/*.pug", ...paths.articles], gulp.series("articles", "pugcompiler"));
   gulp.watch(paths.lesstocompile, gulp.series("lesscompiler"));
   gulp.watch(paths.scriptstocompile, gulp.series("js"));
   gulp.watch(paths.jsonstocopy, gulp.series("json"));
@@ -137,7 +137,7 @@ gulp.task("serve", gulp.series("build", () => {
 
   gulp.watch("docs/**/*").on("change", browserSync.reload);
   gulp.watch(paths.pugstocompile, gulp.series("pugcompiler"));
-  gulp.watch(["src/templates/*.pug", paths.articles], gulp.series("articles", "pugcompiler"));
+  gulp.watch(["src/templates/*.pug", ...paths.articles], gulp.series("articles", "pugcompiler"));
   gulp.watch(paths.lesstocompile, gulp.series("lesscompiler"));
   gulp.watch(paths.scriptstocompile, gulp.series("js"));
   gulp.watch(paths.jsonstocopy, gulp.series("json"));
