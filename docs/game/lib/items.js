@@ -80,7 +80,7 @@ export function itemScore(it){ return it.aff.length*10+(it.dmg?(it.dmg[0]+it.dmg
 export function makeSupport(id){ id=id||rng.pick(Object.keys(SUPPORTS)); const s=SUPPORTS[id]; return {uid:UID++,type:'support',sup:id,name:'Runa: '+s.name,spr:s.spr,desc:s.desc}; }
 let setCount=null, setHave=null; export function setTooltipCtx(cnt,have){ setCount=cnt; setHave=have; }
 export function tooltipHTML(it,cmp){
-  if(it.type==='support') return `<div class="tt-name" style="color:#7fe0c9">${it.name}</div><div class="tt-sub">Podpůrná runa · vlož do dovednosti [K]</div><div class="tt-line">${it.desc}</div><div class="tt-dim">Platí pro: ${SUPPORTS[it.sup].tags.map(t=>({single:'jednocílové',proj:'projektily',aoe:'plošné',attack:'útoky',spell:'kouzla',buff:'posílení',move:'pohyb',minion:'přisluhovači',summon:'vyvolávání'}[t])).join(', ')}</div>`;
+  if(it.type==='support') return `<div class="tt-name" style="color:#7fe0c9">${it.name}</div><div class="tt-sub">Podpůrná runa · vlož do dovednosti [K]</div><div class="tt-line">${it.desc}</div>${it.fromWell?`<div class="tt-well">Vyloveno z Hnilobné studny · hodil: ${String(it.fromWell).replace(/[<>&]/g,'')}</div>`:''}<div class="tt-dim">Platí pro: ${SUPPORTS[it.sup].tags.map(t=>({single:'jednocílové',proj:'projektily',aoe:'plošné',attack:'útoky',spell:'kouzla',buff:'posílení',move:'pohyb',minion:'přisluhovači',summon:'vyvolávání'}[t])).join(', ')}</div>`;
   if(it.type==='potion') return `<div class="tt-name" style="color:#e66">${it.name}</div><div class="tt-sub">Doplní 1 náboj léčivého lektvaru</div>`;
   if(it.type==='tome') return `<div class="tt-name" style="color:#b9f">${it.name}</div><div class="tt-sub">Kniha dovednosti</div><div class="tt-line">${it.desc}</div><div class="tt-hint">Klikni pro naučení / zvýšení úrovně</div>`;
   const base=BASES.find(b=>b.id===it.base);
@@ -94,6 +94,7 @@ export function tooltipHTML(it,cmp){
     h+=`<div class="tt-set"><b>${S.name}</b> (${n}/${S.pieces.length})${S.pieces.map((pc,i)=>`<div class="${have.has(it.set+':'+i)?'on':''}">${pc.name}</div>`).join('')}`;
     for(const t of [2,3]) h+=`<div class="sb ${n>=t?'on':''}">(${t}) ${Object.entries(S.bonus[t]).map(([k,v])=>statLine(k,v)).join(', ')}</div>`;
     h+=`<div class="sb ${n>=4?'on':''}">(4) ${S.power}</div></div>`; }
+  if(it.fromWell) h+=`<div class="tt-well">Vyloveno z Hnilobné studny · hodil: ${String(it.fromWell).replace(/[<>&]/g,'')}</div>`;
   if(it.corrupted) h+=`<div class="tt-corr">ZKAŽENÝ · ${corruptText(it.corrRes)}</div>`;
   if(cmp&&cmp!==it){ const a=itemStats(it), b=itemStats(cmp); const keys=new Set([...Object.keys(a),...Object.keys(b)]); const diff=[];
     for(const k of keys){ const d=(a[k]||0)-(b[k]||0); if(Math.abs(d)>0.05) diff.push(`<span class="${d>0?'up':'down'}">${d>0?'+':''}${Math.round(d*10)/10} ${STAT_NAMES[k]||k}</span>`); }

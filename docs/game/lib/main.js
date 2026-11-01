@@ -17,7 +17,8 @@ async function boot(){
   document.getElementById('loading').remove();
   let started=false;
   const unlock=()=>audio.init(); addEventListener('pointerdown',unlock); addEventListener('keydown',unlock);
-  const start=o=>{ if(o.cls){ g.newCharacter(o.cls); if(o.nick){ g.player.nick=o.nick; g.save(); g.lbSync(true); } } else if(!g.load(o.id)) g.newCharacter('blade'); ui.bind(g); started=true; if(!o.cls) ui.askNickOnce(); };
+  const start=o=>{ if(o.cls){ g.newCharacter(o.cls,{daily:o.daily}); if(o.nick){ g.player.nick=o.nick; g.save(); g.lbSync(true); } } else if(!g.load(o.id)) g.newCharacter('blade'); ui.bind(g); started=true; if(!o.cls&&!g.daily) ui.askNickOnce(); };
+  ui.toTitleFn=()=>toTitle();
   const toTitle=()=>{ document.body.classList.remove('mapon'); started=false; g.map=null; ui.title(start); };
   ui.title(start);
   // ---- input: layout-independent (e.code), held keys for smooth movement ----
@@ -43,7 +44,7 @@ async function boot(){
     if(/^Digit[1-4]$/.test(c)){ ui.onSkillKey(+c.slice(5)-1); return; }
     if(c==='KeyQ'){ g.quaff(); return; }
     if(c==='Enter'||c==='NumpadEnter'){ g.descend(); return; }
-    if(c==='Space'||c==='KeyE'){ e.preventDefault(); const p=g.player; const pr=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].map(([dx,dy])=>g.propAt(p.x+dx,p.y+dy,q=>['chest','cursed','lever','brazier','rune','obelisk','altar','shrine','gate','lore','pillar','rift','merchant','bellmaster','crystal','riddle','answer'].includes(q.type))).find(Boolean);
+    if(c==='Space'||c==='KeyE'){ e.preventDefault(); const p=g.player; const pr=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].map(([dx,dy])=>g.propAt(p.x+dx,p.y+dy,q=>['chest','cursed','lever','brazier','rune','obelisk','altar','shrine','gate','lore','pillar','rift','merchant','bellmaster','crystal','riddle','answer','grave','well'].includes(q.type))).find(Boolean);
       if(pr){ if(g.interact(pr)) g.endTurn(); } else { const st=g.map.stairs; if(st.x===p.x&&st.y===p.y) g.descend(); else g.wait(); } return; }
     if(c==='KeyZ'||c==='Period'||c==='Numpad5'){ g.wait(); return; }
   });
@@ -55,7 +56,7 @@ async function boot(){
     const gr=g.ground.find(q=>q.x===x&&q.y===y&&g.isVis(x,y)); const m=g.monAt(x,y);
     if(gr&&gr.item){ const it=gr.item; ui.tip(tooltipHTML(it,it.base?g.player.equip[it.slot==='ring'?'ring1':it.slot]:null),e); }
     else if(m&&g.canSee(m)) ui.tip(ui.monTip(m),e);
-    else { const pr=g.propAt(x,y,q=>q.type!=='deco'&&q.type!=='decal'&&q.type!=='glow'&&q.type!=='pool'&&q.type!=='walltorch'); if(pr&&g.explored[y*g.map.W+x]){ const n={chest:'Truhla',cursed:'Prokletá truhla (spustí vlny)',lever:'Pulzující kokon',brazier:pr.lit?'Hořící žároviště':'Vyhaslé žároviště',rune:'Runový kámen '+pr.sym,obelisk:'Obelisk',altar:'Oltář hniloby (výroba)',shrine:pr.used?'Vyčerpaná svatyně':'Svatyně',gate:'Mříž trezoru',stairs:pr.locked?'Zapečetěné schodiště':'Schodiště dolů',riftexit:pr.locked?'Zapečetěný portál (zabij Srdce jeskyně)':'Portál zpět',lore:pr.read?'Přečtená runová deska':'Runová deska (lore)',pillar:pr.state==='idle'?'Plodnice pradávných – aktivuj pro vlny a zkažená jádra':pr.state==='active'?'Probuzená plodnice':'Vyčerpaná plodnice',rift:'Zkažená jeskyně (dobrovolný vstup)',merchant:'Hnilobný překupník',bellmaster:'Matka krystalů (zahraje melodii)',crystal:'Zpívající krystal',riddle:'Hrob mudrce (hádanka)',answer:'Kámen s odpovědí: „'+pr.ans+'“',plate:'Dýchající plotna'}[pr.type]; if(n) ui.tip(`<div class="tt-name">${n}</div>`,e); else ui.tip(null); } else ui.tip(null); }
+    else { const pr=g.propAt(x,y,q=>q.type!=='deco'&&q.type!=='decal'&&q.type!=='glow'&&q.type!=='pool'&&q.type!=='walltorch'); if(pr&&g.explored[y*g.map.W+x]){ const n={chest:'Truhla',cursed:'Prokletá truhla (spustí vlny)',lever:'Pulzující kokon',brazier:pr.lit?'Hořící žároviště':'Vyhaslé žároviště',rune:'Runový kámen '+pr.sym,obelisk:'Obelisk',altar:'Oltář hniloby (výroba)',shrine:pr.used?'Vyčerpaná svatyně':'Svatyně',gate:'Mříž trezoru',stairs:pr.locked?'Zapečetěné schodiště':'Schodiště dolů',riftexit:pr.locked?'Zapečetěný portál (zabij Srdce jeskyně)':'Portál zpět',lore:pr.read?'Přečtená runová deska':'Runová deska (lore)',pillar:pr.state==='idle'?'Plodnice pradávných – aktivuj pro vlny a zkažená jádra':pr.state==='active'?'Probuzená plodnice':'Vyčerpaná plodnice',rift:'Zkažená jeskyně (dobrovolný vstup)',merchant:'Hnilobný překupník',bellmaster:'Matka krystalů (zahraje melodii)',crystal:'Zpívající krystal',riddle:'Hrob mudrce (hádanka)',well:pr.used?'Vyschlá studna':'Hnilobná studna – hoď předmět, vylov cizí',answer:'Kámen s odpovědí: „'+pr.ans+'“',plate:'Dýchající plotna'}[pr.type]; if(pr.type==='grave'){ const gt=g.graveText(pr); ui.tip(`<div class="tt-name" style="color:#cfd8e6">✝ ${gt.t}</div><div class="tt-sub">${gt.s}</div>${gt.m?`<div class="tt-line">„${gt.m}“</div>`:''}<div class="tt-hint">${pr.respected?'Vzdal jsi čest.':'E = vzdát čest'}</div>`,e); } else if(n) ui.tip(`<div class="tt-name">${n}</div>`,e); else ui.tip(null); } else ui.tip(null); }
   });
   canvas.addEventListener('mouseleave',()=>{ scene.hover=null; ui.tip(null); });
   canvas.addEventListener('mousedown',e=>{ if(!started||ui.modal) return; if(ui.panel&&innerWidth<900) ui.close(); const [x,y]=toTile(e);

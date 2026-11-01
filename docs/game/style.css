@@ -271,3 +271,12 @@ p.good{color:#b4ec84}
 #panel .x:hover{filter:brightness(1.35) drop-shadow(0 0 6px #9df07a)}
 #mapov{position:fixed;inset:0;z-index:5;pointer-events:none;display:none}
 body.mapon #mapov{display:block}
+
+/* v10: daily, graves, well */
+.gravepick{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0}.gravepick .hint{width:100%}
+.gravepick button{background:#1b1511;border:1px solid #4a3a2c;color:var(--text);padding:5px 9px;border-radius:6px;cursor:pointer;font:600 14px "Alegreya Sans"}.gravepick button.on{border-color:#cfd8e6;color:#fff;box-shadow:0 0 8px #cfd8e655}
+.lbrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.big.daily{color:#f2d36b}
+.dtag{font:700 13px "Alegreya Sans";color:#f2d36b}
+.classes.dsel{grid-template-columns:repeat(6,1fr);gap:6px}.classes.dsel button{padding:4px}.classes.dsel img{width:52px;height:52px}.classes.dsel b{font-size:14px}
+@media (max-width:760px){.classes.dsel{grid-template-columns:repeat(3,1fr)}}
+.tt-well{margin-top:6px;color:#b08cff;font-size:13px;font-style:italic}

@@ -42,3 +42,19 @@ Po nahrání na GitHub Pages se žebříček ve hře zapne sám.
 - Výsledek (nejhlubší patro, úroveň, zabití, čas hraní) se odešle, když postava s přezdívkou dosáhne nové hloubky.
 - Server odmítá nesmyslné výsledky: příliš hluboko na nízké úrovni, příliš rychle, málo zabití. Úplně podvodům zabránit nejde, protože hra běží v prohlížeči.
 - Free plán Cloudflare má zhruba 100 000 požadavků denně, což pro žebříček bohatě stačí.
+
+## Aktualizace v2: denní hlubina, hroby, studna
+
+Jednorázově ve složce `Core/leaderboard` spusť nejdřív přidání tabulek:
+
+```
+npx wrangler d1 execute sporium --remote --file schema_v2.sql
+```
+
+Pak nahraj nový worker:
+
+```
+npx wrangler deploy
+```
+
+Worker importuje herní data z `docs/game/lib`, takže po změně předmětů ve hře stačí znovu `npx wrangler deploy`.

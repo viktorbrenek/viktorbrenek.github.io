@@ -461,4 +461,8 @@ export const LORE=[
   {t:'Poslední deska',x:'Kdo čteš tyto řádky: nejsi první. Mycelium si pamatuje všechny, kdo sem sestoupili. Pamatuje si i tebe. Vítej doma.'},
 ];
 
+export const GRAVE_MSGS=['Dál nechoď.','Bylo jich moc.','Měl jsem pít lektvary.','Truhla byla past.','Boss po půlce zuří.','Tady je poklad… nebo ne.','Světlo pochodně nestačí.','Pomsti mě.','Zkažené jádro mě zradilo.','Utíkej.'];
+// daily depth: deterministic seed + one daily curse from the corruption list
+export const dailySeed=day=>{ let h=2166136261; for(const c of 'sporium:'+day){ h^=c.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; };
+export const dailyMod=day=>{ const pool=CORRUPTIONS.filter(c=>c.id!=='hunted'); return pool[dailySeed(day+':mod')%pool.length]; };
 export const SEASON={n:1,name:'Obchod se štěstím',desc:'Probuď Plodnice pradávných, sbírej zkažená jádra a zkoušej štěstí na Oltáři hniloby. Štěstí přeje odvážným – a chamtivé rozdrtí na prach.'};

@@ -1,7 +1,7 @@
 // ARPG-style overlay map (Tab)
 import {FLOOR} from './dungeon.js';
 import {rarityColor} from './items.js';
-const PROP={stairs:['#9df07a','▼'],riftexit:['#c58cff','◎'],rift:['#c58cff','◎'],pillar:['#7dff6a','✦'],merchant:['#f2d36b','$'],altar:['#c58cff','⛧'],shrine:['#8fd0ff','✚'],chest:['#e8c070','■'],cursed:['#ff6a5a','■'],lore:['#8fb8ff','ᚱ'],gate:['#d0b080','#'],obelisk:['#9cf','▲'],bellmaster:['#9ff','♪'],riddle:['#ddd','?'],brazier:['#ff9c4a','•'],lever:['#b0ff80','•'],rune:['#9cf','•']};
+const PROP={stairs:['#9df07a','▼'],riftexit:['#c58cff','◎'],rift:['#c58cff','◎'],pillar:['#7dff6a','✦'],merchant:['#f2d36b','$'],altar:['#c58cff','⛧'],shrine:['#8fd0ff','✚'],chest:['#e8c070','■'],cursed:['#ff6a5a','■'],lore:['#8fb8ff','ᚱ'],gate:['#d0b080','#'],obelisk:['#9cf','▲'],bellmaster:['#9ff','♪'],riddle:['#ddd','?'],brazier:['#ff9c4a','•'],lever:['#b0ff80','•'],rune:['#9cf','•'],grave:['#cfd8e6','✝'],well:['#b08cff','◍']};
 export function drawMap(g,cv,time){
   const d=devicePixelRatio||1, W=innerWidth*d, H=innerHeight*d; if(cv.width!==W||cv.height!==H){ cv.width=W; cv.height=H; }
   const c=cv.getContext('2d'); c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,W,H); const map=g.map; if(!map) return; const p=g.player;
@@ -33,5 +33,5 @@ export function drawMap(g,cv,time){
   c.fillStyle='#fff'; c.strokeStyle='#000'; c.lineWidth=2*d; c.beginPath(); c.arc(X,Y,s*0.42,0,7); c.fill(); c.stroke();
   // header
   c.font=`700 ${Math.round(22*d)}px "Grenze Gotisch",serif`; c.fillStyle='rgba(242,230,200,0.9)'; c.textAlign='center'; c.fillText(`Hloubka ${g.depth} · ${map.biome.name}${g.inRift?' · Zkažená jeskyně':''}`,W/2,H-150*d);
-  c.font=`600 ${Math.round(13*d)}px "Alegreya Sans",sans-serif`; c.fillStyle='rgba(200,190,170,0.75)'; c.fillText('▼ schody   ✦ plodnice   ◎ portál   $ překupník   ⛧ oltář   ■ truhla   ᚱ lore   ● nepřátelé   [Tab] zavřít',W/2,H-126*d);
+  c.font=`600 ${Math.round(13*d)}px "Alegreya Sans",sans-serif`; c.fillStyle='rgba(200,190,170,0.75)'; c.fillText('▼ schody   ✝ hrob   ◍ studna   ✦ plodnice   ◎ portál   $ překupník   ⛧ oltář   ■ truhla   ᚱ lore   ● nepřátelé   [Tab] zavřít',W/2,H-126*d);
 }

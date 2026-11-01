@@ -40,7 +40,7 @@ export function generate(depth, seed, opt={}){
   const dist=bfs(start.cx,start.cy);
   let far=rooms[1]; for(const r of rooms) if(dist[I(r.cx,r.cy)]>dist[I(far.cx,far.cy)]) far=r;
   const props=[]; const occ=new Set(); const put=(p)=>{ props.push(p); if(p.block) occ.add(I(p.x,p.y)); return p; };
-  const free=(x,y)=>t[I(x,y)]===FLOOR&&!occ.has(I(x,y))&&!(x===start.cx&&y===start.cy);
+  const free=(x,y)=>t[I(x,y)]===FLOOR&&!occ.has(I(x,y))&&!(x===start.cx&&y===start.cy)&&Math.max(Math.abs(x-far.cx),Math.abs(y-far.cy))>1;
   const interior=(x,y)=>{ for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++) if(!t[I(x+dx,y+dy)]) return false; return true; };
   const randIn=(r,f=()=>true)=>{ for(let k=0;k<60;k++){ const x=R.int(r.x,r.x+r.w-1), y=R.int(r.y,r.y+r.h-1); if(free(x,y)&&f(x,y)) return [x,y]; } return null; };
   const boss=depth%5===0&&!opt.rift;
@@ -132,5 +132,11 @@ export function generate(depth, seed, opt={}){
   if(ev==='nest'||ev==='cursed'){ const cand=rooms.slice(1).filter(r=>r!==far); const r=R.pick(cand); const p=randIn(r,interior);
     if(p){ put(ev==='nest'?{type:'nest',x:p[0],y:p[1],spr:'shroom_house2',block:true,hp:1,light:[0.6,1,0.3],lr:4,timer:0}:{type:'cursed',x:p[0],y:p[1],spr:'chest',block:true,light:[0.9,0.2,0.3],lr:4}); evData={x:p[0],y:p[1],room:r.id}; } }
   if(ev==='blackout') for(const p of props) if(p.type==='walltorch'){ p.dead=true; delete p.light; }
+  // safety: stairs must always be reachable from the start (blocking props must never wall them in)
+  const reach=()=>{ const blk=new Set(props.filter(p=>p.block&&p.type!=='gate').map(p=>I(p.x,p.y))); const seen=new Uint8Array(W*H), q=[I(start.cx,start.cy)]; seen[q[0]]=1;
+    while(q.length){ const c=q.pop(), x=c%W, y=(c/W)|0; for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const n=I(x+dx,y+dy); if(!seen[n]&&t[n]===FLOOR&&!blk.has(n)){ seen[n]=1; q.push(n); } } } return seen[I(stairs.x,stairs.y)]===1; };
+  if(!reach()){ for(const p of props) if(p.block&&(p.deco||p.type==='deco')) p.block=false; }
+  if(!reach()){ for(const p of props) if(p.block&&p.type!=='gate'&&Math.max(Math.abs(p.x-stairs.x),Math.abs(p.y-stairs.y))<=2){ const n=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1],[2,0],[0,2],[-2,0],[0,-2]].map(([dx,dy])=>[p.x+dx*2,p.y+dy*2]).find(([x,y])=>t[I(x,y)]===FLOOR&&!props.some(o=>o.x===x&&o.y===y)&&Math.max(Math.abs(x-stairs.x),Math.abs(y-stairs.y))>2); if(n){ p.x=n[0]; p.y=n[1]; } else p.block=false; } }
+  if(!reach()){ for(const p of props) if(p.block&&p.type!=='gate') p.block=false; }
   return {W,H,t,fv,room,rooms,start:[start.cx,start.cy],stairs,props,spawns,puzzle,biome,depth,boss,vault,event:ev,evData};
 }
