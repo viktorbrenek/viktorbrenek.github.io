@@ -4,6 +4,7 @@ import {tooltipHTML,rarityColor,itemValue,rerollCost,upgradeCost,craftReroll,cra
 import {fmt} from './util.js';
 import {Game,Roster,Stash,STASH_MAX} from './game.js';
 import {audio} from './audio.js';
+import {LB} from './net.js';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SUPC='#7fe0c9';
@@ -182,13 +183,33 @@ export class UI{
     this.showModal(`<div class="title"><h1>SPORIUM</h1>
       <div class="season"><span class="sn">Sezóna ${SEASON.n}</span><b>${SEASON.name}</b><small>${SEASON.desc}</small></div>
       <p class="tag">Sestup do hnijících hlubin. Každé patro hlouběji, každý výtrus temnější.</p>
-      ${list.length?`<h3>Tvoje postavy</h3><div class="roster">${list.map(c=>`<div class="rch"><img src="${this.icon(cn(c.cls)?.spr||'hero_blade',64)}"><div class="ri"><b>${esc(cn(c.cls)?.name||c.name)}</b><small>Úroveň ${c.lvl} · hloubka ${c.depth} · nejhlouběji ${c.best}</small></div><button data-play="${c.id}">Hrát</button><button class="del" data-del="${c.id}" title="Smazat">✕</button></div>`).join('')}</div>`:''}
+      ${list.length?`<h3>Tvoje postavy</h3><div class="roster">${list.map(c=>`<div class="rch"><img src="${this.icon(cn(c.cls)?.spr||'hero_blade',64)}"><div class="ri"><b>${esc(cn(c.cls)?.name||c.name)}${c.nick?` <span class="nk">· ${esc(c.nick)}</span>`:''}</b><small>Úroveň ${c.lvl} · hloubka ${c.depth} · nejhlouběji ${c.best}</small></div><button class="nkb" data-nick="${c.id}" title="Přezdívka pro žebříček">${c.nick?'✎':'+ nick'}</button><button data-play="${c.id}">Hrát</button><button class="del" data-del="${c.id}" title="Smazat">✕</button></div>`).join('')}</div>`:''}
       <h3>${list.length?'Nová postava':'Vyber hrdinu'}</h3><div class="classes">${CLASSES.map(c=>`<button data-c="${c.id}"><img src="${this.icon(c.spr,96)}"><b>${c.name}</b><small>${c.desc}</small><i class="trt">◈ ${c.trait.name}: ${c.trait.desc}</i></button>`).join('')}</div>
-      <p class="keys">WASD / šipky (držet) / klik – pohyb a útok · 1–4 dovednosti · Q lektvar · E / mezerník interakce · Enter sestup · I C K P J panely · M zvuk · Esc menu · kolečko zoom</p></div>`,
+      <div class="lbrow"><button class="big" id="t-lb">Žebříček sezóny</button></div>
+      <p class="keys">Tab mapa · WASD / šipky (držet) / klik – pohyb a útok · 1–4 dovednosti · Q lektvar · E / mezerník interakce · Enter sestup · I C K P J panely · M zvuk · Esc menu · kolečko zoom</p></div>`,
     m=>{ m.querySelectorAll('[data-play]').forEach(b=>b.onclick=()=>{ this.hideModal(); onStart({id:b.dataset.play}); });
       m.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ if(!confirm('Opravdu smazat tuto postavu? Nelze vrátit.')) return; Roster.del(b.dataset.del); this.title(onStart); });
-      m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ this.hideModal(); onStart({cls:b.dataset.c}); }); }); }
+      m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ const cls=b.dataset.c; this.nickModal(LB.player().nick,'Nová postava',nick=>{ this.hideModal(); if(nick) LB.setDefaultNick(nick); onStart({cls,nick}); },()=>this.title(onStart)); });
+      m.querySelectorAll('[data-nick]').forEach(b=>b.onclick=()=>{ const id=b.dataset.nick; const s=Roster.get(id); this.nickModal(s.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ s.player.nick=nick||''; s.player.nickAsked=true; Roster.put(id,s); if(nick) LB.setDefaultNick(nick); this.title(onStart); },()=>this.title(onStart)); });
+      m.querySelector('#t-lb').onclick=()=>this.leaderboard(()=>this.title(onStart)); }); }
+  nickModal(cur,title,done,back){ const on=LB.enabled();
+    this.showModal(`<h2>${title}</h2><p class="hint">Přezdívka se zobrazí v online žebříčku sezóny. Žádná registrace ani e-mail – stačí jméno (2–16 znaků).${on?'':' <b>Žebříček zatím není zapnutý</b>, přezdívka se uloží a odešle, až bude.'}</p>
+      <input id="nk-in" maxlength="16" placeholder="Tvoje přezdívka" value="${esc(cur||'')}" autocomplete="off"><div class="nkerr hint" style="color:#ff8a7a"></div>
+      <div class="pmenu"><button class="big" id="nk-ok">Pokračovat</button><button class="big" id="nk-skip">Bez žebříčku</button>${back?'<button class="big" id="nk-back">Zpět</button>':''}</div>`,
+    m=>{ const inp=m.querySelector('#nk-in'); setTimeout(()=>inp.focus(),30); const ok=()=>{ const v=inp.value.trim().replace(/\s+/g,' '); if(!LB.validNick(v)){ m.querySelector('.nkerr').textContent='Použij 2–16 písmen, číslic, mezer nebo _ . -'; return; } done(v); };
+      inp.onkeydown=e=>{ e.stopPropagation(); if(e.key==='Enter') ok(); }; m.querySelector('#nk-ok').onclick=ok; m.querySelector('#nk-skip').onclick=()=>done(''); if(back) m.querySelector('#nk-back').onclick=back; }); }
+  askNickOnce(){ const p=this.g.player; if(p.nick||p.nickAsked) return; this.nickModal(LB.player().nick,'Přidej přezdívku',nick=>{ p.nickAsked=true; if(nick){ p.nick=nick; LB.setDefaultNick(nick); } this.hideModal(); this.g.save(); this.g.lbSync(true); this.refresh(); }); }
+  async leaderboard(back,cls='all'){ const g=this.g; const tabs=[['all','Všichni'],...CLASSES.map(c=>[c.id,c.name])];
+    const head=`<h2>Žebříček · Sezóna ${SEASON.n}</h2><div class="lbtabs">${tabs.map(([id,n])=>`<button data-lbc="${id}" class="${id===cls?'on':''}">${n}</button>`).join('')}</div>`;
+    const wire=m=>{ m.querySelectorAll('[data-lbc]').forEach(b=>b.onclick=()=>this.leaderboard(back,b.dataset.lbc)); m.querySelector('#lb-back').onclick=()=>back?back():this.hideModal(); };
+    if(!LB.enabled()){ this.showModal(head+`<p class="hint">Online žebříček zatím není zapnutý.</p><button class="big" id="lb-back">Zpět</button>`,wire); return; }
+    this.showModal(head+`<p class="hint">Načítám…</p><button class="big" id="lb-back">Zpět</button>`,wire);
+    const d=await LB.top(cls); const myIds=new Set(Roster.list().map(c=>c.id.slice(-6)));
+    const rows=d?.rows||[]; const cn=id=>CLASSES.find(c=>c.id===id);
+    const body=d?(rows.length?`<div class="lbt"><div class="lbh"><span>#</span><span>Přezdívka</span><span>Třída</span><span>Hloubka</span><span>Úroveň</span></div>${rows.map((r,i)=>`<div class="lbr ${myIds.has(r.id)?'me':''} ${i<3?'top'+(i+1):''}"><span>${i+1}</span><span>${esc(r.nick)}</span><span><img src="${this.icon(cn(r.cls)?.spr||'hero_blade',32)}">${cn(r.cls)?.name||r.cls}</span><span>${r.best}</span><span>${r.lvl}</span></div>`).join('')}</div>`:'<p class="hint">Zatím nikdo. Buď první!</p>'):'<p class="hint">Žebříček je teď nedostupný. Zkus to později.</p>';
+    if(!document.querySelector('.lbtabs')) return; this.showModal(head+body+`<p class="hint">Výsledek se odešle automaticky, když postava s přezdívkou dosáhne nové hloubky.</p><button class="big" id="lb-back">Zpět</button>`,wire); }
   pauseMenu(toTitle){ const g=this.g; this.showModal(`<h2>Menu</h2><p class="hint">${esc(g.player.name)} · úroveň ${g.player.lvl} · hloubka ${g.depth}${g.inRift?' · ve Zkažené jeskyni (uloží se před vchodem)':''}</p>
-      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
-    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-m').onclick=()=>{ audio.toggleMute(); this.hideModal(); }; m.querySelector('#pm-s').onclick=()=>{ if(g.inRift) g.exitRift(); g.save(); this.hideModal(); this.panel=null; this.renderPanel(); toTitle(); }; }); }
+      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
+    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle));
+      m.querySelector('#pm-n').onclick=()=>this.nickModal(g.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ g.player.nick=nick||''; g.player.nickAsked=true; g._nickWarned=false; if(nick) LB.setDefaultNick(nick); g.save(); g.lbSync(true); this.pauseMenu(toTitle); },()=>this.pauseMenu(toTitle)); m.querySelector('#pm-m').onclick=()=>{ audio.toggleMute(); this.hideModal(); }; m.querySelector('#pm-s').onclick=()=>{ if(g.inRift) g.exitRift(); g.save(); this.hideModal(); this.panel=null; this.renderPanel(); toTitle(); }; }); }
 }

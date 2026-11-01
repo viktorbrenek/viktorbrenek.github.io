@@ -4,6 +4,7 @@ import {UI} from './ui.js';
 import {SceneRenderer} from './render.js';
 import {tooltipHTML} from './items.js';
 import {audio} from './audio.js';
+import {drawMap} from './mapov.js';
 
 const loadImg=src=>new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
 async function boot(){
@@ -12,11 +13,12 @@ async function boot(){
   let R; try{ R=new Renderer(canvas,img,meta); }catch(e){ document.getElementById('loading').textContent='Tvůj prohlížeč nepodporuje WebGL2: '+e.message; return; }
   const scene=new SceneRenderer(R,over); const ui=new UI(img,meta); const g=new Game(null);
   window.SPORIUM={g,ui,scene};
+  const mapCv=document.createElement('canvas'); mapCv.id='mapov'; document.body.appendChild(mapCv);
   document.getElementById('loading').remove();
   let started=false;
   const unlock=()=>audio.init(); addEventListener('pointerdown',unlock); addEventListener('keydown',unlock);
-  const start=o=>{ if(o.cls) g.newCharacter(o.cls); else if(!g.load(o.id)) g.newCharacter('blade'); ui.bind(g); started=true; };
-  const toTitle=()=>{ started=false; g.map=null; ui.title(start); };
+  const start=o=>{ if(o.cls){ g.newCharacter(o.cls); if(o.nick){ g.player.nick=o.nick; g.save(); g.lbSync(true); } } else if(!g.load(o.id)) g.newCharacter('blade'); ui.bind(g); started=true; if(!o.cls) ui.askNickOnce(); };
+  const toTitle=()=>{ document.body.classList.remove('mapon'); started=false; g.map=null; ui.title(start); };
   ui.title(start);
   // ---- input: layout-independent (e.code), held keys for smooth movement ----
   const MOVE={KeyW:[0,-1],KeyS:[0,1],KeyA:[-1,0],KeyD:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],
@@ -29,8 +31,10 @@ async function boot(){
     if(dx&&dy){ if(g.tryMove(dx,0)) return true; if(g.tryMove(0,dy)) return true; } return false; };
   addEventListener('keydown',e=>{
     if(!started) return; const c=e.code;
+    if(c==='Escape'&&document.body.classList.contains('mapon')){ document.body.classList.remove('mapon'); return; }
     if(c==='Escape'){ if(ui.modal&&document.querySelector('#pm-c')){ ui.hideModal(); return; } if(ui.modal) return; if(g.targeting){ g.targeting=null; ui.refresh(); } else if(ui.panel) ui.close(); else if(g.player.hp>0) ui.pauseMenu(toTitle); return; }
     if(ui.modal) return;
+    if(c==='Tab'){ e.preventDefault(); document.body.classList.toggle('mapon'); return; }
     if(c==='KeyM'){ const mu=audio.toggleMute(); g.log(mu?'Zvuk vypnut [M].':'Zvuk zapnut [M].','sys'); ui.refresh(); return; }
     if(c==='KeyI'){ ui.toggle('inv'); return; } if(c==='KeyC'){ ui.toggle('char'); return; } if(c==='KeyK'){ ui.toggle('skills'); return; } if(c==='KeyP'){ ui.toggle('tree'); return; } if(c==='KeyJ'){ ui.toggle('lore'); return; }
     if(!g.canAct()) return;
@@ -64,11 +68,12 @@ async function boot(){
   // ---- loop ----
   const STEP=0.1; let last=performance.now(), stepT=0;
   function frame(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; const t=now/1000;
+    if(started&&g.map&&!ui.modal&&g.player) g.player.playSec=(g.player.playSec||0)+dt;
     if(started&&g.map){
       if(held.size&&!ui.modal){ moveT-=dt; if(firstStep||moveT<=0){ if(doMove()) moveT=Math.max(0,moveT)+STEP; else moveT=0.05; firstStep=false; } }
       else { stepT+=dt; if(g.player.path&&stepT>=STEP&&g.canAct()){ stepT-=STEP; if(stepT>STEP) stepT=0; g.stepPath(); } }
       if(audio.ctx&&(stepT>0||true)){ const bs=g.bossRef&&g.bossRef.hp>0&&g.bossRef.aware; const cb=g.monsters.some(m=>m.hp>0&&m.aware&&Math.max(Math.abs(m.x-g.player.x),Math.abs(m.y-g.player.y))<=9); audio.setState(bs?'boss':cb?'combat':'explore',g.map.biome.id); }
-      scene.tick(g,dt); scene.draw(g,dt,t); }
+      scene.tick(g,dt); scene.draw(g,dt,t); if(document.body.classList.contains('mapon')) drawMap(g,mapCv,t); }
     requestAnimationFrame(frame); }
   requestAnimationFrame(frame);
   addEventListener('beforeunload',()=>{ if(started) g.save(); });

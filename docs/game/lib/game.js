@@ -4,13 +4,14 @@ import {generate,WALL,FLOOR} from './dungeon.js';
 import {MONSTERS,BOSSES,MINIBOSSES,MON_MODS,MON_RARE_A,MON_RARE_B,SKILLS,SUPPORTS,CLASSES,CORRUPTIONS,BASES,PASSIVE_MAP,EVENTS,resPenalty,SPECIAL,RIFT_MODS,LORE,MINIONS,FORMS,SETS,skillsFor} from './data.js';
 import {makeItem,makeSupport,itemStats,itemValue,corruptItem,setTooltipCtx} from './items.js';
 import {audio} from './audio.js';
+import {LB} from './net.js';
 
 export const T=64;
 const SAVE_KEY='sporium_save_v2', ROSTER_KEY='sporium_roster_v1', STASH_KEY='sporium_stash_v1'; export const STASH_MAX=10;
 const LS={ get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }, del(k){ try{ localStorage.removeItem(k); }catch(e){} } };
 export const Roster={
   all(){ let r=LS.get(ROSTER_KEY); if(!r){ r={chars:{},last:null}; const old=LS.get(SAVE_KEY); if(old&&old.player){ const id='c'+Date.now(); r.chars[id]=old; r.last=id; LS.del(SAVE_KEY); } LS.set(ROSTER_KEY,r); } return r; },
-  list(){ const r=this.all(); return Object.entries(r.chars).map(([id,s])=>({id,cls:s.player.cls,name:s.player.name,lvl:s.player.lvl,depth:s.depth,best:s.best,time:s.time||0})).sort((a,b)=>b.time-a.time); },
+  list(){ const r=this.all(); return Object.entries(r.chars).map(([id,s])=>({id,cls:s.player.cls,name:s.player.name,nick:s.player.nick||'',lvl:s.player.lvl,depth:s.depth,best:s.best,time:s.time||0})).sort((a,b)=>b.time-a.time); },
   get(id){ return this.all().chars[id]; }, put(id,data){ const r=this.all(); r.chars[id]=data; r.last=id; LS.set(ROSTER_KEY,r); }, del(id){ const r=this.all(); delete r.chars[id]; LS.set(ROSTER_KEY,r); },
 };
 export const Stash={ get(){ return LS.get(STASH_KEY)||[]; }, set(a){ LS.set(STASH_KEY,a); } };
@@ -25,7 +26,7 @@ export class Game{
     this.charId=null; this.floorMods=null; this.msgs=[]; this.minions=[];
     const c=CLASSES.find(x=>x.id===clsId);
     const p=this.player={cls:c.id,spr:c.spr,name:c.name,lvl:1,xp:0,base:{...c.stats},points:0,ppoints:1,passives:['c'],gold:0,dust:0,
-      equip:{},inv:[],skills:{attack:1},links:{},bar:[null,null,null,null],form:null,potions:3,potionMax:3,stats:{},hp:1,mp:1,es:0,cores:0,lore:[],buffs:[],status:{},steps:0,x:0,y:0,rx:0,ry:0,cds:{}};
+      equip:{},inv:[],skills:{attack:1},links:{},bar:[null,null,null,null],form:null,nick:'',playSec:0,potions:3,potionMax:3,stats:{},hp:1,mp:1,es:0,cores:0,lore:[],buffs:[],status:{},steps:0,x:0,y:0,rx:0,ry:0,cds:{}};
     for(const s of c.skills) p.skills[s]=1; p.bar[0]=c.skills[0]; p.bar[1]=c.skills[1];
     for(const b of c.gear){ const it=makeItem(1,{baseId:b,rarity:'common'}); const base=BASES.find(x=>x.id===b); this.equip(it,base.slot==='ring'?'ring1':base.slot,true); }
     p.inv.push(makeSupport(c.rune||'crit'));
@@ -35,10 +36,15 @@ export class Game{
   }
   load(id){ try{ const s=Roster.get(id); if(!s||!s.player) return false; this.charId=id; this.floorMods=null; this.msgs=[]; this.minions=[];
       Object.assign(this,{depth:s.depth,checkpoint:s.checkpoint,best:s.best,kills:s.kills||0,seed:s.seed});
-      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]) if(it&&it.type==='support') it.spr='rune_'+it.sup; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); return true; }catch(e){ console.warn(e); return false; } }
+      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]) if(it&&it.type==='support') it.spr='rune_'+it.sup; if(this.player.playSec==null) this.player.playSec=(s.best||1)*60; if(!(this.player.hp>0)){ this.recalc(); this.player.hp=this.player.stats.life; this.player.mp=this.player.stats.mana; } if(this.player.nick==null) this.player.nick=''; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); return true; }catch(e){ console.warn(e); return false; } }
   static hasSave(){ return Roster.list().length>0; }
   save(){ try{ const p=this.player; const {buffs,status,path,rx,ry,lunge,flash,stats,...rest}=p;
-      if(!this.charId) this.charId='c'+Date.now()+Math.floor(Math.random()*1000); Roster.put(this.charId,{depth:this.depth,checkpoint:this.checkpoint,best:this.best,kills:this.kills,seed:this.seed,time:Date.now(),player:rest}); }catch(e){ console.warn(e); } }
+      if(!this.charId) this.charId='c'+Date.now()+Math.floor(Math.random()*1000); Roster.put(this.charId,{depth:this.depth,checkpoint:this.checkpoint,best:this.best,kills:this.kills,seed:this.seed,time:Date.now(),player:rest}); }catch(e){ console.warn(e); }
+    this.lbSync(); }
+  lbSync(force){ const p=this.player; if(!LB.enabled()||!p?.nick) return; if(!force&&this.best<=(p.lbSent||0)) return;
+    LB.submit(this,force).then(r=>{ if(!r||r.throttled){ clearTimeout(this._lbT); this._lbT=setTimeout(()=>this.lbSync(),17500); return; } if(r.ok&&!r.throttled){ p.lbSent=Math.max(p.lbSent||0,this.best); }
+      else if(r.status===409&&!this._nickWarned){ this._nickWarned=true; this.log('Žebříček: přezdívka „'+p.nick+'“ je obsazená jiným hráčem. Změň ji v menu [Esc].','warn'); }
+      else if(r.status===422&&!this._lbWarned){ this._lbWarned=true; console.warn('leaderboard rejected',r.error); } }); }
   static wipe(){}
 
   enterFloor(d){
