@@ -36,9 +36,9 @@ export class Game{
   }
   load(id){ try{ const s=Roster.get(id); if(!s||!s.player) return false; this.charId=id; this.floorMods=null; this.msgs=[]; this.minions=[];
       Object.assign(this,{depth:s.depth,checkpoint:s.checkpoint,best:s.best,kills:s.kills||0,seed:s.seed,daily:s.daily||null});
-      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]) if(it&&it.type==='support') it.spr='rune_'+it.sup; if(this.player.playSec==null) this.player.playSec=(s.best||1)*60; if(!(this.player.hp>0)){ this.recalc(); this.player.hp=this.player.stats.life; this.player.mp=this.player.stats.mana; } if(this.player.nick==null) this.player.nick=''; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); return true; }catch(e){ console.warn(e); return false; } }
+      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]) if(it&&it.type==='support') it.spr='rune_'+it.sup; { const cd=CLASSES.find(c=>c.id===this.player.cls); if(cd) this.player.spr=cd.spr; } if(this.player.playSec==null) this.player.playSec=(s.best||1)*60; if(!(this.player.hp>0)){ this.recalc(); this.player.hp=this.player.stats.life; this.player.mp=this.player.stats.mana; } if(this.player.nick==null) this.player.nick=''; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); return true; }catch(e){ console.warn(e); return false; } }
   static hasSave(){ return Roster.list().length>0; }
-  save(){ try{ const p=this.player; const {buffs,status,path,rx,ry,lunge,flash,stats,...rest}=p;
+  save(){ try{ const p=this.player; const {buffs,status,path,rx,ry,lunge,flash,stats,anim,_wp,_mv,_hurt,...rest}=p;
       if(!this.charId) this.charId='c'+Date.now()+Math.floor(Math.random()*1000); Roster.put(this.charId,{depth:this.depth,checkpoint:this.checkpoint,best:this.best,kills:this.kills,seed:this.seed,daily:this.daily||null,time:Date.now(),player:rest}); }catch(e){ console.warn(e); }
     this.lbSync(); }
   lbSync(force){ const p=this.player; if(!LB.enabled()||!p?.nick) return;
@@ -540,6 +540,7 @@ export class Game{
       case 'regrow': { p.buffs=p.buffs.filter(b=>b.id!=='regrow'); p.buffs.push({id:'regrow',name:'Obrůstání',regenPct:0.05*lm,turns:5}); this.recalc(); this.burst(p.x,p.y,[0.4,1,0.6],16,60); break; }
     }
     if(!ok) return false;
+    if(!p.lunge&&!s.form) p.anim={k:s.type==='summon'?'summon':(s.tags.includes('bowonly')||id==='snipe'||id==='volley')?'shoot':s.type==='attack'?'swing':'cast',t:0,dur:s.type==='summon'?0.55:0.4};
     this.snd({cleave:'cleave',rotstrike:'hit',bash:'bash',rend:'swing',barkskin:'buff',warcry:'warcry',sporebolt:'sporebolt',puffbomb:'puffbomb',plague:'plague',firebrand:'fire',blink:'blink',drain:'drain',volley:'bow',lunge:'swing',spikes:'slam',snipe:'bow',arrowrain:'bow',sproutlings:'squish',jellycall:'squish',entcall:'roar',command:'warcry',detonate:'puffbomb',maul:'bash',gore:'slam',thornroot:'drain',regrow:'buff',bearform:null,boarform:null}[id]??(s.form?null:'swing')); if(tx!=null&&!s.form) this.face(p,tx); if(!(s.tags.includes('spell')&&st.setPow.has('ulmyr')&&rng.chance(0.25))) this.pay(cost); else this.float(p.x,p.y,'Zdarma','#9cf',0.9); let cd=Math.ceil(s.cd*(1-st.cdr/100)*(c.sups.has('haste')?0.5:1)*(st.ks.has('pact')?1.5:1)); if(s.form&&(st.ks.has('wildheart')||st.setPow.has('shiftset'))) cd=0; if(st.uniques.has('echo_ring')&&rng.chance(0.25)){ cd=0; this.float(p.x,p.y,'Ozvěna!','#c9f'); } p.cds[id]=cd; p.steps=0;
     return this.endTurn();
   }
@@ -547,7 +548,7 @@ export class Game{
   spellHit(mult,el){ const st=this.player.stats; const h={phys:0,fire:0,poison:0,decay:0,crit:st.crit*0.7,critMult:st.critMult,spell:true}; h[el]=st.spellBase*rng.range(0.85,1.15)*mult; return h; }
   lunge(a,t){ a.lunge={dx:t.x-a.x,dy:t.y-a.y,t:0}; this.face(a,t.x); }
   basicAttack(m){
-    const p=this.player, st=p.stats; if(m.x!==p.x) p.flip=m.x<p.x; const ranged=st.kind!=='melee'&&dist(m.x,m.y,p.x,p.y)>1; this.snd(ranged?(st.kind==='bow'?'bow':'zap'):'swing');
+    const p=this.player, st=p.stats; if(m.x!==p.x) p.flip=m.x<p.x; const ranged=st.kind!=='melee'&&dist(m.x,m.y,p.x,p.y)>1; if(ranged) p.anim={k:st.kind==='bow'?'shoot':'cast',t:0,dur:0.35}; this.snd(ranged?(st.kind==='bow'?'bow':'zap'):'swing');
     const c=this.ctx('attack'); if(st.uniques.has('silent_step')&&p.steps>=3) c.forceCrit=true;
     const mult=st.kind==='melee'||ranged?1:0.6; let targets=[m];
     if(st.uniques.has('bone_bow')&&st.kind==='bow'){ targets.push(...this.monsters.filter(o=>o!==m&&o.hp>0&&this.canSee(o)&&edist(p.x,p.y,o.x,o.y)<=7).sort((a,b)=>edist(a.x,a.y,m.x,m.y)-edist(b.x,b.y,m.x,m.y)).slice(0,2)); }
@@ -672,7 +673,7 @@ export class Game{
     if(st.ks.has('symbiosis')&&this.minions.length){ const mn=this.minions.slice().sort((a,b)=>dist(a.x,a.y,p.x,p.y)-dist(b.x,b.y,p.x,p.y))[0]; const a=d*0.35; d-=a; this.hurtMinion(mn,a,null,true); }
     if(st.uniques.has('mycel_cloak')&&p.mp>0){ const a=Math.min(p.mp,d*0.3); p.mp-=a; d-=a; }
     if(st.ks.has('chitin')&&p.es>0){ const a=Math.min(p.es,d); p.es-=a; d-=a; this.lastHit=this.turn; if(d<=0){ this.float(p.x,p.y,'-'+fmt(a),'#9cf'); this.snd('block'); return a; } }
-    p.hp-=d; this.snd('hurt'); this.renderHurt=Math.min(1,(this.renderHurt||0)+d/st.life*2.5); this.shake=Math.max(this.shake,3+d/st.life*18);
+    p.hp-=d; p._hurt=1; this.snd('hurt'); this.renderHurt=Math.min(1,(this.renderHurt||0)+d/st.life*2.5); this.shake=Math.max(this.shake,3+d/st.life*18);
     this.float(p.x,p.y,'-'+fmt(d),'#ff5a4a'); this.lastHit=this.turn;
     if(src&&st.thorns) this.thorn(src,st.thorns); if(src&&st.uniques.has('thistle')) this.thorn(src,d*0.4);
     if(p.hp<=0){ p.hp=0; this.onDeath(srcName||src?.name||'neznámo'); }

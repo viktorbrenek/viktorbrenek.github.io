@@ -4,6 +4,7 @@ import {WALL,FLOOR} from './dungeon.js';
 import {rng,edist,dist} from './util.js';
 import {rarityColor} from './items.js';
 import {SKILLS} from './data.js';
+import {drawRig,animTick,RIGS} from './rig.js';
 
 const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
 export class SceneRenderer{
@@ -15,7 +16,7 @@ export class SceneRenderer{
     const R=this.r, map=g.map, p=g.player; if(!map) return;
     // anim positions
     const k=1-Math.pow(0.0005,dt);
-    const animE=e=>{ e.rx+=(e.x-e.rx)*k; e.ry+=(e.y-e.ry)*k; if(Math.abs(e.x-e.rx)<0.01) e.rx=e.x; if(Math.abs(e.y-e.ry)<0.01) e.ry=e.y; if(e.lunge){ e.lunge.t+=dt*5; if(e.lunge.t>=1) e.lunge=null; } if(e.flash) e.flash=Math.max(0,e.flash-dt); };
+    const animE=e=>{ e.rx+=(e.x-e.rx)*k; e.ry+=(e.y-e.ry)*k; if(Math.abs(e.x-e.rx)<0.01) e.rx=e.x; if(Math.abs(e.y-e.ry)<0.01) e.ry=e.y; if(e.lunge){ e.lunge.t+=dt*5; if(e.lunge.t>=1) e.lunge=null; } if(e.flash) e.flash=Math.max(0,e.flash-dt); animTick(e,dt); };
     animE(p); g.monsters.forEach(animE); g.minions.forEach(animE);
     // camera
     const vw=R.c.clientWidth, vh=R.c.clientHeight; const tilePx=Math.max(46,Math.min(92,Math.min(vw/15,vh/10)))*this.zoom;
@@ -113,7 +114,9 @@ export class SceneRenderer{
     const breathe=1+Math.sin(time*3+(e.x||0)*1.7)*0.018; const bx=e.rx*T+T/2+ox, by=e.ry*T+T*0.96+oy;
     R.q(bx-w*0.38,by-8,w*0.76,14,0,0,1,1,0,0,0,0.45,2);
     let tint=e.tint||[1,1,1]; if(e.ally) tint=[0.85,1.08,0.9]; if(e.flash>0) tint=[2.2,2.2,2.2]; if(e.status?.poison) tint=[tint[0]*0.75,tint[1]*1.1,tint[2]*0.7]; if(e.status?.stun) tint=[tint[0]*0.8,tint[1]*0.8,tint[2]*1.1];
-    R.sprite(spr,bx-w/2,by-h*breathe,w,h*breathe,{flip:!e.flip,tint}); if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } }
+    if(isP&&!e.form&&RIGS[e.cls]){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; drawRig(R,e,g,bx,by,T*0.92*sc*1.1/99,time,tint); return; }
+    const hop=Math.abs(Math.sin(e._wp||0))*(e._mv||0), sway=Math.sin(e._wp||0)*(e._mv||0)*0.07;
+    R.sprite(spr,bx-w/2,by-h*breathe-hop*T*0.07,w,h*breathe,{flip:!e.flip,tint,rot:sway}); if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } }
   spores_(g,dt,time,x0,x1,y0,y1){ const R=this.r, S=this.spores, c=g.map.biome.spore; const N=Math.round((x1-x0)*(y1-y0)*0.9);
     while(S.length<N) S.push(this.newSpore(x0,x1,y0,y1,true));
     for(let i=S.length-1;i>=0;i--){ const s=S[i]; s.life+=dt; s.x+=(s.vx+Math.sin(time*0.7+s.ph)*7)*dt; s.y+=(s.vy+Math.cos(time*0.5+s.ph)*4)*dt;
