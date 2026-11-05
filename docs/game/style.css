@@ -280,3 +280,8 @@ body.mapon #mapov{display:block}
 .classes.dsel{grid-template-columns:repeat(6,1fr);gap:6px}.classes.dsel button{padding:4px}.classes.dsel img{width:52px;height:52px}.classes.dsel b{font-size:14px}
 @media (max-width:760px){.classes.dsel{grid-template-columns:repeat(3,1fr)}}
 .tt-well{margin-top:6px;color:#b08cff;font-size:13px;font-style:italic}
+
+.node.hit image{filter:drop-shadow(0 0 10px #ffd54a) drop-shadow(0 0 4px #ffd54a) brightness(1.5)}
+.node.hit circle{stroke:#ffd54a;stroke-width:8}
+.treeq{margin-left:10px;width:260px;max-width:60%;background:#120d0a;border:1px solid #5a4630;color:#e8dcc4;padding:3px 8px;border-radius:6px;font:inherit}
+.row.ex span:last-child{text-align:right;font-size:.92em;line-height:1.35}

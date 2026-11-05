@@ -131,10 +131,11 @@ export class Game{
     const cl=CLASSES.find(c=>c.id===p.cls); if(cl?.trait) for(const [k,v] of Object.entries(cl.trait.s)) add(k,v);
     const might=p.base.might+(S.might||0), fin=p.base.finesse+(S.finesse||0), wits=p.base.wits+(S.wits||0);
     const w=p.equip.weapon; const kind=w?.kind||'melee';
-    const st={might,finesse:fin,wits,kind:form?'melee':kind,ks,form,setPow,setCnt};
+    const st={might,finesse:fin,wits,kind:form==='fly'?'staff':form?'melee':kind,ks,form,setPow,setCnt};
     st.life=Math.round((28+p.lvl*5+might*1.5+(S.life||0))*(1+(S.lifePct||0)/100)*(ks.has('glass')?0.7:1)*(ks.has('bloodmagic')?1.3:1));
+    if(ks.has('mindover')) st.life=Math.round(st.life*0.8); if(ks.has('ghost')) st.life=Math.round(st.life*0.75);
     const lifeRaw=st.life;
-    st.mana=ks.has('bloodmagic')?0:Math.round(15+p.lvl*1.5+wits*2.5+(S.mana||0));
+    st.mana=ks.has('bloodmagic')?0:Math.round(15+p.lvl*1.5+wits*2.5+(S.mana||0)); if(ks.has('mindover')) st.mana=Math.round(st.mana*1.3);
     st.armor=Math.round((S.armor||0)*(1+((S.armorPct||0)+fin*0.3)/100));
     const wd=w?.dmg||[1,3]; const flat=S.dmg||0;
     st.dmgPct=(S.dmgPct||0)+(kind==='bow'?fin*1.0:kind==='melee'?might*1.0:might*0.3);
@@ -151,11 +152,15 @@ export class Game{
     st.resPoison=Math.min(maxR,res+(S.resPoison||0)+pen); st.resFire=Math.min(maxR,res+(S.resFire||0)+pen); st.resDecay=Math.min(maxR,res+(S.resDecay||0)+pen); st.resPen=pen;
     st.torch=5+(S.torch||0)+(this.floorMods?.torch||0)+(this.map?.event==='storm'?-1:0)+(ks.has('darkhunter')?-2:0);
     st.mf=(S.mf||0)+(this.map?.event==='blackout'?20:0); st.gf=S.gf||0; st.cdr=Math.min(50,S.cdr||0); st.thorns=S.thorns||0;
-    st.skill=S.skill||0; st.dodge=ks.has('rootwill')||ks.has('iron')?0:Math.min(60,fin*0.15+(S.dodge||0)); st.block=Math.min(ks.has('rootwill')?75:60,(S.block||0)*(ks.has('rootwill')?2:1)); st.xp=S.xp||0; st.potion=S.potion||0;
+    st.skill=S.skill||0; st.dodge=ks.has('rootwill')||ks.has('iron')||ks.has('unbreak')||ks.has('juggernaut')?0:Math.min(ks.has('ghost')?75:60,fin*0.15+(S.dodge||0)+(ks.has('ghost')?10:0)); st.block=ks.has('juggernaut')?0:Math.min(ks.has('rootwill')?75:60,(S.block||0)*(ks.has('rootwill')?2:1)); st.xp=S.xp||0; st.potion=S.potion||0;
     st.reach=S.reach||0; st.aoe=S.aoe||0; st.more=(ks.has('glass')?1.4:1);
     st.uniques=new Set(Object.values(p.equip).filter(i=>i&&i.unique).map(i=>i.unique));
+    for(const k of ['firePct','poisonPct','decayPct','meleePct','projPct','aoePct','ailDur','costRed','doubleDmg','regenPct','manaKill','weakCh','fearCh','buffDur','dr']) st[k]=S[k]||0;
+    if(ks.has('virulence')) st.ailDur+=100; if(ks.has('unbreak')) st.dr+=15; if(ks.has('avatar')) st.burnCh+=20; if(ks.has('hivemind')) st.more*=0.5;
     if(st.uniques.has('blood_idol')) ks.add('bloodmagic_item');
-    for(const b of p.buffs){ if(b.armorPct) st.armor*=1+b.armorPct; if(b.regen) st.regen+=b.regen; if(b.dmgPct) st.more*=1+b.dmgPct; if(b.torch) st.torch+=b.torch; }
+    for(const b of p.buffs){ if(b.armorPct) st.armor*=1+b.armorPct; if(b.regen) st.regen+=b.regen; if(b.dmgPct) st.more*=1+b.dmgPct*(b.stacks||1); if(b.torch) st.torch+=b.torch; if(b.add) for(const [k,v] of Object.entries(b.add)) st[k]=(st[k]||0)+v; }
+    st.block=Math.min(75,st.block); st.dodge=Math.min(75,st.dodge); st.crit=Math.min(75,st.crit); st.dr=Math.min(60,st.dr); st.costRed=Math.min(50,st.costRed);
+    if(ks.has('juggernaut')) st.more*=1+Math.min(0.8,st.armor/1500);
     if(st.uniques.has('rotheart')) st.regen*=3;
     st.torch=Math.max(2,st.torch);
     if(ks.has('pact')) st.skill+=2;
@@ -164,14 +169,17 @@ export class Game{
     st.minionDmg=S.minionDmg||0; st.minionLife=S.minionLife||0; st.minionMax=S.minionMax||0; st.formPct=S.formPct||0; st.formLife=S.formLife||0;
     st.minionUpkeep=S.minionUpkeep||0; { let res=0; for(const mn of this.minions||[]) if(mn.hp>0) res+=MINIONS[mn.kind].upkeep; st.reserve=Math.min(0.85,res*Math.max(0.2,1+st.minionUpkeep/100)); if(st.reserve>0){ st.lifeFull=st.life; st.life=Math.max(1,Math.round(st.life*(1-st.reserve))); } }
     for(const b of p.buffs){ if(b.regenPct) st.regen+=st.life*b.regenPct; if(b.regenPct&&form) st.manaRegen+=st.mana*0.03; }
-    if(form){ const fl=1+st.formLife/100, fm=1+st.formPct/100;
-      if(form==='bear'){ st.life=Math.round(st.life*1.5*fl); st.armor=Math.round(st.armor*1.6+p.lvl*2); st.more*=1.25*fm; if(st.uniques.has('bear_pelt')){ st.block=Math.min(75,st.block+15); st.thorns+=st.armor*0.1; } }
-      else { st.life=Math.round(st.life*fl); st.dodge=Math.min(75,st.dodge+15); st.crit=Math.min(75,st.crit+8); st.bleed+=30; st.more*=1.1*fm; }
+    if(form){ const fl=1+st.formLife/100, fm=1+st.formPct/100; const tb=ks.has('twinblood'), bear=form==='bear'||tb, boar=form==='boar'||tb;
+      st.life=Math.round(st.life*(bear?1.5:1)*fl);
+      if(bear){ st.armor=Math.round(st.armor*1.6+p.lvl*2); st.more*=1.25*fm; if(st.uniques.has('bear_pelt')){ st.block=Math.min(75,st.block+15); st.thorns+=st.armor*0.1; } }
+      if(boar){ st.dodge=Math.min(75,st.dodge+15); st.crit=Math.min(75,st.crit+8); st.bleed+=30; st.more*=1.1*(bear?1:fm); }
+      if(form==='fly'){ st.life=Math.round(st.life*0.9); st.dodge=Math.min(75,st.dodge+10); st.spell+=25; st.projPct+=25; if(!tb) st.more*=fm; }
       if(ks.has('apex')){ st.more*=1.3; st.regen+=st.life*0.02; } }
     else if(ks.has('wildheart')) st.more*=0.6;
     if(ks.has('symbiosis')) st.more*=0.6;
     setTooltipCtx(setCnt,new Set(Object.values(p.equip).filter(i=>i&&i.set).map(i=>i.set+':'+i.piece)));
     p.drawSpr=form?FORMS[form].spr:p.spr; p.sc=form?FORMS[form].sc:1;
+    if(st.regenPct) st.regen+=st.life*st.regenPct/100;
     if(this.floorMods?.noRegen){ st.regen=0; st.manaRegen=0; }
     p.stats=st; if(p.hp>st.life) p.hp=st.life; if(p.mp>st.mana) p.mp=st.mana; if((p.es||0)>st.esMax) p.es=st.esMax; if(p.es==null) p.es=0;
   }
@@ -228,7 +236,7 @@ export class Game{
     const pr=this.blockProp(nx,ny); if(pr){ if(this.interact(pr)) return this.endTurn(); return false; }
     if(!this.passable(nx,ny)) return false;
     if(dx&&dy&&(!this.passable(p.x+dx,p.y)&&!this.passable(p.x,p.y+dy))) return false;
-    if(p.status.root){ this.log('Jsi zakořeněn!','warn'); return this.endTurn(); }
+    if(p.status.root&&!p.stats.ks.has('unbreak')){ this.log('Jsi zakořeněn!','warn'); return this.endTurn(); }
     const mn=this.minAt(nx,ny); if(mn){ mn.x=p.x; mn.y=p.y; }
     p.x=nx; p.y=ny; p.steps++; if(dx) p.flip=dx<0; this.snd('step');
     this.onStep(); return this.endTurn();
@@ -237,7 +245,7 @@ export class Game{
     const p=this.player;
     for(const g of this.ground.filter(g=>g.x===p.x&&g.y===p.y)) this.pickup(g);
     const plate=this.propAt(p.x,p.y,q=>q.type==='plate'); if(plate) this.stepPlate(plate);
-    const pool=this.propAt(p.x,p.y,q=>q.type==='pool'&&q.hazard); if(pool) this.hurtPlayer(this.monScale().dmg*3,'poison',null,'jedové jezírko');
+    const pool=this.propAt(p.x,p.y,q=>q.type==='pool'&&q.hazard); if(pool&&!p.stats.uniques.has('spore_lungs')) this.hurtPlayer(this.monScale().dmg*3,'poison',null,'jedové jezírko');
     const st=this.map.stairs; if(p.x===st.x&&p.y===st.y) this.log(this.inRift?(st.locked?'Portál je zapečetěný. Poraz Srdce jeskyně.':'Portál ven. [Enter] pro návrat.'):st.locked?'Schodiště je zapečetěno. Poraz strážce.':'Schodiště dolů. [Enter] nebo klik pro sestup.','hint');
   }
   pickup(g){
@@ -415,29 +423,37 @@ export class Game{
     if(r.item){ const got={...r.item,uid:Math.random(),fromWell:r.from||'?'}; p.inv.push(got); this.log(`Studna vydala: ${got.name} (hodil ${got.fromWell}).`,'loot:'+(got.rarity||'support')); this.save(); return {item:got}; }
     this.log('Studna mlčí. Tvůj předmět klesl do tmy… a nic se nevynořilo.','warn'); this.save(); return {item:null}; }
   // ================= minions =================
-  minionMax(kind,sk){ const st=this.player.stats, def=MINIONS[kind]; const su=this.sups(sk); return kind==='ent'?1+(st.ks.has('swarm')?1:0)+(su.has('fertile')?1:0):def.max+(kind==='sprout'?st.minionMax:Math.floor(st.minionMax/2))+(st.ks.has('swarm')?2:0)+(su.has('fertile')?1:0); }
+  minionMax(kind,sk){ const st=this.player.stats, def=MINIONS[kind]; const su=this.sups(sk); if(def.fixedMax) return def.max; return kind==='ent'?1+(st.ks.has('swarm')?1:0)+(su.has('fertile')?1:0):def.max+(kind==='sprout'?st.minionMax:Math.floor(st.minionMax/2))+(st.ks.has('swarm')?2:0)+(su.has('fertile')?1:0); }
   makeMinion(kind,sk,x,y){ const p=this.player, st=p.stats, def=MINIONS[kind]; const L=this.skillLevel(sk), lm=1+(L-1)*0.12; const sw=st.ks.has('swarm')?0.65:1;
-    const hp=def.hp*Math.pow(1.10,p.lvl-1)*(1+st.minionLife/100)*lm*sw; const dm=Math.pow(1.09,p.lvl-1)*lm*sw;
-    return {ally:true,kind,skill:sk,name:def.name,spr:rng.pick(def.spr),x,y,rx:x,ry:y,hp,maxhp:hp,dmg:[def.dmg[0]*dm,def.dmg[1]*dm],arm:def.arm*Math.pow(1.08,p.lvl-1),ai:def.ai,el:def.el,range:def.range||1,sc:def.sc,status:{},flip:rng.chance(0.5),taunt:!!def.taunt,born:this.turn}; }
-  summon(sk){ const s=SKILLS[sk], kind=s.minion, def=MINIONS[kind], p=this.player, st=p.stats; let n=def.n+(kind==='sprout'&&st.uniques.has('mother_staff')?1:0); const max=this.minionMax(kind,sk); let made=0;
+    const su=this.sups(sk); let hp=def.hp*Math.pow(1.10,p.lvl-1)*(1+st.minionLife/100)*lm*sw*(su.has('frenzy')?0.8:1)*(st.ks.has('sacrament')?0.8:1); const dm=Math.pow(1.09,p.lvl-1)*lm*sw;
+    if(kind==='decoy') hp=st.life*0.6*(1+st.minionLife/100)*lm;
+    let dmg=[def.dmg[0]*dm,def.dmg[1]*dm]; if(kind==='totem'){ const b=st.spellBase*(1+st.spell/100)*0.6*lm; dmg=[b*0.85,b*1.15]; }
+    let ttl=def.ttl||null; if(kind==='fly'&&st.uniques.has('swarmcaller')) ttl+=5; if(kind==='wolf'&&st.uniques.has('alpha_pelt')) ttl=null;
+    return {ally:true,kind,skill:sk,name:def.name,spr:rng.pick(def.spr),x,y,rx:x,ry:y,hp,maxhp:hp,dmg,arm:def.arm*Math.pow(1.08,p.lvl-1),ai:def.ai,el:def.el,range:def.range||1,sc:def.sc,status:{},flip:rng.chance(0.5),taunt:!!def.taunt,born:this.turn,ttl,fast:!!def.fast,bleed:!!def.bleed,spirit:!!def.spirit}; }
+  summon(sk,at){ const s=SKILLS[sk], kind=s.minion, def=MINIONS[kind], p=this.player, st=p.stats; let n=def.n+(kind==='sprout'&&st.uniques.has('mother_staff')?1:0)+(kind==='fly'&&st.uniques.has('swarmcaller')?2:0); const max=this.minionMax(kind,sk); let made=0;
     for(let i=0;i<n;i++){ const mine=this.minions.filter(x=>x.kind===kind&&x.hp>0); if(mine.length>=max){ const old=mine.sort((a,b)=>a.born-b.born)[0]; this.killMinion(old,true,true); }
-      const pos=this.freeNear(p.x,p.y); if(!pos) break; const mn=this.makeMinion(kind,sk,pos[0],pos[1]); this.minions.push(mn); made++; this.burst(pos[0],pos[1],kind==='jelly'?[0.7,0.5,1]:[0.6,1,0.4],14,70); this.flashLight(pos[0],pos[1],[0.6,1,0.4],2,0.5); }
+      const pos=(i===0&&at)?at:this.freeNear(p.x,p.y); if(!pos) break; const mn=this.makeMinion(kind,sk,pos[0],pos[1]); if(mn.ttl) mn.ttl=Math.round(mn.ttl*(1+(st.buffDur||0)/200)); this.minions.push(mn); made++; this.burst(pos[0],pos[1],kind==='jelly'?[0.7,0.5,1]:kind==='wolf'?[0.6,0.8,1]:[0.6,1,0.4],14,70); this.flashLight(pos[0],pos[1],[0.6,1,0.4],2,0.5); }
     this.recalc(); return made; }
-  placeMinions(heal){ const p=this.player; const keep=[]; for(const mn of this.minions){ if(mn.hp<=0) continue; const pos=this.freeNear(p.x,p.y); if(!pos) continue; mn.x=mn.rx=pos[0]; mn.y=mn.ry=pos[1]; mn.status={}; if(heal) mn.hp=mn.maxhp; keep.push(mn); } this.minions=keep; }
+  placeMinions(heal){ const p=this.player; const keep=[]; for(const mn of this.minions){ if(mn.hp<=0||mn.ai==='turret'||mn.ai==='still'||mn.moon) continue; const pos=this.freeNear(p.x,p.y); if(!pos) continue; mn.x=mn.rx=pos[0]; mn.y=mn.ry=pos[1]; mn.status={}; if(heal) mn.hp=mn.maxhp; keep.push(mn); } this.minions=keep; }
   hurtMinion(mn,dmg,el,noFx){ if(mn.hp<=0) return; let d=dmg; if(!el) d*=1-Math.min(0.75,mn.arm/(mn.arm+dmg*6+8)); else d*=el==='poison'&&mn.kind==='jelly'?0.4:0.85; d=Math.max(1,d);
     mn.hp-=d; mn.flash=0.12; if(!noFx) this.float(mn.x,mn.y,'-'+fmt(d),'#e8a060',0.8); if(mn.hp<=0) this.killMinion(mn); }
   killMinion(mn,quiet,replaced){ if(!this.minions.includes(mn)) return; mn.hp=0; this.minions=this.minions.filter(x=>x!==mn); this.burst(mn.x,mn.y,[0.6,0.8,0.4],12,70);
+    if(mn.kind==='decoy'){ const st=this.player.stats, dmg=st.spellBase*(1+st.spell/100)*1.2*this.ctx(mn.skill).lm; this.fx.push({type:'cloud',x:mn.x,y:mn.y,r:1,life:0.8,max:0.8}); for(const o of this.monsters) if(o.hp>0&&dist(o.x,o.y,mn.x,mn.y)<=1) this.applyPoison(o,dmg,4,this.ctx(mn.skill)); }
+    if(!quiet&&!replaced&&this.player.stats.ks.has('sacrament')){ this.healPlayer(this.player.stats.life*0.06,true); this.addBuff({id:'sacr',name:'Obětní hnízdo',dmgPct:0.15,turns:4}); }
     if(!replaced) this.fx.push({type:'corpse',x:mn.x,y:mn.y,spr:mn.spr,sc:mn.sc,flip:mn.flip,life:0.5,max:0.5});
     if(!quiet&&this.player.stats.uniques.has('hive_crown')){ this.fx.push({type:'cloud',x:mn.x,y:mn.y,r:1,life:0.7,max:0.7}); const c={sups:new Set(),tags:['minion'],skill:'minion',minion:mn};
       for(const o of this.monsters) if(o.hp>0&&dist(o.x,o.y,mn.x,mn.y)<=1) this.hitMonster(o,{phys:0,fire:0,poison:mn.maxhp*0.5,decay:0,crit:0,critMult:100},c); }
     if(!quiet) this.log(mn.name+' padl.','sys'); this.recalc(); }
   tickMinions(){ const p=this.player, st=p.stats; const cmd=p.buffs.some(b=>b.cmd);
     for(const mn of this.minions.slice()){ if(mn.hp<=0) continue;
+      if(mn.ttl!=null&&--mn.ttl<=0){ this.killMinion(mn,true); continue; }
       if(st.uniques.has('rot_totem')) mn.hp=Math.min(mn.maxhp,mn.hp+mn.maxhp*0.04);
       if(mn.status.stun){ if(--mn.status.stun<=0) delete mn.status.stun; continue; }
-      const acts=1+(cmd&&this.turn%2===0?1:0); for(let a=0;a<acts&&mn.hp>0;a++) this.minionAct(mn); } }
+      const acts=1+(cmd&&this.turn%2===0?1:0)+(mn.fast?1:0); for(let a=0;a<acts&&mn.hp>0;a++) this.minionAct(mn); } }
   minionAct(mn){ const p=this.player; const vis=m=>m.hp>0&&dist(m.x,m.y,mn.x,mn.y)<=8&&(m.aware||dist(m.x,m.y,p.x,p.y)<=6)&&los(mn.x,mn.y,m.x,m.y,this.oc);
     const t=this.monsters.filter(vis).sort((a,b)=>dist(a.x,a.y,mn.x,mn.y)-dist(b.x,b.y,mn.x,mn.y))[0];
+    if(mn.ai==='still') return;
+    if(mn.ai==='turret'){ if(t&&dist(t.x,t.y,mn.x,mn.y)<=mn.range){ this.proj(mn.x,mn.y,t.x,t.y,[0.7,1,0.4]); this.face(mn,t.x); this.minionStrike(mn,t,1); } return; }
     if(dist(mn.x,mn.y,p.x,p.y)>14){ const pos=this.freeNear(p.x,p.y); if(pos){ mn.x=mn.rx=pos[0]; mn.y=mn.ry=pos[1]; } return; }
     if(t){ const d=dist(t.x,t.y,mn.x,mn.y);
       if(mn.ai==='ranged'&&d<=mn.range&&d>=1){ this.proj(mn.x,mn.y,t.x,t.y,[0.75,0.5,1]); this.face(mn,t.x); this.minionStrike(mn,t,1); if(d<2) this.stepAwayFrom(mn,t); return; }
@@ -445,13 +461,19 @@ export class Game{
       if(dist(mn.x,mn.y,p.x,p.y)<=9) { this.stepToward(mn,t.x,t.y); return; } }
     if(dist(mn.x,mn.y,p.x,p.y)>2) this.stepToward(mn,p.x,p.y); else if(rng.chance(0.15)) this.stepRandomA(mn); }
   minionStrike(mn,m,mult){ const c=this.ctx(mn.skill); c.minion=mn; const v=rng.range(mn.dmg[0],mn.dmg[1])*mult; const h={phys:mn.el?v*0.3:v,fire:0,poison:mn.el==='poison'?v*0.7:0,decay:0,crit:5,critMult:150,attack:true};
-    if(mn.el==='poison') c.poisonCh=35; this.hitMonster(m,h,c); }
+    if(mn.el==='poison') c.poisonCh=35; if(mn.bleed) c.bleedCh=40; if(mn.kind==='totem'){ h.spell=true; h.attack=false; } const h0={...h}; this.hitMonster(m,h,c);
+    if(this.player.stats.setPow.has('swarmset')){ const o=this.monsters.find(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1); if(o){ const c2=this.ctx(mn.skill); c2.minion=mn; const h2={...h0}; for(const k of ['phys','fire','poison','decay']) h2[k]=(h0[k]||0)*0.5; this.hitMonster(o,h2,c2); } } }
   stepAwayFrom(e,t){ let best=null,bd=edist(e.x,e.y,t.x,t.y); for(const [dx,dy] of DIRS8){ const nx=e.x+dx, ny=e.y+dy; if(!this.mPass(nx,ny,e)) continue; const dd=edist(nx,ny,t.x,t.y); if(dd>bd){bd=dd;best=[nx,ny];} } if(best){ e.x=best[0]; e.y=best[1]; } }
   stepRandomA(e){ const [dx,dy]=rng.pick(DIRS8); if(this.mPass(e.x+dx,e.y+dy,e)){ e.x+=dx; e.y+=dy; } }
   // ================= skills & attack pipeline =================
   skillLevel(id){ return (this.player.skills[id]||0)+(id==='attack'?0:this.player.stats.skill); }
   sups(id){ const sl=new Set((this.player.links[id]||[]).filter(Boolean)); const tags=SKILLS[id].tags; for(const s of [...sl]) if(!SUPPORTS[s].tags.some(t=>tags.includes(t))) sl.delete(s); return sl; }
-  skillCost(id){ const s=SKILLS[id], su=this.sups(id); return Math.round(s.cost*(su.has('echo')?1.5:1)*(su.has('haste')?1.3:1)); }
+  skillCost(id){ const s=SKILLS[id], su=this.sups(id), st=this.player.stats||{}; const ks=st.ks||new Set(), un=st.uniques||new Set();
+    let c=s.cost*(su.has('echo')?1.5:1)*(su.has('haste')?1.3:1)*(su.has('overload')?1.8:1)*(su.has('thrift')?0.6:1)*(1-(st.costRed||0)/100);
+    if(ks.has('spellecho')&&s.tags.includes('spell')) c*=1.5; if(un.has('moth_wings')&&(id==='blink'||id==='shadowstep')) c*=2;
+    return Math.round(c); }
+  addBuff(b,c){ const p=this.player, st=p.stats; b.turns=Math.max(1,Math.round(b.turns*(1+((st.buffDur||0)+(c?.sups?.has('lasting')?50:0))/100))); p.buffs=p.buffs.filter(x=>x.id!==b.id); p.buffs.push(b); this.recalc(); return b; }
+  flatHit(m,el,dmg,skill){ const h={phys:0,fire:0,poison:0,decay:0,crit:0,critMult:100}; h[el]=dmg; return this.hitMonster(m,h,{sups:new Set(),tags:[],skill:skill||'flat',flat:true}); }
   skillReady(id){ const p=this.player; return (p.cds?.[id]||0)<=0&&this.canPay(this.skillCost(id)); }
   canPay(c){ const p=this.player; return this.usesLife()?p.hp>c+1:p.mp>=c; }
   pay(c){ const p=this.player; if(this.usesLife()) p.hp-=c; else p.mp-=c; }
@@ -465,18 +487,20 @@ export class Game{
     const chains=(single&&ctx.sups.has('chain')?2:0)+(st.uniques.has('storm_eye')&&ctx.skill!=='attack'?1:0);
     for(const m of list){ total+=one(m,mf);
       let last=m; for(let c=1;c<=chains;c++){ const nx=this.monsters.filter(o=>o.hp>0&&!hitSet.has(o)&&edist(o.x,o.y,last.x,last.y)<=4&&los(last.x,last.y,o.x,o.y,this.oc)).sort((a,b)=>edist(a.x,a.y,last.x,last.y)-edist(b.x,b.y,last.x,last.y))[0]; if(!nx) break; this.proj(last.x,last.y,nx.x,nx.y,[0.7,0.9,1]); total+=one(nx,mf*Math.pow(0.8,c)); last=nx; } }
-    const echo=ctx.sups.has('echo')?0.6:(ctx.tags.includes('spell')&&st.uniques.has('twin_tome')?0.5:0);
+    const echo=ctx.sups.has('echo')?0.6:(ctx.tags.includes('spell')&&st.uniques.has('twin_tome')?0.5:ctx.tags.includes('spell')&&st.ks.has('spellecho')?0.4:0);
     if(echo&&!ctx.echoed){ const alive=list.filter(m=>m.hp>0); if(alive.length){ this.float(p.x,p.y,'Ozvěna','#c9f',0.9); ctx.echoed=true; for(const m of alive){ fxFn?.(m); const h=mkHit(); for(const k of ['phys','fire','poison','decay']) h[k]*=echo*mf; total+=this.hitMonster(m,h,ctx); } } }
     return total;
   }
   useSkill(id,tx,ty){
     const p=this.player, s=SKILLS[id], st=p.stats; if(!s) return false;
     if((p.cds[id]||0)>0){ this.log(`${s.name} se přebíjí.`,'warn'); return false; }
-    if(p.form&&s.tags.includes('spell')){ this.log('V podobě zvířete nemůžeš sesílat kouzla.','warn'); return false; }
+    if(p.form&&p.form!=='fly'&&s.tags.includes('spell')){ this.log('V podobě zvířete nemůžeš sesílat kouzla.','warn'); return false; }
     if(s.needForm&&p.form!==s.needForm){ this.log(`${s.name} vyžaduje ${FORMS[s.needForm].acc}.`,'warn'); return false; }
     let cost=this.skillCost(id); if(s.form&&st.ks.has('wildheart')) cost=0; if(!this.canPay(cost)){ this.log(this.usesLife()?'Málo života na krvavou magii.':'Nedostatek esence.','warn'); return false; }
-    const c=this.ctx(id); const lm=c.lm; let ok=true; const aoeR=b=>b+st.aoe+(c.sups.has('area')?1:0);
-    if(c.sups.has('area')) c.areaMore=1.15;
+    const c=this.ctx(id); const lm=c.lm; let ok=true; const aoeR=b=>Math.max(1,b+st.aoe+(c.sups.has('area')?1:0)-(c.sups.has('conc')?1:0)+(s.tags.includes('spell')&&st.uniques.has('chorus_staff')?1:0));
+    if(c.sups.has('area')) c.areaMore=1.15; if(c.sups.has('conc')) c.areaMore=(c.areaMore||1)*1.4;
+    const shadow=p.buffs.find(b=>b.shadow); if(shadow&&s.type==='attack') c.forceCrit=true;
+    let sageFree=false; if(s.tags.includes('spell')&&st.setPow.has('sageset')){ p.sageN=(p.sageN||0)+1; if(p.sageN%4===0){ sageFree=true; c.sageMore=2; } }
     const losOk=(m)=>los(p.x,p.y,m.x,m.y,this.oc);
     switch(id){
       case 'cleave': { const r=aoeR(1); const t=this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,p.x,p.y)<=r&&losOk(m)); if(!t.length){ ok=false; this.log('Nikdo v dosahu.','warn'); break; } this.fx.push({type:'arc',x:p.x,y:p.y,r,life:0.25,max:0.25}); this.strike(t,()=>this.weaponHit(1.1*lm),c); break; }
@@ -521,11 +545,15 @@ export class Game{
       case 'detonate': { const mn=this.minions.filter(x=>x.hp>0).sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp)[0]; if(!mn){ ok=false; this.log('Nemáš žádné přisluhovače.','warn'); break; }
         const r=aoeR(1), dmg=mn.maxhp*0.9*lm; this.fx.push({type:'cloud',x:mn.x,y:mn.y,r,life:0.9,max:0.9}); this.flashLight(mn.x,mn.y,[0.6,1,0.3],r+2); this.shake=6;
         this.strike(this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,mn.x,mn.y)<=r),()=>({phys:0,fire:0,poison:dmg*rng.range(0.9,1.1),decay:0,crit:st.crit*0.5,critMult:st.critMult,spell:true}),c); this.killMinion(mn,true); break; }
-      case 'bearform': case 'boarform': { const ratio=p.hp/st.life; const was=p.form; p.form=p.form===s.form?null:s.form; this.recalc(); p.hp=Math.max(1,Math.min(p.stats.life,ratio*p.stats.life));
+      case 'bearform': case 'boarform': case 'flyform': { if(st.ks.has('twinblood')) p.hp=Math.max(1,p.hp*0.8); const ratio=p.hp/st.life; const was=p.form; p.form=p.form===s.form?null:s.form; p.primal=0; this.recalc(); p.hp=Math.max(1,Math.min(p.stats.life,ratio*p.stats.life));
         this.burst(p.x,p.y,s.form==='bear'?[0.8,0.55,0.3]:[0.5,0.9,0.4],24,90); this.flashLight(p.x,p.y,[0.9,0.8,0.5],4,0.5); this.log(p.form?`Měníš se: ${FORMS[p.form].name}.`:'Vracíš se do lidské podoby.','sys');
         if(p.form&&st.setPow.has('shiftset')) this.healPlayer(p.stats.life*0.2);
         if(p.form&&st.uniques.has('moon_mask')){ p.buffs=p.buffs.filter(b=>b.id!=='moon'); p.buffs.push({id:'moon',name:'Úplněk',dmgPct:0.5,turns:3}); this.recalc(); }
         this.snd(p.form==='bear'?'roar':'buff'); break; }
+      case 'spit': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; } c.forceWeak=2;
+        this.strike([m],()=>this.spellHit(1.1*lm,'decay'),c,o=>this.proj(p.x,p.y,o.x,o.y,[0.75,0.5,0.9])); break; }
+      case 'buzz': { if(!this.isVis(tx,ty)||edist(p.x,p.y,tx,ty)>s.range+0.5||this.tile(tx,ty)!==FLOOR){ ok=false; this.log('Neplatné místo.','warn'); break; } const r=aoeR(1);
+        this.proj(p.x,p.y,tx,ty,[0.5,0.45,0.6]); this.fx.push({type:'flyzone',x:tx,y:ty,r,turns:3,life:1e9,max:1e9,mult:0.55*lm,skill:id}); for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,tx,ty)<=r){ m.status.slow=Math.max(m.status.slow||0,2); this.hitMonster(m,this.spellHit(0.55*lm,'decay'),c); } break; }
       case 'maul': { const m=this.monAt(tx,ty); if(!m||dist(m.x,m.y,p.x,p.y)>1+st.reach){ ok=false; this.log('Cíl musí být vedle tebe.','warn'); break; } this.lunge(p,m); this.shake=7;
         this.strike([m],()=>this.weaponHit(2.3*lm),c); if(m.hp>0&&!m.boss){ m.status.stun=Math.max(m.status.stun||0,1); m.tele=null; if(st.uniques.has('root_spear')) m.status.root=2; } break; }
       case 'gore': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
@@ -538,10 +566,54 @@ export class Game{
         const t=[m]; if(st.uniques.has('root_spear')) t.push(...this.monsters.filter(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1).slice(0,2));
         this.strike(t,()=>this.spellHit(1.3*lm,'decay'),c,o=>{ this.burst(o.x,o.y,[0.5,0.8,0.3],10,50); }); for(const o of t) if(o.hp>0&&!o.boss) o.status.root=Math.max(o.status.root||0,3); break; }
       case 'regrow': { p.buffs=p.buffs.filter(b=>b.id!=='regrow'); p.buffs.push({id:'regrow',name:'Obrůstání',regenPct:0.05*lm,turns:5}); this.recalc(); this.burst(p.x,p.y,[0.4,1,0.6],16,60); break; }
+      // ================= v12 skills =================
+      case 'whirl': { const r=aoeR(1); const tg=()=>this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,p.x,p.y)<=r&&losOk(m)); if(!tg().length){ ok=false; this.log('Nikdo v dosahu.','warn'); break; }
+        c.bleedCh=20; for(let i=0;i<2;i++){ const t=tg(); if(!t.length) break; this.fx.push({type:'arc',x:p.x,y:p.y,r,life:0.3,max:0.3}); this.strike(t,()=>this.weaponHit(0.75*lm),c); } break; }
+      case 'bloodrage': { p.hp=Math.max(1,p.hp-p.hp*0.1); this.addBuff({id:'rage',name:'Krvavé opojení',dmgPct:0.35*lm,add:{leech:3,crit:10},turns:6},c); this.burst(p.x,p.y,[1,0.2,0.2],22,90); this.flashLight(p.x,p.y,[1,0.3,0.2],4,0.5); break; }
+      case 'riposte': { this.addBuff({id:'ripo',name:'Odvetný střeh',ripo:1.2*lm,turns:3},c); this.burst(p.x,p.y,[1,0.9,0.7],12,60); break; }
+      case 'quake': { const r=aoeR(2); const t=this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,p.x,p.y)<=r&&losOk(m)); this.fx.push({type:'ring',x:p.x,y:p.y,r,life:0.5,max:0.5,c:[0.8,0.6,0.35]}); this.shake=9;
+        this.strike(t,()=>{ const h=this.weaponHit(0.9*lm); h.phys+=st.armor*0.25; return h; },c); for(const m of t) if(m.hp>0&&!m.boss&&rng.chance(0.5)){ m.status.stun=Math.max(m.status.stun||0,1+(st.uniques.has('bonebreaker')?1:0)); m.tele=null; } break; }
+      case 'shieldwall': { this.addBuff({id:'wall',name:'Hradba',add:{block:25},wall:true,turns:4},c); this.fx.push({type:'ring',x:p.x,y:p.y,r:1,life:0.4,max:0.4,c:[0.7,0.6,0.4]}); break; }
+      case 'shieldcharge': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
+        const path=line(p.x,p.y,m.x,m.y).slice(1); let last=[p.x,p.y], hitM=null; for(const [x,y] of path){ const o=this.monAt(x,y); if(o){ hitM=o; break; } if(!this.passable(x,y)||this.minAt(x,y)) break; last=[x,y]; }
+        this.burst(p.x,p.y,[0.8,0.7,0.5],10,70); p.x=last[0]; p.y=last[1]; this.onStep(); this.shake=8; if(!hitM) break; this.lunge(p,hitM);
+        const sa=(p.equip.offhand?.imp?.armor||0)*0.6; this.strike([hitM],()=>{ const h=this.weaponHit(1.4*lm); h.phys+=sa; return h; },c); if(hitM.hp>0&&!hitM.boss){ hitM.status.stun=Math.max(hitM.status.stun||0,1+(st.uniques.has('bonebreaker')?1:0)); hitM.tele=null; } break; }
+      case 'sporestorm': { if(!this.isVis(tx,ty)||edist(p.x,p.y,tx,ty)>s.range+0.5||this.tile(tx,ty)!==FLOOR){ ok=false; this.log('Neplatné místo.','warn'); break; } const r=aoeR(2);
+        const dmg=st.spellBase*(1+(st.dmgPct+st.spell+st.aoePct)/100)*(1+(st.elemPct+st.poisonPct)/100)*0.45*lm*(c.areaMore||1)*(c.sageMore||1);
+        this.proj(p.x,p.y,tx,ty,[0.7,1,0.4]); this.fx.push({type:'poisonzone',x:tx,y:ty,r,turns:4,life:99,max:99,dmg,skill:id}); this.fx.push({type:'cloud',x:tx,y:ty,r,life:0.9,max:0.9}); this.flashLight(tx,ty,[0.6,0.9,0.3],r+2);
+        for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,tx,ty)<=r) this.applyPoison(m,dmg,2,c); break; }
+      case 'rotnova': { const r=aoeR(2); c.forceWeak=3; this.fx.push({type:'ring',x:p.x,y:p.y,r,life:0.5,max:0.5,c:[0.75,0.4,1]}); this.flashLight(p.x,p.y,[0.7,0.35,1],r+2);
+        this.strike(this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,p.x,p.y)<=r&&losOk(m)),()=>this.spellHit(1.3*lm,'decay'),c); break; }
+      case 'burstrot': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
+        if(!m.status.poison){ ok=false; this.log('Cíl není otrávený.','warn'); break; } const rem=m.status.poison.reduce((a,q)=>a+q.d*q.t,0); delete m.status.poison; const r=aoeR(1);
+        const dmg=rem*0.7*lm*(c.areaMore||1)*(c.sageMore||1); this.fx.push({type:'cloud',x:m.x,y:m.y,r,life:0.8,max:0.8}); this.flashLight(m.x,m.y,[0.75,0.4,1],r+2); this.shake=6; c.flat=true;
+        this.strike(this.monsters.filter(o=>o.hp>0&&dist(o.x,o.y,m.x,m.y)<=r),()=>({phys:0,fire:0,poison:0,decay:dmg,crit:0,critMult:100}),c); break; }
+      case 'toxicarrow': case 'barrage': { if(st.kind!=='bow'){ ok=false; this.log(s.name+' vyžaduje luk.','warn'); break; } const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
+        c.ranged=true; if(id==='toxicarrow'){ c.forcePoison=true; c.convPoison=0.5; this.strike([m],()=>this.weaponHit(1.5*lm),c,o=>this.proj(p.x,p.y,o.x,o.y,[0.6,1,0.3],'arrow')); if(m.hp>0) m.status.slow=Math.max(m.status.slow||0,2); }
+        else for(let i=0;i<4&&m.hp>0;i++) this.strike([m],()=>this.weaponHit(0.55*lm),c,o=>this.proj(p.x,p.y,o.x,o.y,[1,0.9,0.7],'arrow'));
+        break; }
+      case 'trap': { if(!this.isVis(tx,ty)||edist(p.x,p.y,tx,ty)>s.range+0.5||this.tile(tx,ty)!==FLOOR){ ok=false; this.log('Neplatné místo.','warn'); break; }
+        const tset=st.setPow.has('trapset'), max=tset?6:3; const spots=[[tx,ty]]; if(tset){ const n=DIRS8.map(([dx,dy])=>[tx+dx,ty+dy]).filter(([x,y])=>this.passable(x,y)&&!this.fx.some(f=>f.type==='trap'&&f.x===x&&f.y===y)); if(n.length) spots.push(rng.pick(n)); }
+        for(const [x,y] of spots){ const traps=this.fx.filter(f=>f.type==='trap'); if(traps.length>=max) traps[0].life=0; this.fx=this.fx.filter(f=>f.life>0||f.type!=='trap'); this.fx.push({type:'trap',x,y,life:1e9,max:1e9,skill:id,mult:2*lm,r:aoeR(tset?2:1),armed:this.turn}); this.burst(x,y,[0.6,1,0.3],8,40); }
+        break; }
+      case 'shadowstep': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
+        const spots=DIRS8.map(([dx,dy])=>[m.x+dx,m.y+dy]).filter(([x,y])=>this.passable(x,y)&&!this.monAt(x,y)&&!this.minAt(x,y)&&!(x===p.x&&y===p.y)).sort((a,b)=>edist(b[0],b[1],p.x,p.y)-edist(a[0],a[1],p.x,p.y));
+        if(!spots.length){ ok=false; this.log('Za cíl se nedá dostat.','warn'); break; } this.burst(p.x,p.y,[0.35,0.25,0.5],16,70); p.x=p.rx=spots[0][0]; p.y=p.ry=spots[0][1]; this.burst(p.x,p.y,[0.35,0.25,0.5],16,70); this.face(p,m.x); this.onStep();
+        this.addBuff({id:'shadow',name:'Ve stínu',shadow:true,turns:2},c); break; }
+      case 'sporeswarm': case 'fungaltotem': case 'spiritwolf': { const n=this.summon(id); if(!n){ ok=false; this.log('Není kde vyvolat.','warn'); } break; }
+      case 'decoy': { if(!this.isVis(tx,ty)||edist(p.x,p.y,tx,ty)>s.range+0.5||!this.passable(tx,ty)||this.monAt(tx,ty)||this.minAt(tx,ty)||(tx===p.x&&ty===p.y)){ ok=false; this.log('Sem návnadu postavit nelze.','warn'); break; } this.summon(id,[tx,ty]); break; }
+      case 'mycelnet': { this.addBuff({id:'net',name:'Mycelová síť',net:0.35*lm,turns:8},c); for(const mn of this.minions) if(mn.hp>0) this.burst(mn.x,mn.y,[0.75,0.45,1],8,40); this.fx.push({type:'ring',x:p.x,y:p.y,r:2,life:0.4,max:0.4,c:[0.75,0.45,1]}); break; }
+      case 'howl': { const r=aoeR(2)*(st.uniques.has('tusked_helm')?2:1); for(const m of this.monsters) if(m.hp>0&&!m.boss&&dist(m.x,m.y,p.x,p.y)<=r){ m.status.fear=Math.max(m.status.fear||0,2); m.tele=null; this.float(m.x,m.y,'strach','#c9a0ff',0.8); }
+        this.addBuff({id:'howl',name:'Vytí',dmgPct:0.25*lm,howl:true,turns:5},c); this.fx.push({type:'ring',x:p.x,y:p.y,r,life:0.5,max:0.5,c:[0.7,0.8,1]}); this.shake=6; break; }
+      case 'rampage': { const r=aoeR(1); const t=this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,p.x,p.y)<=r&&losOk(m)); if(!t.length){ ok=false; this.log('Nikdo v dosahu.','warn'); break; } this.fx.push({type:'arc',x:p.x,y:p.y,r,life:0.3,max:0.3}); this.shake=7;
+        this.strike(t,()=>this.weaponHit(1.5*lm),c,()=>this.healPlayer(st.life*0.02,true)); break; }
+      case 'sporeshield': { this.addBuff({id:'sshield',name:'Výtrusná zbroj',absorb:st.life*0.25*lm,turns:5},c); this.burst(p.x,p.y,[0.6,1,0.5],18,60); this.flashLight(p.x,p.y,[0.6,1,0.5],3,0.5); break; }
     }
     if(!ok) return false;
     if(!p.lunge&&!s.form) p.anim={k:s.type==='summon'?'summon':(s.tags.includes('bowonly')||id==='snipe'||id==='volley')?'shoot':s.type==='attack'?'swing':'cast',t:0,dur:s.type==='summon'?0.55:0.4};
-    this.snd({cleave:'cleave',rotstrike:'hit',bash:'bash',rend:'swing',barkskin:'buff',warcry:'warcry',sporebolt:'sporebolt',puffbomb:'puffbomb',plague:'plague',firebrand:'fire',blink:'blink',drain:'drain',volley:'bow',lunge:'swing',spikes:'slam',snipe:'bow',arrowrain:'bow',sproutlings:'squish',jellycall:'squish',entcall:'roar',command:'warcry',detonate:'puffbomb',maul:'bash',gore:'slam',thornroot:'drain',regrow:'buff',bearform:null,boarform:null}[id]??(s.form?null:'swing')); if(tx!=null&&!s.form) this.face(p,tx); if(!(s.tags.includes('spell')&&st.setPow.has('ulmyr')&&rng.chance(0.25))) this.pay(cost); else this.float(p.x,p.y,'Zdarma','#9cf',0.9); let cd=Math.ceil(s.cd*(1-st.cdr/100)*(c.sups.has('haste')?0.5:1)*(st.ks.has('pact')?1.5:1)); if(s.form&&(st.ks.has('wildheart')||st.setPow.has('shiftset'))) cd=0; if(st.uniques.has('echo_ring')&&rng.chance(0.25)){ cd=0; this.float(p.x,p.y,'Ozvěna!','#c9f'); } p.cds[id]=cd; p.steps=0;
+    this.snd({cleave:'cleave',rotstrike:'hit',bash:'bash',rend:'swing',barkskin:'buff',warcry:'warcry',sporebolt:'sporebolt',puffbomb:'puffbomb',plague:'plague',firebrand:'fire',blink:'blink',drain:'drain',volley:'bow',lunge:'swing',spikes:'slam',snipe:'bow',arrowrain:'bow',sproutlings:'squish',jellycall:'squish',entcall:'roar',command:'warcry',detonate:'puffbomb',maul:'bash',gore:'slam',thornroot:'drain',regrow:'buff',bearform:null,boarform:null,flyform:null,spit:'sporebolt',buzz:'plague',whirl:'cleave',bloodrage:'warcry',riposte:'buff',quake:'slam',shieldwall:'buff',shieldcharge:'bash',sporestorm:'plague',rotnova:'puffbomb',burstrot:'puffbomb',toxicarrow:'bow',trap:'squish',shadowstep:'blink',barrage:'bow',sporeswarm:'squish',fungaltotem:'squish',mycelnet:'buff',howl:'roar',rampage:'cleave',spiritwolf:'roar',decoy:'squish',sporeshield:'buff'}[id]??(s.form?null:'swing')); if(tx!=null&&!s.form) this.face(p,tx); if(!sageFree&&!(s.tags.includes('spell')&&st.setPow.has('ulmyr')&&rng.chance(0.25))) this.pay(cost); else this.float(p.x,p.y,'Zdarma','#9cf',0.9); let cd=Math.ceil((s.cd+(c.sups.has('overload')?1:0)+(s.tags.includes('spell')&&st.ks.has('spellecho')?1:0))*(1-st.cdr/100)*(c.sups.has('haste')?0.5:1)*(st.ks.has('pact')?1.5:1)); if(st.uniques.has('moth_wings')&&(id==='blink'||id==='shadowstep')) cd=0; if(s.form&&(st.ks.has('wildheart')||st.setPow.has('shiftset'))) cd=0; if(st.uniques.has('echo_ring')&&rng.chance(0.25)){ cd=0; this.float(p.x,p.y,'Ozvěna!','#c9f'); } p.cds[id]=cd; p.steps=0;
+    if(shadow&&c.forceCrit){ p.buffs=p.buffs.filter(b=>b!==shadow); this.recalc(); }
+    if(c.sups.has('fortify')&&s.type!=='buff') this.addBuff({id:'fort',name:'Opevnění',add:{dr:20},turns:3});
     return this.endTurn();
   }
   weaponHit(mult=1){ const st=this.player.stats; return {phys:rng.range(st.dmg[0],st.dmg[1])*mult,fire:st.fire*mult,poison:st.poison*mult,decay:st.decay*mult,crit:st.crit,critMult:st.critMult,attack:true}; }
@@ -549,76 +621,107 @@ export class Game{
   lunge(a,t){ a.lunge={dx:t.x-a.x,dy:t.y-a.y,t:0}; this.face(a,t.x); }
   basicAttack(m){
     const p=this.player, st=p.stats; if(m.x!==p.x) p.flip=m.x<p.x; const ranged=st.kind!=='melee'&&dist(m.x,m.y,p.x,p.y)>1; if(ranged) p.anim={k:st.kind==='bow'?'shoot':'cast',t:0,dur:0.35}; this.snd(ranged?(st.kind==='bow'?'bow':'zap'):'swing');
-    const c=this.ctx('attack'); if(st.uniques.has('silent_step')&&p.steps>=3) c.forceCrit=true;
+    const c=this.ctx('attack'); if(st.uniques.has('silent_step')&&p.steps>=3) c.forceCrit=true; c.melee=!ranged; c.ranged=ranged; const shadow=p.buffs.find(b=>b.shadow); if(shadow) c.forceCrit=true;
     const mult=st.kind==='melee'||ranged?1:0.6; let targets=[m];
     if(st.uniques.has('bone_bow')&&st.kind==='bow'){ targets.push(...this.monsters.filter(o=>o!==m&&o.hp>0&&this.canSee(o)&&edist(p.x,p.y,o.x,o.y)<=7).sort((a,b)=>edist(a.x,a.y,m.x,m.y)-edist(b.x,b.y,m.x,m.y)).slice(0,2)); }
     if(!ranged) this.lunge(p,m);
     this.strike(targets,()=>{ const h=this.weaponHit(mult); if(st.kind==='staff'&&ranged){ h.decay+=h.phys*0.5; h.phys*=0.5; } return h; },c,
       o=>{ if(ranged||o!==m) this.proj(p.x,p.y,o.x,o.y,st.kind==='staff'?[0.6,1,0.5]:[1,0.9,0.7],st.kind==='staff'?null:'arrow'); });
+    if(st.uniques.has('twin_fang')&&m.hp>0){ c.echoed=true; this.strike([m],()=>this.weaponHit(mult*0.5),c); }
+    if(shadow){ p.buffs=p.buffs.filter(b=>b!==shadow); this.recalc(); }
+    if(c.sups.has('fortify')) this.addBuff({id:'fort',name:'Opevnění',add:{dr:20},turns:3});
     p.steps=0;
   }
   rangedAttack(m){ this.basicAttack(m); return this.endTurn(); }
   canShoot(m){ const p=this.player; return p.stats.kind!=='melee'&&this.canSee(m)&&edist(p.x,p.y,m.x,m.y)<=7.5&&los(p.x,p.y,m.x,m.y,this.oc); }
   // core damage pipeline
   hitMonster(m,h,c={sups:new Set(),tags:[]}){
-    if(m.hp<=0) return 0; const p=this.player, st=p.stats, su=c.sups, ks=st.ks;
+    if(m.hp<=0) return 0; const p=this.player, st=p.stats, su=c.sups, ks=st.ks, un=st.uniques;
+    const mn=c.minion; const nMin=this.minions.length;
     // conversions
     if(su.has('venom')){ const v=h.phys*0.4; h.phys-=v; h.poison+=v; }
     if(su.has('pyre')){ for(const k of ['phys','poison','decay']){ const v=h[k]*0.5; h[k]-=v; h.fire+=v; } }
     if(su.has('brutal')){ h.phys*=1.45; h.fire=h.poison=h.decay=0; }
+    if(su.has('rotconv')){ const v=h.phys*0.5; h.phys-=v; h.decay+=v*1.2; }
+    if(c.convPoison){ const v=h.phys*c.convPoison; h.phys-=v; h.poison+=v; }
+    if(!mn&&!c.flat&&un.has('cinder_quiver')&&st.kind==='bow'&&h.attack&&(c.ranged||c.tags.includes('proj'))){ const v=h.phys*0.5; h.phys-=v; h.fire+=v; }
+    if(!mn&&!c.flat&&ks.has('avatar')){ h.fire=(h.fire+h.phys+h.poison+h.decay)*1.25; h.phys=h.poison=h.decay=0; }
     // increased modifiers
-    const mn=c.minion; const nMin=this.minions.length;
     let more;
-    if(mn){ const inc=1+st.minionDmg/100; h.phys*=inc; h.fire*=inc; h.poison*=inc; h.decay*=inc;
+    if(c.flat) more=1;
+    else if(mn){ const inc=1+(st.minionDmg+(ks.has('hivemind')?st.dmgPct:0))/100; h.phys*=inc; h.fire*=inc; h.poison*=inc; h.decay*=inc;
       more=(c.areaMore||1)*(ks.has('swarm')?0.65:1)*(su.has('fertile')?0.85:1)*(p.buffs.some(b=>b.cmd)?1.5:1)*(st.setPow.has('hiveset')?1.4:1);
-      if(m.hp/m.maxhp<0.35&&su.has('execute')) more*=1.6; if(m.status.stun&&su.has('stun')) more*=1.25; }
-    else { const inc=1+(st.dmgPct+(h.spell?st.spell:0))/100;
-    h.phys*=inc*(1+st.physPct/100); const ei=inc*(1+st.elemPct/100); h.fire*=ei; h.poison*=ei; h.decay*=ei;
-    more=st.more*(c.areaMore||1);
+      if(m.hp/m.maxhp<0.35&&su.has('execute')) more*=1.6; if(m.status.stun&&su.has('stun')) more*=1.25;
+      if(su.has('frenzy')) more*=1.3; if(p.buffs.some(b=>b.howl)) more*=1.25; if(mn.kind==='wolf'&&p.form&&un.has('alpha_pelt')) more*=1.5; }
+    else { const tagInc=(c.melee||c.tags.includes('melee')?st.meleePct:0)+(c.ranged||c.tags.includes('proj')?st.projPct:0)+(c.tags.includes('aoe')?st.aoePct:0);
+    const inc=1+(st.dmgPct+(h.spell?st.spell:0)+tagInc)/100;
+    h.phys*=inc*(1+st.physPct/100); h.fire*=inc*(1+(st.elemPct+st.firePct)/100); h.poison*=inc*(1+(st.elemPct+st.poisonPct)/100); h.decay*=inc*(1+(st.elemPct+st.decayPct)/100);
+    more=st.more*(c.areaMore||1)*(c.sageMore||1);
     if(m.hp/m.maxhp<0.35) more*=1+(st.execPct+(su.has('execute')?60:0))/100;
     if(m.status.stun) more*=1+(su.has('stun')?0.25:0);
     if(ks.has('darkhunter')&&edist(m.x,m.y,p.x,p.y)>st.torch) more*=1.5;
     if(ks.has('eldritch')) more*=0.7;
+    if(ks.has('necrosis')) more*=0.8;
     if(ks.has('berserk')) more*=1+Math.max(0,1-p.hp/st.life);
-    if(st.uniques.has('blood_idol')&&c.skill!=='attack') more*=1.4;
-    if(st.uniques.has('pact_ring')) more*=1+0.06*nMin;
+    if(ks.has('primal')&&p.form) more*=1+0.03*Math.min(15,p.primal||0);
+    if(ks.has('pointblank')&&(c.ranged||c.tags.includes('proj'))) more*=Math.max(0.8,1.4-0.08*(edist(m.x,m.y,p.x,p.y)-1));
+    if(un.has('blood_idol')&&c.skill!=='attack') more*=1.4;
+    if(un.has('pact_ring')) more*=1+0.06*nMin;
+    if(un.has('kingsbane')&&(m.boss||m.unique||m.rarity==='rare')) more*=1.4;
+    if(un.has('hollow_crown')&&h.spell&&p.mp>=st.mana*0.9) more*=1.3;
+    if(un.has('oathring')&&p.hp>=st.life-0.5) more*=1.25;
+    if(st.setPow.has('bloodset')&&p.hp<st.life*0.5) more*=1.4;
+    if(su.has('overload')) more*=1.6; if(su.has('thrift')) more*=0.9;
     if(h.spell&&st.setPow.has('ulmyr')) more*=1.2;
     if(m.status.bleed&&st.setPow.has('bladeset')) more*=1.35; }
+    if(!c.flat){ if(su.has('firststrike')&&m.hp>=m.maxhp*0.99) more*=1.8;
+      if(m.status.burn&&un.has('emberheart')) more*=1.25; if(m.status.weak&&un.has('witherhand')) more*=1.2; if(m.status.fear&&un.has('tusked_helm')) more*=1.25; if(m.status.stun&&un.has('bonebreaker')) more*=1.4; }
     // crit
-    let cc=h.crit+(su.has('crit')?10:0)+(c.critBonus||0); if(ks.has('rotsoul')&&!mn) cc=0; const crit=c.forceCrit||rng.next()*100<cc; const cm=crit?(h.critMult+(su.has('crit')?40:0))/100:1;
+    let cc=h.crit+(su.has('crit')?10:0)+(c.critBonus||0); if(ks.has('rotsoul')&&!mn) cc=0; const crit=!c.flat&&(c.forceCrit||rng.next()*100<cc); const cm=crit?(h.critMult+(su.has('crit')?40:0))/100:1;
+    const dbl=!c.flat&&!mn&&st.doubleDmg>0&&rng.next()*100<st.doubleDmg; if(dbl) more*=2;
     const hx=m.status.hex?1:0; let phys=h.phys*cm*more; const red=Math.min(0.75,m.arm*(hx?0.8:1)/(m.arm*(hx?0.8:1)+phys*3+6)); phys*=1-red;
-    let total=phys; const parts={phys}; for(const k of EL){ const r=Math.max(-50,(m.res[k]||0)-st.pen-hx*20); parts[k]=h[k]*cm*more*(1-r/100); total+=parts[k]; }
+    let total=phys; const parts={phys}; for(const k of EL){ const r=Math.max(-50,(m.res[k]||0)-st.pen-hx*20-(k==='decay'&&un.has('void_ring')?20:0)); parts[k]=h[k]*cm*more*(1-r/100); total+=parts[k]; }
     total=Math.max(1,total);
     if(m.shield>0){ const a=Math.min(m.shield,total); m.shield-=a; total-=a; this.float(m.x,m.y,'štít','#9cf',0.8); if(m.shield<=0) this.burst(m.x,m.y,[0.6,0.8,1],10,60); }
     m.hp-=total; m.aware=true; m.flash=0.15; this.snd(crit?'crit':'hit',m.x,m.y);
     const dom=Object.entries(parts).sort((a,b)=>b[1]-a[1])[0][0];
-    this.float(m.x,m.y,(crit?'✸ ':'')+fmt(total),crit?'#ffd54a':{phys:'#fff',fire:'#ff9c4a',poison:'#a6e86a',decay:'#d38cff'}[dom],crit?1.35:1);
+    this.float(m.x,m.y,(crit?'✸ ':'')+(dbl?'×2 ':'')+fmt(total),crit?'#ffd54a':{phys:'#fff',fire:'#ff9c4a',poison:'#a6e86a',decay:'#d38cff'}[dom],crit||dbl?1.35:1);
     this.burst(m.x,m.y,dom==='fire'?[1,0.5,0.1]:dom==='poison'?[0.6,1,0.3]:dom==='decay'?[0.8,0.4,1]:[0.9,0.25,0.2],crit?12:6,crit?110:70,0.45);
     if(crit) this.shake=Math.max(this.shake,4);
+    if(ks.has('executioner')&&!m.boss&&m.hp>0&&m.hp<m.maxhp*0.12&&!c.flat){ m.hp=0; this.float(m.x,m.y,'Poprava','#ff5a4a',1.1); }
+    if(c.flat){ if(m.hp<=0) this.killMonster(m,c); return total; }
     if(su.has('hex')) m.status.hex=3;
     if(crit&&!mn&&st.setPow.has('hunterset')&&!c.cdrDone){ c.cdrDone=true; for(const k in p.cds) if(p.cds[k]>0) p.cds[k]--; }
     // ailments (based on pre-mitigation hit)
     const base=(h.phys+h.fire+h.poison+h.decay)*cm*more;
-    const dotM=1+(st.dot+(su.has('dot')?50:0))/100;
+    const dotM=(1+(st.dot+(su.has('dot')?50:0))/100)*(ks.has('virulence')?0.75:1);
+    const durM=1+(st.ailDur+(su.has('lasting')?50:0))/100;
+    const ail={};
     const pch=(mn?0:st.poisonCh)+(c.poisonCh||0)+(su.has('venom')?50:0)+(crit&&ks.has('resonance')&&!mn?100:0);
-    if(c.forcePoison||(mn&&st.uniques.has('rot_totem'))||rng.next()*100<pch) this.applyPoison(m,(h.poison*cm*more+h.phys*cm*more*0.3)*0.35+1,4,c,dotM);
+    if(c.forcePoison||(mn&&un.has('rot_totem'))||(h.spell&&!mn&&un.has('heartwood'))||rng.next()*100<pch){ ail.poison=(h.poison*cm*more+h.phys*cm*more*0.3)*0.35+1; this.applyPoison(m,ail.poison,4,c,dotM); }
     const bch=(mn?0:st.burnCh)+(c.burnCh||0)+(su.has('pyre')?40:0)+(crit&&ks.has('resonance')&&!mn?100:0);
-    if(rng.next()*100<bch) this.addAil(m,'burn',(h.fire*cm*more+base*0.15)*0.5*dotM*(1-(m.res.fire||0)/100),3);
-    if(c.forceBleed||(h.attack&&rng.next()*100<(mn?0:st.bleed)+(c.bleedCh||0))) this.addAil(m,'bleed',h.phys*cm*more*0.3*(c.forceBleed||1)*dotM,3);
-    if(h.attack&&!m.boss&&rng.next()*100<(mn?0:st.stun)+(su.has('stun')?30:0)){ m.status.stun=1; m.tele=null; }
-    if(!mn&&h.attack&&c.skill==='attack'&&st.uniques.has('rootblade')&&rng.chance(0.25)&&!m.boss) m.status.root=2;
+    if(rng.next()*100<bch){ ail.burn=(h.fire*cm*more+base*0.15)*0.5*dotM*(1-(m.res.fire||0)/100); this.addAil(m,'burn',ail.burn,Math.round(3*durM)+(ks.has('cinder')?3:0)); }
+    if(c.forceBleed||(h.attack&&rng.next()*100<(mn?0:st.bleed)+(c.bleedCh||0))){ ail.bleed=h.phys*cm*more*0.3*(c.forceBleed||1)*dotM; this.addAil(m,'bleed',ail.bleed,Math.round(3*durM)); }
+    if(h.attack&&!m.boss&&rng.next()*100<(mn?0:st.stun)+(su.has('stun')?30:0)){ m.status.stun=1+(un.has('bonebreaker')&&!mn?1:0); m.tele=null; }
+    if(c.forceWeak||su.has('weaken')||(!mn&&st.weakCh&&rng.next()*100<st.weakCh)) m.status.weak=Math.max(m.status.weak||0,c.forceWeak||3);
+    if(!m.boss&&((su.has('fear')&&rng.chance(0.25))||(!mn&&st.fearCh&&rng.next()*100<st.fearCh))){ if(!m.status.fear) this.float(m.x,m.y,'strach','#c9a0ff',0.8); m.status.fear=Math.max(m.status.fear||0,2); m.tele=null; }
+    if(su.has('spread')&&(ail.poison||ail.burn||ail.bleed)){ const o=this.monsters.find(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1); if(o){ if(ail.poison) this.applyPoison(o,ail.poison*0.5,Math.round(4*durM),c,dotM,true); if(ail.burn) this.addAil(o,'burn',ail.burn*0.5,Math.round(3*durM)); if(ail.bleed) this.addAil(o,'bleed',ail.bleed*0.5,Math.round(3*durM)); this.proj(m.x,m.y,o.x,o.y,[0.6,1,0.4]); } }
+    if(!mn&&h.attack&&c.skill==='attack'&&un.has('rootblade')&&rng.chance(0.25)&&!m.boss) m.status.root=2;
+    if(!mn&&h.attack&&un.has('sporemother')&&st.kind==='bow'&&(c.ranged||c.tags.includes('proj'))&&!c.zoned){ c.zoned=true; this.fx.push({type:'poisonzone',x:m.x,y:m.y,r:0,turns:2,life:99,max:99,dmg:(st.dmg[0]+st.dmg[1])*0.2*(1+(st.elemPct+st.poisonPct)/100)}); }
+    if(!mn&&p.form&&st.setPow.has('moonset')&&rng.chance(0.15)&&this._moonT!==this.turn&&this.minions.filter(x=>x.kind==='wolf'&&x.moon).length<2){ this._moonT=this.turn; const pos=this.freeNear(p.x,p.y); if(pos){ const w=this.makeMinion('wolf','spiritwolf',pos[0],pos[1]); w.ttl=6; w.moon=true; this.minions.push(w); this.burst(pos[0],pos[1],[0.6,0.8,1],12,60); this.recalc(); } }
     if(mn){ if(su.has('leech')) mn.hp=Math.min(mn.maxhp,mn.hp+total*0.05); }
-    else { const lch=st.leech+(su.has('leech')?5:0); if(lch) this.healPlayer(total*lch/100,true); }
+    else if(!ks.has('executioner')){ const lch=(st.leech+(su.has('leech')?5:0))*(st.setPow.has('bloodset')&&p.hp<st.life*0.5?2:1); if(lch) this.healPlayer(total*lch/100,true); }
     // reflect
     if(!mn&&(m.mods.includes('reflect')||this.floorMods?.mon?.reflectAll)){ this.hurtPlayer(total*(m.mods.includes('reflect')?0.2:0.1),null,null,m.name+' (odraz)',true); }
     if(m.hp<=0) this.killMonster(m,c);
     return total;
   }
-  applyPoison(m,dmg,turns,c={sups:new Set()},dotM,spread){ const st=this.player.stats; const ks=st.ks; dotM=dotM??1+(st.dot+(c.sups?.has('dot')?50:0))/100;
+  applyPoison(m,dmg,turns,c={sups:new Set()},dotM,spread){ const st=this.player.stats; const ks=st.ks; dotM=dotM??(1+(st.dot+(c.sups?.has('dot')?50:0))/100)*(ks.has('virulence')?0.75:1);
+    if(!spread) turns=Math.round(turns*(1+((st.ailDur||0)+(c.sups?.has('lasting')?50:0))/100));
     if(ks.has('plaguebody')&&!spread) for(const o of this.monsters) if(o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1) this.applyPoison(o,dmg*0.6,turns,c,dotM,true);
     const d=Math.max(1,dmg*dotM*(1-(m.res.poison||0)/100)); const n=st.uniques.has('fruiting')?2:1; const P=m.status.poison||(m.status.poison=[]);
     for(let i=0;i<n;i++) P.push({d,t:turns+(ks.has('rotsoul')?2:0)}); const cap=ks.has('rotsoul')?999:12; while(P.length>cap){ P.sort((a,b)=>a.d-b.d); P.shift(); } }
-  addAil(m,k,dmg,turns){ const s=m.status[k]; if(s){ s.dmg=Math.max(s.dmg,dmg); s.turns=Math.max(s.turns,turns); } else m.status[k]={dmg:Math.max(1,dmg),turns}; }
+  addAil(m,k,dmg,turns){ const s=m.status[k]; if(s){ if(k==='bleed'&&this.player.stats.uniques.has('gutripper')) s.dmg+=dmg*0.5; else s.dmg=Math.max(s.dmg,dmg); s.turns=Math.max(s.turns,turns); } else m.status[k]={dmg:Math.max(1,dmg),turns}; }
   killMonster(m,c){
     this.snd(m.boss?'bossdie':'die',m.x,m.y);
     const p=this.player; m.hp=0; this.kills++; this.burst(m.x,m.y,[0.5,0.8,0.3],m.boss?60:16,m.boss?160:90,0.8);
@@ -626,6 +729,14 @@ export class Game{
     const lm=this.floorMods?.loot||{}; const st=p.stats;
     this.gainXP(m.xp*(1+st.xp/100+(lm.xp||0)));
     if(st.lifeKill) this.healPlayer(st.lifeKill,true);
+    if(st.manaKill) p.mp=Math.min(st.mana,p.mp+st.manaKill);
+    if(st.ks.has('bloodfrenzy')){ const b=p.buffs.find(x=>x.id==='bfrenzy'); if(b){ b.stacks=Math.min(5,(b.stacks||1)+1); b.turns=4; this.recalc(); } else this.addBuff({id:'bfrenzy',name:'Krvavé šílenství',dmgPct:0.08,stacks:1,turns:4}); }
+    if(st.uniques.has('headsman')&&this._axeT!==this.turn){ this._axeT=this.turn; for(const k in p.cds) if(p.cds[k]>0) p.cds[k]--; }
+    if(c?.minion&&st.uniques.has('nursery')){ const mn=c.minion; if(mn.hp>0) mn.hp=Math.min(mn.maxhp,mn.hp+mn.maxhp*0.2); p.mp=Math.min(st.mana,p.mp+st.mana*0.03); }
+    if(m.status.poison&&st.ks.has('necrosis')){ const dmg=m.maxhp*0.15; this.fx.push({type:'ring',x:m.x,y:m.y,r:1,life:0.35,max:0.35,c:[0.75,0.4,1]}); for(const o of this.monsters) if(o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1) this.flatHit(o,'decay',dmg,'necrosis'); }
+    if(m.status.burn&&st.setPow.has('emberset')){ const dmg=m.maxhp*0.25; this.fx.push({type:'ring',x:m.x,y:m.y,r:1,life:0.35,max:0.35,c:[1,0.45,0.15]}); this.flashLight(m.x,m.y,[1,0.5,0.2],3); for(const o of this.monsters) if(o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1) this.flatHit(o,'fire',dmg,'ember'); }
+    if(st.uniques.has('rotting_tome')&&(m.status.poison||m.status.burn||m.status.bleed)){ const o=this.monsters.filter(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=3).sort((a,b)=>dist(a.x,a.y,m.x,m.y)-dist(b.x,b.y,m.x,m.y))[0];
+      if(o){ if(m.status.poison) (o.status.poison||(o.status.poison=[])).push(...m.status.poison.map(q=>({...q}))); for(const k of ['burn','bleed']) if(m.status[k]) this.addAil(o,k,m.status[k].dmg,m.status[k].turns); this.proj(m.x,m.y,o.x,o.y,[0.75,0.45,1]); } }
     if(c?.minion&&st.setPow.has('hiveset')) this.healPlayer(st.life*0.03,true);
     if(st.uniques.has('hunger')){ this.healPlayer(st.life*0.08,true); p.mp=Math.min(st.mana,p.mp+st.mana*0.08); }
     if(m.status.poison&&st.uniques.has('mycel_crown')) for(const o of this.monsters) if(o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1){ (o.status.poison||(o.status.poison=[])).push(...m.status.poison.map(s=>({...s}))); this.burst(o.x,o.y,[0.6,1,0.3],6,40); }
@@ -665,20 +776,27 @@ export class Game{
   hurtPlayer(dmg,el,src,srcName,noAvoid){
     const p=this.player, st=p.stats; if(p.hp<=0) return 0;
     if(src&&!noAvoid&&rng.next()*100<Math.min(75,st.dodge+(st.uniques.has('pact_ring')?2*this.minions.length:0))){ this.float(p.x,p.y,'úhyb','#9cf'); this.snd('dodge'); return 0; }
-    if(src&&!noAvoid&&st.block>0&&rng.next()*100<st.block){ this.float(p.x,p.y,'blok','#ccc'); this.snd('block'); if(st.uniques.has('thistle')) this.thorn(src,dmg*0.4); if(st.setPow.has('wardset')){ this.healPlayer(st.life*0.04,true); if(!src.boss&&src.status){ src.status.stun=1; src.tele=null; } } return 0; }
+    if(src&&!noAvoid&&st.block>0&&rng.next()*100<st.block){ this.float(p.x,p.y,'blok','#ccc'); this.snd('block'); if(st.uniques.has('thistle')) this.thorn(src,dmg*0.4); if(st.setPow.has('wardset')){ this.healPlayer(st.life*0.04,true); if(!src.boss&&src.status){ src.status.stun=1; src.tele=null; } } if(p.buffs.some(b=>b.wall)&&!src.ally) this.thorn(src,dmg*0.6); if(st.uniques.has('bulwark')) this.addBuff({id:'bulw',name:'Kořenný val',dmgPct:0.15,turns:3}); return 0; }
     let d=dmg; if(el==='fire'&&st.ks.has('chitin')) d*=1.5;
     if(!el){ d*=1-Math.min(0.85,st.armor/(st.armor+dmg*6+8)); }
     else { const r=el==='poison'?st.resPoison:el==='fire'?st.resFire:st.resDecay; d*=1-r/100; if(st.ks.has('iron')) d*=1-Math.min(0.85,st.armor/(st.armor+dmg*6+8))*0.5; }
     d=Math.max(1,d);
+    { let dr=st.dr||0; if(st.uniques.has('oakheart')) dr+=Math.floor(Math.max(0,1-p.hp/st.life)*10)*3; if(dr) d*=1-Math.min(0.6,dr/100); }
+    const ripo=p.buffs.find(b=>b.ripo); const melee=src&&!src.ally&&dist(src.x,src.y,p.x,p.y)<=1; if(ripo&&melee) d*=0.7;
+    const ssh=p.buffs.find(b=>b.absorb>0); if(ssh){ const a=Math.min(ssh.absorb,d); ssh.absorb-=a; d-=a; if(ssh.absorb<=0) p.buffs=p.buffs.filter(b=>b!==ssh); if(d<=0){ this.float(p.x,p.y,'pohlceno','#9df07a',0.85); if(ripo&&melee) this.riposteHit(src,ripo); return 0; } }
     if(st.ks.has('symbiosis')&&this.minions.length){ const mn=this.minions.slice().sort((a,b)=>dist(a.x,a.y,p.x,p.y)-dist(b.x,b.y,p.x,p.y))[0]; const a=d*0.35; d-=a; this.hurtMinion(mn,a,null,true); }
-    if(st.uniques.has('mycel_cloak')&&p.mp>0){ const a=Math.min(p.mp,d*0.3); p.mp-=a; d-=a; }
+    { const mf=(st.uniques.has('mycel_cloak')?0.3:0)+(st.ks.has('mindover')?0.4:0); if(mf&&p.mp>0){ const a=Math.min(p.mp,d*mf); p.mp-=a; d-=a; } }
     if(st.ks.has('chitin')&&p.es>0){ const a=Math.min(p.es,d); p.es-=a; d-=a; this.lastHit=this.turn; if(d<=0){ this.float(p.x,p.y,'-'+fmt(a),'#9cf'); this.snd('block'); return a; } }
     p.hp-=d; p._hurt=1; this.snd('hurt'); this.renderHurt=Math.min(1,(this.renderHurt||0)+d/st.life*2.5); this.shake=Math.max(this.shake,3+d/st.life*18);
     this.float(p.x,p.y,'-'+fmt(d),'#ff5a4a'); this.lastHit=this.turn;
-    if(src&&st.thorns) this.thorn(src,st.thorns); if(src&&st.uniques.has('thistle')) this.thorn(src,d*0.4);
+    if(src&&st.thorns){ if(st.setPow.has('thornset')){ for(const o of this.monsters) if(o.hp>0&&dist(o.x,o.y,p.x,p.y)<=1){ this.thorn(o,st.thorns); if(o.hp>0&&!o.boss&&rng.chance(0.25)){ o.status.stun=1; o.tele=null; } } } else this.thorn(src,st.thorns); } if(src&&st.uniques.has('thistle')) this.thorn(src,d*0.4);
+    if(ripo&&melee&&src.hp>0) this.riposteHit(src,ripo);
+    if(melee&&st.uniques.has('mirelegs')&&src.status) src.status.slow=Math.max(src.status.slow||0,2);
+    if(st.uniques.has('grave_shroud')&&d>st.life*0.2&&p.hp>d) this.addBuff({id:'ethe',name:'Nehmotnost',add:{dodge:40},turns:2});
     if(p.hp<=0){ p.hp=0; this.onDeath(srcName||src?.name||'neznámo'); }
     return d;
   }
+  riposteHit(m,b){ if(!m||m.hp<=0||m.ally) return; const c=this.ctx('attack'); c.melee=true; c.skill='riposte'; this.lunge(this.player,m); this.float(this.player.x,this.player.y,'Odveta','#ffd54a',0.85); this.strike([m],()=>this.weaponHit(b.ripo),c); }
   thorn(m,v){ if(m.hp>0){ m.hp-=v; this.float(m.x,m.y,fmt(v),'#c8a060',0.85); if(m.hp<=0) this.killMonster(m); } }
   onDeath(by){ this.lastKiller=by; if(this.daily){ this.player.dead=true; this.save(); this.lbSync(true); } for(const mn of this.minions) this.burst(mn.x,mn.y,[0.5,0.7,0.3],8,50); this.minions=[]; this.snd('death'); this.log(`Padl jsi. Zabil tě: ${by}.`,'warn'); this.burst(this.player.x,this.player.y,[0.8,0.1,0.1],40,120,1.2); this.ui?.onDeath?.(by); }
   respawn(){ const p=this.player; p.form=null; this.minions=[]; const lost=Math.floor(p.gold*0.25); p.gold-=lost; p.xp=Math.floor(p.xp*0.5); p.buffs=[]; this.floorMods=null; p.cds={};
@@ -703,7 +821,7 @@ export class Game{
     const p=this.player; this.turn++;
     if(this.extraTurn){ this.extraTurn=false; this.updateFOV(); this.ui?.refresh?.(); return true; }
     const inCombat=this.monsters.some(m=>m.hp>0&&m.aware&&dist(m.x,m.y,p.x,p.y)<=10)||this.turn-(this.lastHit||-99)<4;
-    p.hp=Math.min(p.stats.life,p.hp+p.stats.regen+(inCombat?0:p.stats.life*0.02)); p.mp=Math.min(p.stats.mana,p.mp+p.stats.manaRegen+(inCombat?0:p.stats.mana*0.03));
+    p.hp=Math.min(p.stats.life,p.hp+p.stats.regen+(inCombat||p.stats.ks.has('bloodfrenzy')?0:p.stats.life*0.02)); p.mp=Math.min(p.stats.mana,p.mp+p.stats.manaRegen+(inCombat?0:p.stats.mana*0.03));
     for(const k in p.cds) if(p.cds[k]>0) p.cds[k]--;
     if(p.stats.esMax&&this.turn-(this.lastHit||-99)>=2) p.es=Math.min(p.stats.esMax,(p.es||0)+p.stats.esMax*0.25);
     if(p.stats.ks.has('plaguebody')&&!p.stats.ks.has('chitin')) p.hp=Math.max(1,p.hp-p.stats.life*0.01);
@@ -715,7 +833,8 @@ export class Game{
     // player effects on world
     if(p.stats.uniques.has('drowned_lantern')){ const st=p.stats, rr=Math.max(2,st.torch*0.6), ch=25+st.burnCh, dmg=(st.spellBase*0.3+st.fire*0.8)*(1+(st.elemPct+st.spell*0.5)/100)*(1+st.dot/100);
       for(const m of this.monsters) if(m.hp>0&&this.canSee(m)&&edist(m.x,m.y,p.x,p.y)<=rr&&rng.next()*100<ch){ this.addAil(m,'burn',dmg*(1-(m.res.fire||0)/100),2); } }
-    for(const z of this.fx.filter(f=>f.type==='poisonzone')){ for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,z.x,z.y)<=z.r) this.applyPoison(m,z.dmg,2); if(--z.turns<=0) z.life=0; }
+    for(const z of this.fx.filter(f=>f.type==='poisonzone')){ const zc=z.skill?this.ctx(z.skill):undefined; for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,z.x,z.y)<=z.r) this.applyPoison(m,z.dmg,2,zc); if(--z.turns<=0) z.life=0; }
+    this.tickV12();
     for(const mn of this.fx.filter(f=>f.type==='pmine')){ if(--mn.turns<0){ mn.life=0; this.fx.push({type:'ring',x:mn.x,y:mn.y,r:1,life:0.35,max:0.35,c:[0.6,1,0.3]}); for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,mn.x,mn.y)<=1) this.hitMonster(m,this.weaponHit(0.6),{sups:new Set(),tags:[],skill:'mine'}); } }
     for(const z of this.fx.filter(f=>f.type==='arrowzone')){ const c=this.ctx(z.skill); for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,z.x,z.y)<=z.r) this.hitMonster(m,this.weaponHit(z.mult),c); if(--z.turns<=0) z.life=0; }
     this.tickMinions();
@@ -724,27 +843,42 @@ export class Game{
     for(const m of this.monsters.slice()){
       if(m.hp<=0) continue;
       this.tickMonsterDots(m); if(m.hp<=0) continue;
-      if(m.regen&&m.hp<m.maxhp) m.hp=Math.min(m.maxhp,m.hp+m.maxhp*m.regen);
+      if(m.regen&&m.hp<m.maxhp&&!(m.status.weak&&this.player.stats.uniques.has('witherhand'))) m.hp=Math.min(m.maxhp,m.hp+m.maxhp*m.regen);
       if(m.status.stun){ m.status.stun--; if(m.status.stun<=0) delete m.status.stun; continue; }
-      m.energy+=m.spd; let acts=0;
+      m.energy+=m.spd*(m.status.slow?0.5:1); let acts=0;
       while(m.energy>=100&&acts<2&&m.hp>0&&p.hp>0){ m.energy-=100; acts++; this.monsterAct(m); }
       if(m.status.root&&--m.status.root<=0) delete m.status.root;
+      for(const k of ['weak','fear','slow']) if(m.status[k]&&--m.status[k]<=0) delete m.status[k];
     }
+    this.checkTraps();
     if(this.monsters.some(m=>m.light)) this.invalidateLightMon();
     this.ui?.refresh?.(); if(this.turn%25===0) this.save();
     return true;
   }
   tickMonsterDots(m){ const st=this.player.stats; let tot=0; if(m.status.hex&&--m.status.hex<=0) delete m.status.hex;
     if(m.status.poison){ const P=m.status.poison; let d=0; for(const s of P){ d+=s.d; s.t--; } m.status.poison=P.filter(s=>s.t>0); if(!m.status.poison.length) delete m.status.poison; if(d>0){ tot+=d; this.float(m.x,m.y,fmt(d)+(P.length>1?` ×${P.length}`:''),'#8fd45a',0.8); } }
-    for(const k of ['burn','bleed']){ const s=m.status[k]; if(s){ tot+=s.dmg; this.float(m.x,m.y,fmt(s.dmg),k==='burn'?'#ff9c4a':'#d44',0.8); if(--s.turns<=0) delete m.status[k]; } }
+    for(const k of ['burn','bleed']){ const s=m.status[k]; if(s){ tot+=s.dmg; this.float(m.x,m.y,fmt(s.dmg),k==='burn'?'#ff9c4a':'#d44',0.8); if(k==='burn'&&st.ks.has('cinder')) s.dmg*=1.15; if(--s.turns<=0) delete m.status[k]; } }
+    if(m.status.poison&&st.setPow.has('plagueset')){ const top=m.status.poison.reduce((a,q)=>q.d>a.d?q:a,m.status.poison[0]); const o=this.monsters.find(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1&&!(o.status.poison?.length>=6)); if(top&&o) (o.status.poison||(o.status.poison=[])).push({d:top.d*0.5,t:2}); }
     if(tot>0){ m.hp-=tot; if(st.uniques.has('devour_root')&&st.leech) this.healPlayer(tot*(st.leech+5)/100,true); if(m.hp<=0) this.killMonster(m); } }
+  tickV12(){ const p=this.player, st=p.stats;
+    for(const z of this.fx.filter(f=>f.type==='flyzone'&&f.life>0)){ const c=this.ctx(z.skill); for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,z.x,z.y)<=z.r){ m.status.slow=Math.max(m.status.slow||0,1); this.hitMonster(m,this.spellHit(z.mult,'decay'),c); } if(--z.turns<=0) z.life=0; }
+    if(p.form&&st.ks.has('primal')) p.primal=Math.min(15,(p.primal||0)+1);
+    if(st.uniques.has('firefly_lantern')&&this.turn%3===0){ const t=this.monsters.filter(m=>m.hp>0&&this.canSee(m)&&edist(m.x,m.y,p.x,p.y)<=7&&los(p.x,p.y,m.x,m.y,this.oc)).sort((a,b)=>edist(a.x,a.y,p.x,p.y)-edist(b.x,b.y,p.x,p.y))[0];
+      if(t){ this.proj(p.x,p.y,t.x,t.y,[1,0.85,0.3]); this.hitMonster(t,this.spellHit(0.8,'fire'),{sups:new Set(),tags:['spell','proj'],skill:'firefly'}); } }
+    if(st.uniques.has('spore_lungs')){ for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,p.x,p.y)<=1) this.applyPoison(m,st.spellBase*0.3*(1+(st.spell+st.poisonPct)/100),2); }
+    const net=p.buffs.find(b=>b.net); if(net&&this.minions.length){ const hit=new Set(); for(const mn of this.minions) if(mn.hp>0) for(const m of this.monsters) if(m.hp>0&&!hit.has(m)&&dist(m.x,m.y,mn.x,mn.y)<=1){ hit.add(m); m.status.weak=Math.max(m.status.weak||0,2); this.hitMonster(m,this.spellHit(net.net,'decay'),{sups:this.sups('mycelnet'),tags:['spell','aoe'],skill:'mycelnet'}); } }
+  }
+  checkTraps(){ for(const z of this.fx.filter(f=>f.type==='trap'&&f.life>0)){ if(z.armed===this.turn) continue; const near=this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,z.x,z.y)<=1); if(!near.length) continue;
+      z.life=0; const c=this.ctx(z.skill||'trap'); c.convPoison=1; c.forcePoison=true; this.fx.push({type:'cloud',x:z.x,y:z.y,r:z.r,life:0.8,max:0.8}); this.flashLight(z.x,z.y,[0.6,1,0.3],z.r+2); this.snd('puffbomb',z.x,z.y); this.shake=Math.max(this.shake,5);
+      const t=this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,z.x,z.y)<=z.r); this.strike(t,()=>this.weaponHit(z.mult),c); for(const m of t) if(m.hp>0&&!m.boss) m.status.root=Math.max(m.status.root||0,2); } this.fx=this.fx.filter(f=>f.type!=='trap'||f.life>0); }
   invalidateLightMon(){ for(const k of [...this.lightCache.keys()]) if(k[0]==='m') this.lightCache.delete(k); }
   // ================= monster AI =================
   monTarget(m){ const p=this.player; if(!this.minions.length) return p; let best=p, bd=dist(m.x,m.y,p.x,p.y)+0.5;
-    for(const mn of this.minions){ if(mn.hp<=0) continue; const d=dist(m.x,m.y,mn.x,mn.y)-(mn.taunt&&dist(m.x,m.y,mn.x,mn.y)<=4?3:0); if(d<bd){ bd=d; best=mn; } } return best; }
+    for(const mn of this.minions){ if(mn.hp<=0) continue; const d=dist(m.x,m.y,mn.x,mn.y)-(mn.taunt&&dist(m.x,m.y,mn.x,mn.y)<=4?(mn.kind==='decoy'?6:3):0); if(d<bd){ bd=d; best=mn; } } return best; }
   monsterAct(m){
     const pl=this.player; const dP=dist(m.x,m.y,pl.x,pl.y); const seen=this.isVis(m.x,m.y)&&dP<=9;
     if(m.tele) return this.resolveTele(m);
+    if(m.status.fear&&!m.boss&&m.aware){ this.stepAway(m); return; }
     if(m.ai==='nest') return this.nestAct(m,dP);
     if(m.ai==='thief') return this.thiefAct(m,dP);
     if(!m.aware&&this.minions.some(mn=>dist(mn.x,mn.y,m.x,m.y)<=2)) m.aware=true;
@@ -774,7 +908,7 @@ export class Game{
   }
   monReach(m){ return true; }
   alertPack(m){ for(const o of this.monsters) if(o!==m&&!o.aware&&dist(o.x,o.y,m.x,m.y)<=4) o.aware=true; }
-  monHit(m,mult,el,tgt){ const p=this.player; let dm=rng.range(m.dmg[0],m.dmg[1])*mult; if(m.mods.includes('berserk')&&m.hp<m.maxhp*0.5) dm*=1.5; if(m.enraged) dm*=1.25;
+  monHit(m,mult,el,tgt){ const p=this.player; let dm=rng.range(m.dmg[0],m.dmg[1])*mult; if(m.mods.includes('berserk')&&m.hp<m.maxhp*0.5) dm*=1.5; if(m.enraged) dm*=1.25; if(m.status.weak) dm*=0.7;
     if(tgt&&tgt.ally){ this.hurtMinion(tgt,dm,el); if(m.mods.includes('vampiric')) m.hp=Math.min(m.maxhp,m.hp+dm*0.3); return; }
     const dealt=this.hurtPlayer(dm,el,m,m.name); if(m.addEl&&dealt>=0) this.hurtPlayer(dm*m.addEl,m.mods.includes('fireench')?'fire':'decay',m,m.name,true);
     if(m.el==='poison'&&dealt>0&&rng.chance(0.35)) this.addStatusP('poison',dm*0.25,3);
@@ -794,7 +928,7 @@ export class Game{
     if(m.boss) this.shake=Math.max(this.shake,10); }
   nestAct(m,d){ if(d>10) return; m.cd=(m.cd||0)-1; if(m.cd>0) return; m.cd=4; const pool=MONSTERS.filter(x=>this.depth>=x.d[0]&&this.depth<=x.d[1]&&x.ai!=='mine');
     for(let k=0;k<2;k++){ const n=this.freeNear(m.x,m.y); if(n){ const a=this.addMonster(rng.pick(pool),n[0],n[1]); a.aware=true; a.xp*=0.3; this.burst(n[0],n[1],[0.6,1,0.3],8,50); } } }
-  addStatusP(k,dmg,turns){ const p=this.player; const ks=p.stats.ks; if((k==='poison'||k==='bleed')&&ks.has('chitin')) return; if(k==='poison'&&ks.has('plaguebody')) return; const res=k==='poison'?p.stats.resPoison:k==='burn'?p.stats.resFire:0; dmg*=1-res/100; const s=p.status[k]; if(s){ s.dmg=Math.max(s.dmg,dmg); s.turns=Math.max(s.turns,turns); } else p.status[k]={dmg,turns}; }
+  addStatusP(k,dmg,turns){ const p=this.player; const ks=p.stats.ks; if((k==='poison'||k==='bleed')&&ks.has('chitin')) return; if(k==='poison'&&(ks.has('plaguebody')||p.stats.uniques.has('spore_lungs'))) return; if((k==='root'||k==='slow')&&ks.has('unbreak')) return; const res=k==='poison'?p.stats.resPoison:k==='burn'?p.stats.resFire:0; dmg*=1-res/100; const s=p.status[k]; if(s){ s.dmg=Math.max(s.dmg,dmg); s.turns=Math.max(s.turns,turns); } else p.status[k]={dmg,turns}; }
   bossAct(m,d,sight){
     const p=this.player;
     if(!m.enraged&&m.hp<m.maxhp*0.5){ m.enraged=true; m.spd*=1.3; this.snd('roar',m.x,m.y); this.log(`${m.name} zuří! Výtrusy vře krev.`,'warn'); this.ui?.banner?.(m.name+' zuří!','Druhá fáze'); this.shake=14; this.bossSummon(m,3); m.cd=1; return; }

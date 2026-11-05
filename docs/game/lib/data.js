@@ -122,6 +122,14 @@ export const BASES=[
   {id:'amulet2', name:'Srdeční přívěšek', slot:'amulet', spr:'amulet_heart', imp:{life:8}, min:5},
   {id:'ring', name:'Prsten', slot:'ring', spr:'ring_gold', imp:{}, min:1},
   {id:'ring2', name:'Ametystový prsten', slot:'ring', spr:'ring_violet', imp:{mana:6}, min:4},
+  // ---- v12 ----
+  {id:'rotclub', name:'Hnilobný kyj', slot:'weapon', spr:'club2', kind:'melee', dmg:[7,13], imp:{meleePct:10}, min:6},
+  {id:'firestaff', name:'Plamenná hůl', slot:'weapon', spr:'staff_red', kind:'staff', dmg:[4,8], imp:{spell:20,firePct:15}, min:6},
+  {id:'venomstaff', name:'Hůl jedu', slot:'weapon', spr:'staff_green', kind:'staff', dmg:[3,7], imp:{spell:20,poisonPct:15}, min:5},
+  {id:'hxbow', name:'Těžká kuše', slot:'weapon', spr:'crossbow2', kind:'bow', dmg:[8,14], imp:{projPct:10}, min:12},
+  {id:'charm', name:'Houbový talisman', slot:'amulet', spr:'shrooms_purple', imp:{dot:8}, min:6},
+  {id:'scroll', name:'Svitek hniloby', slot:'offhand', spr:'scroll', imp:{spell:8,ailDur:10}, min:6},
+  {id:'barkshield', name:'Štít z kůry', slot:'offhand', spr:'shield_wood2', imp:{armor:14,block:12,dr:2}, min:12},
 ];
 export const STAT_NAMES={life:'Život',mana:'Esence',armor:'Zbroj',dmg:'Fyzické poškození',dmgPct:'% poškození',crit:'% šance na kritický zásah',critMult:'% kritický násobič',
   fire:'Ohnivé poškození',poison:'Jedové poškození',decay:'Hnilobné poškození',poisonCh:'% šance otrávit',burnCh:'% šance zapálit',bleed:'% šance na krvácení',
@@ -130,8 +138,11 @@ export const STAT_NAMES={life:'Život',mana:'Esence',armor:'Zbroj',dmg:'Fyzické
   dodge:'% úhyb',stun:'% šance omráčit',block:'% šance blokovat',might:'Síla',finesse:'Obratnost',wits:'Důvtip',xp:'% zkušeností',potion:'% účinnost lektvarů',reach:'Dosah zbraně',aoe:'+ k plošnému dosahu',
   lifePct:'% maximálního života',armorPct:'% zbroje',dot:'% násobič poškození v čase',pen:'% průraz odolností',lifeKill:'Život za zabití',physPct:'% fyzického poškození',elemPct:'% elementálního poškození',
   maxRes:'% k maximálním odolnostem',crushPct:'% poškození proti omráčeným',execPct:'% poškození proti raněným (<35 %)',
-  minionDmg:'% poškození přisluhovačů',minionLife:'% života přisluhovačů',minionMax:'k maximu přisluhovačů',formPct:'% poškození v podobě zvířete',formLife:'% života v podobě zvířete',minionUpkeep:'% daň přisluhovačů (rezervovaný život)'};
-export const PCT=new Set(['dmgPct','crit','critMult','poisonCh','burnCh','bleed','leech','res','resPoison','resFire','resDecay','mf','gf','cdr','spell','dodge','stun','block','xp','potion','lifePct','armorPct','dot','pen','physPct','elemPct','maxRes','crushPct','execPct','minionDmg','minionLife','formPct','formLife','minionUpkeep']);
+  minionDmg:'% poškození přisluhovačů',minionLife:'% života přisluhovačů',minionMax:'k maximu přisluhovačů',formPct:'% poškození v podobě zvířete',formLife:'% života v podobě zvířete',minionUpkeep:'% daň přisluhovačů (rezervovaný život)',
+  firePct:'% ohnivého poškození',poisonPct:'% jedového poškození',decayPct:'% hnilobného poškození',meleePct:'% poškození zblízka',projPct:'% poškození projektilů',aoePct:'% plošného poškození',
+  ailDur:'% délka neduhů',costRed:'% nižší cena dovedností',doubleDmg:'% šance na dvojnásobné poškození',regenPct:'% max. života regenerace / tah',manaKill:'Esence za zabití',
+  weakCh:'% šance oslabit (−30 % poškození nepřítele)',fearCh:'% šance vyděsit',buffDur:'% délka posílení',dr:'% snížení utrženého poškození'};
+export const PCT=new Set(['dmgPct','crit','critMult','poisonCh','burnCh','bleed','leech','res','resPoison','resFire','resDecay','mf','gf','cdr','spell','dodge','stun','block','xp','potion','lifePct','armorPct','dot','pen','physPct','elemPct','maxRes','crushPct','execPct','minionDmg','minionLife','formPct','formLife','minionUpkeep','firePct','poisonPct','decayPct','meleePct','projPct','aoePct','ailDur','costRed','doubleDmg','regenPct','weakCh','fearCh','buffDur','dr']);
 export const AFFIXES=[
   {id:'life', s:'life', v:[6,12], sc:'exp', slots:'*', p:'P', name:['Houževnatý','Životný']},
   {id:'lifePct', s:'lifePct', v:[4,8], sc:'lin', slots:'chest,helm,amulet,offhand', p:'P', name:['Mízný'], cap:20},
@@ -182,6 +193,22 @@ export const AFFIXES=[
   {id:'formPct', s:'formPct', v:[10,22], sc:'lin', slots:'weapon,gloves,amulet,helm,offhand', p:'P', name:['Divoký','Zvířecí']},
   {id:'formLife', s:'formLife', v:[6,14], sc:'lin', slots:'chest,helm,boots,amulet', p:'S', name:['Šelmy'], cap:40},
   {id:'aoe', s:'aoe', v:[1,1], sc:'none', slots:'weapon,amulet', p:'S', name:['Rozpínání'], rare:0.2, cap:2},
+  // ---- v12 ----
+  {id:'firePct', s:'firePct', v:[10,22], sc:'lin', slots:'weapon,amulet,ring,gloves,offhand', p:'P', name:['Planoucí']},
+  {id:'poisonPct', s:'poisonPct', v:[10,22], sc:'lin', slots:'weapon,amulet,ring,gloves,offhand', p:'P', name:['Morový']},
+  {id:'decayPct', s:'decayPct', v:[10,22], sc:'lin', slots:'weapon,amulet,ring,gloves,offhand', p:'P', name:['Tlející']},
+  {id:'meleePct', s:'meleePct', v:[10,22], sc:'lin', slots:'weapon,gloves,amulet,ring', p:'P', name:['Rváčský']},
+  {id:'projPct', s:'projPct', v:[10,22], sc:'lin', slots:'weapon,gloves,amulet,ring,offhand', p:'P', name:['Střelecký']},
+  {id:'aoePct', s:'aoePct', v:[10,22], sc:'lin', slots:'weapon,amulet,gloves,helm', p:'P', name:['Rozlehlý']},
+  {id:'ailDur', s:'ailDur', v:[8,16], sc:'lin', slots:'weapon,gloves,amulet,ring,boots', p:'S', name:['Vleklosti'], cap:40},
+  {id:'costRed', s:'costRed', v:[4,8], sc:'lin', slots:'helm,amulet,ring,gloves', p:'S', name:['Úspory'], cap:25},
+  {id:'doubleDmg', s:'doubleDmg', v:[2,4], sc:'lin', slots:'weapon,gloves,ring', p:'S', name:['Dvojrány'], cap:12},
+  {id:'regenPct', s:'regenPct', v:[1,1], sc:'none', slots:'chest,amulet,ring,boots,helm', p:'S', name:['Hojení'], rare:0.4, cap:2},
+  {id:'manaKill', s:'manaKill', v:[2,4], sc:'exp', slots:'weapon,ring,amulet', p:'S', name:['Sběru']},
+  {id:'weakCh', s:'weakCh', v:[5,10], sc:'lin', slots:'weapon,gloves,offhand', p:'S', name:['Únavy'], cap:30},
+  {id:'fearCh', s:'fearCh', v:[4,8], sc:'lin', slots:'weapon,helm,offhand', p:'S', name:['Hrůzy'], cap:25},
+  {id:'buffDur', s:'buffDur', v:[8,16], sc:'lin', slots:'helm,amulet,chest,offhand', p:'S', name:['Vytrvalosti'], cap:50},
+  {id:'dr', s:'dr', v:[2,4], sc:'lin', slots:'chest,offhand,helm,boots', p:'S', name:['Pevnosti'], rare:0.5, cap:10},
 ];
 export const RARITY=[
   {id:'common', name:'Obyčejný', color:'#c9c2b4', aff:[0,0]},
@@ -223,6 +250,33 @@ export const UNIQUES=[
   {id:'moon_mask', name:'Maska úplňku', base:'mask', spr:'hat_slice15', fixed:{formPct:20,crit:4}, power:'Každá proměna ti dá na 3 tahy +50 % poškození.'},
   {id:'root_spear', name:'Kořenové kopí', base:'spear', spr:'spear', fixed:{physPct:30,formLife:10}, power:'Spoutání kořeny přeskočí na 2 sousední nepřátele a Drtivý úder zakoření cíl.'},
   {id:'blood_idol', name:'Krvavý idol', base:'amulet2', spr:'amulet_heart', fixed:{lifePct:15,leech:2}, power:'Dovednosti stojí život místo esence; +40 % poškození dovedností.'},
+  // ---- v12 ----
+  {id:'gutripper', name:'Střevorvač', base:'waraxe', spr:'axe2', fixed:{meleePct:30,bleed:20}, power:'Krvácení se nepřepisuje, ale roste: každé další krvácení přidá 50 % svého poškození k tomu, co už na cíli je.'},
+  {id:'sporemother', name:'Luk Sporomatky', base:'bow', spr:'bow', fixed:{projPct:30,poisonCh:20}, power:'Tvé šípy zanechají v místě zásahu jedový obláček na 2 tahy.'},
+  {id:'kingsbane', name:'Zhouba králů', base:'fang', spr:'dagger_p', fixed:{doubleDmg:8,crit:5}, power:'Proti bossům, vzácným a jedinečným nepřátelům způsobuješ o 40 % více poškození.'},
+  {id:'chorus_staff', name:'Hůl sboru', base:'cstaff', spr:'staff_crystal', fixed:{spell:40,aoePct:20}, power:'Plošná kouzla mají o 1 větší dosah.'},
+  {id:'emberheart', name:'Uhlíkové srdce', base:'amulet', spr:'amulet_green', fixed:{firePct:30,burnCh:15}, power:'Hořící nepřátelé utrží o 25 % více poškození ode všeho (i od přisluhovačů).'},
+  {id:'witherhand', name:'Uvadlá ruka', base:'gloves', spr:'gloves', fixed:{decayPct:30,weakCh:15}, power:'Oslabení nepřátelé utrží o 20 % více poškození a nemohou regenerovat.'},
+  {id:'grave_shroud', name:'Rubáš z hrobu', base:'cloak', spr:'cloak_moss', fixed:{dodge:8,dr:5}, power:'Zásah za víc než 20 % tvého života tě na 2 tahy učiní nehmotným: +40 % úhyb (max 75 %).'},
+  {id:'mirelegs', name:'Bahenní holínky', base:'boots', spr:'boots_leather', fixed:{dodge:4,ailDur:15}, power:'Nepřátelé, kteří tě zasáhnou zblízka, jsou na 2 tahy zpomaleni.'},
+  {id:'hollow_crown', name:'Dutá koruna', base:'witchhat', spr:'hat_slice10', fixed:{spell:25,costRed:15}, power:'Když máš víc než 90 % esence, kouzla způsobují o 30 % více poškození.'},
+  {id:'twin_fang', name:'Dvojzub', base:'dagger', spr:'dagger_r', fixed:{doubleDmg:6,finesse:8}, power:'Základní útok zasáhne dvakrát (druhý zásah za 50 %).'},
+  {id:'oakheart', name:'Dubové srdce', base:'barkarmor', spr:'armor_bark', fixed:{lifePct:15,regenPct:1}, power:'Za každých 10 % chybějícího života utrpíš o 3 % méně poškození.'},
+  {id:'bulwark', name:'Kořenný val', base:'barkshield', spr:'shield_wood2', fixed:{block:10,dr:3}, power:'Každý blok ti dá na 3 tahy +15 % více poškození.'},
+  {id:'swarmcaller', name:'Volání roje', base:'sstaff', spr:'staff_purple', fixed:{minionDmg:30,minionMax:1}, power:'Výtrusný roj vyvolá 5 mušek a žijí o 5 tahů déle.'},
+  {id:'nursery', name:'Školka', base:'mortar', spr:'mortar', fixed:{minionLife:30,regen:2}, power:'Když přisluhovač zabije nepřítele, vyléčí se o 20 % a tobě obnoví 3 % esence.'},
+  {id:'alpha_pelt', name:'Kožich alfy', base:'furarmor', spr:'armor_leaf2', fixed:{formPct:20,formLife:20}, power:'Duch vlka nezmizí a v podobě zvířete způsobuje o 50 % více poškození.'},
+  {id:'tusked_helm', name:'Klektavý šlem', base:'shroomhelm', spr:'hat_slice7', fixed:{formPct:15,fearCh:10}, power:'Vytí má dvojnásobný dosah a vyděšení nepřátelé utrží o 25 % více poškození.'},
+  {id:'cinder_quiver', name:'Popelavý toulec', base:'quiver', spr:'quiver', fixed:{firePct:25,burnCh:15}, power:'50 % fyzického poškození šípů se mění na oheň.'},
+  {id:'void_ring', name:'Prsten prázdnoty', base:'ring2', spr:'ring_violet', fixed:{pen:10,decayPct:20}, power:'Hnilobné poškození ignoruje navíc 20 % odolnosti.'},
+  {id:'spore_lungs', name:'Výtrusné plíce', base:'amulet2', spr:'amulet_heart', fixed:{poisonPct:25,resPoison:30}, power:'Jed na tebe nepůsobí jako neduh a jedová jezírka ti neublíží. Nepřátelé vedle tebe jsou každý tah otráveni (30 % kouzla).'},
+  {id:'rotting_tome', name:'Hnijící kodex', base:'scroll', spr:'scroll', fixed:{ailDur:30,dot:20}, power:'Když zemře nepřítel s neduhy, přeskočí jeho jed, oheň i krvácení na nejbližšího nepřítele do vzdálenosti 3.'},
+  {id:'headsman', name:'Katova sekera', base:'axe', spr:'axe', fixed:{physPct:35,execPct:40}, power:'Zabití sníží přebíjení všech dovedností o 1 (jednou za tah).'},
+  {id:'firefly_lantern', name:'Lucerna světlušek', base:'lantern', spr:'lantern', fixed:{torch:2,projPct:20}, power:'Každý 3. tah vyletí světluška a zasáhne nejbližšího viditelného nepřítele za 80 % kouzla (oheň).'},
+  {id:'heartwood', name:'Hůl jádrového dřeva', base:'venomstaff', spr:'staff_green', fixed:{poisonPct:40,spell:20}, power:'Tvá kouzla vždy otráví.'},
+  {id:'oathring', name:'Prsten přísahy', base:'ring', spr:'ring_gold', fixed:{dr:4,life:20}, power:'Dokud máš plný život, způsobuješ o 25 % více poškození.'},
+  {id:'moth_wings', name:'Můří křídla', base:'leafarmor', spr:'armor_leaf', fixed:{dodge:10,buffDur:20}, power:'Výtrusný skok a Krok stínem nemají přebíjení, ale stojí dvojnásobek.'},
+  {id:'bonebreaker', name:'Kostolam', base:'spikeclub', spr:'club3', fixed:{stun:15,physPct:25}, power:'Omráčení nepřátelé utrží o 40 % více poškození a tvé omráčení trvá o 1 tah déle.'},
 ];
 // ---------- sets ----------
 export const SETS=[
@@ -238,6 +292,23 @@ export const SETS=[
     bonus:{2:{minionLife:30,minionDmg:20},3:{minionMax:1,minionUpkeep:-25}}, power:'Přisluhovači mají +40 % více poškození a jejich zabití tě vyléčí o 3 % života.'},
   {id:'shiftset', name:'Šat Měňavce', pieces:[{base:'spear',name:'Kopí dvojí krve',fixed:{formPct:20,physPct:15}},{base:'furarmor',name:'Kožich měňavce',fixed:{formLife:15,armor:15}},{base:'mask',name:'Maska bez tváře',fixed:{formPct:15,crit:3}},{base:'ring',name:'Prsten úplňku',fixed:{lifeKill:4,might:6}}],
     bonus:{2:{formPct:25,lifePct:8},3:{formLife:20,regen:2}}, power:'Proměna tě vyléčí o 20 % života a podoby nemají přebíjení.'},
+  // ---- v12 ----
+  {id:'plagueset', name:'Mor ze Šedých bažin', pieces:[{base:'venomstaff',name:'Hůl morového doktora',fixed:{poisonPct:20,spell:10}},{base:'wizhat',name:'Klobouk morového doktora',fixed:{dot:15,mana:15}},{base:'cloak',name:'Voskovaný plášť',fixed:{resPoison:20,dodge:4}},{base:'gloves',name:'Rukavice z žabí kůže',fixed:{poisonCh:10,ailDur:10}}],
+    bonus:{2:{poisonPct:20,ailDur:15},3:{dot:25,pen:5}}, power:'Jed na nepřátelích se každý tah rozšíří na jednoho souseda (50 % nejsilnějšího stacku).'},
+  {id:'emberset', name:'Žhavé uhlí', pieces:[{base:'firestaff',name:'Hůl věčného ohně',fixed:{firePct:20,spell:10}},{base:'amulet',name:'Uhlík v řetízku',fixed:{fire:4,burnCh:10}},{base:'ring',name:'Prsten z popela',fixed:{firePct:15,resFire:15}},{base:'boots',name:'Spálené boty',fixed:{dodge:4,burnCh:8}}],
+    bonus:{2:{firePct:25,burnCh:10},3:{elemPct:20,pen:6}}, power:'Hořící nepřátelé při smrti vybuchnou za 25 % svého života (oheň, plocha 1).'},
+  {id:'bloodset', name:'Krvavý přívrženec', pieces:[{base:'fang',name:'Tesák rudého přívržence',fixed:{leech:2,doubleDmg:4}},{base:'amulet2',name:'Srdce oběti',fixed:{lifePct:10,regen:2}},{base:'gauntlet',name:'Krvavé pěsti',fixed:{meleePct:20,bleed:10}},{base:'cap2',name:'Kápě přívržence',fixed:{life:25,lifeKill:4}}],
+    bonus:{2:{lifePct:10,leech:2},3:{meleePct:25,doubleDmg:5}}, power:'Pod 50 % života způsobuješ o 40 % více poškození a vysáváš dvojnásobně.'},
+  {id:'thornset', name:'Trnová koruna', pieces:[{base:'barkshield',name:'Trnitá stěna',fixed:{thorns:8,block:6}},{base:'shroomhelm',name:'Koruna z trní',fixed:{thorns:6,armorPct:20}},{base:'barkarmor',name:'Krunýř z trní',fixed:{armorPct:25,dr:3}},{base:'boots',name:'Kořenné boty',fixed:{armor:12,life:20}}],
+    bonus:{2:{thorns:10,armorPct:30},3:{dr:5,block:6}}, power:'Trny zasáhnou všechny sousední nepřátele a s 25% šancí je omráčí.'},
+  {id:'swarmset', name:'Šepot roje', pieces:[{base:'sstaff',name:'Hůl šeptajícího roje',fixed:{minionDmg:25,spell:10}},{base:'browncap',name:'Čepice včelaře',fixed:{minionLife:20,mf:10}},{base:'amulet',name:'Plástev',fixed:{minionDmg:15,minionUpkeep:-10}},{base:'ring2',name:'Prsten královny',fixed:{minionDmg:10,wits:6}}],
+    bonus:{2:{minionDmg:25,minionLife:20},3:{minionMax:1,aoePct:15}}, power:'Útok přisluhovače zasáhne i jednoho dalšího nepřítele vedle cíle za 50 %.'},
+  {id:'moonset', name:'Měsíční lov', pieces:[{base:'spear',name:'Kopí stříbrné luny',fixed:{formPct:20,crit:3}},{base:'hood',name:'Kápě měsíčního svitu',fixed:{dodge:5,formLife:10}},{base:'furarmor',name:'Kožich nočního lovce',fixed:{formLife:15,dr:3}},{base:'ring',name:'Prsten noci',fixed:{formPct:15,fearCh:6}}],
+    bonus:{2:{formPct:25,crit:3},3:{formLife:20,fearCh:10}}, power:'V podobě zvířete má každý tvůj zásah 15% šanci přivolat ducha vlka na 6 tahů (max 2).'},
+  {id:'trapset', name:'Zálesák', pieces:[{base:'hxbow',name:'Kuše zálesáka',fixed:{projPct:20,crit:3}},{base:'quiver',name:'Toulec z kůry',fixed:{projPct:15,dmgPct:10}},{base:'leafarmor',name:'Zálesácký kabát',fixed:{dodge:6,ailDur:10}},{base:'gloves',name:'Rukavice lapače',fixed:{poisonCh:10,costRed:8}}],
+    bonus:{2:{projPct:25,poisonCh:10},3:{doubleDmg:5,cdr:10}}, power:'Výtrusná past se pokládá po dvou, vybuchuje v dosahu 2 a maximum pastí je 6.'},
+  {id:'sageset', name:'Myšlenky mudrce', pieces:[{base:'witchhat',name:'Klobouk poustevnice',fixed:{spell:15,costRed:8}},{base:'scroll',name:'Mudrcův svitek',fixed:{spell:15,buffDur:15}},{base:'ring',name:'Prsten jasné mysli',fixed:{mana:20,cdr:5}},{base:'boots2',name:'Poutnické boty',fixed:{dodge:4,manaRegen:1}}],
+    bonus:{2:{spell:25,costRed:8},3:{cdr:10,skill:1}}, power:'Každé 4. kouzlo je zdarma a způsobí dvojnásobné poškození.'},
 ];
 // skills; tags drive which supports apply. cls = owning class ('*' = universal)
 export const SKILLS={
@@ -277,8 +348,33 @@ export const SKILLS={
   // --- univerzální
   firebrand:{name:'Pochodňový vír', type:'spell', tags:['spell','aoe'], cost:10, cd:5, desc:'Zapálí okolí (dosah 2) za 100 % kouzla a rozzáří pochodeň.', target:'self', cls:'*'},
   blink:{name:'Výtrusný skok', type:'utility', tags:['move'], cost:8, cd:6, desc:'Teleport na viditelné místo do vzdálenosti 5.', target:'tile', range:5, cls:'*'},
+  // ================= v12 =================
+  whirl:{name:'Výtrusný vír', type:'attack', tags:['attack','aoe','melee'], cost:9, cd:4, desc:'Dvakrát se roztočíš: všechny nepřátele v dosahu 1 zasáhneš dvakrát za 75 % zbraně, každý zásah má +20 % šanci na krvácení.', target:'self', cls:'blade'},
+  bloodrage:{name:'Krvavé opojení', type:'buff', tags:['buff'], cost:0, cd:12, desc:'Obětuješ 10 % aktuálního života: na 6 tahů +35 % více poškození, +3 % vysátí života a +10 % kritická šance.', target:'self', cls:'blade'},
+  riposte:{name:'Odvetný střeh', type:'buff', tags:['buff','melee'], cost:7, cd:7, desc:'Na 3 tahy utrpíš o 30 % méně poškození od útoků zblízka a každý takový útok oplatíš protiútokem za 120 % zbraně.', target:'self', cls:'blade'},
+  quake:{name:'Otřes země', type:'attack', tags:['attack','aoe','melee'], cost:11, cd:5, desc:'Úder do země: nepřátelé v dosahu 2 utrží 90 % zbraně + 25 % tvé zbroje, polovina z nich je omráčena na 1 tah.', target:'self', cls:'warden'},
+  shieldwall:{name:'Hradba', type:'buff', tags:['buff'], cost:10, cd:10, desc:'Na 4 tahy +25 % šance blokovat (max 75 %) a každý blok vrátí útočníkovi 60 % poškození.', target:'self', cls:'warden'},
+  shieldcharge:{name:'Beraní náraz', type:'attack', tags:['attack','single','melee','move'], cost:9, cd:4, desc:'Vyrazíš až 4 pole k cíli, zasáhneš ho za 140 % zbraně + zbroj ze štítu a omráčíš ho na 1 tah.', target:'enemy', range:4, cls:'warden'},
+  sporestorm:{name:'Výtrusná bouře', type:'spell', tags:['spell','aoe','dot'], cost:14, cd:6, desc:'Vytvoří výtrusný mrak (dosah 2) na 4 tahy. Každý tah otráví všechny nepřátele uvnitř za 45 % kouzla.', target:'tile', range:6, cls:'myco'},
+  rotnova:{name:'Hnilobná nova', type:'spell', tags:['spell','aoe'], cost:11, cd:4, desc:'Vlna hniloby kolem tebe (dosah 2) za 130 % kouzla. Zasažení jsou na 3 tahy oslabení (−30 % poškození).', target:'self', cls:'myco'},
+  burstrot:{name:'Prasknutí vředu', type:'spell', tags:['spell','aoe'], cost:8, cd:3, desc:'Spotřebuje všechen jed na otráveném cíli a okamžitě způsobí 70 % jeho zbývajícího poškození jako hnilobu cíli i nepřátelům v dosahu 1.', target:'enemy', range:6, cls:'myco'},
+  toxicarrow:{name:'Jedový šíp', type:'attack', tags:['attack','single','proj','bowonly'], cost:6, cd:2, desc:'Výstřel za 150 % zbraně: polovina fyzického poškození se mění na jed, vždy otráví a zpomalí cíl na 2 tahy. Vyžaduje luk.', target:'enemy', range:8, cls:'ranger'},
+  trap:{name:'Výtrusná past', type:'attack', tags:['attack','aoe','trap'], cost:7, cd:3, desc:'Položí past (dosah 4, max 3). Když na ni nebo vedle ní vstoupí nepřítel, vybuchne (dosah 1) za 200 % zbraně jako jed a zakoření zasažené na 2 tahy.', target:'tile', range:4, cls:'ranger'},
+  shadowstep:{name:'Krok stínem', type:'utility', tags:['move'], cost:6, cd:5, desc:'Přeskočíš za záda nepřítele do vzdálenosti 6. Tvůj další útok do 2 tahů je kritický.', target:'enemy', range:6, cls:'ranger'},
+  barrage:{name:'Palba', type:'attack', tags:['attack','single','proj','bowonly'], cost:8, cd:3, desc:'Čtyři rychlé šípy do jednoho cíle, každý za 55 % zbraně a každý může zvlášť kriticky zasáhnout. Vyžaduje luk.', target:'enemy', range:8, cls:'ranger'},
+  sporeswarm:{name:'Výtrusný roj', type:'summon', tags:['minion','summon'], cost:9, cd:3, desc:'Vyvolá 3 výtrusné mušky na 10 tahů. Jsou rychlé a křehké, koušou a otravují. Maximum 6. Každá rezervuje 2 % života.', target:'self', cls:'summoner', minion:'fly'},
+  fungaltotem:{name:'Houbový totem', type:'summon', tags:['minion','summon','proj'], cost:12, cd:8, desc:'Zasadí totem, který 14 tahů plive výtrusné střely (dosah 6) na nejbližší nepřátele. Nehýbe se. Maximum 1 (+1 za 2 body maxima přisluhovačů). Rezervuje 4 % života.', target:'self', cls:'summoner', minion:'totem'},
+  mycelnet:{name:'Mycelová síť', type:'buff', tags:['buff','minion'], cost:12, cd:12, desc:'Na 8 tahů tvoji přisluhovači šíří hnilobu: nepřátelé vedle přisluhovače utrží každý tah 35 % kouzla jako hnilobu a jsou oslabení.', target:'self', cls:'summoner'},
+  howl:{name:'Vytí', type:'buff', tags:['buff','aoe'], cost:8, cd:9, desc:'Nepřátelé v dosahu 2 na 2 tahy prchají (bossové ne). Ty i tvoji přisluhovači máte na 5 tahů +25 % více poškození. Funguje i v podobě zvířete.', target:'self', cls:'shifter'},
+  rampage:{name:'Řádění', type:'attack', tags:['attack','aoe','melee'], cost:7, cd:3, desc:'Jen v medvědí podobě: zasáhneš všechny sousední nepřátele za 150 % zbraně a za každý zásah se vyléčíš o 2 % života.', target:'self', cls:'shifter', needForm:'bear'},
+  spiritwolf:{name:'Duch vlka', type:'summon', tags:['minion','summon'], cost:12, cd:10, desc:'Přivolá ducha vlka na 15 tahů: rychlý lovec, který trhá nepřátele a způsobuje krvácení. Funguje i v podobě zvířete. Maximum 1. Rezervuje 8 % života.', target:'self', cls:'shifter', minion:'wolf'},
+  flyform:{name:'Muší podoba', type:'form', tags:['form','buff'], cost:8, cd:3, desc:'Proměna v hnilobnou mouchu: v této podobě smíš sesílat kouzla, máš +25 % poškození kouzel a projektilů a +10 % úhyb, ale −10 % života. Základní útok je plivanec na dálku. Znovu = lidská podoba.', target:'self', cls:'shifter', form:'fly'},
+  spit:{name:'Hnilobný plivanec', type:'spell', tags:['spell','proj','single'], cost:4, cd:0, desc:'Jen v muší podobě: plivneš hnilobu na dálku za 110 % kouzla a cíl je na 2 tahy oslabený.', target:'enemy', range:7, cls:'shifter', needForm:'fly'},
+  buzz:{name:'Bzučící mračno', type:'spell', tags:['spell','aoe','dot'], cost:10, cd:4, desc:'Jen v muší podobě: vypustíš mračno much (dosah 1) na 3 tahy. Každý tah způsobí 55 % kouzla jako hnilobu a zpomalí nepřátele uvnitř.', target:'tile', range:6, cls:'shifter', needForm:'fly'},
+  decoy:{name:'Houbová návnada', type:'summon', tags:['minion','summon'], cost:8, cd:10, desc:'Na místo do vzdálenosti 4 postaví nafouklou houbu, která 8 tahů přitahuje pozornost nepřátel. Když praskne, otráví okolí.', target:'tile', range:4, cls:'*', minion:'decoy'},
+  sporeshield:{name:'Výtrusná zbroj', type:'buff', tags:['buff'], cost:10, cd:12, desc:'Na 5 tahů tě obalí výtrusný štít, který pohltí poškození až do 25 % tvého maximálního života.', target:'self', cls:'*'},
 };
-for(const [id,s] of Object.entries(SKILLS)) s.icon='sk_'+id;
+for(const [id,s] of Object.entries(SKILLS)) s.icon='sk_'+id; SKILLS.fungaltotem.icon='sk_totem';
 export const skillsFor=cls=>Object.keys(SKILLS).filter(id=>id!=='attack'&&(SKILLS[id].cls===cls||SKILLS[id].cls==='*'));
 // support runes – modifiers linked to a skill (max 3 per skill). 'minion' tag = works on minions of a summon skill
 export const SUPPORTS={
@@ -298,6 +394,18 @@ export const SUPPORTS={
   stun:{name:'Otřes', desc:'+30 % šance omráčit, +25 % poškození proti omráčeným.', tags:['attack','minion']},
   fertile:{name:'Plodnost', desc:'+1 k maximu přisluhovačů této dovednosti, přisluhovači −15 % poškození.', tags:['summon']},
   hex:{name:'Kletba', desc:'Zasažení nepřátelé mají na 3 tahy −20 % ke všem odolnostem a −20 % zbroje.', tags:['attack','spell','minion']},
+  // ---- v12 ----
+  conc:{name:'Soustředění', desc:'+40 % více plošného poškození, ale −1 k plošnému dosahu (minimum 1).', tags:['aoe']},
+  rotconv:{name:'Rozklad', desc:'50 % fyzického poškození se mění na hnilobu a to je o 20 % silnější.', tags:['attack','spell','minion']},
+  weaken:{name:'Oslabení', desc:'Zasažení nepřátelé jsou na 3 tahy oslabení (−30 % poškození).', tags:['attack','spell','minion']},
+  overload:{name:'Přetížení', desc:'+60 % více poškození, ale cena +80 % a přebíjení +1 tah.', tags:['attack','spell']},
+  thrift:{name:'Šetrnost', desc:'Cena −40 %, poškození −10 %.', tags:['attack','spell','buff','move','summon']},
+  spread:{name:'Výtrusné šíření', desc:'Neduhy z této dovednosti (jed, oheň, krvácení) přeskočí i na jednoho souseda cíle za 50 %.', tags:['attack','spell','minion']},
+  firststrike:{name:'První krev', desc:'+80 % poškození proti nepřátelům s plným životem.', tags:['attack','spell','minion']},
+  fortify:{name:'Opevnění', desc:'Použití dovednosti ti na 3 tahy dá −20 % utrženého poškození.', tags:['attack','spell']},
+  fear:{name:'Hrůza', desc:'25% šance, že zasažený nepřítel na 2 tahy prchá (bossové ne).', tags:['attack','spell','minion']},
+  lasting:{name:'Vytrvalost', desc:'Neduhy z této dovednosti trvají o 50 % déle; posílení z ní také.', tags:['attack','spell','minion','buff']},
+  frenzy:{name:'Šílenství roje', desc:'Přisluhovači této dovednosti mají +30 % více poškození, ale −20 % života.', tags:['summon']},
 };
 for(const [id,s] of Object.entries(SUPPORTS)) s.spr='rune_'+id;
 // minion archetypes (scaled by player level, skill level and minion stats)
@@ -305,6 +413,13 @@ export const MINIONS={
   sprout:{name:'Výtrusník', spr:['capling_o','capling_b'], hp:16, dmg:[2,5], arm:3, upkeep:0.05, ai:'melee', sc:0.72, max:3, n:2},
   jelly:{name:'Medúzka', spr:['jelly'], hp:12, dmg:[2,4], arm:1, upkeep:0.06, ai:'ranged', el:'poison', range:5, sc:0.75, max:2, n:1},
   ent:{name:'Ent', spr:['ent'], hp:70, dmg:[5,9], arm:12, upkeep:0.14, ai:'melee', sc:1.2, max:1, n:1, taunt:true},
+  fly:{name:'Výtrusná muška', spr:['fly'], hp:6, dmg:[1,3], arm:0, upkeep:0.02, ai:'melee', el:'poison', sc:0.55, max:6, n:3, ttl:10, fast:true},
+  totem:{name:'Houbový totem', spr:['glowshroom_big'], hp:30, dmg:[3,6], arm:6, upkeep:0.04, ai:'turret', el:'poison', range:6, sc:0.9, max:1, n:1, ttl:14},
+  wolf:{name:'Duch vlka', spr:['spirit_wolf'], hp:28, dmg:[4,8], arm:4, upkeep:0.08, ai:'melee', sc:0.9, max:1, n:1, ttl:15, fast:true, bleed:true, spirit:true},
+  flyform:{name:'Muší podoba', type:'form', tags:['form','buff'], cost:8, cd:3, desc:'Proměna v hnilobnou mouchu: v této podobě smíš sesílat kouzla, máš +25 % poškození kouzel a projektilů a +10 % úhyb, ale −10 % života. Základní útok je plivanec na dálku. Znovu = lidská podoba.', target:'self', cls:'shifter', form:'fly'},
+  spit:{name:'Hnilobný plivanec', type:'spell', tags:['spell','proj','single'], cost:4, cd:0, desc:'Jen v muší podobě: plivneš hnilobu na dálku za 110 % kouzla a cíl je na 2 tahy oslabený.', target:'enemy', range:7, cls:'shifter', needForm:'fly'},
+  buzz:{name:'Bzučící mračno', type:'spell', tags:['spell','aoe','dot'], cost:10, cd:4, desc:'Jen v muší podobě: vypustíš mračno much (dosah 1) na 3 tahy. Každý tah způsobí 55 % kouzla jako hnilobu a zpomalí nepřátele uvnitř.', target:'tile', range:6, cls:'shifter', needForm:'fly'},
+  decoy:{name:'Houbová návnada', spr:['puffball'], hp:30, dmg:[0,0], arm:8, upkeep:0, ai:'still', sc:0.9, max:1, n:1, ttl:8, taunt:true, fixedMax:true},
 };
 export const CLASSES=[
   {id:'blade', name:'Výtrusný šermíř', spr:'hero2_blade', desc:'Zuřivý bojovník zblízka. Krvácení, kritické zásahy, plošné seky.', stats:{might:8,finesse:6,wits:3}, skills:['cleave','rotstrike'], gear:['sword','cap','mossarmor'], rune:'crit',
@@ -320,29 +435,46 @@ export const CLASSES=[
   {id:'shifter', name:'Měňavec', spr:'hero2_shifter', desc:'Druid dvojí krve. Mění se v medvěda nebo kance, mezi proměnami spoutává kořeny.', stats:{might:8,finesse:6,wits:4}, skills:['bearform','maul'], gear:['spear','mask','leafarmor'], rune:'brutal',
     trait:{name:'Dvojí krev', desc:'+15 % poškození v podobě zvířete, +10 % života v podobě.', s:{formPct:15,formLife:10}}},
 ];
-export const FORMS={bear:{name:'Medvědí podoba',acc:'medvědí podobu',spr:'bear',sc:1.05}, boar:{name:'Kančí podoba',acc:'kančí podobu',spr:'boar',sc:0.95}};
+export const FORMS={bear:{name:'Medvědí podoba',acc:'medvědí podobu',spr:'bear',sc:1.05}, boar:{name:'Kančí podoba',acc:'kančí podobu',spr:'boar',sc:0.95}, fly:{name:'Muší podoba',acc:'muší podobu',spr:'fly',sc:0.9}};
 // passive tree: n=name, s=stats, k=keystone id, notable flag, x/y in tree space, l=links
 // ---------- passive tree (procedural, 6 sectors x 5 rings + 12 keystones) ----------
 const TREE_THEMES=[
   {id:'w',name:'Důvtip',small:[{spell:6},{mana:8},{manaRegen:0.3},{cdr:2},{wits:4},{spell:4,mana:4}],small_n:['Mysl','Esence','Proud','Spěch','Důvtip','Šepot'],
-   notable:[['Proud esence',{mana:30,manaRegen:1,spell:10}],['Arcimág',{spell:22,skill:1}]],keys:['eldritch','pact']},
+   notable:[['Proud esence',{mana:30,manaRegen:1,spell:10}],['Arcimág',{spell:22,skill:1}]],keys:['eldritch','pact'],
+   small2:[{spell:5},{costRed:2},{buffDur:5},{manaRegen:0.3},{wits:4},{spell:3,cdr:1}],small2_n:['Šepot','Úspora','Vytrvalost','Proud','Důvtip','Rytmus'],
+   notable2:[['Hlubinná studna',{mana:40,costRed:6}],['Ozvěna mysli',{spell:20,doubleDmg:3}],['Dlouhý dech',{buffDur:25,manaRegen:1.5}],['Mistr přebíjení',{cdr:8,spell:10}],['Výtrusné proroctví',{skill:1,mana:20}],['Pradávná moudrost',{spell:25,wits:10,costRed:5}]],keys2:['mindover','spellecho']},
   {id:'wf',name:'Rozklad',small:[{dot:6},{poisonCh:5},{poison:2},{wits:2,finesse:2},{pen:2},{decay:2}],small_n:['Hniloba','Nákaza','Jed','Bystrost','Průraz','Rozpad'],
-   notable:[['Toxikolog',{dot:25,poisonCh:12}],['Šířící se mor',{dot:15,poison:5,pen:6}]],keys:['rotsoul','plaguebody']},
+   notable:[['Toxikolog',{dot:25,poisonCh:12}],['Šířící se mor',{dot:15,poison:5,pen:6}]],keys:['rotsoul','plaguebody'],
+   small2:[{poisonPct:6},{ailDur:5},{decayPct:6},{dot:5},{poisonCh:4},{weakCh:3}],small2_n:['Jedovina','Vleklost','Tlení','Hniloba','Nákaza','Slabost'],
+   notable2:[['Vleklá nemoc',{ailDur:25,dot:10}],['Černá míza',{decayPct:25,decay:4}],['Morový dech',{poisonPct:25,poisonCh:10}],['Oslabující výpar',{weakCh:15,dot:10}],['Žravá plíseň',{dot:25,pen:6}],['Pán hniloby',{dot:20,ailDur:20,poisonPct:15}]],keys2:['virulence','necrosis']},
   {id:'f',name:'Obratnost',small:[{crit:1.5},{critMult:8},{dodge:2},{finesse:4},{dmgPct:5},{crit:1,dodge:1}],small_n:['Ostříž','Zkáza','Stín','Mrštnost','Hbitost','Lest'],
-   notable:[['Zabiják',{crit:4,critMult:30}],['Stínochod',{dodge:8,crit:2,lifeKill:4}]],keys:['resonance','darkhunter']},
+   notable:[['Zabiják',{crit:4,critMult:30}],['Stínochod',{dodge:8,crit:2,lifeKill:4}]],keys:['resonance','darkhunter'],
+   small2:[{projPct:6},{crit:1.5},{critMult:8},{dodge:2},{doubleDmg:1},{finesse:4}],small2_n:['Let','Ostříž','Zkáza','Stín','Dvojrána','Mrštnost'],
+   notable2:[['Orlí oko',{projPct:25,crit:3}],['Dvojitý zásah',{doubleDmg:6,critMult:15}],['Tanec ve stínu',{dodge:8,finesse:10}],['Smrtonoš',{critMult:40}],['Stopař',{projPct:15,fearCh:8,crit:2}],['Tisíc šípů',{projPct:20,doubleDmg:4,crit:3}]],keys2:['pointblank','ghost']},
   {id:'fm',name:'Krveprolití',small:[{physPct:6},{bleed:5},{lifeKill:2},{execPct:6},{dmgPct:5},{stun:3}],small_n:['Ostří','Krvácení','Hodokvas','Poprava','Zuřivost','Otřes'],
-   notable:[['Řezník',{physPct:20,execPct:20,bleed:10}],['Krvežíznivost',{leech:2,physPct:10,lifeKill:5}]],keys:['berserk','bloodmagic']},
+   notable:[['Řezník',{physPct:20,execPct:20,bleed:10}],['Krvežíznivost',{leech:2,physPct:10,lifeKill:5}]],keys:['berserk','bloodmagic'],
+   small2:[{meleePct:6},{bleed:4},{physPct:5},{doubleDmg:1},{lifeKill:2},{execPct:6}],small2_n:['Čepel','Krvácení','Ostří','Dvojrána','Hodokvas','Poprava'],
+   notable2:[['Mistr čepele',{meleePct:25,physPct:10}],['Krvavá řeka',{bleed:15,ailDur:15}],['Řeznický hák',{doubleDmg:6,execPct:20}],['Krvežíznivec',{leech:2,lifeKill:6}],['Strach z čepele',{fearCh:10,meleePct:15}],['Válečník hniloby',{meleePct:20,physPct:15,crit:2}]],keys2:['bloodfrenzy','executioner']},
   {id:'m',name:'Síla',small:[{life:8},{lifePct:3},{armorPct:8},{regen:0.4},{might:4},{block:2}],small_n:['Houževnatost','Míza','Kůra','Obnova','Síla','Štít'],
-   notable:[['Bastion',{armorPct:30,block:6,lifePct:5}],['Nezlomný',{lifePct:10,res:8,regen:2}]],keys:['rootwill','iron']},
+   notable:[['Bastion',{armorPct:30,block:6,lifePct:5}],['Nezlomný',{lifePct:10,res:8,regen:2}]],keys:['rootwill','iron'],
+   small2:[{life:10},{dr:1},{armorPct:8},{regenPct:0.2},{might:4},{block:2}],small2_n:['Houževnatost','Pevnost','Kůra','Míza','Síla','Štít'],
+   notable2:[['Kamenná kůže',{dr:5,armorPct:25}],['Věčný kořen',{regenPct:1,life:30}],['Štítonoš',{block:8,armorPct:20}],['Horská síla',{might:15,lifePct:6}],['Nezdolný kmen',{dr:4,lifePct:8}],['Strážce prahu',{block:6,dr:4,thorns:8}]],keys2:['unbreak','juggernaut']},
   {id:'mw',name:'Živly',small:[{elemPct:6},{fire:2},{burnCh:5},{res:3},{might:2,wits:2},{resFire:6}],small_n:['Živel','Žár','Spáleniště','Odolnost','Rovnováha','Popel'],
-   notable:[['Pyromant',{elemPct:22,fire:4,burnCh:10}],['Elementální štít',{res:10,maxRes:1,elemPct:8}]],keys:['glass','chitin']},
+   notable:[['Pyromant',{elemPct:22,fire:4,burnCh:10}],['Elementální štít',{res:10,maxRes:1,elemPct:8}]],keys:['glass','chitin'],
+   small2:[{firePct:6},{burnCh:4},{elemPct:5},{res:3},{fire:2},{resFire:6}],small2_n:['Žár','Spáleniště','Živel','Odolnost','Plamen','Popel'],
+   notable2:[['Spalující dotek',{firePct:25,burnCh:10}],['Živelná harmonie',{elemPct:20,res:6}],['Popelavá kůže',{resFire:20,maxRes:1,dr:2}],['Pekelná výheň',{firePct:20,fire:5}],['Ohnivá bouře',{aoePct:20,firePct:10}],['Pán živlů',{elemPct:20,pen:8,ailDur:10}]],keys2:['avatar','cinder']},
   {id:'mn',name:'Roj',small:[{minionDmg:6},{minionLife:6},{wits:3},{minionDmg:4,minionLife:4},{mana:6},{cdr:2}],small_n:['Vůdce','Plodnost','Důvtip','Hnízdo','Esence','Spěch'],
-   notable:[['Matka roje',{minionDmg:22,minionLife:15,minionUpkeep:-10}],['Nekonečné hnízdo',{minionMax:1,minionUpkeep:-20}]],keys:['swarm','symbiosis']},
+   notable:[['Matka roje',{minionDmg:22,minionLife:15,minionUpkeep:-10}],['Nekonečné hnízdo',{minionMax:1,minionUpkeep:-20}]],keys:['swarm','symbiosis'],
+   small2:[{minionDmg:6},{minionLife:6},{wits:3},{minionUpkeep:-2},{aoePct:4},{buffDur:4}],small2_n:['Vůdce','Plodnost','Důvtip','Lehké pouto','Šíření','Vytrvalost'],
+   notable2:[['Pradávný pakt',{minionUpkeep:-10,minionLife:20}],['Zuřivý roj',{minionDmg:30}],['Houbová armáda',{minionMax:1,minionDmg:10}],['Kořenová obrana',{minionLife:30,dr:2}],['Spojené mycelium',{minionDmg:15,minionLife:15,lifePct:5}],['Královna hnízda',{minionDmg:25,minionMax:1}]],keys2:['hivemind','sacrament']},
   {id:'sh',name:'Divočina',small:[{formPct:6},{formLife:4},{might:3},{physPct:5},{life:8},{bleed:4}],small_n:['Tesák','Srst','Síla','Drápy','Houževnatost','Krvavá stopa'],
-   notable:[['Vůdce smečky',{formPct:22,crit:3}],['Kůže pradávných',{formLife:15,armorPct:20}]],keys:['wildheart','apex']},
+   notable:[['Vůdce smečky',{formPct:22,crit:3}],['Kůže pradávných',{formLife:15,armorPct:20}]],keys:['wildheart','apex'],
+   small2:[{formPct:6},{formLife:4},{meleePct:5},{bleed:4},{life:10},{regenPct:0.2}],small2_n:['Tesák','Srst','Drápy','Krvavá stopa','Houževnatost','Hojení'],
+   notable2:[['Lovecká smečka',{formPct:25,meleePct:10}],['Hustá srst',{formLife:20,dr:3}],['Krvavé drápy',{bleed:15,meleePct:15}],['Srdce šelmy',{regenPct:1,formLife:10}],['Děsivý řev',{fearCh:10,formPct:15}],['Pán proměn',{formPct:20,formLife:15,crit:2}]],keys2:['primal','twinblood']},
 ];
 const TREE_ORDER=['w','mn','wf','f','fm','sh','m','mw']; TREE_THEMES.forEach((t,i)=>t.oi=i); TREE_THEMES.sort((a,b)=>TREE_ORDER.indexOf(a.id)-TREE_ORDER.indexOf(b.id));
-const KEY_NAMES={eldritch:'Mykotická zkáza',pact:'Pakt s hlubinou',rotsoul:'Hnilobná duše',plaguebody:'Mor v krvi',resonance:'Rezonance výtrusů',darkhunter:'Lovec ve tmě',berserk:'Zuřivost',bloodmagic:'Krvavá magie',rootwill:'Kořenová vůle',iron:'Železné výtrusy',glass:'Skleněné dělo',chitin:'Chitinová schránka',swarm:'Roj',symbiosis:'Symbióza',wildheart:'Divoké srdce',apex:'Vrcholový predátor'};
+const KEY_NAMES={eldritch:'Mykotická zkáza',pact:'Pakt s hlubinou',rotsoul:'Hnilobná duše',plaguebody:'Mor v krvi',resonance:'Rezonance výtrusů',darkhunter:'Lovec ve tmě',berserk:'Zuřivost',bloodmagic:'Krvavá magie',rootwill:'Kořenová vůle',iron:'Železné výtrusy',glass:'Skleněné dělo',chitin:'Chitinová schránka',swarm:'Roj',symbiosis:'Symbióza',wildheart:'Divoké srdce',apex:'Vrcholový predátor',
+  mindover:'Mysl nad hmotou',spellecho:'Rezonance kouzel',virulence:'Virulence',necrosis:'Nekróza',pointblank:'Na dostřel',ghost:'Přízrak',bloodfrenzy:'Krvavé šílenství',executioner:'Kat',unbreak:'Neotřesitelný',juggernaut:'Kolos',avatar:'Avatar ohně',cinder:'Žhavé uhlíky',hivemind:'Úlová mysl',sacrament:'Obětní hnízdo',primal:'Prastarý instinkt',twinblood:'Dvojí krev'};
 const EXTRA_NOT={w:['Tichá mysl','Pramen','Krystalový rozum','Šeptající pohled','Hlubinné vědění'],wf:['Plíseň v ráně','Zkažená míza','Hnilobný dech','Výtrusná pec','Tlení'],
   f:['Oko dravce','Tanec čepelí','Neviditelný','Smrtící klid','Lovecký instinkt'],fm:['Rozsekané maso','Kostolam','Hostina','Rudá mlha','Řezná rána'],
   m:['Kořenová kůže','Mohyla','Starý dub','Nepohnutelný','Srdce lesa'],mn:['Šepot hnízda','Mycelové pouto','Tisíc klobouků','Plodná půda','Hlas Matky'],sh:['Měsíční vytí','Krev šelmy','Lovecký běh','Prastará srst','Divoký instinkt'],mw:['Výheň','Popelavý závoj','Bouřná krev','Živelný řád','Rozpálené kosti']};
@@ -361,6 +493,15 @@ export const PASSIVES=(()=>{
       N.push(node); }
     th.keys.forEach((kk,j)=>{ const a=rad(a0+(j?16:-16)*DS); N.push({id:`${th.id}K${j}`,x:Math.round(Math.cos(a)*R(7.15)),y:Math.round(Math.sin(a)*R(7.15)),n:KEY_NAMES[kk],s:{},k:kk,l:[]}); });
   });
+  // ---- v12: outer rings 7–10 (7 nodes each) + 2 more keystones per sector; inner ids/stats untouched ----
+  const RO=k=>225+k*100, O=['L3','L2','L1','M','R1','R2','R3'], OA=[-27,-18,-9,0,9,18,27], NOTPOS={7:['M'],8:['L2','R2'],9:['M'],10:['L3','R3']};
+  TREE_THEMES.forEach((th,s)=>{ const a0=-90+s*SW; let ni=0;
+    for(let k=7;k<=10;k++) O.forEach((pp,pi)=>{ const a=rad(a0+OA[pi]*DS); const node={id:id(s,k,pp),x:Math.round(Math.cos(a)*RO(k)),y:Math.round(Math.sin(a)*RO(k)),l:[]};
+      if(NOTPOS[k].includes(pp)){ const [nm,st]=th.notable2[ni++]; Object.assign(node,{n:nm,s:st,notable:true}); }
+      else { const si=(th.oi*5+k*3+pi*5)%th.small2.length; Object.assign(node,{n:th.small2_n[si],s:scale(th.small2[si],1+k*0.12)}); }
+      N.push(node); });
+    th.keys2.forEach((kk,j)=>{ const a=rad(a0+(j?12:-12)*DS); N.push({id:`${th.id}K${j+2}`,x:Math.round(Math.cos(a)*1340),y:Math.round(Math.sin(a)*1340),n:KEY_NAMES[kk],s:{},k:kk,l:[]}); });
+  });
   const by=Object.fromEntries(N.map(n=>[n.id,n])); const link=(a,b)=>{ if(by[a]&&by[b]&&a!==b) by[a].l.push(b); };
   TREE_THEMES.forEach((th,s)=>{ const ns=(s+1)%NS; link('c',id(s,0,'M'));
     for(let k=0;k<RINGS;k++){ const ps=slots(k).map(x=>x[0]); for(let i=0;i<ps.length-1;i++) link(id(s,k,ps[i]),id(s,k,ps[i+1]));
@@ -370,6 +511,10 @@ export const PASSIVES=(()=>{
         else if(k===0){ if(true) link(id(s,0,'L'),id(s,1,'L')); }
         else { if(k%2) { link(id(s,k,'L'),id(s,k+1,'L')); link(id(s,k,'RR'),id(s,k+1,'RR')); } else { link(id(s,k,'R'),id(s,k+1,'R')); link(id(s,k,'LL'),id(s,k+1,'LL')); } } } }
     link(id(s,RINGS-1,'LL'),`${th.id}K0`); link(id(s,RINGS-1,'RR'),`${th.id}K1`); });
+  TREE_THEMES.forEach((th,s)=>{ const ns=(s+1)%NS; link(id(s,6,'M'),id(s,7,'M')); link(id(s,6,'L'),id(s,7,'L2')); link(id(s,6,'R'),id(s,7,'R2'));
+    for(let k=7;k<=10;k++){ for(let i=0;i<O.length-1;i++) link(id(s,k,O[i]),id(s,k,O[i+1])); link(id(s,k,'R3'),id(ns,k,'L3'));
+      if(k<10){ link(id(s,k,'M'),id(s,k+1,'M')); for(const e of {7:['L3','R3'],8:['L1','R2'],9:['L2','R1']}[k]) link(id(s,k,e),id(s,k+1,e)); } }
+    link(id(s,10,'L1'),`${th.id}K2`); link(id(s,10,'R1'),`${th.id}K3`); });
   return N; })();
 export const KEYSTONES={
   rootwill:'Kořenová vůle: nemůžeš uhýbat, šance na blok ×2 (max 75 %).',
@@ -387,6 +532,22 @@ export const KEYSTONES={
   symbiosis:'Symbióza: 35 % poškození, které utrpíš, převezme tvůj nejbližší přisluhovač. Sám ale způsobuješ o 40 % méně poškození.',
   wildheart:'Divoké srdce: proměny nic nestojí a nemají přebíjení. V lidské podobě ale způsobuješ o 40 % méně poškození.',
   apex:'Vrcholový predátor: v podobě zvířete +30 % více poškození a regenerace 2 % života za tah. Nemůžeš používat druhou ruku a lektvary léčí o 50 % méně.',
+  mindover:'Mysl nad hmotou: 40 % utrženého poškození jde nejdřív z esence. +30 % maximální esence, ale −20 % maximálního života.',
+  spellecho:'Rezonance kouzel: kouzla se vždy zopakují za 40 %, ale stojí o 50 % víc a přebíjejí se o 1 tah déle.',
+  virulence:'Virulence: tvé neduhy trvají dvakrát déle, ale působí o 25 % méně za tah.',
+  necrosis:'Nekróza: otrávení nepřátelé při smrti vybuchnou hnilobou za 15 % svého života (dosah 1). Přímé zásahy −20 %.',
+  pointblank:'Na dostřel: projektily způsobují blízkým cílům až o 40 % víc (−8 % za každé pole navíc, minimum −20 %).',
+  ghost:'Přízrak: +10 % úhyb a úhyb může dosáhnout 75 %, ale máš −25 % maximálního života.',
+  bloodfrenzy:'Krvavé šílenství: každé zabití ti na 4 tahy přidá +8 % více poškození (max 5×). Mimo boj se neléčíš.',
+  executioner:'Kat: tvé zásahy okamžitě zabijí nepřítele (ne bosse) pod 12 % života. Nemůžeš vysávat život.',
+  unbreak:'Neotřesitelný: utrpíš o 15 % méně poškození a nemůžeš být zakořeněn ani zpomalen. Nemůžeš uhýbat.',
+  juggernaut:'Kolos: +1 % více poškození za každých 15 zbroje (max +80 %). Úhyb a blok jsou 0.',
+  avatar:'Avatar ohně: všechno tvé poškození se mění na oheň a je o 25 % silnější. +20 % šance zapálit.',
+  cinder:'Žhavé uhlíky: zapálení trvá o 3 tahy déle a každý tah hoření zesílí o 15 %.',
+  hivemind:'Úlová mysl: přisluhovači dostávají i tvé zvýšené % poškození, ale tvé vlastní zásahy jsou o 50 % slabší.',
+  sacrament:'Obětní hnízdo: smrt přisluhovače tě vyléčí o 6 % života a dá ti na 4 tahy +15 % více poškození. Přisluhovači mají −20 % života.',
+  primal:'Prastarý instinkt: každý tah v podobě zvířete +3 % více poškození (max +45 %), změna podoby to vynuluje.',
+  twinblood:'Dvojí krev: v jakékoli podobě zvířete máš bonusy medvěda i kance zároveň, ale každá proměna stojí 20 % aktuálního života.',
   chitin:'Chitinová schránka: máš jen 1 život, ale výtrusný štít ve výši 150 % života a 50 % esence. Štít se obnovuje, když 2 tahy nedostaneš zásah. Imunita vůči jedu a krvácení, oheň ti dává +50 % poškození.',
 };
 // link graph both ways

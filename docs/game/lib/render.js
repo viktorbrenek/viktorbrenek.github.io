@@ -4,7 +4,7 @@ import {WALL,FLOOR} from './dungeon.js';
 import {rng,edist,dist} from './util.js';
 import {rarityColor} from './items.js';
 import {SKILLS} from './data.js';
-import {drawRig,animTick,RIGS} from './rig.js';
+import {drawRig,animTick,RIGS,drawBeast,drawForm,beastKey} from './rig.js';
 
 const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
 export class SceneRenderer{
@@ -76,6 +76,8 @@ export class SceneRenderer{
       else if(f.type==='arc'){ for(let i=0;i<16;i++){ const an=i/16*Math.PI*2+time*10; R.glow(f.x*T+T/2+Math.cos(an)*T*(f.r+0.2),f.y*T+T/2+Math.sin(an)*T*(f.r+0.2),T*0.3,[1,0.9,0.7],a*0.7); } }
       else if(f.type==='cloud'){ for(let i=0;i<14;i++){ const an=i*2.4, rr=(i%5)/5*f.r*T+T*0.3; R.glow(f.x*T+T/2+Math.cos(an)*rr,f.y*T+T/2+Math.sin(an)*rr,T*0.8*(1.4-a),[0.6,0.95,0.3],a*0.35); } }
       else if(f.type==='arrowzone'){ for(let i=0;i<8;i++){ const ax=f.x*T+T/2+Math.sin(time*7+i*2.3)*f.r*T*0.8, ay=f.y*T+T/2+((time*3+i*0.37)%1-0.5)*f.r*T*1.6; R.glow(ax,ay,5,[1,0.9,0.7],0.7); } R.glow(f.x*T+T/2,f.y*T+T/2,T*(f.r+0.5),[1,0.85,0.6],0.08); }
+      else if(f.type==='trap'){ if(g.explored[f.y*g.map.W+f.x]){ const pl=0.5+Math.sin(time*5+f.x)*0.15; R.glow(f.x*T+T/2,f.y*T+T*0.6,T*0.55,[0.6,1,0.3],pl*0.5); R.sprite('spore_pile',f.x*T+T*0.2,f.y*T+T*0.4,T*0.6,T*0.42,{a:0.95}); } }
+      else if(f.type==='flyzone'){ for(let i=0;i<14;i++){ const an=time*(3+i%4)+i*1.7, rr=(0.3+(i%5)/5)*(f.r+0.4)*T; R.sprite('fly',f.x*T+T/2+Math.cos(an)*rr-7,f.y*T+T/2+Math.sin(an*1.3)*rr*0.7-6,14,12,{flip:Math.cos(an)>0}); } R.glow(f.x*T+T/2,f.y*T+T/2,T*(f.r+0.6),[0.55,0.35,0.7],0.1); }
       else if(f.type==='pmine'){ R.glow(f.x*T+T/2,f.y*T+T*0.6,T*0.4*(1+Math.sin(time*14)*0.2),[0.6,1,0.3],0.6); }
       else if(f.type==='poisonzone'){ for(let i=0;i<6;i++){ const an=i+time*0.6; R.glow(f.x*T+T/2+Math.cos(an)*f.r*T*0.6,f.y*T+T/2+Math.sin(an*1.3)*f.r*T*0.6,T*0.9,[0.5,0.9,0.25],0.12); } }
       else if(f.type==='slam'){ for(const [x,y] of f.tiles) R.glow(x*T+T/2,y*T+T/2,T*0.8,f.c||[1,0.4,0.15],a*0.6); } }
@@ -113,7 +115,9 @@ export class SceneRenderer{
     let ox=0,oy=0; if(e.lunge){ const k=Math.sin(e.lunge.t*Math.PI)*0.32; ox=e.lunge.dx*k*T; oy=e.lunge.dy*k*T; }
     const breathe=1+Math.sin(time*3+(e.x||0)*1.7)*0.018; const bx=e.rx*T+T/2+ox, by=e.ry*T+T*0.96+oy;
     R.q(bx-w*0.38,by-8,w*0.76,14,0,0,1,1,0,0,0,0.45,2);
-    let tint=e.tint||[1,1,1]; if(e.ally) tint=[0.85,1.08,0.9]; if(e.flash>0) tint=[2.2,2.2,2.2]; if(e.status?.poison) tint=[tint[0]*0.75,tint[1]*1.1,tint[2]*0.7]; if(e.status?.stun) tint=[tint[0]*0.8,tint[1]*0.8,tint[2]*1.1];
+    let tint=e.tint||[1,1,1]; if(e.ally) tint=e.spirit?[1,1.05,1.15]:[0.85,1.08,0.9]; if(e.flash>0) tint=[2.2,2.2,2.2]; if(e.status?.poison) tint=[tint[0]*0.75,tint[1]*1.1,tint[2]*0.7]; if(e.status?.stun) tint=[tint[0]*0.8,tint[1]*0.8,tint[2]*1.1]; if(e.status?.fear) tint=[tint[0]*0.95,tint[1]*0.8,tint[2]*1.15]; if(e.status?.weak) tint=[tint[0]*0.82,tint[1]*0.78,tint[2]*0.9];
+    if(isP&&e.form){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; if(drawForm(R,e,bx,by,T*0.92*1.1/99,time,tint)) return; }
+    { const bk=!isP&&beastKey(spr); if(bk&&drawBeast(R,bk,e,bx,by,T*0.92*sc,time,tint)){ if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } return; } }
     if(isP&&!e.form&&RIGS[e.cls]){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; drawRig(R,e,g,bx,by,T*0.92*sc*1.1/99,time,tint); return; }
     const hop=Math.abs(Math.sin(e._wp||0))*(e._mv||0), sway=Math.sin(e._wp||0)*(e._mv||0)*0.07;
     R.sprite(spr,bx-w/2,by-h*breathe-hop*T*0.07,w,h*breathe,{flip:!e.flip,tint,rot:sway}); if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } }
@@ -136,6 +140,7 @@ export class SceneRenderer{
       if(special&&!m.boss){ c.font=`600 ${11*d}px "Alegreya Sans",sans-serif`; c.fillStyle=col; c.fillText(m.name,x+w/2,y-8*d); }
       const ics=[m.status.poison&&'i_poison',m.status.burn&&'i_burn',m.status.bleed&&'i_bleed',m.status.stun&&'i_stun',m.status.root&&'i_root'].filter(Boolean); const isz=14*d; let ix=x+w/2-ics.length*isz/2;
       for(const n of ics){ const im=this.uiImg(n); if(im.complete&&im.naturalWidth) c.drawImage(im,ix,y+4*d,isz,isz); ix+=isz; }
+      { const tg=[m.status.weak&&['oslab','#c9a0ff'],m.status.fear&&['strach','#e0c0ff'],m.status.slow&&['pomalý','#9cc8ff']].filter(Boolean); if(tg.length){ c.font=`600 ${9*d}px sans-serif`; let tx2=x+w/2-(tg.length-1)*22*d; for(const [t,col] of tg){ c.fillStyle=col; c.fillText(t,tx2,y+(ics.length?28:14)*d); tx2+=44*d; } } }
       if(m.status.poison&&m.status.poison.length>1){ c.font=`700 ${10*d}px sans-serif`; c.fillStyle='#b8f08a'; c.fillText(m.status.poison.length,x+w/2-ics.length*isz/2+isz*0.9,y+18*d); } }
     for(const mn of g.minions){ if(mn.hp<=0||!g.isVis(mn.x,mn.y)) continue; const w=T*0.6*z, x=sx(mn.rx*T+T/2)-w/2, y=sy(mn.ry*T+T-T*0.95*(mn.sc||1))-6*d; c.fillStyle='rgba(0,0,0,0.7)'; c.fillRect(x-1,y-1,w+2,5*d); c.fillStyle='#7ee05a'; c.fillRect(x,y,w*Math.max(0,mn.hp/mn.maxhp),3*d); }
     // rune symbols
