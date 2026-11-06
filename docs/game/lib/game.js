@@ -183,6 +183,8 @@ export class Game{
     if(this.floorMods?.noRegen){ st.regen=0; st.manaRegen=0; }
     p.stats=st; if(p.hp>st.life) p.hp=st.life; if(p.mp>st.mana) p.mp=st.mana; if((p.es||0)>st.esMax) p.es=st.esMax; if(p.es==null) p.es=0;
   }
+  previewSwap(it,slot){ const p=this.player; const snap=()=>{ const s=p.stats; return {life:s.life,mana:s.mana,wdmg:(s.dmg[0]+s.dmg[1])/2,spellPow:s.spellBase*(1+s.spell/100),dmgPct:s.dmgPct,crit:s.crit,critMult:s.critMult,armor:s.armor,dodge:s.dodge,block:s.block,resPoison:s.resPoison,resFire:s.resFire,resDecay:s.resDecay,dot:s.dot,regen:s.regen,minionDmg:s.minionDmg}; };
+    const hp=p.hp, mp=p.mp, es=p.es, old=p.equip[slot]; try{ const a=snap(); p.equip[slot]=it; this.recalc(); const b=snap(); const d={}; for(const k in a) d[k]=b[k]-a[k]; return d; } catch(e){ console.warn(e); return null; } finally{ p.equip[slot]=old; this.recalc(); p.hp=hp; p.mp=mp; p.es=es; } }
   usesLife(){ const ks=this.player.stats.ks; return ks.has('bloodmagic')||ks.has('bloodmagic_item'); }
   // ================= map queries =================
   inb(x,y){ return x>=0&&y>=0&&x<this.map.W&&y<this.map.H; }

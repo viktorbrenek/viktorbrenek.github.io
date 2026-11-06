@@ -285,3 +285,21 @@ body.mapon #mapov{display:block}
 .node.hit circle{stroke:#ffd54a;stroke-width:8}
 .treeq{margin-left:10px;width:260px;max-width:60%;background:#120d0a;border:1px solid #5a4630;color:#e8dcc4;padding:3px 8px;border-radius:6px;font:inherit}
 .row.ex span:last-child{text-align:right;font-size:.92em;line-height:1.35}
+
+#tooltip.wide{max-width:min(720px,calc(100vw - 24px))}
+.tt-wrap{display:flex;gap:12px;align-items:flex-start}
+.tt-col{flex:1 1 0;min-width:220px;max-width:320px}
+.tt-col.eq{opacity:.88;padding-left:12px;border-left:1px solid #3a2e24}
+.tt-eqh{font:600 11px sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#a99878;margin-bottom:4px}
+.nbadge{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:8px;background:#9df07a;color:#142010;font:700 11px sans-serif;vertical-align:middle}
+#newsSide{position:absolute;right:14px;top:18px;bottom:18px;width:270px;overflow:auto;text-align:left;padding:14px 16px;background:linear-gradient(rgba(16,12,9,.9),rgba(16,12,9,.94));border:1px solid #4a3a2c;border-radius:10px;box-shadow:0 10px 30px #000;font-size:13.5px}
+#newsSide h3{margin:0 0 8px;font:700 22px "Grenze Gotisch",serif;color:#e8d7b0}
+#newsSide button{margin-top:6px;width:100%;padding:7px 10px;background:#2a2018;border:1px solid #5a4630;color:#f2d36b;border-radius:6px;font:600 14px inherit;cursor:pointer}#newsSide button:hover{background:#3a2c20}
+.nw{margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid #2c221b}
+.nw:last-of-type{border-bottom:0}
+.nwh{display:flex;flex-direction:column;gap:1px;margin-bottom:4px}
+.nwh b{color:#f2d36b;font-size:15px}
+.nwh small{color:#8a7c66}.nw.new .nwh small i{color:#9df07a;font-style:normal;font-weight:700}
+.nw ul{margin:0;padding-left:18px;color:#d8ccb4;line-height:1.4}.nw li{margin:2px 0}
+.newslist{text-align:left;max-width:640px;margin:0 auto}
+@media (max-width:1500px){#newsSide{display:none}}

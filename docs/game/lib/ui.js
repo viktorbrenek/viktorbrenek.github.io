@@ -5,6 +5,7 @@ import {fmt} from './util.js';
 import {Game,Roster,Stash,STASH_MAX} from './game.js';
 import {audio} from './audio.js';
 import {LB} from './net.js';
+import {NEWS,NEWS_LATEST} from './news.js';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SUPC='#7fe0c9';
@@ -57,7 +58,22 @@ export class UI{
   onFloor(){ this.refresh(); }
   onLog(){ const g=this.g; if(!g) return; const el=$('#log'); el.innerHTML=g.msgs.slice(-7).map(m=>{ let c=m.c, st=''; if(c.startsWith('loot:')){ const r=c.slice(5); st=`style="color:${r==='support'?SUPC:r==='tome'?'#b9f':rarityColor(r)}"`; c='loot'; } return `<div class="m ${c}" ${st}>${esc(m.t)}</div>`; }).join(''); }
   banner(t,sub){ const b=$('#banner'); b.innerHTML=`<b>${esc(t)}</b>${sub?`<span>${esc(sub)}</span>`:''}`; b.classList.remove('show'); void b.offsetWidth; b.classList.add('show'); }
-  tip(html,e){ const t=$('#tooltip'); if(!html){ t.style.display='none'; return; } t.innerHTML=html; t.style.display='block'; if(e) this.moveTip(e); }
+  tip(html,e){ const t=$('#tooltip'); if(!html){ t.style.display='none'; t.classList.remove('wide'); return; } t.classList.toggle('wide',html.includes('tt-wrap')); t.innerHTML=html; t.style.display='block'; if(e) this.moveTip(e); }
+  itemTip(it){ const g=this.g, p=g?.player; if(!it||!it.base||!p) return tooltipHTML(it);
+    const slots=it.slot==='ring'?['ring1','ring2']:[it.slot]; const eq=slots.map(s=>p.equip[s]).filter(x=>x&&x!==it);
+    if(Object.values(p.equip).includes(it)) return tooltipHTML(it);
+    const target=it.slot==='ring'?(!p.equip.ring1?'ring1':!p.equip.ring2?'ring2':'ring1'):it.slot;
+    const sum=this.swapSummary(it,target);
+    const left=`<div class="tt-col">${tooltipHTML(it,p.equip[target])}${sum}</div>`;
+    if(!eq.length) return `<div class="tt-wrap">${left}</div>`;
+    return `<div class="tt-wrap">${left}${eq.map(e=>`<div class="tt-col eq"><div class="tt-eqh">Nasazeno${slots.length>1?(e===p.equip[target]?' · nahradí se':''):''}</div>${tooltipHTML(e)}</div>`).join('')}</div>`; }
+  swapSummary(it,slot){ const d=this.g.previewSwap(it,slot); if(!d) return ''; const fm=v=>Math.abs(v)>=10?Math.round(v):Math.round(v*10)/10;
+    const rows=[['life','Život'],['mana','Esence'],['wdmg','Poškození zbraně'],['spellPow','Síla kouzel'],['dmgPct','% poškození'],['crit','% krit. šance'],['critMult','% krit. násobič'],['armor','Zbroj'],['dodge','% úhyb'],['block','% blok'],['resPoison','% odol. jed'],['resFire','% odol. oheň'],['resDecay','% odol. hniloba'],['dot','% poškození v čase'],['regen','Regenerace / tah'],['minionDmg','% přisluhovači']]
+      .filter(([k])=>Math.abs(d[k]||0)>=0.05).map(([k,n])=>`<span class="${d[k]>0?'up':'down'}">${d[k]>0?'▲ +':'▼ '}${fm(d[k])} ${n}</span>`);
+    return `<div class="tt-cmp"><div class="tt-dim">Když si ho nasadíš:</div>${rows.length?rows.join('<br>'):'<span class="tt-dim">beze změny hlavních hodnot</span>'}</div>`; }
+  newsHTML(max){ const seen=+(localStorage.getItem('sporium_news_seen')||0); return NEWS.slice(0,max||NEWS.length).map(n=>`<div class="nw ${n.v>seen?'new':''}"><div class="nwh"><b>${n.t}</b><small>${n.d}${n.v>seen?' · <i>nové</i>':''}</small></div><ul>${n.i.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join(''); }
+  markNewsSeen(){ try{ localStorage.setItem('sporium_news_seen',NEWS_LATEST); }catch(e){} }
+  newsModal(back){ this.showModal(`<h2>Novinky</h2><div class="newslist">${this.newsHTML()}</div><div class="pmenu"><button class="big" id="nw-back">Zpět</button></div>`,m=>{ this.markNewsSeen(); m.querySelector('#nw-back').onclick=back; }); }
   moveTip(e){ const t=$('#tooltip'); if(t.style.display!=='block') return; const w=t.offsetWidth,h=t.offsetHeight; let x=e.clientX+18,y=e.clientY+14; if(x+w>innerWidth-8) x=e.clientX-w-14; if(y+h>innerHeight-8) y=innerHeight-h-8; t.style.left=x+'px'; t.style.top=Math.max(8,y)+'px'; }
   // ---------- panels ----------
   toggle(p){ if(this.modal) return; audio.play(this.panel===p?'close':'open'); this.panel=this.panel===p?null:p; this.salvageMode=false; this.renderPanel(); }
@@ -128,9 +144,9 @@ export class UI{
         ${(it.rarity==='rare'||it.rarity==='legendary'||it.rarity==='sporeborn')&&it.aff.length<7&&!cor?`<button data-c="ex" ${p.dust<ex?'disabled':''}>Přidat vlastnost · ${ex} ✦</button>`:''}</div></div>`; }
     return `<h2>Oltář hniloby</h2><div class="hint">Výtrusný prach (✦ ${fmt(p.dust)}) získáš rozkládáním předmětů. Zkažená jádra (${p.cores||0}) z Plodnic pradávných, jeskyní a skřítků. <b>Zkažení</b> je nevratné: může předmět vylepšit, proklít, přeměnit vlastnost… nebo zničit.</div><div class="bag craftbag">${items.map((i,k)=>this.slotHTML(i,`data-craft="${k}" ${i===it?'data-sel="1"':''}`)).join('')}</div>${act}`; }
   wirePanel(el){ const g=this.g,p=g.player;
-    const hoverTip=(node,it,cmp)=>{ node.onmouseenter=e=>this.tip(tooltipHTML(it,cmp),e); node.onmouseleave=()=>this.tip(null); };
+    const hoverTip=(node,it,cmp)=>{ node.onmouseenter=e=>this.tip(cmp!==undefined&&it.base?this.itemTip(it):tooltipHTML(it,cmp),e); node.onmouseleave=()=>this.tip(null); };
     el.querySelectorAll('[data-eq]').forEach(n=>{ const it=p.equip[n.dataset.eq]; if(!it) return; hoverTip(n,it); n.oncontextmenu=e=>{ e.preventDefault(); g.unequip(n.dataset.eq); this.tip(null); this.refresh(); }; });
-    el.querySelectorAll('[data-inv]').forEach(n=>{ const it=p.inv[+n.dataset.inv]; if(!it) return; const cmp=it.base?p.equip[it.slot==='ring'?'ring1':it.slot]:null; hoverTip(n,it,cmp);
+    el.querySelectorAll('[data-inv]').forEach(n=>{ const it=p.inv[+n.dataset.inv]; if(!it) return; hoverTip(n,it,it.base?null:undefined);
       n.onclick=e=>{ this.tip(null); if(e.shiftKey||this.salvageMode){ if(it.type==='tome'){ g.learn(it); } else { const v=g.salvage(it); g.log(`Rozloženo: +${v} ✦`,'sys'); } this.refresh(); return; }
         if(it.type==='tome') g.learn(it); else if(it.type==='support'){ this.panel='skills'; this.pickRune=p.inv.indexOf(it); } else if(it.base) g.equip(it); this.refresh(); }; });
     el.querySelector('.sal')&&(el.querySelector('.sal').onclick=()=>{ this.salvageMode=!this.salvageMode; this.renderPanel(); });
@@ -149,7 +165,7 @@ export class UI{
       if(c==='corrupt'){ const r=g.corrupt(it); if(r){ g.log('Oltář: '+corruptText(r),r==='destroyed'?'warn':'loot:sporeborn'); this.banner(r==='destroyed'?'Rozpadlo se':'Zkaženo',corruptText(r)); if(r==='destroyed') this.craftSel=null; } this.refresh(); return; }
       const cost=c==='up'?upgradeCost(it):c==='re'?rerollCost(it):Math.ceil(itemValue(it)*4); if(p.dust<cost) return; p.dust-=cost;
       if(c==='up') craftUpgrade(it); else if(c==='re') craftReroll(it); else craftExalt(it); g.recalc(); g.log('Oltář pulzuje: '+it.name,'good'); this.refresh(); });
-    el.querySelectorAll('[data-stash]').forEach(n=>{ const it=Stash.get()[+n.dataset.stash]; if(!it) return; n.onmouseenter=e=>this.tip(tooltipHTML(it),e); n.onmouseleave=()=>this.tip(null); n.onclick=()=>{ this.tip(null); g.stashTake(+n.dataset.stash); this.refresh(); }; });
+    el.querySelectorAll('[data-stash]').forEach(n=>{ const it=Stash.get()[+n.dataset.stash]; if(!it) return; n.onmouseenter=e=>this.tip(this.itemTip(it),e); n.onmouseleave=()=>this.tip(null); n.onclick=()=>{ this.tip(null); g.stashTake(+n.dataset.stash); this.refresh(); }; });
     el.querySelectorAll('[data-sput]').forEach(n=>{ const it=p.inv[+n.dataset.sput]; if(!it) return; n.onmouseenter=e=>this.tip(tooltipHTML(it),e); n.onmouseleave=()=>this.tip(null); n.onclick=()=>{ this.tip(null); g.stashPut(it); this.refresh(); }; });
     el.querySelectorAll('[data-gam]').forEach(b=>b.onclick=()=>{ const it=g.gamble(b.dataset.gam); if(it){ this.lastGamble=it; g.log('Z pytle vypadl: '+it.name,'loot:'+it.rarity); } this.refresh(); });
     el.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{ const ok=b.dataset.buy==='pot'?g.buyPotionSlot():g.buyCore(); if(ok) g.log(b.dataset.buy==='pot'?'Brašna rozšířena.':'Koupeno zkažené jádro.','good'); this.refresh(); });
@@ -217,7 +233,7 @@ export class UI{
     this.showModal(`<div class="title"><h1>SPORIUM</h1>
       <div class="season"><span class="sn">Sezóna ${SEASON.n}</span><b>${SEASON.name}</b><small>${SEASON.desc}</small></div>
       <p class="tag">Sestup do hnijících hlubin. Každé patro hlouběji, každý výtrus temnější.</p>
-      <div class="lbrow"><button class="big daily" id="t-daily">☼ Denní hlubina</button><button class="big" id="t-lb">Žebříček sezóny</button></div>
+      <div class="lbrow"><button class="big daily" id="t-daily">☼ Denní hlubina</button><button class="big" id="t-lb">Žebříček sezóny</button><button class="big newsb" id="t-news">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button></div>
       ${list.length?`<h3>Tvoje postavy</h3><div class="roster">${list.map(c=>`<div class="rch"><img src="${this.icon(cn(c.cls)?.spr||'hero_blade',64)}"><div class="ri"><b>${esc(cn(c.cls)?.name||c.name)}${c.nick?` <span class="nk">· ${esc(c.nick)}</span>`:''}${c.daily?` <span class="dtag">☼ ${c.daily}</span>`:''}</b><small>Úroveň ${c.lvl} · ${c.dead?'padl v hloubce '+c.best:c.daily&&c.daily!==LB.today()?'uzavřeno · hloubka '+c.best:'hloubka '+c.depth+' · nejhlouběji '+c.best}</small></div>${c.daily?'<span></span>':`<button class="nkb" data-nick="${c.id}" title="Přezdívka pro žebříček">${c.nick?'✎':'+ nick'}</button>`}${c.dead||(c.daily&&c.daily!==LB.today())?'<span></span>':`<button data-play="${c.id}">Hrát</button>`}<button class="del" data-del="${c.id}" title="Smazat">✕</button></div>`).join('')}</div>`:''}
       <h3>${list.length?'Nová postava':'Vyber hrdinu'}</h3><div class="classes">${CLASSES.map(c=>`<button data-c="${c.id}"><img src="${this.icon(c.spr,96)}"><b>${c.name}</b><small>${c.desc}</small><i class="trt">◈ ${c.trait.name}: ${c.trait.desc}</i></button>`).join('')}</div>
       <p class="keys">Tab mapa · WASD / šipky (držet) / klik – pohyb a útok · 1–4 dovednosti · Q lektvar · E / mezerník interakce · Enter sestup · I C K P J panely · M zvuk · Esc menu · kolečko zoom</p></div>`,
@@ -225,7 +241,9 @@ export class UI{
       m.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ if(!confirm('Opravdu smazat tuto postavu? Nelze vrátit.')) return; Roster.del(b.dataset.del); this.title(onStart); });
       m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ const cls=b.dataset.c; this.nickModal(LB.player().nick,'Nová postava',nick=>{ this.hideModal(); if(nick) LB.setDefaultNick(nick); onStart({cls,nick}); },()=>this.title(onStart)); });
       m.querySelectorAll('[data-nick]').forEach(b=>b.onclick=()=>{ const id=b.dataset.nick; const s=Roster.get(id); this.nickModal(s.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ s.player.nick=nick||''; s.player.nickAsked=true; Roster.put(id,s); if(nick) LB.setDefaultNick(nick); this.title(onStart); },()=>this.title(onStart)); });
-      m.querySelector('#t-lb').onclick=()=>this.leaderboard(()=>this.title(onStart)); m.querySelector('#t-daily').onclick=()=>this.dailyModal(onStart); }); }
+      m.querySelector('#t-lb').onclick=()=>this.leaderboard(()=>this.title(onStart)); m.querySelector('#t-daily').onclick=()=>this.dailyModal(onStart);
+      m.querySelector('#t-news').onclick=()=>this.newsModal(()=>this.title(onStart));
+      m.insertAdjacentHTML('beforeend',`<aside id="newsSide"><h3>Novinky</h3>${this.newsHTML(3)}<button id="ns-all">Všechny novinky</button></aside>`); m.querySelector('#ns-all').onclick=()=>this.newsModal(()=>this.title(onStart)); }); }
   nickModal(cur,title,done,back){ const on=LB.enabled();
     this.showModal(`<h2>${title}</h2><p class="hint">Přezdívka se zobrazí v online žebříčku sezóny. Žádná registrace ani e-mail – stačí jméno (2–16 znaků).${on?'':' <b>Žebříček zatím není zapnutý</b>, přezdívka se uloží a odešle, až bude.'}</p>
       <input id="nk-in" maxlength="16" placeholder="Tvoje přezdívka" value="${esc(cur||'')}" autocomplete="off"><div class="nkerr hint" style="color:#ff8a7a"></div>
@@ -243,7 +261,7 @@ export class UI{
     const body=d?(rows.length?`<div class="lbt"><div class="lbh"><span>#</span><span>Přezdívka</span><span>Třída</span><span>Hloubka</span><span>Úroveň</span></div>${rows.map((r,i)=>`<div class="lbr ${myIds.has(r.id)?'me':''} ${i<3?'top'+(i+1):''}"><span>${i+1}</span><span>${esc(r.nick)}</span><span><img src="${this.icon(cn(r.cls)?.spr||'hero_blade',32)}">${cn(r.cls)?.name||r.cls}</span><span>${r.best}${r.dead?' ✝':''}</span><span>${r.lvl}</span></div>`).join('')}</div>`:'<p class="hint">Zatím nikdo. Buď první!</p>'):'<p class="hint">Žebříček je teď nedostupný. Zkus to později.</p>';
     if(!document.querySelector('.lbtabs')) return; this.showModal(head+body+`<p class="hint">Výsledek se odešle automaticky, když postava s přezdívkou dosáhne nové hloubky.</p><button class="big" id="lb-back">Zpět</button>`,wire); }
   pauseMenu(toTitle){ const g=this.g; this.showModal(`<h2>Menu</h2><p class="hint">${esc(g.player.name)} · úroveň ${g.player.lvl} · hloubka ${g.depth}${g.inRift?' · ve Zkažené jeskyni (uloží se před vchodem)':''}</p>
-      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
-    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle));
+      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-nw">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
+    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-nw').onclick=()=>this.newsModal(()=>this.pauseMenu(toTitle));
       m.querySelector('#pm-n').onclick=()=>this.nickModal(g.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ g.player.nick=nick||''; g.player.nickAsked=true; g._nickWarned=false; if(nick) LB.setDefaultNick(nick); g.save(); g.lbSync(true); this.pauseMenu(toTitle); },()=>this.pauseMenu(toTitle)); m.querySelector('#pm-m').onclick=()=>{ audio.toggleMute(); this.hideModal(); }; m.querySelector('#pm-s').onclick=()=>{ if(g.inRift) g.exitRift(); g.save(); this.hideModal(); this.panel=null; this.renderPanel(); toTitle(); }; }); }
 }
