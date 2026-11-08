@@ -1,5 +1,14 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:15, d:'9. 11. 2026', t:'Filtr kořisti a opravy', i:[
+    '<b>Filtr kořisti</b> (menu Esc): vyber, od jaké vzácnosti se ti předměty ukazují a zvedají. Skryté uvidíš a sebereš s podrženým <b>Alt</b>.',
+    'Odměny z Plodnice, truhel a skřítků už nikdy nepadnou pod překážku – vždy na volné místo.',
+    'Špatné pořadí run nebo tónů krystalů vyvolá nepřátele jen první 3×, pak už jen zraní hnilobou (žádné farmení zkušeností).',
+    'Utopené mycelium už nemá falešné náhrobky a obelisky jako dekoraci – co vypadá jako nápověda, je nápověda.',
+    'Hodnoty atributů se zaokrouhlují a nepřetékají z okna.',
+    '<b>Avatar ohně</b>: nově nemůžeš způsobit jed ani krvácení (přisluhovači ano).',
+    '<b>Divoké srdce</b>: každá proměna do nové podoby dá na 3 tahy +40 % poškození – vyplatí se střídat podoby. Postih v lidské podobě snížen na −25 %.',
+    '<b>Vrcholový predátor</b>: druhá ruka teď nedává bonusy nikdy a v inventáři je to vidět.']},
   {v:14, d:'6. 11. 2026', t:'Porovnání předmětů a novinky', i:[
     'Při najetí na předmět vidíš vedle i ten, který máš na sobě (u prstenů oba), a souhrn, jak se změní tvá postava: život, poškození, odolnosti, krit…',
     'Novinky jsou teď vždy po ruce v menu a na úvodní obrazovce.']},

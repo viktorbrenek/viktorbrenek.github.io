@@ -49,7 +49,7 @@ export class SceneRenderer{
     // drawables sorted by y
     const list=[];
     for(const pr of g.props){ if(pr.flat||!this.onScreen(pr,x0,x1,y0,y1)||!g.explored[pr.y*W+pr.x]) continue; list.push({y:pr.y+(pr.wall?-0.5:0),f:()=>this.drawProp(g,pr,time)}); }
-    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)&&!g.explored[gr.y*W+gr.x]) continue; list.push({y:gr.y-0.2,f:()=>this.drawGround(g,gr,time)}); }
+    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)&&!g.explored[gr.y*W+gr.x]) continue; if(!g.lootOk(gr)) continue; list.push({y:gr.y-0.2,f:()=>this.drawGround(g,gr,time)}); }
     for(const m of g.monsters){ if(m.hp<=0||!g.canSee(m)) continue; list.push({y:m.ry,f:()=>this.drawActor(g,m,m.spr,time)}); }
     for(const f of g.fx) if(f.type==='corpse') list.push({y:f.y-0.1,f:()=>{ const a=f.life/f.max; const [w,h]=this.spritesize(f.spr,T*0.95*f.sc); R.sprite(f.spr,f.x*T+T/2-w/2,f.y*T+T-h*a,w,h*a,{a,tint:[0.5,0.5,0.5],flip:f.flip}); }});
     for(const mn of g.minions){ if(mn.hp<=0||!g.explored[mn.y*W+mn.x]) continue; list.push({y:mn.ry,f:()=>this.drawActor(g,mn,mn.spr,time)}); }
@@ -68,7 +68,7 @@ export class SceneRenderer{
       if(pr.type==='grave'&&!pr.respected) R.glow(pr.x*T+T/2,pr.y*T+T*0.5,T*0.5,[0.75,0.82,0.95],0.12);
       if(pr.type==='merchant') R.glow(pr.x*T+T/2,pr.y*T+T*0.5,T*0.9,[1,0.8,0.5],0.18);
       if(pr.type==='glow'||pr.type==='altar'||pr.type==='shrine'&&!pr.used||(pr.type==='rune'&&pr.on)){ const c=pr.light||[0.6,0.9,0.5]; R.glow(pr.x*T+T/2,pr.y*T+T*0.45,T*0.9,c,0.22+Math.sin(time*2+pr.x)*0.06); } }
-    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)) continue; const c=gr.gold?[1,0.85,0.3]:gr.item.type?[1,0.4,0.4]:hex(rarityColor(gr.item.rarity)); const leg=gr.item&&(gr.item.rarity==='legendary'||gr.item.rarity==='sporeborn'||gr.item.rarity==='set');
+    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)||!g.lootOk(gr)) continue; const c=gr.gold?[1,0.85,0.3]:gr.item.type?[1,0.4,0.4]:hex(rarityColor(gr.item.rarity)); const leg=gr.item&&(gr.item.rarity==='legendary'||gr.item.rarity==='sporeborn'||gr.item.rarity==='set');
       R.glow(gr.x*T+T/2,gr.y*T+T*0.6,T*(leg?0.9:0.5),c,leg?0.5:0.28); if(leg) R.rect(gr.x*T+T/2-3,gr.y*T-T*2.2,6,T*2.6,c,0.12+Math.sin(time*3)*0.04); }
     for(const f of g.fx){ const a=f.life/f.max;
       if(f.type==='p'){ R.glow(f.x,f.y,f.s,f.c,a*0.9); }

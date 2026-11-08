@@ -22,7 +22,7 @@ export function drawMap(g,cv,time){
     c.fillStyle='#000'; c.fillText(P[1],X+1,Y+1); c.fillStyle=col; c.fillText(P[1],X,Y); }
   if(map.stairs&&ex[map.stairs.y*MW+map.stairs.x]&&!g.props.some(q=>q.type==='stairs'||q.type==='riftexit')){ const X=ox+(map.stairs.x+0.5)*s, Y=oy+(map.stairs.y+0.5)*s; c.fillStyle=map.stairs.locked?'#ff6a5a':'#9df07a'; c.fillText('▼',X,Y); }
   // loot
-  for(const gr of g.ground){ if(!ex[gr.y*MW+gr.x]) continue; const r=gr.item?.rarity; if(!gr.gold&&!(r==='rare'||r==='legendary'||r==='set'||r==='sporeborn'||gr.item?.type==='support'||gr.item?.type==='tome')) continue;
+  for(const gr of g.ground){ if(!ex[gr.y*MW+gr.x]||!g.lootOk(gr)) continue; const r=gr.item?.rarity; if(!gr.gold&&!(r==='rare'||r==='legendary'||r==='set'||r==='sporeborn'||gr.item?.type==='support'||gr.item?.type==='tome')) continue;
     c.fillStyle=gr.gold?'#f2d36b':gr.item.type==='support'?'#7fe0c9':gr.item.type==='tome'?'#b9f':rarityColor(r); c.beginPath(); c.arc(ox+(gr.x+0.5)*s,oy+(gr.y+0.5)*s,s*(r==='legendary'||r==='set'||r==='sporeborn'?0.38:0.24),0,7); c.fill(); }
   // creatures
   for(const m of g.monsters){ if(m.hp<=0||!g.canSee(m)) continue; const X=ox+(m.rx+0.5)*s, Y=oy+(m.ry+0.5)*s; const big=m.boss||m.unique;

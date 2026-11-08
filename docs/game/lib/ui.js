@@ -2,7 +2,7 @@
 import {SKILLS,SUPPORTS,CLASSES,SLOTS,SLOT_NAMES,UNIQUES,PASSIVES,PASSIVE_MAP,KEYSTONES,STAT_NAMES,PCT,MON_MODS,LORE,SEASON,FORMS,SETS,skillsFor,GRAVE_MSGS,dailyMod} from './data.js';
 import {tooltipHTML,rarityColor,itemValue,rerollCost,upgradeCost,craftReroll,craftUpgrade,craftExalt,statLine,corruptText} from './items.js';
 import {fmt} from './util.js';
-import {Game,Roster,Stash,STASH_MAX} from './game.js';
+import {Game,Roster,Stash,STASH_MAX,LootFilter} from './game.js';
 import {audio} from './audio.js';
 import {LB} from './net.js';
 import {NEWS,NEWS_LATEST} from './news.js';
@@ -73,6 +73,12 @@ export class UI{
     return `<div class="tt-cmp"><div class="tt-dim">Když si ho nasadíš:</div>${rows.length?rows.join('<br>'):'<span class="tt-dim">beze změny hlavních hodnot</span>'}</div>`; }
   newsHTML(max){ const seen=+(localStorage.getItem('sporium_news_seen')||0); return NEWS.slice(0,max||NEWS.length).map(n=>`<div class="nw ${n.v>seen?'new':''}"><div class="nwh"><b>${n.t}</b><small>${n.d}${n.v>seen?' · <i>nové</i>':''}</small></div><ul>${n.i.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join(''); }
   markNewsSeen(){ try{ localStorage.setItem('sporium_news_seen',NEWS_LATEST); }catch(e){} }
+  lootModal(back){ const f=LootFilter.get(); const opt=(v,t)=>`<label class="lfo"><input type="radio" name="lfmin" value="${v}" ${f.min===v?'checked':''}> ${t}</label>`;
+    this.showModal(`<h2>Filtr kořisti</h2><p class="hint">Předměty, které filtrem neprojdou, se na zemi nezobrazí, nesebereš je chůzí a neukáže se jejich popisek. Podržením <b>Alt</b> je uvidíš a sebereš i tak. Legendární, sadové a výtrusorozené předměty, zlato a lektvary se ukazují vždy.</p>
+      <div class="lf"><b>Vybavení: ukazovat od</b>${opt('common','Všechno (i obyčejné)')}${opt('magic','Kouzelné a lepší')}${opt('rare','Vzácné a lepší')}${opt('legendary','Jen legendární a sady')}
+      <b>Ostatní</b><label class="lfo"><input type="checkbox" id="lf-r" ${f.runes?'checked':''}> Runy</label><label class="lfo"><input type="checkbox" id="lf-t" ${f.tomes?'checked':''}> Knihy dovedností</label></div>
+      <div class="pmenu"><button class="big" id="lf-ok">Uložit</button><button class="big" id="lf-back">Zpět</button></div>`,
+      m=>{ m.querySelector('#lf-ok').onclick=()=>{ const nf={min:m.querySelector('input[name=lfmin]:checked')?.value||'common',runes:m.querySelector('#lf-r').checked,tomes:m.querySelector('#lf-t').checked}; LootFilter.set(nf); if(this.g) this.g._lf=null; back(); }; m.querySelector('#lf-back').onclick=back; }); }
   newsModal(back){ this.showModal(`<h2>Novinky</h2><div class="newslist">${this.newsHTML()}</div><div class="pmenu"><button class="big" id="nw-back">Zpět</button></div>`,m=>{ this.markNewsSeen(); m.querySelector('#nw-back').onclick=back; }); }
   moveTip(e){ const t=$('#tooltip'); if(t.style.display!=='block') return; const w=t.offsetWidth,h=t.offsetHeight; let x=e.clientX+18,y=e.clientY+14; if(x+w>innerWidth-8) x=e.clientX-w-14; if(y+h>innerHeight-8) y=innerHeight-h-8; t.style.left=x+'px'; t.style.top=Math.max(8,y)+'px'; }
   // ---------- panels ----------
@@ -82,12 +88,12 @@ export class UI{
     const f={well:()=>this.wellHTML(),inv:()=>this.invHTML(),char:()=>this.charHTML(),skills:()=>this.skillsHTML(),craft:()=>this.craftHTML(),tree:()=>this.treeHTML(),lore:()=>this.loreHTML(),shop:()=>this.shopHTML()}[this.panel];
     el.innerHTML=`<button class="x">✕</button>`+f(); el.querySelector('.x').onclick=()=>this.close(); this.wirePanel(el); }
   slotHTML(it,attrs,eq){ if(!it) return `<div class="slot empty" ${attrs} ${eq?`style="background-image:url(${UI_('eq_'+(eq==='ring2'?'ring1':eq))})"`:''}></div>`; const c=it.rarity?rarityColor(it.rarity):it.type==='tome'?'#b9f':it.type==='support'?SUPC:'#e66'; return `<div class="slot r-${it.rarity||it.type||'x'}" style="--rc:${c}" ${attrs}><img src="${this.icon(it.spr,64)}"></div>`; }
-  invHTML(){ const p=this.g.player; const eq=SLOTS.map(s=>`<div class="eqs"><label>${SLOT_NAMES[s]}</label>${this.slotHTML(p.equip[s],`data-eq="${s}"`,s)}</div>`).join('');
+  invHTML(){ const p=this.g.player; const offX=p.stats?.ks?.has('apex'); const eq=SLOTS.map(s=>`<div class="eqs ${offX&&s==='offhand'?'offx':''}" ${offX&&s==='offhand'?'title="Vrcholový predátor: druhá ruka nedává bonusy"':''}><label>${SLOT_NAMES[s]}${offX&&s==='offhand'?' ✕':''}</label>${this.slotHTML(p.equip[s],`data-eq="${s}"`,s)}</div>`).join('');
     const bag=Array.from({length:30},(_,i)=>this.slotHTML(p.inv[i],`data-inv="${i}"`)).join('');
     return `<h2>Inventář</h2><div class="inv"><div class="equip">${eq}</div><div><div class="bag">${bag}</div>
       <div class="invbar"><span>${IC('i_gold')} ${fmt(p.gold)}</span><span class="dust">${IC('i_dust')} ${fmt(p.dust)} prachu</span><button class="sal ${this.salvageMode?'on':''}">${this.salvageMode?'Rozkládání: ZAP':'Rozložit předměty'}</button><button class="salall">Rozložit obyčejné a kouzelné</button></div>
       <div class="hint">Klik = nasadit / použít · Shift+klik = rozložit · Pravý klik na nasazený = sundat · Runy vkládej v [K]</div></div></div>`; }
-  charHTML(){ const g=this.g,p=g.player,st=p.stats; const at=(k,n,d)=>`<div class="attr"><b>${n}</b><span>${st[k]}</span>${p.points?`<button data-attr="${k}">+</button>`:''}<small>${d}</small></div>`;
+  charHTML(){ const g=this.g,p=g.player,st=p.stats; const at=(k,n,d)=>`<div class="attr"><b>${n}</b><span>${Math.round(st[k])}</span>${p.points?`<button data-attr="${k}">+</button>`:''}<small>${d}</small></div>`;
     const row=(n,v)=>`<div class="row"><span>${n}</span><b>${v}</b></div>`; const pct=v=>Math.round(v*10)/10+' %'; const rc=v=>`<b class="${v<0?'down':v>=60?'up':''}">${Math.round(v)} %</b>`;
     return `<h2>${CLASSES.find(c=>c.id===p.cls).name} · úroveň ${p.lvl}</h2><div class="char"><div><div class="pts">Volné body: <b>${p.points}</b></div>
       ${at('might','Síla','+1 % dmg na blízko, +1,5 života')}${at('finesse','Obratnost','+krit, úhyb, zbroj, dmg luků')}${at('wits','Důvtip','+esence, +1,2 % síla kouzel')}
@@ -261,7 +267,7 @@ export class UI{
     const body=d?(rows.length?`<div class="lbt"><div class="lbh"><span>#</span><span>Přezdívka</span><span>Třída</span><span>Hloubka</span><span>Úroveň</span></div>${rows.map((r,i)=>`<div class="lbr ${myIds.has(r.id)?'me':''} ${i<3?'top'+(i+1):''}"><span>${i+1}</span><span>${esc(r.nick)}</span><span><img src="${this.icon(cn(r.cls)?.spr||'hero_blade',32)}">${cn(r.cls)?.name||r.cls}</span><span>${r.best}${r.dead?' ✝':''}</span><span>${r.lvl}</span></div>`).join('')}</div>`:'<p class="hint">Zatím nikdo. Buď první!</p>'):'<p class="hint">Žebříček je teď nedostupný. Zkus to později.</p>';
     if(!document.querySelector('.lbtabs')) return; this.showModal(head+body+`<p class="hint">Výsledek se odešle automaticky, když postava s přezdívkou dosáhne nové hloubky.</p><button class="big" id="lb-back">Zpět</button>`,wire); }
   pauseMenu(toTitle){ const g=this.g; this.showModal(`<h2>Menu</h2><p class="hint">${esc(g.player.name)} · úroveň ${g.player.lvl} · hloubka ${g.depth}${g.inRift?' · ve Zkažené jeskyni (uloží se před vchodem)':''}</p>
-      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-nw">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
-    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-nw').onclick=()=>this.newsModal(()=>this.pauseMenu(toTitle));
+      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-lf">Filtr kořisti</button><button class="big" id="pm-nw">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
+    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-nw').onclick=()=>this.newsModal(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-lf').onclick=()=>this.lootModal(()=>this.pauseMenu(toTitle));
       m.querySelector('#pm-n').onclick=()=>this.nickModal(g.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ g.player.nick=nick||''; g.player.nickAsked=true; g._nickWarned=false; if(nick) LB.setDefaultNick(nick); g.save(); g.lbSync(true); this.pauseMenu(toTitle); },()=>this.pauseMenu(toTitle)); m.querySelector('#pm-m').onclick=()=>{ audio.toggleMute(); this.hideModal(); }; m.querySelector('#pm-s').onclick=()=>{ if(g.inRift) g.exitRift(); g.save(); this.hideModal(); this.panel=null; this.renderPanel(); toTitle(); }; }); }
 }

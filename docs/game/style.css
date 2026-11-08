@@ -303,3 +303,8 @@ body.mapon #mapov{display:block}
 .nw ul{margin:0;padding-left:18px;color:#d8ccb4;line-height:1.4}.nw li{margin:2px 0}
 .newslist{text-align:left;max-width:640px;margin:0 auto}
 @media (max-width:1500px){#newsSide{display:none}}
+
+.lf{display:flex;flex-direction:column;gap:6px;text-align:left;max-width:380px;margin:8px auto 14px}.lf b{margin-top:8px;color:#f2d36b}
+.lfo{display:flex;gap:8px;align-items:center;cursor:pointer;color:#e0d4bc}
+.eqs.offx .slot{opacity:.35;filter:grayscale(1)}.eqs.offx label{color:#ff8a7a}
+.attr span{white-space:nowrap;min-width:2.5em;text-align:right}

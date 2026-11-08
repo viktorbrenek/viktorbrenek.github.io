@@ -2,7 +2,7 @@
 export const BIOMES=[
   {id:'halls', name:'Výtrusné síně', floors:['tex_halls_a','tex_halls_b','tex_halls_c'], wall:'wall_halls', decals:[0,1,2,3,4,5,6,7,8,9,10,12,13,14,21], ambient:[0.05,0.055,0.07], spore:[0.85,0.95,0.55], deco:['deco_shroom1','deco_shroom4','deco_shroom9','deco_grass1','shroom_cluster','rubble','pillar','barrels','crate','sack','bench','roots']},
   {id:'roots', name:'Hnijící kořeny', floors:['tex_roots_a','tex_roots_b','tex_roots_c'], wall:'wall_roots', decals:[2,3,4,11,15,16,17,18,19,20,22,23,24,25,26,27], ambient:[0.06,0.045,0.04], spore:[1.0,0.7,0.45], deco:['deadtree','stump','stump2','roots','vines','shroom_roots','deco_log','deco_shroom6','deco_shroom7','deco_bush','spore_pile']},
-  {id:'drowned', name:'Utopené mycelium', floors:['tex_drowned_a','tex_drowned_b','tex_drowned_c'], wall:'wall_drowned', decals:[0,1,2,3,4,7,8,9,12,21,22], ambient:[0.035,0.06,0.07], spore:[0.6,1.0,0.85], deco:['deco_reeds','deco_grass3','deco_shroom12','deco_shroom11','vines','pillars','grave','obelisk','deco_shroom14']},
+  {id:'drowned', name:'Utopené mycelium', floors:['tex_drowned_a','tex_drowned_b','tex_drowned_c'], wall:'wall_drowned', decals:[0,1,2,3,4,7,8,9,12,21,22], ambient:[0.035,0.06,0.07], spore:[0.6,1.0,0.85], deco:['deco_reeds','deco_grass3','deco_shroom12','deco_shroom11','vines','pillars','deco_shroom10','deco_shroom13','deco_shroom14']},
 ];
 export const biomeFor=d=>BIOMES[Math.floor((d-1)/5)%BIOMES.length];
 // resist penalty like PoE acts: every 5 floors −12 %, max −60 %
@@ -530,8 +530,8 @@ export const KEYSTONES={
   berserk:'Zuřivost: +1 % poškození za každé 1 % chybějícího života. Tvoje zbroj je 0.',
   swarm:'Roj: +2 k maximu přisluhovačů každého druhu a daň přisluhovačů −30 %, ale přisluhovači mají −35 % života a poškození.',
   symbiosis:'Symbióza: 35 % poškození, které utrpíš, převezme tvůj nejbližší přisluhovač. Sám ale způsobuješ o 40 % méně poškození.',
-  wildheart:'Divoké srdce: proměny nic nestojí a nemají přebíjení. V lidské podobě ale způsobuješ o 40 % méně poškození.',
-  apex:'Vrcholový predátor: v podobě zvířete +30 % více poškození a regenerace 2 % života za tah. Nemůžeš používat druhou ruku a lektvary léčí o 50 % méně.',
+  wildheart:'Divoké srdce: proměny nic nestojí a nemají přebíjení. Každá proměna do nové podoby ti na 3 tahy dá +40 % více poškození – střídej medvěda, kance a mouchu. V lidské podobě způsobuješ o 25 % méně.',
+  apex:'Vrcholový predátor: v podobě zvířete +30 % více poškození a regenerace 2 % života za tah. Předmět ve druhé ruce nedává žádné bonusy (ani v lidské podobě) a lektvary léčí o 50 % méně.',
   mindover:'Mysl nad hmotou: 40 % utrženého poškození jde nejdřív z esence. +30 % maximální esence, ale −20 % maximálního života.',
   spellecho:'Rezonance kouzel: kouzla se vždy zopakují za 40 %, ale stojí o 50 % víc a přebíjejí se o 1 tah déle.',
   virulence:'Virulence: tvé neduhy trvají dvakrát déle, ale působí o 25 % méně za tah.',
@@ -542,7 +542,7 @@ export const KEYSTONES={
   executioner:'Kat: tvé zásahy okamžitě zabijí nepřítele (ne bosse) pod 12 % života. Nemůžeš vysávat život.',
   unbreak:'Neotřesitelný: utrpíš o 15 % méně poškození a nemůžeš být zakořeněn ani zpomalen. Nemůžeš uhýbat.',
   juggernaut:'Kolos: +1 % více poškození za každých 15 zbroje (max +80 %). Úhyb a blok jsou 0.',
-  avatar:'Avatar ohně: všechno tvé poškození se mění na oheň a je o 25 % silnější. +20 % šance zapálit.',
+  avatar:'Avatar ohně: všechno tvé poškození se mění na oheň a je o 25 % silnější, +20 % šance zapálit. Nemůžeš ale způsobit žádné jiné poškození: tvůj jed ani krvácení nepůsobí (přisluhovači ano).',
   cinder:'Žhavé uhlíky: zapálení trvá o 3 tahy déle a každý tah hoření zesílí o 15 %.',
   hivemind:'Úlová mysl: přisluhovači dostávají i tvé zvýšené % poškození, ale tvé vlastní zásahy jsou o 50 % slabší.',
   sacrament:'Obětní hnízdo: smrt přisluhovače tě vyléčí o 6 % života a dá ti na 4 tahy +15 % více poškození. Přisluhovači mají −20 % života.',
