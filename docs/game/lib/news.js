@@ -1,5 +1,19 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:17, d:'9. 11. 2026', t:'Rychlá hniloba', i:[
+    '<b>Jed</b> působí rychleji: trvá poloviční dobu, celkově dává o 15 % víc a první tik zasáhne hned při zásahu. Už nemusíš kličkovat, než nepřítel vytiká.',
+    '<b>Hniloba oslabuje</b>: každý stack jedu sníží poškození monstra o 6 % (nejvýš −30 %). Uvidíš to nad jeho životem.',
+    '<b>Krvácení</b>: silnější (55 % fyzického zásahu za tah), trvá 2 tahy a první tik je taky hned.',
+    'Nová univerzální dovednost <b>Sklizeň</b>: spotřebuje jed a krvácení na cíli a zbytek způsobí hned za 120 %. Krvácení přeruší chystaný útok, a pokud cíl s jedem padne, nakazí sousedy.',
+    '<b>Přeroubování</b> na Oltáři hniloby: vyber jednu vlastnost a vyměň ji za novou. Nová se zamkne a přežije i Přeměnu vlastností.',
+    'Mor trvá 3 tahy místo 6 (stejné celkové poškození). Hnilobná duše prodlužuje jed o 1 tah.']},
+  {v:16, d:'9. 11. 2026', t:'Klidnější zem a poctivější kořist', i:[
+    '<b>Zóny na zemi</b> mají nový vzhled: jedové kaluže, výtrusná mlha a žhavé uhlíky místo barevných čtverců. Varování před zónou zhoustne, než začne pálit.',
+    '<b>Výtrusná bouře</b> je mírnější: méně mraků, nikdy přímo pod tebou a s delším varováním. Kouzelníci plivou kaluže do kříže, kratší dobu a každý jen jednu najednou. Stojíš-li ve více zónách, zraní tě jen ta nejsilnější.',
+    '<b>Poslední výtrusy</b>: po smrti uvidíš, co tě v posledních tazích zranilo, a krátkou radu, co příště změnit.',
+    '<b>Vzácnost předmětů</b> má klesající výnosy (nejvýš 2,5×) a unikáty se sadami mají vlastní strop. Hromady unikátů z hlubokých jeskyní jsou pryč.',
+    '<b>Zkažená jeskyně</b>: modifikátory už nenafukují kořist z každého monstra. Všechno, co jeskyně nasbírá, vydá na konci Srdce jeskyně, a to vždy aspoň jeden vzácný předmět, často unikát nebo kus sady.',
+    'Mykotická kůže dává Výtrusorozené předměty vzácněji.']},
   {v:15, d:'9. 11. 2026', t:'Filtr kořisti a opravy', i:[
     '<b>Filtr kořisti</b> (menu Esc): vyber, od jaké vzácnosti se ti předměty ukazují a zvedají. Skryté uvidíš a sebereš s podrženým <b>Alt</b>.',
     'Odměny z Plodnice, truhel a skřítků už nikdy nepadnou pod překážku – vždy na volné místo.',

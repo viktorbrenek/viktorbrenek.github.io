@@ -45,7 +45,9 @@ export class SceneRenderer{
     for(const pr of g.props) if(pr.flat&&this.onScreen(pr,x0,x1,y0,y1)&&g.explored[pr.y*W+pr.x]){ if(pr.decal){ const [w,h]=this.fitSprite(pr.spr,T*pr.sc,T*pr.sc); R.sprite(pr.spr,(pr.x+0.5+pr.ox)*T-w/2,(pr.y+0.5+pr.oy)*T-h/2,w,h,{rot:pr.rot,flip:pr.flip,tint:[0.82,0.8,0.78]}); continue; } const [w,h]=this.fitSprite(pr.spr,T*1.1,T*0.9); R.sprite(pr.spr,pr.x*T+T/2-w/2,pr.y*T+T/2-h/2,w,h); }
     // telegraphs (on floor, base layer, tinted)
     for(const m of g.monsters) if(m.tele&&(g.canSee(m)||m.tele.tiles.some(([x,y])=>g.isVis(x,y)))) for(const [x,y] of m.tele.tiles){ R.rect(x*T+3,y*T+3,T-6,T-6,[0.95,0.12,0.05],0.3+Math.sin(time*12)*0.12); }
-    for(const h of g.hazards) for(const [x,y] of h.tiles){ if(!g.explored[y*W+x]) continue; if(h.warn>0) R.rect(x*T+5,y*T+5,T-10,T-10,[0.95,0.6,0.1],0.22+Math.sin(time*10)*0.1); else R.rect(x*T+2,y*T+2,T-4,T-4,h.el==='fire'?[0.9,0.35,0.05]:h.el==='decay'?[0.5,0.2,0.6]:[0.35,0.6,0.15],0.35); }
+    for(const h of g.hazards){ const st=h.look==='storm', col=st?[0.55,0.62,0.3]:h.el==='fire'?[0.62,0.2,0.04]:h.el==='decay'?[0.38,0.15,0.48]:[0.26,0.46,0.1]; const warn=h.warn>0, fade=!warn&&h.turns<=1?0.55:1;
+      const S=h._set||(h._set=new Set(h.tiles.map(([x,y])=>x+','+y))); const a=warn?0.16+Math.sin(time*6)*0.06:(st?0.34:0.62)*fade;
+      for(const [x,y] of h.tiles){ if(!g.explored[y*W+x]) continue; R.fill(x*T,y*T,T,[S.has((x-1)+','+y),S.has(x+','+(y-1)),S.has((x+1)+','+y),S.has(x+','+(y+1))],col,a); } }
     // drawables sorted by y
     const list=[];
     for(const pr of g.props){ if(pr.flat||!this.onScreen(pr,x0,x1,y0,y1)||!g.explored[pr.y*W+pr.x]) continue; list.push({y:pr.y+(pr.wall?-0.5:0),f:()=>this.drawProp(g,pr,time)}); }
@@ -81,7 +83,13 @@ export class SceneRenderer{
       else if(f.type==='pmine'){ R.glow(f.x*T+T/2,f.y*T+T*0.6,T*0.4*(1+Math.sin(time*14)*0.2),[0.6,1,0.3],0.6); }
       else if(f.type==='poisonzone'){ for(let i=0;i<6;i++){ const an=i+time*0.6; R.glow(f.x*T+T/2+Math.cos(an)*f.r*T*0.6,f.y*T+T/2+Math.sin(an*1.3)*f.r*T*0.6,T*0.9,[0.5,0.9,0.25],0.12); } }
       else if(f.type==='slam'){ for(const [x,y] of f.tiles) R.glow(x*T+T/2,y*T+T/2,T*0.8,f.c||[1,0.4,0.15],a*0.6); } }
-    for(const h of g.hazards) if(h.warn<=0) for(const [x,y] of h.tiles){ if(!g.isVis(x,y)) continue; const c=h.el==='fire'?[1,0.5,0.15]:h.el==='decay'?[0.75,0.4,1]:[0.55,0.95,0.3]; R.glow(x*T+T/2+Math.sin(time*2+x)*8,y*T+T/2+Math.cos(time*1.7+y)*8,T*0.75,c,0.22); }
+    for(const h of g.hazards){ const st=h.look==='storm', fire=h.el==='fire', c=st?[0.75,0.95,0.4]:fire?[1,0.55,0.15]:h.el==='decay'?[0.8,0.45,1]:[0.55,0.95,0.3];
+      for(const [x,y] of h.tiles){ if(!g.isVis(x,y)) continue; const k=((x*7+y*13+(h.seed||0))%17), cx=x*T+T/2, cy=y*T+T/2;
+        if(h.warn>0){ R.glow(cx,cy,T*0.45,c,0.08+Math.sin(time*6+k)*0.04); continue; }
+        R.glow(cx,cy,T*0.7,c,st?0.07:0.1);
+        if(st){ for(let i=0;i<3;i++){ const ph=(time*0.22+i*0.33+k*0.05)%1; R.glow(cx+Math.sin(time*1.3+i*2+k)*T*0.35,cy+T*0.3-ph*T*0.8,2.5+ph*1.5,c,0.55*Math.sin(ph*Math.PI)); } }
+        else if(fire){ for(let i=0;i<3;i++){ const ph=(time*0.9+i*0.33+k*0.07)%1; R.glow(cx+Math.sin(i*2.1+k+time*3)*T*0.25,cy+T*0.2-ph*T*0.7,2+ (1-ph)*2,c,0.8*(1-ph)); } R.glow(cx,cy,T*0.45,[1,0.4,0.1],0.12+Math.sin(time*11+k)*0.05); }
+        else { for(let i=0;i<2;i++){ const ph=(time*0.55+i*0.5+k*0.13)%1; R.glow(cx+Math.sin(k*3.1+i*1.9)*T*0.25,cy+Math.cos(k*2.3+i*2.7)*T*0.22,T*0.04+ph*T*0.07,c,0.55*(1-ph)); } } } }
     for(const pj of g.projs){ const t=Math.min(1,pj.t/pj.dur); const x=pj.fx+(pj.tx-pj.fx)*t, y=pj.fy+(pj.ty-pj.fy)*t-Math.sin(t*Math.PI)*T*0.25;
       if(pj.spr==='arrow'){ for(let i=0;i<5;i++){ const tt=Math.max(0,t-i*0.03); R.glow(pj.fx+(pj.tx-pj.fx)*tt,pj.fy+(pj.ty-pj.fy)*tt-Math.sin(tt*Math.PI)*T*0.25,6-i,[1,0.9,0.7],0.8-i*0.15); } }
       else { R.glow(x,y,T*0.32,pj.c,0.9); R.glow(x,y,T*0.8,pj.c,0.25); } }
@@ -140,7 +148,7 @@ export class SceneRenderer{
       if(special&&!m.boss){ c.font=`600 ${11*d}px "Alegreya Sans",sans-serif`; c.fillStyle=col; c.fillText(m.name,x+w/2,y-8*d); }
       const ics=[m.status.poison&&'i_poison',m.status.burn&&'i_burn',m.status.bleed&&'i_bleed',m.status.stun&&'i_stun',m.status.root&&'i_root'].filter(Boolean); const isz=14*d; let ix=x+w/2-ics.length*isz/2;
       for(const n of ics){ const im=this.uiImg(n); if(im.complete&&im.naturalWidth) c.drawImage(im,ix,y+4*d,isz,isz); ix+=isz; }
-      { const tg=[m.status.weak&&['oslab','#c9a0ff'],m.status.fear&&['strach','#e0c0ff'],m.status.slow&&['pomalý','#9cc8ff']].filter(Boolean); if(tg.length){ c.font=`600 ${9*d}px sans-serif`; let tx2=x+w/2-(tg.length-1)*22*d; for(const [t,col] of tg){ c.fillStyle=col; c.fillText(t,tx2,y+(ics.length?28:14)*d); tx2+=44*d; } } }
+      { const ps=m.status.poison?.length||0; const tg=[ps&&['−'+Math.min(30,ps*6)+'% dmg','#a6e86a'],m.status.weak&&['oslab','#c9a0ff'],m.status.fear&&['strach','#e0c0ff'],m.status.slow&&['pomalý','#9cc8ff']].filter(Boolean); if(tg.length){ c.font=`600 ${9*d}px sans-serif`; let tx2=x+w/2-(tg.length-1)*22*d; for(const [t,col] of tg){ c.fillStyle=col; c.fillText(t,tx2,y+(ics.length?28:14)*d); tx2+=44*d; } } }
       if(m.status.poison&&m.status.poison.length>1){ c.font=`700 ${10*d}px sans-serif`; c.fillStyle='#b8f08a'; c.fillText(m.status.poison.length,x+w/2-ics.length*isz/2+isz*0.9,y+18*d); } }
     for(const mn of g.minions){ if(mn.hp<=0||!g.isVis(mn.x,mn.y)) continue; const w=T*0.6*z, x=sx(mn.rx*T+T/2)-w/2, y=sy(mn.ry*T+T-T*0.95*(mn.sc||1))-6*d; c.fillStyle='rgba(0,0,0,0.7)'; c.fillRect(x-1,y-1,w+2,5*d); c.fillStyle='#7ee05a'; c.fillRect(x,y,w*Math.max(0,mn.hp/mn.maxhp),3*d); }
     // rune symbols

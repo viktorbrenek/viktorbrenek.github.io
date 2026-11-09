@@ -62,7 +62,7 @@ function validItem(it, maxIlvl) {
     else mx = 60 * Math.pow(1.04, it.ilvl) + 50; // korupce / pevné hodnoty mimo afixy
     if (def?.cap) mx = Math.max(mx, def.cap * 2);
     if (Math.abs(a.v) > mx) return 'aff value ' + a.s;
-    const o = { id: String(a.id || a.s).slice(0, 20), s: a.s, v: a.v }; for (const f of ['fixed', 'corr', 'curse', 'conv']) if (a[f]) o[f] = 1; if (a.from) o.from = String(a.from).slice(0, 20);
+    const o = { id: String(a.id || a.s).slice(0, 20), s: a.s, v: a.v }; for (const f of ['fixed', 'corr', 'curse', 'conv', 'lk']) if (a[f]) o[f] = 1; if (a.from) o.from = String(a.from).slice(0, 20);
     out.aff.push(o);
   }
   if (it.corrupted) { out.corrupted = true; out.corrRes = String(it.corrRes || '').slice(0, 12); }

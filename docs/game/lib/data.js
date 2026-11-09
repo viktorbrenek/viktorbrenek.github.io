@@ -327,7 +327,7 @@ export const SKILLS={
   sporebolt:{name:'Výtrusná střela', type:'spell', tags:['spell','proj','single'], cost:5, cd:0, desc:'Střela na dálku za 120 % kouzla, 40% šance otrávit.', target:'enemy', range:7, cls:'myco'},
   puffbomb:{name:'Výtrusná bomba', type:'spell', tags:['spell','aoe'], cost:12, cd:3, desc:'Exploze 3×3 za 140 % kouzla, otráví vše.', target:'tile', range:6, cls:'myco'},
   drain:{name:'Mycelové vysátí', type:'spell', tags:['spell','single'], cost:10, cd:4, desc:'Za 150 % kouzla a vyléčí 50 % způsobeného poškození.', target:'enemy', range:5, cls:'myco'},
-  plague:{name:'Mor', type:'spell', tags:['spell','aoe','dot'], cost:14, cd:5, desc:'Nakazí nepřátele v dosahu 3: silný jed na 6 tahů (200 % kouzla celkem).', target:'tile', range:6, cls:'myco'},
+  plague:{name:'Mor', type:'spell', tags:['spell','aoe','dot'], cost:14, cd:5, desc:'Nakazí nepřátele v dosahu 3: silný jed na 3 tahy (200 % kouzla celkem).', target:'tile', range:6, cls:'myco'},
   // --- Hnilobný lovec
   volley:{name:'Salva', type:'attack', tags:['attack','proj','bowonly'], cost:9, cd:3, desc:'Vystřelí na 3 nejbližší viditelné nepřátele za 90 % zbraně. Vyžaduje luk.', target:'self', cls:'ranger'},
   snipe:{name:'Mířená rána', type:'attack', tags:['attack','single','proj','bowonly'], cost:8, cd:3, desc:'Výstřel za 260 % zbraně s +40 % šancí na kritický zásah. Vyžaduje luk.', target:'enemy', range:9, cls:'ranger'},
@@ -374,7 +374,8 @@ export const SKILLS={
   decoy:{name:'Houbová návnada', type:'summon', tags:['minion','summon'], cost:8, cd:10, desc:'Na místo do vzdálenosti 4 postaví nafouklou houbu, která 8 tahů přitahuje pozornost nepřátel. Když praskne, otráví okolí.', target:'tile', range:4, cls:'*', minion:'decoy'},
   sporeshield:{name:'Výtrusná zbroj', type:'buff', tags:['buff'], cost:10, cd:12, desc:'Na 5 tahů tě obalí výtrusný štít, který pohltí poškození až do 25 % tvého maximálního života.', target:'self', cls:'*'},
 };
-for(const [id,s] of Object.entries(SKILLS)) s.icon='sk_'+id; SKILLS.fungaltotem.icon='sk_totem';
+SKILLS.harvest={name:'Sklizeň', type:'utility', tags:['dot'], cost:6, cd:3, desc:'Spotřebuje všechen jed a krvácení na cíli (dosah 5) a zbývající poškození způsobí okamžitě za 120 %. Krvácení přeruší chystaný útok a omráčí (ne bosse). Pokud cíl s jedem zemře, výtrusy se rozletí: sousedé dostanou jed za 40 % spotřebovaného.', target:'enemy', range:5, cls:'*'};
+for(const [id,s] of Object.entries(SKILLS)) s.icon='sk_'+id; SKILLS.fungaltotem.icon='sk_totem'; SKILLS.harvest.icon='sk_burstrot'; // TODO: vlastní ikona sk_harvest
 export const skillsFor=cls=>Object.keys(SKILLS).filter(id=>id!=='attack'&&(SKILLS[id].cls===cls||SKILLS[id].cls==='*'));
 // support runes – modifiers linked to a skill (max 3 per skill). 'minion' tag = works on minions of a summon skill
 export const SUPPORTS={
@@ -521,7 +522,7 @@ export const KEYSTONES={
   bloodmagic:'Krvavá magie: dovednosti stojí život místo esence, +30 % života.',
   resonance:'Rezonance výtrusů: kritické zásahy vždy otráví a zapálí, −30 % kritického násobiče.',
   darkhunter:'Lovec ve tmě: pochodeň −2, +50 % poškození proti nepřátelům mimo světlo pochodně, +5 % kritické šance.',
-  rotsoul:'Hnilobná duše: jed se stackuje bez limitu a trvá o 2 tahy déle; nemůžeš kriticky zasáhnout.',
+  rotsoul:'Hnilobná duše: jed se stackuje bez limitu a trvá o 1 tah déle; nemůžeš kriticky zasáhnout.',
   glass:'Skleněné dělo: +40 % více poškození, −30 % maximálního života.',
   eldritch:'Mykotická zkáza: +60 % násobič poškození v čase, přímé zásahy −30 %.',
   iron:'Železné výtrusy: zbroj snižuje i elementální poškození (50 %), úhyb je 0.',
@@ -561,7 +562,7 @@ export const CORRUPTIONS=[
   {id:'elite', name:'Champióni', desc:'Mnohem více vzácných monster', reward:'+1 úroveň předmětů, +20 % vzácnosti', mon:{elite:0.35}, loot:{ilvl:1,mf:20}},
   {id:'explode', name:'Mrtvé výtrusy', desc:'Nepřátelé při smrti vybuchují', reward:'+50 % zlata a +20 % kvantity', mon:{explode:true}, loot:{gf:50,qty:0.2}},
   {id:'fast', name:'Neklid', desc:'Nepřátelé +25 % rychlosti', reward:'+35 % vzácnosti', mon:{spd:1.25}, loot:{mf:35}},
-  {id:'res', name:'Mykotická kůže', desc:'Nepřátelé +30 % odolnosti', reward:'Šance na Výtrusorozené předměty', mon:{res:30}, loot:{spore:0.12}},
+  {id:'res', name:'Mykotická kůže', desc:'Nepřátelé +30 % odolnosti', reward:'Šance na Výtrusorozené předměty', mon:{res:30}, loot:{spore:0.07}},
   {id:'ambush', name:'Pasti tmy', desc:'Většina místností je přepadení', reward:'+40 % zkušeností, +20 % vzácnosti', mon:{ambush:0.7}, loot:{xp:0.4,mf:20}},
   {id:'hunted', name:'Štvanice', desc:'Patrem tě loví unikátní lovec', reward:'Lovec vždy upustí legendární předmět', mon:{hunter:true}, loot:{}},
 ];

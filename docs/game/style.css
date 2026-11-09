@@ -308,3 +308,15 @@ body.mapon #mapov{display:block}
 .lfo{display:flex;gap:8px;align-items:center;cursor:pointer;color:#e0d4bc}
 .eqs.offx .slot{opacity:.35;filter:grayscale(1)}.eqs.offx label{color:#ff8a7a}
 .attr span{white-space:nowrap;min-width:2.5em;text-align:right}
+.recap{margin:10px auto;max-width:460px;text-align:left;background:#120e0b;border:1px solid #3a2c22;border-radius:8px;padding:8px 10px}
+.recap .rc-h{font:700 13px "Alegreya Sans";letter-spacing:.08em;text-transform:uppercase;color:#b9a68c;margin-bottom:6px}
+.recap .rc-row{display:grid;grid-template-columns:78px 1fr auto 46px;gap:8px;align-items:center;font:500 14px "Alegreya Sans";padding:2px 0;border-top:1px solid #241b15}
+.recap .rc-row:first-of-type{border-top:0}
+.recap .rc-t{color:#8a7a68;font-size:12px}.recap .rc-who{color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.recap .rc-who i{color:#a8957e}
+.recap .rc-d{font-weight:700;white-space:nowrap}
+.recap .rc-hp{height:6px;background:#2a1d17;border-radius:3px;overflow:hidden}.recap .rc-hp b{display:block;height:100%;background:#c0392b}
+.recap .rc-tip{margin-top:6px;color:#d9c9a8;font-size:13px;border-top:1px solid #3a2c22;padding-top:6px}
+@media (max-width:520px){.recap .rc-row{grid-template-columns:60px 1fr auto}.recap .rc-hp{display:none}}
+.reforge{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.reforge .hint{width:100%}
+.reforge button{font-size:13px;padding:4px 8px}
+.tt-aff small.lk{color:#cfd8e6;opacity:.75}

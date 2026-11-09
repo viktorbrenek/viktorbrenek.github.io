@@ -26,11 +26,19 @@ in vec2 vUV; in vec4 vCol; in float vMode; in vec2 vWorld;
 uniform sampler2D uTex; uniform int uLit;
 ${LIGHT_FN}
 out vec4 o;
+float h2(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+float vn(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f); return mix(mix(h2(i),h2(i+vec2(1,0)),f.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),f.x),f.y); }
 void main(){
   vec4 c;
   if(vMode<0.5){ c=texture(uTex,vUV)*vCol; }
   else if(vMode<1.5){ c=vCol; }
-  else { float d=length(vUV-0.5)*2.0; float a=clamp(1.0-d,0.0,1.0); a=a*a; c=vec4(vCol.rgb,vCol.a*a); }
+  else if(vMode<2.5){ float d=length(vUV-0.5)*2.0; float a=clamp(1.0-d,0.0,1.0); a=a*a; c=vec4(vCol.rgb,vCol.a*a); }
+  else { int mk=int((vMode-3.0)*16.0+0.5); vec2 p=vUV;
+    float dl=(mk&1)!=0?9.0:p.x, dt=(mk&2)!=0?9.0:p.y, dr=(mk&4)!=0?9.0:1.0-p.x, db=(mk&8)!=0?9.0:1.0-p.y;
+    float ox=max(0.0,-min(dl,dr)), oy=max(0.0,-min(dt,db)); float out_=length(vec2(ox,oy)); float sd=out_>0.0?-out_:min(min(dl,dr),min(dt,db));
+    float n=vn(vWorld*0.035)*0.6+vn(vWorld*0.1+7.3)*0.4; float s2=sd+(n-0.5)*0.55;
+    float m=smoothstep(-0.28,0.22,s2); float rim=(1.0-smoothstep(0.0,0.16,abs(s2-0.02)))*m;
+    c=vec4(vCol.rgb*(0.66+n*0.66)+rim*vCol.rgb*0.55,vCol.a*min(1.0,m+rim*0.35)); }
   if(c.a<0.004) discard;
   if(uLit==1){ vec4 L=lightAt(vWorld); float k=0.35+min(length(L.rgb),2.2)*0.6; c.rgb*=k; c.a*=smoothstep(0.15,0.9,L.a); }
   o=c;
@@ -130,6 +138,8 @@ export class Renderer{
     const t=o.tint||[1,1,1]; this.q(x,y,w,h,u0,v0,u1,v1,t[0],t[1],t[2],o.a??1,0,o.rot||0); }
   rect(x,y,w,h,c,a=1){ this.q(x,y,w,h,0,0,1,1,c[0],c[1],c[2],a,1); }
   glow(x,y,r,c,a=1){ this.q(x-r,y-r,r*2,r*2,0,0,1,1,c[0],c[1],c[2],a,2); }
+  // měkká výplň dlaždice: m=[L,T,R,B] sousedé ve stejné zóně → na té straně bez přesahu (bezešvé), jinak rozpitý okraj
+  fill(x,y,T,m,c,a=1){ const E=0.32, l=m[0]?0:E, t=m[1]?0:E, r=m[2]?0:E, b=m[3]?0:E; this.q(x-l*T,y-t*T,(1+l+r)*T,(1+t+b)*T,-l,-t,1+r,1+b,c[0],c[1],c[2],a,3+((m[0]?1:0)|(m[1]?2:0)|(m[2]?4:0)|(m[3]?8:0))/16); }
   flush(list){ const gl=this.gl; let n=0; const d=this.data;
     for(const e of list){ if(n>=MAXQ) break; const [x,y,w,h,u0,v0,u1,v1,r,g,b,a,m,rot]=e; let o=n*4*FLOATS;
       let pts;

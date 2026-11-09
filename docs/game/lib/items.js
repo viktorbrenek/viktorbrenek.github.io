@@ -23,14 +23,16 @@ function addAffixes(it,n){
     if(!cand.length) break; it.aff.push(rollAffix(rng.pick(cand),it.ilvl));
   }
 }
+// MF s klesajícími výnosy: násobič 1 + 1,5·MF/(MF+120) → max 2,5×. Unikáty a sety mají vlastní strop.
+export function mfMult(mf=0){ mf=Math.max(-90,mf); return mf>=0?1+1.5*mf/(mf+120):1+mf/100; }
 export function rollRarity(mf=0,boost=0,ilvl=10){
-  const f=Math.min(1,0.2+ilvl*0.08);
-  const r=rng.next()*100/(1+mf/100);
-  const lg=(1.0+boost*1.5)*f, sb=ilvl>=3?(0.8+boost*1.2)*f:0;
+  const f=Math.min(1,0.2+ilvl*0.08), M=mfMult(mf);
+  const r=rng.next()*100;
+  const lg=Math.min((1.0+boost*1.5)*f*M, 3+boost*4), sb=ilvl>=3?Math.min((0.8+boost*1.2)*f*M, 2.5+boost*3):0;
   if(r<lg) return 'legendary';
   if(r<lg+sb) return 'set';
-  if(r<10+boost*8) return 'rare';
-  if(r<40+boost*10) return 'magic';
+  if(r<lg+sb+(10+boost*8)*M) return 'rare';
+  if(r<lg+sb+(40+boost*10)*M) return 'magic';
   return 'common';
 }
 export function makeSetItem(ilvl,setId,pi){ const cands=[]; for(const S of SETS) S.pieces.forEach((pc,i)=>{ const b=BASES.find(x=>x.id===pc.base); if(b&&b.min<=ilvl+4&&(!setId||S.id===setId)&&(pi==null||pi===i)) cands.push([S,pc,i]); });
@@ -88,7 +90,7 @@ export function tooltipHTML(it,cmp){
   if(it.dmg){ const k={melee:'Na blízko',bow:'Na dálku',staff:'Kouzelná'}[it.kind]; h+=`<div class="tt-main">${fmt(it.dmg[0])}–${fmt(it.dmg[1])} poškození <span class="tt-dim">${k}</span>`;
     if(cmp&&cmp.dmg){ const d=(it.dmg[0]+it.dmg[1])-(cmp.dmg[0]+cmp.dmg[1]); h+=` <span class="${d>=0?'up':'down'}">${d>=0?'▲':'▼'}</span>`; } h+='</div>'; }
   const imp=Object.entries(it.imp||{}); if(imp.length) h+='<div class="tt-imp">'+imp.map(([s,v])=>`<div>${statLine(s,v)}</div>`).join('')+'</div>';
-  if(it.aff.length) h+='<div class="tt-aff">'+it.aff.map(a=>`<div class="${a.fixed?'fx':''}${a.corr?' cr':''}${a.curse?' cu':''}${a.conv?' cv':''}">${statLine(a.s,a.v)}${a.conv?` <small>(dříve ${STAT_NAMES[a.from]||a.from})</small>`:''}</div>`).join('')+'</div>';
+  if(it.aff.length) h+='<div class="tt-aff">'+it.aff.map(a=>`<div class="${a.fixed?'fx':''}${a.corr?' cr':''}${a.curse?' cu':''}${a.conv?' cv':''}">${statLine(a.s,a.v)}${a.conv?` <small>(dříve ${STAT_NAMES[a.from]||a.from})</small>`:''}${a.lk?' <small class="lk">· zamčeno</small>':''}</div>`).join('')+'</div>';
   if(it.unique){ const u=UNIQUES.find(x=>x.id===it.unique); h+=`<div class="tt-power">✦ ${u.power}</div>`; }
   if(it.set){ const S=SETS.find(x=>x.id===it.set); const n=setCount?.[it.set]||0; const have=setHave||new Set();
     h+=`<div class="tt-set"><b>${S.name}</b> (${n}/${S.pieces.length})${S.pieces.map((pc,i)=>`<div class="${have.has(it.set+':'+i)?'on':''}">${pc.name}</div>`).join('')}`;
@@ -104,9 +106,14 @@ export function tooltipHTML(it,cmp){
 // crafting
 export function rerollCost(it){ return Math.ceil(itemValue(it)*1.5); }
 export function upgradeCost(it){ return it.rarity==='common'?Math.ceil(6+it.ilvl):it.rarity==='magic'?Math.ceil(20+it.ilvl*3):null; }
-export function craftReroll(it){ const keep=it.aff.filter(a=>a.fixed||a.id==='sb'); const n=it.aff.length-keep.length; it.aff=keep; addAffixes(it,Math.max(1,n)); if(it.rarity==='sporeborn') it.aff.forEach(a=>{ if(!a.fixed&&a.id!=='sb'&&!['torch','skill','aoe'].includes(a.s)) a.v=Math.round(a.v*1.35*10)/10; }); if(it.rarity!=='legendary') nameItem(it); }
+export function craftReroll(it){ const keep=it.aff.filter(a=>a.fixed||a.id==='sb'||a.lk); const n=it.aff.length-keep.length; it.aff=keep; addAffixes(it,Math.max(1,n)); if(it.rarity==='sporeborn') it.aff.forEach(a=>{ if(!a.fixed&&a.id!=='sb'&&!['torch','skill','aoe'].includes(a.s)) a.v=Math.round(a.v*1.35*10)/10; }); if(it.rarity!=='legendary') nameItem(it); }
 export function craftUpgrade(it){ if(it.rarity==='common'){ it.rarity='magic'; addAffixes(it,rng.int(1,2)); } else if(it.rarity==='magic'){ it.rarity='rare'; addAffixes(it,rng.int(1,3)); } nameItem(it); }
 export function craftExalt(it){ addAffixes(it,1); }
+// v17 Přeroubování: vyměň jednu vlastnost za novou, nová se zamkne (nejde znovu přeroubovat a přežije Přeměnu vlastností)
+export function reforgeCost(it){ return Math.ceil(itemValue(it)*2); }
+export const canReforge=a=>!a.fixed&&!a.corr&&!a.curse&&!a.lk&&a.id!=='sb';
+export function craftReforge(it,idx){ const a=it.aff[idx]; if(!a||!canReforge(a)) return null; const rest=it.aff.filter((_,i)=>i!==idx); it.aff=rest; const before=it.aff.length; addAffixes(it,1);
+  if(it.aff.length===before){ it.aff.splice(idx,0,a); return null; } const nw=it.aff.pop(); if(it.rarity==='sporeborn'&&!['torch','skill','aoe'].includes(nw.s)) nw.v=Math.round(nw.v*1.35*10)/10; nw.lk=1; it.aff.splice(idx,0,nw); return nw; }
 
 // corruption (season craft). mild=true → drop-corruption without destroy/curse extremes
 const CORR_TXT={nothing:'Zkaženo – beze změny.',implicit:'Zkažený implicit!',cursed:'Prokletí: něco skvělého, něco zlého.',lucky:'Šťastné prokletí!',convert:'Přeměna vlastnosti.',reroll:'Výtrusné přerození – silnější vlastnosti.',sporeborn:'Proměna ve Výtrusorozený!',destroyed:'Předmět se rozpadl v prach.'};

@@ -1,6 +1,6 @@
 // DOM UI v2: HUD, panels (inventory, character, skills+supports, passive tree, craft), tooltips, modals, banners, boss bar
 import {SKILLS,SUPPORTS,CLASSES,SLOTS,SLOT_NAMES,UNIQUES,PASSIVES,PASSIVE_MAP,KEYSTONES,STAT_NAMES,PCT,MON_MODS,LORE,SEASON,FORMS,SETS,skillsFor,GRAVE_MSGS,dailyMod} from './data.js';
-import {tooltipHTML,rarityColor,itemValue,rerollCost,upgradeCost,craftReroll,craftUpgrade,craftExalt,statLine,corruptText} from './items.js';
+import {tooltipHTML,rarityColor,itemValue,rerollCost,upgradeCost,craftReroll,craftUpgrade,craftExalt,statLine,corruptText,reforgeCost,canReforge,craftReforge} from './items.js';
 import {fmt} from './util.js';
 import {Game,Roster,Stash,STASH_MAX,LootFilter} from './game.js';
 import {audio} from './audio.js';
@@ -147,7 +147,8 @@ export class UI{
       act=`<div class="craftsel"><div class="ttc">${tooltipHTML(it)}</div><div class="cbtn">${cor?'<div class="hint">Zkažený předmět už nejde měnit.</div>':`<button data-c="corrupt" class="corrbtn" ${(p.cores||0)<1?'disabled':''}>☣ Zkazit · 1 jádro (${p.cores||0})</button>`}
         ${up&&!cor?`<button data-c="up" ${p.dust<up?'disabled':''}>Zušlechtit (${it.rarity==='common'?'→ kouzelný':'→ vzácný'}) · ${up} ✦</button>`:''}
         ${it.rarity!=='common'&&!cor?`<button data-c="re" ${p.dust<rc?'disabled':''}>Přeměnit vlastnosti · ${rc} ✦</button>`:''}
-        ${(it.rarity==='rare'||it.rarity==='legendary'||it.rarity==='sporeborn')&&it.aff.length<7&&!cor?`<button data-c="ex" ${p.dust<ex?'disabled':''}>Přidat vlastnost · ${ex} ✦</button>`:''}</div></div>`; }
+        ${(it.rarity==='rare'||it.rarity==='legendary'||it.rarity==='sporeborn')&&it.aff.length<7&&!cor?`<button data-c="ex" ${p.dust<ex?'disabled':''}>Přidat vlastnost · ${ex} ✦</button>`:''}
+        ${it.rarity!=='common'&&!cor&&it.aff.some(canReforge)?`<div class="reforge"><div class="hint">Přeroubovat · ${reforgeCost(it)} ✦ · vyber vlastnost, nová se zamkne:</div>${it.aff.map((a,i)=>canReforge(a)?`<button data-rf="${i}" ${p.dust<reforgeCost(it)?'disabled':''}>${statLine(a.s,a.v)}</button>`:'').join('')}</div>`:''}</div></div>`; }
     return `<h2>Oltář hniloby</h2><div class="hint">Výtrusný prach (✦ ${fmt(p.dust)}) získáš rozkládáním předmětů. Zkažená jádra (${p.cores||0}) z Plodnic pradávných, jeskyní a skřítků. <b>Zkažení</b> je nevratné: může předmět vylepšit, proklít, přeměnit vlastnost… nebo zničit.</div><div class="bag craftbag">${items.map((i,k)=>this.slotHTML(i,`data-craft="${k}" ${i===it?'data-sel="1"':''}`)).join('')}</div>${act}`; }
   wirePanel(el){ const g=this.g,p=g.player;
     const hoverTip=(node,it,cmp)=>{ node.onmouseenter=e=>this.tip(cmp!==undefined&&it.base?this.itemTip(it):tooltipHTML(it,cmp),e); node.onmouseleave=()=>this.tip(null); };
@@ -167,6 +168,7 @@ export class UI{
       n.oncontextmenu=e=>{ e.preventDefault(); g.unsocket(this.selSkill,i); this.tip(null); this.refresh(); }; });
     const items=[...Object.values(p.equip).filter(Boolean),...p.inv.filter(i=>i.base)];
     el.querySelectorAll('[data-craft]').forEach(n=>{ const it=items[+n.dataset.craft]; n.onclick=()=>{ this.craftSel=it; this.renderPanel(); }; hoverTip(n,it); });
+    el.querySelectorAll('[data-rf]').forEach(b=>b.onclick=()=>{ const it=this.craftSel, cost=reforgeCost(it); if(p.dust<cost) return; const old=it.aff[+b.dataset.rf]; const nw=craftReforge(it,+b.dataset.rf); if(!nw){ g.log('Pro tuhle vlastnost není náhrada.','warn'); return; } p.dust-=cost; g.recalc(); g.log(`Přeroubováno: ${statLine(old.s,old.v)} → ${statLine(nw.s,nw.v)}`,'good'); this.refresh(); });
     el.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ const it=this.craftSel; const c=b.dataset.c;
       if(c==='corrupt'){ const r=g.corrupt(it); if(r){ g.log('Oltář: '+corruptText(r),r==='destroyed'?'warn':'loot:sporeborn'); this.banner(r==='destroyed'?'Rozpadlo se':'Zkaženo',corruptText(r)); if(r==='destroyed') this.craftSel=null; } this.refresh(); return; }
       const cost=c==='up'?upgradeCost(it):c==='re'?rerollCost(it):Math.ceil(itemValue(it)*4); if(p.dust<cost) return; p.dust-=cost;
@@ -205,12 +207,22 @@ export class UI{
   chooseCorruption(opts){ this.showModal(`<h2>Výtrusná korupce</h2><p class="hint">Hloubka ${this.g.depth+1} tě volá. Vyber korupci, která patro zesílí a zlepší odměny.</p>
       <div class="corr">${opts.map((o,i)=>`<button data-o="${i}"><b>${o.name}</b><span class="bad">${o.desc}</span><span class="good">${o.reward}</span></button>`).join('')}<button data-o="-1"><b>Čistý sestup</b><span>Bez úprav</span></button></div>`,
     m=>m.querySelectorAll('[data-o]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.o; this.hideModal(); this.g.goDown(i>=0?opts[i]:null); })); }
+  recapHTML(){ const g=this.g, R=(g.recap||[]); if(!R.length) return ''; const endT=R[R.length-1].t; const ev=R.filter(e=>endT-e.t<=6).slice(-5);
+    const EL={fire:['oheň','#ff9a4a'],poison:['jed','#9df07a'],decay:['hniloba','#c79bff']}; const tot=ev.reduce((a,e)=>a+e.d,0)||1, max=ev[ev.length-1].max||1;
+    const rows=ev.map(e=>{ const [en,ec]=e.el?EL[e.el]||[e.el,'#ccc']:['fyzické','#e8dcc8']; const dt=e.t-endT; const pct=Math.round(e.hp/max*100);
+      return `<div class="rc-row"><span class="rc-t">${dt===0?'poslední tah':'tah −'+(-dt)}</span><span class="rc-who">${esc(e.who)}${e.note?` <i>(${e.note})</i>`:''}${e.n>1?` ×${e.n}`:''}</span><span class="rc-d" style="color:${ec}">−${fmt(e.d)} ${en}</span><span class="rc-hp"><b style="width:${pct}%"></b></span></div>`; }).join('');
+    const sum=k=>ev.filter(k).reduce((a,e)=>a+e.d,0); const big=ev.reduce((a,e)=>e.d>a.d?e:a,ev[0]); let tip='';
+    if(sum(e=>e.haz)>tot*0.4) tip='Většinu poškození ti daly zóny na zemi. Vystup z nich hned, jak se objeví varování.';
+    else if(sum(e=>e.dot)>tot*0.4) tip='Zabil tě hlavně jed, oheň nebo krvácení. Lektvar tyhle stavy očistí.';
+    else if(big.d>max*0.4) tip=`Jeden zásah (${esc(big.who)}${big.note?', '+big.note:''}) ti vzal ${Math.min(100,Math.round(big.d/max*100))} % života.${big.note?' Sleduj červená pole telegrafu.':' Zvaž zbroj a odolnosti.'}`;
+    else if(new Set(ev.filter(e=>e.mon).map(e=>e.who)).size>=3) tip='Obklíčilo tě víc nepřátel naráz. Ustup do chodby, ať útočí po jednom.';
+    return `<div class="recap"><div class="rc-h">Poslední výtrusy</div>${rows}${tip?`<div class="rc-tip">${tip}</div>`:''}</div>`; }
   onDeath(by){ const g=this.g, p=g.player, daily=!!g.daily; let msg=-1; const canGrave=LB.enabled()&&p.nick;
     const graveUI=canGrave?`<div class="gravepick"><div class="hint">Zanech vzkaz na svém hrobě (uvidí ho ostatní hráči v této hloubce):</div>${GRAVE_MSGS.map((t,i)=>`<button data-gm="${i}">${t}</button>`).join('')}</div>`:'';
     const sendGrave=()=>{ if(canGrave&&!this._graveSent){ this._graveSent=true; LB.grave(g,by,msg); } };
     this._graveSent=false;
-    setTimeout(()=>this.showModal(daily?`<h2 class="dead">Denní hlubina skončila</h2><p>Zabil tě: <b>${esc(by)}</b>. Došel jsi do hloubky <b>${g.best}</b> (úroveň ${p.lvl}).</p>${graveUI}<p class="hint">Zítra čeká nová hlubina.</p><div class="pmenu"><button class="big" id="d-lb">Denní žebříček</button><button class="big" id="d-menu">Do menu</button></div>`
-      :`<h2 class="dead">Padl jsi</h2><p>Zabil tě: <b>${esc(by)}</b> v hloubce ${g.depth}.</p>${graveUI}<p class="hint">Probudíš se na kontrolním bodě (hloubka ${g.checkpoint}). Ztratíš čtvrtinu zlata a polovinu zkušeností do další úrovně.</p><button class="big" id="resp">Vstát z výtrusů</button>`,
+    setTimeout(()=>this.showModal(daily?`<h2 class="dead">Denní hlubina skončila</h2><p>Zabil tě: <b>${esc(by)}</b>. Došel jsi do hloubky <b>${g.best}</b> (úroveň ${p.lvl}).</p>${this.recapHTML()}${graveUI}<p class="hint">Zítra čeká nová hlubina.</p><div class="pmenu"><button class="big" id="d-lb">Denní žebříček</button><button class="big" id="d-menu">Do menu</button></div>`
+      :`<h2 class="dead">Padl jsi</h2><p>Zabil tě: <b>${esc(by)}</b> v hloubce ${g.depth}.</p>${this.recapHTML()}${graveUI}<p class="hint">Probudíš se na kontrolním bodě (hloubka ${g.checkpoint}). Ztratíš čtvrtinu zlata a polovinu zkušeností do další úrovně.</p><button class="big" id="resp">Vstát z výtrusů</button>`,
     m=>{ m.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>{ msg=+b.dataset.gm; m.querySelectorAll('[data-gm]').forEach(x=>x.classList.toggle('on',x===b)); });
       if(daily){ m.querySelector('#d-lb').onclick=()=>{ sendGrave(); this.leaderboard(()=>this.onDeath(by),'daily'); }; m.querySelector('#d-menu').onclick=()=>{ sendGrave(); this.hideModal(); this.toTitleFn?.(); }; }
       else m.querySelector('#resp').onclick=()=>{ sendGrave(); this.hideModal(); g.respawn(); }; }),900); }

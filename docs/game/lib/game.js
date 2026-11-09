@@ -16,6 +16,7 @@ export const Roster={
 };
 export const Stash={ get(){ return LS.get(STASH_KEY)||[]; }, set(a){ LS.set(STASH_KEY,a); } };
 const HPM=1.55, DMGM=1.85;
+const POISON_BUFF=1.15; export const poisonWeak=m=>Math.min(0.3,(m.status.poison?.length||0)*0.06); // každý stack jedu −6 % poškození monstra, max −30 %
 const EL=['poison','fire','decay'];
 const LF_KEY='sporium_lootfilter', LF_RANK={common:0,magic:1,rare:2,sporeborn:3,legendary:3,set:3};
 export const LootFilter={ get(){ try{ return {min:'common',runes:true,tomes:true,...(JSON.parse(localStorage.getItem(LF_KEY))||{})}; }catch(e){ return {min:'common',runes:true,tomes:true}; } }, set(f){ try{ localStorage.setItem(LF_KEY,JSON.stringify(f)); }catch(e){} } };
@@ -335,10 +336,13 @@ export class Game{
     if(c.wave>1) this.ui?.banner?.('Prokletá truhla',`Vlna ${c.wave} / 3`); }
   tickCursed(){ const c=this.cursed; if(!c||c.done) return; c.timer++; const alive=c.mons.filter(m=>m.hp>0).length;
     if(alive===0||c.timer>14){ if(c.wave<3) this.nextWave(); else if(alive===0){ c.done=true; this.log('Prokletí zlomeno! Truhla vydala poklad.','good'); this.ui?.banner?.('Prokletí zlomeno',''); for(let i=0;i<3;i++) this.dropItem(c.x,c.y,{boost:1.5,rarity:i===0?(rng.chance(this.legChance(0.4))?'legendary':'rare'):'rare'}); this.dropSupport(c.x,c.y); this.dropGold(c.x,c.y,5); } } }
-  tickStorm(){ if(this.map.event!=='storm'||this.turn%4!==0) return; const p=this.player;
-    for(let k=0;k<3;k++){ const x=p.x+rng.int(-3,3), y=p.y+rng.int(-3,3); this.addHazard(x,y,1,'poison',this.monScale().dmg*1.8,1,3,'Výtrusná bouře'); } }
-  addHazard(x,y,r,el,dmg,warn,turns,src){ const tiles=[]; for(let dy=-r;dy<=r;dy++) for(let dx=-r;dx<=r;dx++) if(this.tile(x+dx,y+dy)===FLOOR) tiles.push([x+dx,y+dy]); if(tiles.length) this.hazards.push({tiles,el,dmg,warn,turns,src}); }
-  tickHazards(){ const p=this.player; for(const h of this.hazards){ if(h.warn>0){ h.warn--; continue; } if(h.tiles.some(([x,y])=>x===p.x&&y===p.y)) this.hurtPlayer(h.dmg,h.el,null,h.src); h.turns--; } this.hazards=this.hazards.filter(h=>h.turns>0); }
+  tickStorm(){ if(this.map.event!=='storm'||this.turn%6!==0) return; const p=this.player; const n=rng.chance(0.4)?2:1;
+    for(let k=0;k<n;k++){ for(let tries=0;tries<12;tries++){ const x=p.x+rng.int(-4,4), y=p.y+rng.int(-4,4); if(Math.max(Math.abs(x-p.x),Math.abs(y-p.y))<2||this.tile(x,y)!==FLOOR) continue; this.addHazard(x,y,1,'poison',this.monScale().dmg*1.6,2,3,'Výtrusná bouře',{look:'storm'}); break; } } }
+  addHazard(x,y,r,el,dmg,warn,turns,src,o={}){ const tiles=[]; for(let dy=-r;dy<=r;dy++) for(let dx=-r;dx<=r;dx++){ if(o.shape==='cross'&&Math.abs(dx)+Math.abs(dy)>r) continue; if(this.tile(x+dx,y+dy)===FLOOR) tiles.push([x+dx,y+dy]); }
+    if(o.owner) this.hazards=this.hazards.filter(h=>h.owner!==o.owner);
+    if(tiles.length) this.hazards.push({tiles,el,dmg,warn,turns,src,owner:o.owner,look:o.look||'pool',born:this.time||0,seed:rng.int(0,9999)}); }
+  tickHazards(){ const p=this.player; let worst=null; for(const h of this.hazards){ if(h.warn>0){ h.warn--; continue; } if(h.tiles.some(([x,y])=>x===p.x&&y===p.y)&&(!worst||h.dmg>worst.dmg)) worst=h; h.turns--; }
+    if(worst) this.hurtPlayer(worst.dmg,worst.el,null,worst.src); this.hazards=this.hazards.filter(h=>h.turns>0); }
 
   // ---- lore ----
   readLore(pr){ const p=this.player; p.lore=p.lore||[]; let idx;
@@ -384,7 +388,7 @@ export class Game{
   rollRiftMods(){ const n=this.depth>=10?4:3; return rng.shuffle(RIFT_MODS.slice()).slice(0,n); }
   enterRift(portal,mods){
     const fm={name:'Zkažená jeskyně',mods,mon:{},loot:{corrupt:0.06},torch:0}; for(const md of mods){ for(const [k,v] of Object.entries(md.mon||{})) fm.mon[k]=typeof v==='number'&&fm.mon[k]?fm.mon[k]*v:v; for(const [k,v] of Object.entries(md.loot||{})) fm.loot[k]=(fm.loot[k]||0)+v; if(md.torch) fm.torch+=md.torch; if(md.noRegen) fm.noRegen=true; if(md.resDown) fm.resDown=(fm.resDown||0)+md.resDown; }
-    fm.loot.qty=(fm.loot.qty||0)+0.3; fm.loot.mf=(fm.loot.mf||0)+30; fm.loot.ilvl=1;
+    fm.reward={qty:(fm.loot.qty||0)+0.3,mf:(fm.loot.mf||0)+30}; delete fm.loot.qty; fm.loot.mf=0; fm.loot.ilvl=1;
     const keep=['map','props','monsters','ground','explored','visible','light','lightU8','R','floorMods','pillarRun','cursed','bossRef','hazards'];
     this.stash={pos:[this.player.x,this.player.y],portal}; for(const k of keep) this.stash[k]=this[k];
     this.props.splice(this.props.indexOf(portal),1);
@@ -594,6 +598,14 @@ export class Game{
         for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,tx,ty)<=r) this.applyPoison(m,dmg,2,c); break; }
       case 'rotnova': { const r=aoeR(2); c.forceWeak=3; this.fx.push({type:'ring',x:p.x,y:p.y,r,life:0.5,max:0.5,c:[0.75,0.4,1]}); this.flashLight(p.x,p.y,[0.7,0.35,1],r+2);
         this.strike(this.monsters.filter(m=>m.hp>0&&dist(m.x,m.y,p.x,p.y)<=r&&losOk(m)),()=>this.spellHit(1.3*lm,'decay'),c); break; }
+      case 'harvest': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
+        const ps=m.status.poison, bl=m.status.bleed; if(!ps&&!bl){ ok=false; this.log('Cíl nemá jed ani krvácení.','warn'); break; }
+        const remP=ps?ps.reduce((a,q)=>a+q.d*q.t,0):0, remB=bl?bl.dmg*bl.turns:0; delete m.status.poison; delete m.status.bleed;
+        const mult=1.2*lm*(c.sageMore||1), dmg=(remP+remB)*mult; this.proj(p.x,p.y,m.x,m.y,remP>=remB?[0.6,1,0.3]:[0.9,0.2,0.2]); this.flashLight(m.x,m.y,remP>=remB?[0.6,1,0.3]:[1,0.25,0.2],2); this.shake=Math.max(this.shake,5);
+        if(remB>0&&m.tele){ m.tele=null; this.float(m.x,m.y,'přerušeno','#ffd54a',0.95); } if(remB>0&&!m.boss) m.status.stun=Math.max(m.status.stun||0,1);
+        m.hp-=dmg; m.aware=true; m.flash=0.2; this.float(m.x,m.y,'Sklizeň '+fmt(dmg),remP>=remB?'#a6e86a':'#ff5a4a',1.3); this.burst(m.x,m.y,remP>=remB?[0.6,1,0.3]:[0.9,0.15,0.15],16,90);
+        if(m.hp<=0){ if(remP>0){ this.fx.push({type:'cloud',x:m.x,y:m.y,r:1,life:0.8,max:0.8}); for(const o of this.monsters) if(o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1){ (o.status.poison||(o.status.poison=[])).push({d:Math.max(1,remP*mult*0.4/2),t:2}); this.burst(o.x,o.y,[0.6,1,0.3],6,40); } } this.killMonster(m,c); }
+        break; }
       case 'burstrot': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
         if(!m.status.poison){ ok=false; this.log('Cíl není otrávený.','warn'); break; } const rem=m.status.poison.reduce((a,q)=>a+q.d*q.t,0); delete m.status.poison; const r=aoeR(1);
         const dmg=rem*0.7*lm*(c.areaMore||1)*(c.sageMore||1); this.fx.push({type:'cloud',x:m.x,y:m.y,r,life:0.8,max:0.8}); this.flashLight(m.x,m.y,[0.75,0.4,1],r+2); this.shake=6; c.flat=true;
@@ -708,14 +720,14 @@ export class Game{
     const durM=1+(st.ailDur+(su.has('lasting')?50:0))/100;
     const ail={};
     const pch=(mn?0:st.poisonCh)+(c.poisonCh||0)+(su.has('venom')?50:0)+(crit&&ks.has('resonance')&&!mn?100:0);
-    if(c.forcePoison||(mn&&un.has('rot_totem'))||(h.spell&&!mn&&un.has('heartwood'))||rng.next()*100<pch){ ail.poison=(h.poison*cm*more+h.phys*cm*more*0.3)*0.35+1; this.applyPoison(m,ail.poison,4,c,dotM); }
+    if(c.forcePoison||(mn&&un.has('rot_totem'))||(h.spell&&!mn&&un.has('heartwood'))||rng.next()*100<pch){ ail.poison=(h.poison*cm*more+h.phys*cm*more*0.3)*0.35+1; this.applyPoison(m,ail.poison,4,c,dotM,false,true); }
     const bch=(mn?0:st.burnCh)+(c.burnCh||0)+(su.has('pyre')?40:0)+(crit&&ks.has('resonance')&&!mn?100:0);
     if(rng.next()*100<bch){ ail.burn=(h.fire*cm*more+base*0.15)*0.5*dotM*(1-(m.res.fire||0)/100); this.addAil(m,'burn',ail.burn,Math.round(3*durM)+(ks.has('cinder')?3:0)); }
-    if(!(ks.has('avatar')&&!mn)&&(c.forceBleed||(h.attack&&rng.next()*100<(mn?0:st.bleed)+(c.bleedCh||0)))){ ail.bleed=h.phys*cm*more*0.3*(c.forceBleed||1)*dotM; this.addAil(m,'bleed',ail.bleed,Math.round(3*durM)); }
+    if(!(ks.has('avatar')&&!mn)&&(c.forceBleed||(h.attack&&rng.next()*100<(mn?0:st.bleed)+(c.bleedCh||0)))){ ail.bleed=h.phys*cm*more*0.55*(c.forceBleed||1)*dotM; this.addAil(m,'bleed',ail.bleed,Math.max(1,Math.round(2*durM))+1); if(m.hp>0){ const B=m.status.bleed; m.hp-=B.dmg; this.float(m.x,m.y,fmt(B.dmg),'#d44',0.75); if(--B.turns<=0) delete m.status.bleed; } }
     if(h.attack&&!m.boss&&rng.next()*100<(mn?0:st.stun)+(su.has('stun')?30:0)){ m.status.stun=1+(un.has('bonebreaker')&&!mn?1:0); m.tele=null; }
     if(c.forceWeak||su.has('weaken')||(!mn&&st.weakCh&&rng.next()*100<st.weakCh)) m.status.weak=Math.max(m.status.weak||0,c.forceWeak||3);
     if(!m.boss&&((su.has('fear')&&rng.chance(0.25))||(!mn&&st.fearCh&&rng.next()*100<st.fearCh))){ if(!m.status.fear) this.float(m.x,m.y,'strach','#c9a0ff',0.8); m.status.fear=Math.max(m.status.fear||0,2); m.tele=null; }
-    if(su.has('spread')&&(ail.poison||ail.burn||ail.bleed)){ const o=this.monsters.find(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1); if(o){ if(ail.poison) this.applyPoison(o,ail.poison*0.5,Math.round(4*durM),c,dotM,true); if(ail.burn) this.addAil(o,'burn',ail.burn*0.5,Math.round(3*durM)); if(ail.bleed) this.addAil(o,'bleed',ail.bleed*0.5,Math.round(3*durM)); this.proj(m.x,m.y,o.x,o.y,[0.6,1,0.4]); } }
+    if(su.has('spread')&&(ail.poison||ail.burn||ail.bleed)){ const o=this.monsters.find(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1); if(o){ if(ail.poison) this.applyPoison(o,ail.poison*0.5,Math.round(4*durM),c,dotM,true); if(ail.burn) this.addAil(o,'burn',ail.burn*0.5,Math.round(3*durM)); if(ail.bleed) this.addAil(o,'bleed',ail.bleed*0.5,Math.max(1,Math.round(2*durM))); this.proj(m.x,m.y,o.x,o.y,[0.6,1,0.4]); } }
     if(!mn&&h.attack&&c.skill==='attack'&&un.has('rootblade')&&rng.chance(0.25)&&!m.boss) m.status.root=2;
     if(!mn&&h.attack&&un.has('sporemother')&&st.kind==='bow'&&(c.ranged||c.tags.includes('proj'))&&!c.zoned){ c.zoned=true; this.fx.push({type:'poisonzone',x:m.x,y:m.y,r:0,turns:2,life:99,max:99,dmg:(st.dmg[0]+st.dmg[1])*0.2*(1+(st.elemPct+st.poisonPct)/100)}); }
     if(!mn&&p.form&&st.setPow.has('moonset')&&rng.chance(0.15)&&this._moonT!==this.turn&&this.minions.filter(x=>x.kind==='wolf'&&x.moon).length<2){ this._moonT=this.turn; const pos=this.freeNear(p.x,p.y); if(pos){ const w=this.makeMinion('wolf','spiritwolf',pos[0],pos[1]); w.ttl=6; w.moon=true; this.minions.push(w); this.burst(pos[0],pos[1],[0.6,0.8,1],12,60); this.recalc(); } }
@@ -726,11 +738,15 @@ export class Game{
     if(m.hp<=0) this.killMonster(m,c);
     return total;
   }
-  applyPoison(m,dmg,turns,c={sups:new Set()},dotM,spread){ const st=this.player.stats; const ks=st.ks; if(ks.has('avatar')&&!c?.minion) return; dotM=dotM??(1+(st.dot+(c.sups?.has('dot')?50:0))/100)*(ks.has('virulence')?0.75:1);
+  applyPoison(m,dmg,turns,c={sups:new Set()},dotM,spread,now){ const st=this.player.stats; const ks=st.ks; if(ks.has('avatar')&&!c?.minion) return; dotM=dotM??(1+(st.dot+(c.sups?.has('dot')?50:0))/100)*(ks.has('virulence')?0.75:1);
     if(!spread) turns=Math.round(turns*(1+((st.ailDur||0)+(c.sups?.has('lasting')?50:0))/100));
     if(ks.has('plaguebody')&&!spread) for(const o of this.monsters) if(o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1) this.applyPoison(o,dmg*0.6,turns,c,dotM,true);
+    // v17: jed je rychlejší – poloviční délka, stejné celkové poškození +15 %, první tik hned při zásahu (now)
+    const tt=Math.max(1,Math.ceil(turns/2)); dmg=dmg*turns/tt*POISON_BUFF; turns=tt;
     const d=Math.max(1,dmg*dotM*(1-(m.res.poison||0)/100)); const n=st.uniques.has('fruiting')?2:1; const P=m.status.poison||(m.status.poison=[]);
-    for(let i=0;i<n;i++) P.push({d,t:turns+(ks.has('rotsoul')?2:0)}); const cap=ks.has('rotsoul')?999:12; while(P.length>cap){ P.sort((a,b)=>a.d-b.d); P.shift(); } }
+    const added=[]; for(let i=0;i<n;i++){ const q={d,t:turns+(ks.has('rotsoul')?1:0)}; P.push(q); added.push(q); } const cap=ks.has('rotsoul')?999:12; while(P.length>cap){ P.sort((a,b)=>a.d-b.d); P.shift(); }
+    if(now&&m.hp>0){ let dealt=0; for(const q of added){ dealt+=q.d; q.t--; } m.status.poison=P.filter(q=>q.t>0); if(!m.status.poison.length) delete m.status.poison; m.hp-=dealt; this.float(m.x,m.y,fmt(dealt),'#8fd45a',0.75); if(st.uniques.has('devour_root')&&st.leech) this.healPlayer(dealt*(st.leech+5)/100,true); return dealt; }
+    return 0; }
   addAil(m,k,dmg,turns){ const s=m.status[k]; if(s){ if(k==='bleed'&&this.player.stats.uniques.has('gutripper')) s.dmg+=dmg*0.5; else s.dmg=Math.max(s.dmg,dmg); s.turns=Math.max(s.turns,turns); } else m.status[k]={dmg:Math.max(1,dmg),turns}; }
   killMonster(m,c){
     this.snd(m.boss?'bossdie':'die',m.x,m.y);
@@ -755,7 +771,7 @@ export class Game{
       for(const o of this.monsters) if(o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1) this.hitMonster(o,{phys:0,fire:dmg,poison:0,decay:0,crit:0,critMult:100},{sups:new Set(),tags:[],skill:'corpse'}); }
     if(st.uniques.has('sprouting')) this.fx.push({type:'pmine',x:m.x,y:m.y,turns:1,life:99,max:99});
     if(st.uniques.has('centipede')&&rng.chance(0.3)){ this.extraTurn=true; this.float(p.x,p.y,'Tah navíc!','#9df07a'); }
-    if((m.mods.includes('explosive')||this.floorMods?.mon?.explode)&&!m.boss){ this.addHazard(m.x,m.y,1,'fire',m.dmg[1]*1.2,1,1,m.name+' (exploze)'); }
+    if((m.mods.includes('explosive')||this.floorMods?.mon?.explode)&&!m.boss){ this.addHazard(m.x,m.y,1,'fire',m.dmg[1]*1.2,1,1,m.name+' (exploze)',{look:'fire'}); }
     // loot
     const qty=1+(lm.qty||0)+(this.map.event==='blackout'?0.3:0);
     const base=m.thief?0:m.boss?5:m.unique?3:m.rarity==='rare'?2:m.rarity==='magic'?0.7:m.nest?2:0.22;
@@ -770,14 +786,17 @@ export class Game{
     if(m.boss){ this.map.stairs.locked=false; this.log(`${m.name} padl! Schodiště se otevřelo.`,'good'); this.shake=14; this.checkpoint=this.depth+1; this.ui?.banner?.(m.name+' poražen',''); this.bossRef=null; }
     if(m.nest){ this.log('Hnízdo zničeno!','good'); }
     if(m.thief){ this.log('Hrabivý skřítek padl! Jeho vak praskl.','good'); this.ui?.banner?.('Skřítek chycen!',''); this.snd('loot_leg'); for(let i=0;i<8;i++) this.dropGold(m.x,m.y,3); for(let i=0;i<rng.int(3,5);i++) this.dropItem(m.x,m.y,{boost:1.2,rarity:i===0&&rng.chance(this.legChance(0.3))?'legendary':undefined}); if(rng.chance(0.5)) this.dropSupport(m.x,m.y); this.player.cores=(this.player.cores||0)+(rng.chance(0.4)?1:0); }
-    if(m.riftGuardian){ this.map.stairs.locked=false; this.invalidateLight(); this.log('Srdce jeskyně kleslo. Portál ven je otevřený.','good'); this.ui?.banner?.('Jeskyně dobyta',''); const n=1+Math.floor((this.floorMods?.mods?.length||1)/2); this.player.cores=(this.player.cores||0)+n; this.log(`+${n} zkažené jádro.`,'loot:sporeborn'); }
+    if(m.riftGuardian){ this.map.stairs.locked=false; this.invalidateLight(); this.log('Srdce jeskyně kleslo. Portál ven je otevřený.','good'); this.ui?.banner?.('Jeskyně dobyta',''); const n=1+Math.floor((this.floorMods?.mods?.length||1)/2); this.player.cores=(this.player.cores||0)+n; this.log(`+${n} zkažené jádro.`,'loot:sporeborn'); this.riftReward(m); }
     this.monsters=this.monsters.filter(x=>x!==m);
   }
   legChance(b){ return b*Math.min(1,0.25+this.depth*0.06); }
   gainXP(x){ const p=this.player; p.xp+=x; let up=false; while(p.xp>=this.xpNeed()){ p.xp-=this.xpNeed(); p.lvl++; p.points+=2; p.ppoints=(p.ppoints||0)+1; up=true; }
     if(up){ this.snd('levelup'); this.recalc(); p.hp=p.stats.life; p.mp=p.stats.mana; this.log(`Úroveň ${p.lvl}! +2 atributy [C], +1 pasivní bod [P].`,'good'); this.burst(p.x,p.y,[1,0.9,0.5],30,120,1); this.flashLight(p.x,p.y,[1,0.85,0.5],6,1); this.ui?.refresh?.(); } }
   xpNeed(){ const l=this.player.lvl; return Math.round(30*Math.pow(1.25,l-1)+l*18); }
-  dropItem(x,y,{boost=0,rarity}={}){ const lm=this.floorMods?.loot||{}; const it=makeItem(this.depth+(lm.ilvl||0)+(boost>1?1:0),{mf:this.player.stats.mf+(lm.mf||0),boost,rarity,spore:lm.spore||0.0}); if(lm.corrupt&&it.base&&rng.chance(lm.corrupt*(1+boost))){ corruptItem(it,true); } const pos=this.scatter(x,y); this.ground.push({x:pos[0],y:pos[1],item:it}); if(it.rarity==='legendary'||it.rarity==='sporeborn'||it.rarity==='set') this.log('✦ '+it.name+' leží na zemi!','loot:'+it.rarity); }
+  riftReward(m){ const rw=this.floorMods?.reward; if(!rw) return; const n=2+Math.round(rw.qty*4); const top=rng.chance(this.legChance(0.55))?'legendary':rng.chance(0.35)?'set':'rare';
+    for(let i=0;i<n;i++) this.dropItem(m.x,m.y,{boost:i===0?1.5:0.8,rarity:i===0?top:i<3?'rare':undefined,mfAdd:rw.mf}); for(let i=0;i<4;i++) this.dropGold(m.x,m.y,2);
+    this.log('Srdce jeskyně vydalo, co jeskyně nasbírala.','good'); }
+  dropItem(x,y,{boost=0,rarity,mfAdd=0}={}){ const lm=this.floorMods?.loot||{}; const it=makeItem(this.depth+(lm.ilvl||0)+(boost>1?1:0),{mf:this.player.stats.mf+(lm.mf||0)+mfAdd,boost,rarity,spore:lm.spore||0.0}); if(lm.corrupt&&it.base&&rng.chance(lm.corrupt*(1+boost))){ corruptItem(it,true); } const pos=this.scatter(x,y); this.ground.push({x:pos[0],y:pos[1],item:it}); if(it.rarity==='legendary'||it.rarity==='sporeborn'||it.rarity==='set') this.log('✦ '+it.name+' leží na zemi!','loot:'+it.rarity); }
   dropGold(x,y,m=1){ const g=Math.round(rng.range(3,9)*Math.pow(1.1,this.depth)*m*(1+(this.player.stats.gf+(this.floorMods?.loot?.gf||0))/100)); const pos=this.scatter(x,y); this.ground.push({x:pos[0],y:pos[1],gold:g}); }
   dropTome(x,y){ const pool=skillsFor(this.player.cls); const id=rng.pick(pool.length?pool:Object.keys(SKILLS).filter(k=>k!=='attack')); const s=SKILLS[id]; const pos=this.scatter(x,y); this.ground.push({x:pos[0],y:pos[1],item:{type:'tome',skill:id,name:'Kniha: '+s.name,desc:s.desc,spr:'scroll_shroom',uid:Math.random()}}); }
   dropSupport(x,y){ const pos=this.scatter(x,y); const it=makeSupport(); this.ground.push({x:pos[0],y:pos[1],item:it}); this.log('◆ '+it.name+' leží na zemi.','loot:support'); }
@@ -802,6 +821,7 @@ export class Game{
     if(st.ks.has('chitin')&&p.es>0){ const a=Math.min(p.es,d); p.es-=a; d-=a; this.lastHit=this.turn; if(d<=0){ this.float(p.x,p.y,'-'+fmt(a),'#9cf'); this.snd('block'); return a; } }
     p.hp-=d; p._hurt=1; this.snd('hurt'); this.renderHurt=Math.min(1,(this.renderHurt||0)+d/st.life*2.5); this.shake=Math.max(this.shake,3+d/st.life*18);
     this.float(p.x,p.y,'-'+fmt(d),'#ff5a4a'); this.lastHit=this.turn;
+    this.recapHit(d,el,srcName||src?.name||'neznámo',!!(src&&!src.ally),noAvoid&&!src);
     if(src&&st.thorns){ if(st.setPow.has('thornset')){ for(const o of this.monsters) if(o.hp>0&&dist(o.x,o.y,p.x,p.y)<=1){ this.thorn(o,st.thorns); if(o.hp>0&&!o.boss&&rng.chance(0.25)){ o.status.stun=1; o.tele=null; } } } else this.thorn(src,st.thorns); } if(src&&st.uniques.has('thistle')) this.thorn(src,d*0.4);
     if(ripo&&melee&&src.hp>0) this.riposteHit(src,ripo);
     if(melee&&st.uniques.has('mirelegs')&&src.status) src.status.slow=Math.max(src.status.slow||0,2);
@@ -809,10 +829,14 @@ export class Game{
     if(p.hp<=0){ p.hp=0; this.onDeath(srcName||src?.name||'neznámo'); }
     return d;
   }
+  recapHit(d,el,who,mon,dot){ const p=this.player, R=this.recap||(this.recap=[]); const last=R[R.length-1]; const note=this._hitNote||null;
+    if(last&&last.t===this.turn&&last.who===who&&last.el===(el||null)&&last.note===note){ last.d+=d; last.n++; last.hp=Math.max(0,p.hp); }
+    else R.push({t:this.turn,who,el:el||null,d,n:1,hp:Math.max(0,p.hp),max:p.stats.life,mon,dot:!!dot,note,haz:this.hazards.some(h=>h.src===who)||/jezírko|bouře/i.test(who)});
+    if(R.length>12) R.shift(); }
   riposteHit(m,b){ if(!m||m.hp<=0||m.ally) return; const c=this.ctx('attack'); c.melee=true; c.skill='riposte'; this.lunge(this.player,m); this.float(this.player.x,this.player.y,'Odveta','#ffd54a',0.85); this.strike([m],()=>this.weaponHit(b.ripo),c); }
   thorn(m,v){ if(m.hp>0){ m.hp-=v; this.float(m.x,m.y,fmt(v),'#c8a060',0.85); if(m.hp<=0) this.killMonster(m); } }
   onDeath(by){ this.lastKiller=by; if(this.daily){ this.player.dead=true; this.save(); this.lbSync(true); } for(const mn of this.minions) this.burst(mn.x,mn.y,[0.5,0.7,0.3],8,50); this.minions=[]; this.snd('death'); this.log(`Padl jsi. Zabil tě: ${by}.`,'warn'); this.burst(this.player.x,this.player.y,[0.8,0.1,0.1],40,120,1.2); this.ui?.onDeath?.(by); }
-  respawn(){ const p=this.player; p.form=null; this.minions=[]; const lost=Math.floor(p.gold*0.25); p.gold-=lost; p.xp=Math.floor(p.xp*0.5); p.buffs=[]; this.floorMods=null; p.cds={};
+  respawn(){ const p=this.player; this.recap=[]; p.form=null; this.minions=[]; const lost=Math.floor(p.gold*0.25); p.gold-=lost; p.xp=Math.floor(p.xp*0.5); p.buffs=[]; this.floorMods=null; p.cds={};
     this.enterFloor(this.checkpoint); p.hp=p.stats.life; p.mp=p.stats.mana; this.log(`Probouzíš se v hloubce ${this.checkpoint}. Ztraceno ${fmt(lost)} zlata.`,'sys'); this.save(); }
   // ================= equipment / progression =================
   equip(it,slot,silent){ if(!silent) this.snd('equip'); const p=this.player; if(!slot){ slot=it.slot==='ring'?(!p.equip.ring1?'ring1':!p.equip.ring2?'ring2':'ring1'):it.slot; }
@@ -908,7 +932,7 @@ export class Game{
       if(w){ const h=w.maxhp*0.25; w.hp=Math.min(w.maxhp,w.hp+h); this.proj(m.x,m.y,w.x,w.y,[0.5,1,0.5]); if(this.canSee(w)) this.float(w.x,w.y,'+'+fmt(h),'#7f7'); m.cd=3; return; } }
     if(m.ai==='charger'&&m.cd<=0&&d>=2&&d<=5&&sight&&(m.x===p.x||m.y===p.y||Math.abs(m.x-p.x)===Math.abs(m.y-p.y))){ const dx=Math.sign(p.x-m.x), dy=Math.sign(p.y-m.y); const tiles=[]; let x=m.x,y=m.y; for(let i=0;i<6;i++){ x+=dx; y+=dy; if(!this.passable(x,y)) break; tiles.push([x,y]); } if(tiles.length){ this.telegraph(m,tiles,'charge',1.6,{dir:[dx,dy]}); m.cd=4; return; } }
     if((m.ai==='ranged'||m.ai==='caster'||m.ai==='healer')&&sight&&d<=6&&d>1&&(m.ai==='ranged'||m.cd<=0)){
-      if(m.def.puddle&&rng.chance(0.5)&&!p.ally){ this.telegraph(m,this.area(p.x,p.y,1),'puddle',1.1); m.cd=3; return; }
+      if(m.def.puddle&&rng.chance(0.4)&&!p.ally){ this.telegraph(m,this.cross(p.x,p.y,1),'puddle',1.1,{cx:p.x,cy:p.y}); m.cd=4; return; }
       this.proj(m.x,m.y,p.x,p.y,m.el==='decay'?[0.8,0.4,1]:m.el==='poison'?[0.6,1,0.3]:m.el==='fire'?[1,0.5,0.2]:[1,0.9,0.7],m.ai==='ranged'&&!m.el?'arrow':null);
       this.monHit(m,m.ai==='ranged'?0.85:1.15,m.ai!=='ranged'||m.el?m.el||'decay':null,p);
       if(m.ai!=='ranged') m.cd=2;
@@ -921,21 +945,22 @@ export class Game{
   }
   monReach(m){ return true; }
   alertPack(m){ for(const o of this.monsters) if(o!==m&&!o.aware&&dist(o.x,o.y,m.x,m.y)<=4) o.aware=true; }
-  monHit(m,mult,el,tgt){ const p=this.player; let dm=rng.range(m.dmg[0],m.dmg[1])*mult; if(m.mods.includes('berserk')&&m.hp<m.maxhp*0.5) dm*=1.5; if(m.enraged) dm*=1.25; if(m.status.weak) dm*=0.7;
+  monHit(m,mult,el,tgt){ const p=this.player; let dm=rng.range(m.dmg[0],m.dmg[1])*mult; if(m.mods.includes('berserk')&&m.hp<m.maxhp*0.5) dm*=1.5; if(m.enraged) dm*=1.25; if(m.status.weak) dm*=0.7; if(m.status.poison?.length) dm*=1-poisonWeak(m);
     if(tgt&&tgt.ally){ this.hurtMinion(tgt,dm,el); if(m.mods.includes('vampiric')) m.hp=Math.min(m.maxhp,m.hp+dm*0.3); return; }
     const dealt=this.hurtPlayer(dm,el,m,m.name); if(m.addEl&&dealt>=0) this.hurtPlayer(dm*m.addEl,m.mods.includes('fireench')?'fire':'decay',m,m.name,true);
     if(m.el==='poison'&&dealt>0&&rng.chance(0.35)) this.addStatusP('poison',dm*0.25,3);
     if(m.el==='fire'&&dealt>0&&rng.chance(0.25)) this.addStatusP('burn',dm*0.3,2);
     if(m.mods.includes('vampiric')&&dealt>0) m.hp=Math.min(m.maxhp,m.hp+dealt*0.6); }
+  cross(x,y,r){ const t=[]; for(let dy=-r;dy<=r;dy++) for(let dx=-r;dx<=r;dx++) if(Math.abs(dx)+Math.abs(dy)<=r&&this.tile(x+dx,y+dy)===FLOOR) t.push([x+dx,y+dy]); return t; }
   area(x,y,r){ const t=[]; for(let dy=-r;dy<=r;dy++) for(let dx=-r;dx<=r;dx++) if(this.tile(x+dx,y+dy)===FLOOR) t.push([x+dx,y+dy]); return t; }
   ring(x,y,r0,r1){ const t=[]; for(let dy=-r1;dy<=r1;dy++) for(let dx=-r1;dx<=r1;dx++){ const d=Math.max(Math.abs(dx),Math.abs(dy)); if(d>=r0&&d<=r1&&this.tile(x+dx,y+dy)===FLOOR&&los(x,y,x+dx,y+dy,this.oc)) t.push([x+dx,y+dy]); } return t; }
   telegraph(m,tiles,kind,mult,extra={}){ m.tele={tiles,kind,mult,...extra}; if(tiles.some(([x,y])=>this.isVis(x,y))) this.snd('warn',m.x,m.y); this.face(m,this.player.x); if(this.canSee(m)||tiles.some(([x,y])=>this.isVis(x,y))){ const n={slam:'se napřahuje',charge:'se chystá k výpadu',nova:'nasává výtrusy',spit:'plive',puddle:'kouzlí',mine:'tiká',burst:'nafukuje se'}[kind]; if(n&&(m.boss||m.rarity!=='normal')) this.log(`${m.name} ${n}!`,'warn'); } }
-  resolveTele(m){ const p=this.player, t=m.tele; m.tele=null; if(t.kind==='slam'||t.kind==='nova'||t.kind==='charge') this.snd('slam',m.x,m.y); else if(t.kind==='mine'||t.kind==='burst') this.snd('puffbomb',m.x,m.y); const hit=t.tiles.some(([x,y])=>x===p.x&&y===p.y);
+  resolveTele(m){ const p=this.player, t=m.tele; m.tele=null; this._hitNote={slam:'úder',charge:'výpad',nova:'nova',spit:'plivanec',puddle:'kaluž',mine:'mina',burst:'výbuch'}[t.kind]||null; if(t.kind==='slam'||t.kind==='nova'||t.kind==='charge') this.snd('slam',m.x,m.y); else if(t.kind==='mine'||t.kind==='burst') this.snd('puffbomb',m.x,m.y); const hit=t.tiles.some(([x,y])=>x===p.x&&y===p.y);
     const el=t.kind==='puddle'||t.kind==='spit'?(m.el||'poison'):t.kind==='mine'?'poison':t.kind==='burst'?(m.el||'poison'):m.el;
     this.fx.push({type:'slam',tiles:t.tiles,life:0.4,max:0.4,c:el==='fire'?[1,0.45,0.1]:el==='poison'?[0.6,1,0.3]:el==='decay'?[0.8,0.4,1]:[1,0.4,0.15]});
     if(t.kind==='charge'){ let last=[m.x,m.y]; for(const [x,y] of t.tiles){ if(x===p.x&&y===p.y) break; if(!this.passable(x,y)||this.monAt(x,y)) break; last=[x,y]; } m.x=last[0]; m.y=last[1]; this.shake=Math.max(this.shake,6); }
-    if(t.kind==='puddle'||t.kind==='spit'){ this.addHazard(t.tiles[Math.floor(t.tiles.length/2)][0],t.tiles[Math.floor(t.tiles.length/2)][1],1,el,rng.range(m.dmg[0],m.dmg[1])*0.45,0,3,m.name); }
-    if(hit) this.monHit(m,t.mult,el);
+    if(t.kind==='puddle'||t.kind==='spit'){ const c=t.cx!=null?[t.cx,t.cy]:t.tiles[Math.floor(t.tiles.length/2)]; this.addHazard(c[0],c[1],1,el,rng.range(m.dmg[0],m.dmg[1])*0.45,0,t.kind==='puddle'?2:3,m.name,{shape:t.kind==='puddle'?'cross':undefined,owner:t.kind==='puddle'?m:undefined}); }
+    if(hit) this.monHit(m,t.mult,el); this._hitNote=null;
     for(const mn of this.minions.slice()) if(mn.hp>0&&t.tiles.some(([x,y])=>x===mn.x&&y===mn.y)) this.monHit(m,t.mult,el,mn);
     if(t.kind==='mine'||t.kind==='burst'){ this.flashLight(m.x,m.y,[0.6,1,0.3],3); m.hp=0; this.killMonster(m); }
     if(m.boss) this.shake=Math.max(this.shake,10); }
