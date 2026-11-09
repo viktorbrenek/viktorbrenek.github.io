@@ -17,7 +17,7 @@ async function boot(){
   document.getElementById('loading').remove();
   let started=false;
   const unlock=()=>audio.init(); addEventListener('pointerdown',unlock); addEventListener('keydown',unlock);
-  const start=o=>{ if(o.cls){ g.newCharacter(o.cls,{daily:o.daily}); if(o.nick){ g.player.nick=o.nick; g.save(); g.lbSync(true); } } else if(!g.load(o.id)) g.newCharacter('blade'); ui.bind(g); started=true; if(!o.cls&&!g.daily) ui.askNickOnce(); };
+  const start=o=>{ if(o.cls){ g.newCharacter(o.cls,{daily:o.daily}); if(o.nick){ g.player.nick=o.nick; g.save(); g.lbSync(true); } } else if(!g.load(o.id)) g.newCharacter('blade'); ui.bind(g); started=true; if(!o.cls&&!g.daily) ui.askNickOnce(); if(o.cls&&!g.daily) ui.introModal(g.player.cls); };
   ui.toTitleFn=()=>toTitle();
   const toTitle=()=>{ document.body.classList.remove('mapon'); started=false; g.map=null; ui.title(start); };
   ui.title(start);

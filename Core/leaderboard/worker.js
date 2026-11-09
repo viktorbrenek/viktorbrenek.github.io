@@ -164,6 +164,28 @@ export default {
         await env.DB.prepare('INSERT INTO well (season,tier,item,nick,keyhash,created) VALUES (?,?,?,?,?,?)').bind(b.season, v.tier, JSON.stringify(v.ok), nick, kh, Date.now()).run();
         return json({ ok: true, item: got ? JSON.parse(got.item) : null, from: got ? got.nick : null });
       }
+      // ===== cloud backup of the whole local save (code-based restore) =====
+      if (req.method === 'POST' && P === '/backup') {
+        const b = await req.json();
+        if (typeof b.key !== 'string' || b.key.length < 16 || b.key.length > 80) return json({ error: 'values' }, 400);
+        if (typeof b.data !== 'string' || b.data.length < 20 || b.data.length > 900000) return json({ error: 'size' }, 413);
+        const kh = await sha(b.key);
+        const old = await env.DB.prepare('SELECT code FROM backups WHERE keyhash=?').bind(kh).first();
+        if (!(await limit(env, kh, 'backup', 60, 15000))) return json({ ok: true, throttled: true, code: old?.code || null });
+        let code = old?.code;
+        if (!code) { const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; const r = new Uint8Array(10); crypto.getRandomValues(r); const c = [...r].map(x => A[x % A.length]).join(''); code = c.slice(0, 5) + '-' + c.slice(5); }
+        await env.DB.prepare('INSERT INTO backups (keyhash,code,data,updated) VALUES (?,?,?,?) ON CONFLICT(keyhash) DO UPDATE SET data=excluded.data, updated=excluded.updated').bind(kh, code, b.data, Date.now()).run();
+        return json({ ok: true, code });
+      }
+      if (req.method === 'GET' && P === '/restore') {
+        const code = String(q('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (code.length !== 10) return json({ error: 'code' }, 400);
+        const ip = req.headers.get('CF-Connecting-IP') || 'x';
+        if (!(await limit(env, await sha('ip:' + ip), 'restore', 40, 300))) return json({ error: 'throttled' }, 429);
+        const r = await env.DB.prepare('SELECT data,updated FROM backups WHERE code=?').bind(code.slice(0, 5) + '-' + code.slice(5)).first();
+        if (!r) return json({ error: 'not found' }, 404);
+        return json({ ok: true, data: r.data, updated: r.updated });
+      }
       return json({ error: 'not found' }, 404);
     } catch (e) { return json({ error: 'server', msg: String(e.message || e) }, 500); }
   },

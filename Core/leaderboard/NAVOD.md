@@ -58,3 +58,14 @@ npx wrangler deploy
 ```
 
 Worker importuje herní data z `docs/game/lib`, takže po změně předmětů ve hře stačí znovu `npx wrangler deploy`.
+
+## Aktualizace v3: záloha savu
+
+Jednorázově ve složce `Core/leaderboard` spusť:
+
+```
+npx wrangler d1 execute sporium --remote --file schema_v3.sql
+npx wrangler deploy
+```
+
+Hráč pak v menu **Záloha** dostane kód (např. `K7QXM-3PZ9A`), kterým si postavy obnoví v jiném prohlížeči nebo po smazání historie. Záloha se po zapnutí sama obnovuje zhruba každých 10 minut hraní.

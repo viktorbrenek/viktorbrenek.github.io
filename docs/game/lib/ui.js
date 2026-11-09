@@ -6,7 +6,41 @@ import {Game,Roster,Stash,STASH_MAX,LootFilter} from './game.js';
 import {audio} from './audio.js';
 import {LB} from './net.js';
 import {NEWS,NEWS_LATEST} from './news.js';
+import {Backup} from './backup.js';
 const $=s=>document.querySelector(s);
+const STAT_HELP={
+  'Život':'Když klesne na nulu, padneš. Roste se Silou, úrovní a předměty. Část může být rezervovaná přisluhovači.',
+  'Esence':'Platíš jí za dovednosti. Obnovuje se každý tah, mimo boj rychleji.',
+  'Poškození zbraně':'Rozsah fyzického poškození tvé zbraně. Základ pro útoky a dovednosti se zbraní.',
+  'Zvýšené poškození':'Součet všech „% poškození“. Fyzické a elementální bonusy se přičítají k příslušnému druhu zvlášť.',
+  'Síla kouzel':'Základní poškození kouzel (roste s úrovní a holí) a v závorce procentní bonus z Důvtipu a předmětů.',
+  'Kritický zásah':'Šance, že zásah bude kritický, a kolikrát silnější pak je (150 % = 1,5×).',
+  'Násobič v čase / průraz':'Násobič zvyšuje jed, hoření a krvácení. Průraz snižuje odolnosti nepřátel vůči jedu, ohni a hnilobě.',
+  'Zbroj':'Snižuje fyzické poškození. Proti slabým úderům víc, proti silným méně (nejvýš o 85 %).',
+  'Úhyb / blok':'<b>Úhyb</b>: šance, že se útoku monstra úplně vyhneš (0 poškození). <b>Blok</b>: šance zásah zastavit štítem (0 poškození). Nepomáhají proti zónám na zemi ani proti jedu a krvácení, které už na tobě jsou.',
+  'Odolnost jed / oheň / hniloba':'O kolik procent snížíš poškození daného živlu (nejvýš 75 %). Každých 5 pater hloubky je hlubina oslabuje – to je postih hloubky.',
+  'Regenerace':'Kolik života se ti obnoví za tah. Mimo boj se navíc léčíš rychleji.',
+  'Esence regen.':'Kolik esence se ti obnoví za tah.',
+  'Život za zabití':'Kolik života dostaneš za každého zabitého nepřítele.',
+  'Přisluhovači':'Bonusy tvých vyvolaných přisluhovačů.',
+  'Daň přisluhovačů':'Každý živý přisluhovač si rezervuje část tvého maximálního života. Úprava ji snižuje.',
+  'Podoba zvířete':'Bonusy, které platí jen v podobě zvířete.',
+  'Pochodeň':'Dosah tvého světla v polích. Nepřátele ve tmě hůř vidíš a oni tebe taky.',
+  'Šance otrávit / zapálit / krvácení':'Šance, že tvůj zásah způsobí jed, hoření nebo krvácení.',
+  'Vysátí života':'Kolik procent způsobeného poškození se ti vrátí jako život.',
+  'Kouzelné předměty':'Zvyšuje šanci, že z nepřátel padnou lepší předměty.',
+  'Zkrácení přebíjení':'O kolik procent se zkrátí přebíjení dovedností.',
+  'Další':'Ostatní bonusy z pasivního stromu a předmětů.',
+};
+const HUD_HELP={hp:['Život','Když klesne na nulu, padneš. Q vypije lektvar.'],mp:['Esence','Platíš jí za dovednosti.'],es:['Výtrusný štít','Pohlcuje poškození dřív než život a obnovuje se, když 2 tahy nedostaneš zásah.'],xp:['Zkušenosti','Postup k další úrovni.'],
+  gold:['Zlato','Platíš jím u překupníka.'],dust:['Výtrusný prach','Získáš rozkládáním předmětů. Platíš jím na Oltáři hniloby a za přerozdělení stromu.'],cores:['Zkažená jádra','Z Plodnic pradávných, Zkažených jeskyní a skřítků. Na Oltáři hniloby jimi zkazíš předmět – může se zlepšit, proklít, nebo zničit.'],
+  rp:['Odolnost vůči jedu','O kolik % snížíš jedové poškození. Hloubka ji snižuje.'],rf:['Odolnost vůči ohni','O kolik % snížíš ohnivé poškození. Hloubka ji snižuje.'],rd:['Odolnost vůči hnilobě','O kolik % snížíš hnilobné poškození. Hloubka ji snižuje.']};
+const INTRO=cn=>[
+  {t:'Ul-Myr',x:['Bylo jednou království, které rostlo dolů.','Ul-Myr stavělo své síně pod kořeny světa, kde houba nehnije, ale pamatuje. Své mrtvé nepohřbívalo. <b>Zasazovalo je.</b>']},
+  {t:'Sklizeň',x:['Bohatství Ul-Myru rašilo v nejhlubších síních. Na podzemních polích se nezasazovali jen mrtví – i dlužníci, zajatci a děti, za které nikdo nezaplatil.','Z jejich těl rostly plodnice, které léčily, omlazovaly a prodávaly se králům celého světa. Nahoře se o tom nemluvilo. Nahoře se platilo.']},
+  {t:'Šedá královna',x:['Královna Mirun nosila korunu z živé plodnice a slíbila, že její lid už nikdy nikoho neztratí. Pak se podhoubí naučilo hlad samo.','Velké Zakořenění pohltilo pole, síně i ty, kdo je hlídali. Mirun sestoupila do nejhlubší síně a zavřela za sebou bránu. Od té doby Ul-Myr roste dolů. Nekonečně dolů.']},
+  {t:'Sestup',x:[`Nahoře zbyla jen zřícená brána a pověsti o pokladech pod ní. Sestupuješ jako <b>${cn}</b>.`,'Zapal pochodeň. Pochodeň není světlo – je to slib, že ještě nejsi jejich.','<small class="tt-dim">Každých 5 pater po poražení strážce je kontrolní bod. Když padneš, probudíš se v něm.</small>']},
+];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const SUPC='#7fe0c9';
 const UI_=n=>`assets/ui/${n}.webp`; const IC=(n,c='ico')=>`<img class="${c}" src="${UI_(n)}">`;
@@ -15,7 +49,7 @@ export class UI{
   icon(n,size=64){ const k=n+'@'+size; if(this.icons.has(k)) return this.icons.get(k); const s=this.meta.s[n]; if(!s) return '';
     const c=document.createElement('canvas'); c.width=c.height=size; const x=c.getContext('2d'); const sc=Math.min(size/s[2],size/s[3])*0.9; const w=s[2]*sc,h=s[3]*sc;
     x.imageSmoothingQuality='high'; x.drawImage(this.img,s[0],s[1],s[2],s[3],(size-w)/2,(size-h)/2,w,h); const u=c.toDataURL(); this.icons.set(k,u); return u; }
-  bind(g){ if(this.bound){ this.g=g; g.ui=this; document.body.classList.add('ingame'); this.panel=null; this.renderPanel(); this.buildHUD(); this.refresh(); this.onLog(); return; } this.bound=true; document.addEventListener('click',e=>{ if(e.target.closest('button,.slot,.skc,.link,[data-node],.sk')) audio.play('ui_click'); },true); document.addEventListener('mouseover',e=>{ if(e.target.closest&&e.target.closest('button,.slot,.sk')) audio.play('hover'); }); this.g=g; g.ui=this; document.body.classList.add('ingame'); this.buildHUD(); this.refresh(); this.onLog(); }
+  bind(g){ this.pend={attr:[],pas:[]}; if(this.bound){ this.g=g; g.ui=this; document.body.classList.add('ingame'); this.panel=null; this.renderPanel(); this.buildHUD(); this.refresh(); this.onLog(); return; } this.bound=true; document.addEventListener('click',e=>{ if(e.target.closest('button,.slot,.skc,.link,[data-node],.sk')) audio.play('ui_click'); },true); document.addEventListener('mouseover',e=>{ if(e.target.closest&&e.target.closest('button,.slot,.sk')) audio.play('hover'); }); this.wireHudTips(); this.g=g; g.ui=this; document.body.classList.add('ingame'); this.buildHUD(); this.refresh(); this.onLog(); }
   buildHUD(){
     $('#skillbar').innerHTML=[0,1,2,3].map(i=>`<div class="sk" data-i="${i}"><img><div class="cd"></div><span class="key">${i+1}</span><span class="mc"></span><span class="sups"></span></div>`).join('')+
       `<div class="sk pot" id="potion"><img src="${this.icon('pot_red',64)}"><span class="key">Q</span><span class="cnt"></span></div>`+
@@ -44,7 +78,7 @@ export class UI{
     $('#lvl').textContent=p.lvl; $('#depth').textContent=`Hloubka ${g.depth}`; $('#biome').textContent=g.map.biome.name+(g.floorMods?' · '+g.floorMods.name:'')+(g.map.event?' · '+({storm:'Bouře',nest:'Hnízdo',cursed:'Prokletí',hunter:'Lovec',blackout:'Zatmění'}[g.map.event]):'');
     $('#gold').textContent=fmt(p.gold); $('#dust').textContent=fmt(p.dust); $('#cores').textContent=fmt(p.cores||0);
     $('#es').style.display=st.esMax?'':'none'; if(st.esMax){ $('#es .fill').style.width=((p.es||0)/st.esMax*100)+'%'; $('#es .txt').textContent=`${fmt(p.es||0)} / ${fmt(st.esMax)}`; }
-    $('#res').innerHTML=`<span class="rp">${IC('i_rpoison')}${Math.round(st.resPoison)}%</span><span class="rf">${IC('i_rfire')}${Math.round(st.resFire)}%</span><span class="rd">${IC('i_rdecay')}${Math.round(st.resDecay)}%</span>`;
+    $('#res').innerHTML=`<span class="rp" data-tip="rp">${IC('i_rpoison')}${Math.round(st.resPoison)}%</span><span class="rf" data-tip="rf">${IC('i_rfire')}${Math.round(st.resFire)}%</span><span class="rd" data-tip="rd">${IC('i_rdecay')}${Math.round(st.resDecay)}%</span>`;
     const mc={}; for(const mn of g.minions) if(mn.hp>0) mc[mn.name]=(mc[mn.name]||0)+1;
     $('#status').innerHTML=[...(p.form?[`<span class="buff form">${IC('i_buff')}${FORMS[p.form].name}</span>`]:[]),...Object.entries(mc).map(([n,c])=>`<span class="buff minion">${IC('i_skills')}${n} ×${c}</span>`),...p.buffs.map(b=>`<span class="buff">${IC('i_buff')}${b.name} ${b.turns}</span>`),...Object.entries(p.status).map(([k,v])=>`<span class="debuff">${IC({poison:'i_poison',burn:'i_burn',bleed:'i_bleed',root:'i_root',slow:'i_debuff'}[k]||'i_debuff')}${{poison:'Otráven',burn:'Hoříš',bleed:'Krvácíš',root:'Zakořeněn',slow:'Zpomalen'}[k]||k} ${v.turns??v}</span>`)].join('');
     document.querySelectorAll('#skillbar .sk[data-i]').forEach(el=>{ const id=p.bar[+el.dataset.i]; const img=el.querySelector('img');
@@ -71,6 +105,46 @@ export class UI{
     const rows=[['life','Život'],['mana','Esence'],['wdmg','Poškození zbraně'],['spellPow','Síla kouzel'],['dmgPct','% poškození'],['crit','% krit. šance'],['critMult','% krit. násobič'],['armor','Zbroj'],['dodge','% úhyb'],['block','% blok'],['resPoison','% odol. jed'],['resFire','% odol. oheň'],['resDecay','% odol. hniloba'],['dot','% poškození v čase'],['regen','Regenerace / tah'],['minionDmg','% přisluhovači']]
       .filter(([k])=>Math.abs(d[k]||0)>=0.05).map(([k,n])=>`<span class="${d[k]>0?'up':'down'}">${d[k]>0?'▲ +':'▼ '}${fm(d[k])} ${n}</span>`);
     return `<div class="tt-cmp"><div class="tt-dim">Když si ho nasadíš:</div>${rows.length?rows.join('<br>'):'<span class="tt-dim">beze změny hlavních hodnot</span>'}</div>`; }
+  // ---- pending allocations (confirm / cancel) ----
+  commitPending(kind){ const P=this.pend; if(!P) return; let any=false; for(const k of kind?[kind]:['attr','pas']) if(P[k]?.length){ P[k]=[]; any=true; }
+    if(any){ this.g?.save?.(); if(this.panel==='char') this.renderPanel(); else if(this.panel==='tree'){ this.drawTree(); this.updateTreeHead(); } } }
+  cancelPending(kind){ const P=this.pend, g=this.g, p=g?.player; if(!P||!p) return;
+    if(kind==='attr'){ for(const k of P.attr.reverse()){ p.base[k]--; p.points++; } P.attr=[]; g.recalc(); this.renderPanel(); }
+    if(kind==='pas'){ for(const id of P.pas.reverse()) g.unalloc(id); P.pas=[]; this.drawTree(); this.updateTreeHead(); }
+    this.refresh(); }
+  // ---- HUD tooltips ----
+  wireHudTips(){ const hud=$('#hud'); if(!hud||hud._tips) return; hud._tips=true;
+    hud.addEventListener('mouseover',e=>{ const t=e.target.closest?.('[data-tip]'); if(!t) return; const k=t.dataset.tip; const h=HUD_HELP[k]; if(h) this.tip(`<div class="tt-name">${h[0]}</div><div class="tt-line">${h[1]}</div>`,e); });
+    hud.addEventListener('mouseout',e=>{ const t=e.target.closest?.('[data-tip]'); if(t&&!t.contains(e.relatedTarget)) this.tip(null); });
+    hud.addEventListener('mousemove',e=>{ if(e.target.closest?.('[data-tip]')) this.moveTip(e); }); }
+  // ---- first-time hints ----
+  hint(key,html){ let seen={}; try{ seen=JSON.parse(localStorage.getItem('sporium_tips')||'{}'); }catch(e){} if(seen[key]) return; seen[key]=1; try{ localStorage.setItem('sporium_tips',JSON.stringify(seen)); }catch(e){}
+    let el=$('#gtip'); if(!el){ el=document.createElement('div'); el.id='gtip'; document.body.appendChild(el); }
+    el.innerHTML=`<b>Tip</b><div>${html}</div><button>Rozumím</button>`; el.classList.add('on'); el.querySelector('button').onclick=()=>el.classList.remove('on'); clearTimeout(this._gtT); this._gtT=setTimeout(()=>el.classList.remove('on'),20000); }
+  // ---- intro story ----
+  introModal(cls,back){ if(!back&&localStorage.getItem('sporium_intro_off')) return; const cn=CLASSES.find(c=>c.id===cls)?.name||'poutník'; let i=0;
+    const pages=INTRO(cn); const show=()=>{ const pg=pages[i];
+      this.showModal(`<div class="intro"><div class="ipg">${i+1} / ${pages.length}</div><h2>${pg.t}</h2>${pg.x.map(x=>`<p>${x}</p>`).join('')}</div>
+        <div class="pmenu"><button class="big" id="in-n">${i<pages.length-1?'Dál':'Sestoupit'}</button>${i<pages.length-1?'<button class="big" id="in-s">Přeskočit</button>':''}</div>${back?'':`<label class="lfo inoff"><input type="checkbox" id="in-off"> Úvod u dalších postav už neukazovat</label>`}`,
+        m=>{ const fin=()=>{ if(m.querySelector('#in-off')?.checked) try{ localStorage.setItem('sporium_intro_off','1'); }catch(e){} if(back) back(); else this.hideModal(); };
+          m.querySelector('#in-n').onclick=()=>{ if(i<pages.length-1){ const off=m.querySelector('#in-off')?.checked; i++; show(); if(off){ const c=$('#modal #in-off'); if(c) c.checked=true; } } else fin(); };
+          m.querySelector('#in-s')&&(m.querySelector('#in-s').onclick=fin); }); }; show(); }
+  // ---- backup (file + cloud code) ----
+  backupModal(back,beforeSave){ beforeSave?.(); const code=Backup.code(), on=Backup.enabled(); const last=Backup.lastTime();
+    this.showModal(`<h2>Záloha postav</h2><p class="hint">Hra se ukládá jen v tomto prohlížeči. Když si mažeš historii nebo hraješ jinde, zálohuj si postavy – souborem, nebo kódem.</p>
+      <div class="bk"><div class="bkc"><b>Soubor</b><p>Stáhne všechny postavy, sdílenou truhlu i přezdívku do jednoho souboru.</p><button id="bk-dl">Stáhnout zálohu</button><button id="bk-ul">Nahrát zálohu ze souboru</button><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
+      ${on?`<div class="bkc"><b>Kód zálohy</b><p>Uloží zálohu na server a dá ti kód. Kódem si postavy obnovíš kdekoli. Pak se záloha sama obnovuje zhruba každých 10 minut hraní.</p>
+        ${code?`<div class="bkcode">${code}</div><small class="tt-dim">${last?'Naposledy uloženo '+new Date(last).toLocaleString('cs-CZ'):''}</small>`:''}<button id="bk-up">${code?'Uložit zálohu teď':'Vytvořit kód zálohy'}</button>
+        <div class="bkr"><input id="bk-code" placeholder="Obnovit z kódu: XXXXX-XXXXX" maxlength="11" autocomplete="off"><button id="bk-rs">Obnovit</button></div></div>`:''}</div>
+      <div class="bkmsg hint"></div><div class="pmenu"><button class="big" id="bk-back">Zpět</button></div>`,
+      m=>{ const msg=t=>m.querySelector('.bkmsg').innerHTML=t;
+        const confirmApply=(d,src)=>{ const n=Backup.count(d); this.showModal(`<h2>Obnovit zálohu?</h2><p class="hint">Záloha (${src}) obsahuje <b>${n}</b> ${n===1?'postavu':n<5?'postavy':'postav'}. <b>Nahradí</b> všechny postavy a truhlu v tomto prohlížeči.</p><div class="pmenu"><button class="big" id="cf-ok">Obnovit</button><button class="big" id="cf-no">Zpět</button></div>`,
+          mm=>{ mm.querySelector('#cf-ok').onclick=()=>{ Backup.apply(d); location.reload(); }; mm.querySelector('#cf-no').onclick=()=>this.backupModal(back); }); };
+        m.querySelector('#bk-dl').onclick=()=>{ Backup.download(); msg('Záloha stažena.'); };
+        const f=m.querySelector('#bk-file'); m.querySelector('#bk-ul').onclick=()=>f.click(); f.onchange=async()=>{ try{ confirmApply(await Backup.readFile(f.files[0]),'soubor'); }catch(e){ msg('<span class="down">Tohle není platná záloha Sporia.</span>'); } };
+        m.querySelector('#bk-up')&&(m.querySelector('#bk-up').onclick=async()=>{ msg('Ukládám…'); const r=await Backup.cloudSave(); if(r?.ok&&r.code) this.backupModal(back); else msg(`<span class="down">Uložení se nepovedlo (${esc(String(r?.error||r?.status||'offline'))}). Zkus to za chvíli.</span>`); });
+        const ci=m.querySelector('#bk-code'); if(ci){ ci.onkeydown=e=>e.stopPropagation(); m.querySelector('#bk-rs').onclick=async()=>{ const c=ci.value.trim(); if(c.replace(/[^A-Za-z0-9]/g,'').length!==10){ msg('<span class="down">Kód má 10 znaků, např. K7QXM-3PZ9A.</span>'); return; } msg('Hledám zálohu…'); const r=await Backup.cloudRestore(c); if(r.ok) confirmApply(r.data,'kód '+esc(c.toUpperCase())); else msg(`<span class="down">${r.error===404||r.error==='not found'?'Záloha s tímto kódem neexistuje.':'Obnovení se nepovedlo – zkus to znovu.'}</span>`); }; }
+        m.querySelector('#bk-back').onclick=back; }); }
   newsHTML(max){ const seen=+(localStorage.getItem('sporium_news_seen')||0); return NEWS.slice(0,max||NEWS.length).map(n=>`<div class="nw ${n.v>seen?'new':''}"><div class="nwh"><b>${n.t}</b><small>${n.d}${n.v>seen?' · <i>nové</i>':''}</small></div><ul>${n.i.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join(''); }
   markNewsSeen(){ try{ localStorage.setItem('sporium_news_seen',NEWS_LATEST); }catch(e){} }
   lootModal(back){ const f=LootFilter.get(); const opt=(v,t)=>`<label class="lfo"><input type="radio" name="lfmin" value="${v}" ${f.min===v?'checked':''}> ${t}</label>`;
@@ -82,8 +156,8 @@ export class UI{
   newsModal(back){ this.showModal(`<h2>Novinky</h2><div class="newslist">${this.newsHTML()}</div><div class="pmenu"><button class="big" id="nw-back">Zpět</button></div>`,m=>{ this.markNewsSeen(); m.querySelector('#nw-back').onclick=back; }); }
   moveTip(e){ const t=$('#tooltip'); if(t.style.display!=='block') return; const w=t.offsetWidth,h=t.offsetHeight; let x=e.clientX+18,y=e.clientY+14; if(x+w>innerWidth-8) x=e.clientX-w-14; if(y+h>innerHeight-8) y=innerHeight-h-8; t.style.left=x+'px'; t.style.top=Math.max(8,y)+'px'; }
   // ---------- panels ----------
-  toggle(p){ if(this.modal) return; audio.play(this.panel===p?'close':'open'); this.panel=this.panel===p?null:p; this.salvageMode=false; this.renderPanel(); }
-  close(){ if(this.panel) audio.play('close'); this.panel=null; this.renderPanel(); this.tip(null); }
+  toggle(p){ if(this.modal) return; this.commitPending(); audio.play(this.panel===p?'close':'open'); this.panel=this.panel===p?null:p; this.salvageMode=false; this.renderPanel(); }
+  close(){ this.commitPending(); if(this.panel) audio.play('close'); this.panel=null; this.renderPanel(); this.tip(null); }
   renderPanel(){ this.tip(null); const el=$('#panel'); el.classList.toggle('wide',this.panel==='tree'); if(!this.panel){ el.style.display='none'; el.innerHTML=''; return; } el.style.display='block';
     const f={well:()=>this.wellHTML(),inv:()=>this.invHTML(),char:()=>this.charHTML(),skills:()=>this.skillsHTML(),craft:()=>this.craftHTML(),tree:()=>this.treeHTML(),lore:()=>this.loreHTML(),shop:()=>this.shopHTML()}[this.panel];
     el.innerHTML=`<button class="x">✕</button>`+f(); el.querySelector('.x').onclick=()=>this.close(); this.wirePanel(el); }
@@ -94,8 +168,8 @@ export class UI{
       <div class="invbar"><span>${IC('i_gold')} ${fmt(p.gold)}</span><span class="dust">${IC('i_dust')} ${fmt(p.dust)} prachu</span><button class="sal ${this.salvageMode?'on':''}">${this.salvageMode?'Rozkládání: ZAP':'Rozložit předměty'}</button><button class="salall">Rozložit obyčejné a kouzelné</button></div>
       <div class="hint">Klik = nasadit / použít · Shift+klik = rozložit · Pravý klik na nasazený = sundat · Runy vkládej v [K]</div></div></div>`; }
   charHTML(){ const g=this.g,p=g.player,st=p.stats; const at=(k,n,d)=>`<div class="attr"><b>${n}</b><span>${Math.round(st[k])}</span>${p.points?`<button data-attr="${k}">+</button>`:''}<small>${d}</small></div>`;
-    const row=(n,v)=>`<div class="row"><span>${n}</span><b>${v}</b></div>`; const pct=v=>Math.round(v*10)/10+' %'; const rc=v=>`<b class="${v<0?'down':v>=60?'up':''}">${Math.round(v)} %</b>`;
-    return `<h2>${CLASSES.find(c=>c.id===p.cls).name} · úroveň ${p.lvl}</h2><div class="char"><div><div class="pts">Volné body: <b>${p.points}</b></div>
+    const row=(n,v)=>`<div class="row" data-h="${n}"><span>${n}</span><b>${v}</b></div>`; const pct=v=>Math.round(v*10)/10+' %'; const rc=v=>`<b class="${v<0?'down':v>=60?'up':''}">${Math.round(v)} %</b>`;
+    return `<h2>${CLASSES.find(c=>c.id===p.cls).name} · úroveň ${p.lvl}</h2><div class="char"><div><div class="pts">Volné body: <b>${p.points}</b></div>${this.pend?.attr?.length?`<div class="pendbar">Rozděleno ${this.pend.attr.length} ${this.pend.attr.length===1?'bod':this.pend.attr.length<5?'body':'bodů'} <button data-pend="ok:attr">Potvrdit</button><button data-pend="x:attr">Zrušit</button></div>`:''}
       ${at('might','Síla','+1 % dmg na blízko, +1,5 života')}${at('finesse','Obratnost','+krit, úhyb, zbroj, dmg luků')}${at('wits','Důvtip','+esence, +1,2 % síla kouzel')}
       <div class="sub">Hloubka: ${g.depth} · Nejhlouběji: ${g.best} · Kontrolní bod: ${g.checkpoint} · Zabito: ${fmt(g.kills)}</div>
       ${(()=>{ const t=CLASSES.find(c=>c.id===p.cls)?.trait; return t?`<div class="pw trait">◈ <b>${t.name}:</b> ${t.desc}</div>`:''; })()}
@@ -120,7 +194,7 @@ export class UI{
         <h3 class="sm">Runy ve sklepě</h3><div class="bag runes">${supInv.length?supInv.map(([it,i])=>`<div class="slot r-support ${this.pickRune===i?'picked':''} ${fits(it.sup)?'':'dim'}" style="--rc:${SUPC}" data-rune="${i}"><img src="${this.icon(it.spr,64)}"></div>`).join(''):'<div class="hint">Žádné runy. Padají z vzácných monster, trezorů a bossů.</div>'}</div>
       </div></div>`; }
   treeHTML(){ const p=this.g.player; return `<h2>Mycelium · pasivní strom</h2><div class="treehead"></div><div class="tree"><svg id="treesvg" viewBox="-1450 -1450 2900 2900"></svg></div><div class="hint">Kolečko = zoom · táhni = posun · <input class="treeq" placeholder="Hledat (např. jed, krit, přisluhovač)…"></div>`; }
-  updateTreeHead(){ const p=this.g.player, h=$('#panel .treehead'); if(!h) return; h.innerHTML=`Volné pasivní body: <b>${p.ppoints||0}</b> · Přidělené: ${p.passives.length-1} <button class="respec">Přerozdělit vše (${this.g.respecCost()} ✦)</button>`; h.querySelector('.respec').onclick=()=>{ if(this.g.respec()){ this.drawTree(); this.updateTreeHead(); this.refresh(); } else this.g.log('Nedostatek výtrusného prachu.','warn'); }; }
+  updateTreeHead(){ const p=this.g.player, h=$('#panel .treehead'); if(!h) return; h.innerHTML=`Volné pasivní body: <b>${p.ppoints||0}</b> · Přidělené: ${p.passives.length-1} ${this.pend?.pas?.length?`<span class="pendbar">Nově ${this.pend.pas.length} <button data-pend="ok:pas">Potvrdit</button><button data-pend="x:pas">Zrušit</button></span>`:''} <button class="respec">Přerozdělit vše (${this.g.respecCost()} ✦)</button>`; h.querySelectorAll('[data-pend]').forEach(b=>b.onclick=()=>{ const [act,kind]=b.dataset.pend.split(':'); if(act==='ok') this.commitPending(kind); else this.cancelPending(kind); }); h.querySelector('.respec').onclick=()=>{ this.commitPending(); if(this.g.respec()){ this.drawTree(); this.updateTreeHead(); this.refresh(); } else this.g.log('Nedostatek výtrusného prachu.','warn'); }; }
   drawTree(){ const svg=$('#treesvg'); if(!svg) return; const g=this.g,p=g.player; const has=id=>p.passives.includes(id);
     let h=''; const seen=new Set(); const L=[];
     for(const n of PASSIVES) for(const l of PASSIVE_MAP[n.id].adj){ const k=[n.id,l].sort().join('-'); if(seen.has(k)) continue; seen.add(k); const o=PASSIVE_MAP[l]; L.push([n,o,has(n.id)&&has(l)]); }
@@ -134,7 +208,7 @@ export class UI{
     svg.querySelectorAll('[data-node]').forEach(el=>{ const n=PASSIVE_MAP[el.dataset.node];
       el.onmouseenter=e=>this.tip(`<div class="tt-name" style="color:${n.k?'#f08a3c':n.notable?'#f2d36b':'#ddd'}">${n.n}</div>${n.k?`<div class="tt-power">${KEYSTONES[n.k]}</div>`:''}<div class="tt-aff">${Object.entries(n.s).map(([s,v])=>statLine(s,v)).join('<br>')}</div>${p.passives.includes(n.id)?'<div class="tt-dim">Přiděleno</div>':g.canAlloc(n.id)?'<div class="tt-hint">Klikni pro přidělení</div>':''}`,e);
       el.onmouseleave=()=>this.tip(null);
-      el.onclick=()=>{ if(performance.now()-(this.treeDragged||0)<150) return; if(g.alloc(n.id)){ this.drawTree(); this.updateTreeHead(); this.refresh(); this.tip(null); } }; }); }
+      el.onclick=()=>{ if(performance.now()-(this.treeDragged||0)<150) return; if(g.alloc(n.id)){ (this.pend||(this.pend={attr:[],pas:[]})).pas.push(n.id); this.drawTree(); this.updateTreeHead(); this.refresh(); this.tip(null); } }; }); }
   markTree(){ const svg=$('#treesvg'); if(!svg) return; const t=(this.treeQ||'').trim().toLowerCase(); svg.querySelectorAll('[data-node]').forEach(el=>{ const n=PASSIVE_MAP[el.dataset.node]; let hit=false;
       if(t.length>=2){ const txt=(n.n+' '+(n.k?KEYSTONES[n.k]:'')+' '+Object.keys(n.s).map(k=>STAT_NAMES[k]||k).join(' ')).toLowerCase(); hit=txt.includes(t); } el.classList.toggle('hit',hit); }); }
   wireTreeNav(svg){ if(svg._nav) return; svg._nav=true; let vb=this.treeVB&&this.treeVB[2]>0?this.treeVB:[-1000,-1000,2000,2000]; const set=()=>{ svg.setAttribute('viewBox',vb.join(' ')); this.treeVB=vb; }; set();
@@ -158,7 +232,9 @@ export class UI{
         if(it.type==='tome') g.learn(it); else if(it.type==='support'){ this.panel='skills'; this.pickRune=p.inv.indexOf(it); } else if(it.base) g.equip(it); this.refresh(); }; });
     el.querySelector('.sal')&&(el.querySelector('.sal').onclick=()=>{ this.salvageMode=!this.salvageMode; this.renderPanel(); });
     el.querySelector('.salall')&&(el.querySelector('.salall').onclick=()=>{ let v=0; for(const it of p.inv.slice()) if(it.base&&(it.rarity==='common'||it.rarity==='magic')) v+=g.salvage(it); g.log(`Rozloženo: +${v} ✦`,'sys'); this.refresh(); });
-    el.querySelectorAll('[data-attr]').forEach(b=>b.onclick=()=>{ if(p.points>0){ p.points--; p.base[b.dataset.attr]++; g.recalc(); this.refresh(); } });
+    el.querySelectorAll('[data-attr]').forEach(b=>b.onclick=()=>{ if(p.points>0){ p.points--; p.base[b.dataset.attr]++; (this.pend||(this.pend={attr:[],pas:[]})).attr.push(b.dataset.attr); g.recalc(); this.refresh(); } });
+    el.querySelectorAll('[data-pend]').forEach(b=>b.onclick=()=>{ const [act,kind]=b.dataset.pend.split(':'); if(act==='ok') this.commitPending(kind); else this.cancelPending(kind); });
+    el.querySelectorAll('[data-h]').forEach(n=>{ const h=STAT_HELP[n.dataset.h]; if(!h) return; n.onmouseenter=e=>this.tip(`<div class="tt-name">${n.dataset.h}</div><div class="tt-line">${h}</div>`,e); n.onmouseleave=()=>this.tip(null); });
     el.querySelectorAll('[data-skill]').forEach(n=>{ n.onclick=()=>{ this.selSkill=n.dataset.skill; this.renderPanel(); }; n.onmouseenter=e=>this.tip(this.skillTip(n.dataset.skill),e); n.onmouseleave=()=>this.tip(null); });
     el.querySelectorAll('[data-bar]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.bar, s=this.selSkill; const j=p.bar.indexOf(s); if(j>=0) p.bar[j]=p.bar[i]; p.bar[i]=s; this.refresh(); });
     el.querySelectorAll('[data-rune]').forEach(n=>{ const it=p.inv[+n.dataset.rune]; hoverTip(n,it); n.onclick=()=>{ this.pickRune=this.pickRune===+n.dataset.rune?null:+n.dataset.rune; this.renderPanel(); }; });
@@ -251,7 +327,7 @@ export class UI{
     this.showModal(`<div class="title"><h1>SPORIUM</h1>
       <div class="season"><span class="sn">Sezóna ${SEASON.n}</span><b>${SEASON.name}</b><small>${SEASON.desc}</small></div>
       <p class="tag">Sestup do hnijících hlubin. Každé patro hlouběji, každý výtrus temnější.</p>
-      <div class="lbrow"><button class="big daily" id="t-daily">☼ Denní hlubina</button><button class="big" id="t-lb">Žebříček sezóny</button><button class="big newsb" id="t-news">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button></div>
+      <div class="lbrow"><button class="big daily" id="t-daily">☼ Denní hlubina</button><button class="big" id="t-lb">Žebříček sezóny</button><button class="big" id="t-bk">Záloha</button><button class="big newsb" id="t-news">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button></div>
       ${list.length?`<h3>Tvoje postavy</h3><div class="roster">${list.map(c=>`<div class="rch"><img src="${this.icon(cn(c.cls)?.spr||'hero_blade',64)}"><div class="ri"><b>${esc(cn(c.cls)?.name||c.name)}${c.nick?` <span class="nk">· ${esc(c.nick)}</span>`:''}${c.daily?` <span class="dtag">☼ ${c.daily}</span>`:''}</b><small>Úroveň ${c.lvl} · ${c.dead?'padl v hloubce '+c.best:c.daily&&c.daily!==LB.today()?'uzavřeno · hloubka '+c.best:'hloubka '+c.depth+' · nejhlouběji '+c.best}</small></div>${c.daily?'<span></span>':`<button class="nkb" data-nick="${c.id}" title="Přezdívka pro žebříček">${c.nick?'✎':'+ nick'}</button>`}${c.dead||(c.daily&&c.daily!==LB.today())?'<span></span>':`<button data-play="${c.id}">Hrát</button>`}<button class="del" data-del="${c.id}" title="Smazat">✕</button></div>`).join('')}</div>`:''}
       <h3>${list.length?'Nová postava':'Vyber hrdinu'}</h3><div class="classes">${CLASSES.map(c=>`<button data-c="${c.id}"><img src="${this.icon(c.spr,96)}"><b>${c.name}</b><small>${c.desc}</small><i class="trt">◈ ${c.trait.name}: ${c.trait.desc}</i></button>`).join('')}</div>
       <p class="keys">Tab mapa · WASD / šipky (držet) / klik – pohyb a útok · 1–4 dovednosti · Q lektvar · E / mezerník interakce · Enter sestup · I C K P J panely · M zvuk · Esc menu · kolečko zoom</p></div>`,
@@ -260,7 +336,7 @@ export class UI{
       m.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{ const cls=b.dataset.c; this.nickModal(LB.player().nick,'Nová postava',nick=>{ this.hideModal(); if(nick) LB.setDefaultNick(nick); onStart({cls,nick}); },()=>this.title(onStart)); });
       m.querySelectorAll('[data-nick]').forEach(b=>b.onclick=()=>{ const id=b.dataset.nick; const s=Roster.get(id); this.nickModal(s.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ s.player.nick=nick||''; s.player.nickAsked=true; Roster.put(id,s); if(nick) LB.setDefaultNick(nick); this.title(onStart); },()=>this.title(onStart)); });
       m.querySelector('#t-lb').onclick=()=>this.leaderboard(()=>this.title(onStart)); m.querySelector('#t-daily').onclick=()=>this.dailyModal(onStart);
-      m.querySelector('#t-news').onclick=()=>this.newsModal(()=>this.title(onStart));
+      m.querySelector('#t-news').onclick=()=>this.newsModal(()=>this.title(onStart)); m.querySelector('#t-bk').onclick=()=>this.backupModal(()=>this.title(onStart));
       m.insertAdjacentHTML('beforeend',`<aside id="newsSide"><h3>Novinky</h3>${this.newsHTML(3)}<button id="ns-all">Všechny novinky</button></aside>`); m.querySelector('#ns-all').onclick=()=>this.newsModal(()=>this.title(onStart)); }); }
   nickModal(cur,title,done,back){ const on=LB.enabled();
     this.showModal(`<h2>${title}</h2><p class="hint">Přezdívka se zobrazí v online žebříčku sezóny. Žádná registrace ani e-mail – stačí jméno (2–16 znaků).${on?'':' <b>Žebříček zatím není zapnutý</b>, přezdívka se uloží a odešle, až bude.'}</p>
@@ -279,7 +355,7 @@ export class UI{
     const body=d?(rows.length?`<div class="lbt"><div class="lbh"><span>#</span><span>Přezdívka</span><span>Třída</span><span>Hloubka</span><span>Úroveň</span></div>${rows.map((r,i)=>`<div class="lbr ${myIds.has(r.id)?'me':''} ${i<3?'top'+(i+1):''}"><span>${i+1}</span><span>${esc(r.nick)}</span><span><img src="${this.icon(cn(r.cls)?.spr||'hero_blade',32)}">${cn(r.cls)?.name||r.cls}</span><span>${r.best}${r.dead?' ✝':''}</span><span>${r.lvl}</span></div>`).join('')}</div>`:'<p class="hint">Zatím nikdo. Buď první!</p>'):'<p class="hint">Žebříček je teď nedostupný. Zkus to později.</p>';
     if(!document.querySelector('.lbtabs')) return; this.showModal(head+body+`<p class="hint">Výsledek se odešle automaticky, když postava s přezdívkou dosáhne nové hloubky.</p><button class="big" id="lb-back">Zpět</button>`,wire); }
   pauseMenu(toTitle){ const g=this.g; this.showModal(`<h2>Menu</h2><p class="hint">${esc(g.player.name)} · úroveň ${g.player.lvl} · hloubka ${g.depth}${g.inRift?' · ve Zkažené jeskyni (uloží se před vchodem)':''}</p>
-      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-lf">Filtr kořisti</button><button class="big" id="pm-nw">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
-    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-nw').onclick=()=>this.newsModal(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-lf').onclick=()=>this.lootModal(()=>this.pauseMenu(toTitle));
+      <div class="pmenu"><button class="big" id="pm-c">Pokračovat</button><button class="big" id="pm-lb">Žebříček</button><button class="big" id="pm-lf">Filtr kořisti</button><button class="big" id="pm-bk">Záloha</button><button class="big" id="pm-st">Příběh</button><button class="big" id="pm-nw">Novinky${NEWS_LATEST>+(localStorage.getItem('sporium_news_seen')||0)?' <span class="nbadge">nové</span>':''}</button><button class="big" id="pm-n">Přezdívka${g.player.nick?': '+esc(g.player.nick):''}</button><button class="big" id="pm-s">Uložit a do menu</button><button class="big" id="pm-m">${audio.vol.muted?'Zapnout zvuk':'Vypnout zvuk'}</button></div>`,
+    m=>{ m.querySelector('#pm-c').onclick=()=>this.hideModal(); m.querySelector('#pm-lb').onclick=()=>this.leaderboard(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-nw').onclick=()=>this.newsModal(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-lf').onclick=()=>this.lootModal(()=>this.pauseMenu(toTitle)); m.querySelector('#pm-bk').onclick=()=>this.backupModal(()=>this.pauseMenu(toTitle),()=>g.save()); m.querySelector('#pm-st').onclick=()=>this.introModal(g.player.cls,()=>this.pauseMenu(toTitle));
       m.querySelector('#pm-n').onclick=()=>this.nickModal(g.player.nick||LB.player().nick,'Přezdívka postavy',nick=>{ g.player.nick=nick||''; g.player.nickAsked=true; g._nickWarned=false; if(nick) LB.setDefaultNick(nick); g.save(); g.lbSync(true); this.pauseMenu(toTitle); },()=>this.pauseMenu(toTitle)); m.querySelector('#pm-m').onclick=()=>{ audio.toggleMute(); this.hideModal(); }; m.querySelector('#pm-s').onclick=()=>{ if(g.inRift) g.exitRift(); g.save(); this.hideModal(); this.panel=null; this.renderPanel(); toTitle(); }; }); }
 }

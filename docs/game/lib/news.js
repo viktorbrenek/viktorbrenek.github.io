@@ -1,5 +1,11 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:19, d:'10. 11. 2026', t:'Záloha postav, potvrzování a nápověda', i:[
+    '<b>Záloha</b> (úvodní obrazovka i menu Esc): stáhni si postavy do souboru, nebo si vytvoř <b>kód zálohy</b> a obnov je v jiném prohlížeči či po smazání historie. Záloha se pak sama obnovuje.',
+    'Body atributů a pasivního stromu se ukládají až tlačítkem <b>Potvrdit</b> – překliknutí jde vrátit tlačítkem Zrušit.',
+    'Najeď myší na řádky v okně postavy a na ukazatele vlevo nahoře – dozvíš se, co znamenají (úhyb, blok, zbroj, odolnosti…). Zkažená jádra mají vlastní ikonu.',
+    'Nové postavy uvítá krátký <b>příběh Ul-Myru</b> (znovu si ho přečteš v menu Esc → Příběh).',
+    'Při prvním levelu, první runě, knize a první smrti ti hra ukáže krátký tip.']},
   {v:18, d:'9. 11. 2026', t:'Nový biom: Zhnilá katedrála', i:[
     'Hloubky 11–15 tě zavedou do <b>Zhnilé katedrály</b>: mozaikové a šachovnicové podlahy, gotické oblouky, lavice, svícny, sochy světců, sarkofágy, varhany a padlé zvony.',
     'Ze stropu dopadá barevné světlo neviditelných vitráží a svícny s relikviáři hřejí teplým světlem.',

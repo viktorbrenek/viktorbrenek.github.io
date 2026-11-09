@@ -5,6 +5,7 @@ import {MONSTERS,BOSSES,MINIBOSSES,MON_MODS,MON_RARE_A,MON_RARE_B,SKILLS,SUPPORT
 import {makeItem,makeSupport,itemStats,itemValue,corruptItem,setTooltipCtx} from './items.js';
 import {audio} from './audio.js';
 import {LB} from './net.js';
+import {Backup} from './backup.js';
 
 export const T=64;
 const SAVE_KEY='sporium_save_v2', ROSTER_KEY='sporium_roster_v1', STASH_KEY='sporium_stash_v1'; export const STASH_MAX=10;
@@ -43,7 +44,7 @@ export class Game{
   static hasSave(){ return Roster.list().length>0; }
   save(){ try{ const p=this.player; const {buffs,status,path,rx,ry,lunge,flash,stats,anim,_wp,_mv,_hurt,...rest}=p;
       if(!this.charId) this.charId='c'+Date.now()+Math.floor(Math.random()*1000); Roster.put(this.charId,{depth:this.depth,checkpoint:this.checkpoint,best:this.best,kills:this.kills,seed:this.seed,daily:this.daily||null,time:Date.now(),player:rest}); }catch(e){ console.warn(e); }
-    this.lbSync(); }
+    this.lbSync(); if(!this.daily) Backup.tick(); }
   lbSync(force){ const p=this.player; if(!LB.enabled()||!p?.nick) return;
     if(this.daily){ if(p.dead&&!force) return; if(!force&&this.best<=(p.lbSent||0)) return; LB.dailySubmit(this,p.dead).then(r=>{ if(!r) return; if(r.throttled){ clearTimeout(this._lbT); this._lbT=setTimeout(()=>this.lbSync(),9500); return; } if(r.ok) p.lbSent=Math.max(p.lbSent||0,this.best); else if(r.error==='already played'&&!this._dw){ this._dw=true; this.log('Denní hlubina: dnešní pokus už máš zapsaný – tento běh se do žebříčku nepočítá.','warn'); } }); return; }
     if(!force&&this.best<=(p.lbSent||0)) return;
@@ -259,7 +260,7 @@ export class Game{
     const p=this.player;
     if(g.gold){ this.snd('coin'); p.gold+=g.gold; this.float(g.x,g.y,'+'+fmt(g.gold)+' zl','#f2d36b'); }
     else if(g.item.type==='potion'){ if(p.potions<p.potionMax){ p.potions++; this.float(g.x,g.y,'+lektvar','#e66'); } else return; }
-    else { if(p.inv.length>=30){ this.log('Inventář je plný!','warn'); return; } p.inv.push(g.item); this.snd(g.item.rarity==='legendary'||g.item.rarity==='sporeborn'||g.item.rarity==='set'?'loot_leg':g.item.rarity==='rare'||g.item.type==='support'?'loot_rare':'loot'); this.log('Sebráno: '+g.item.name,'loot:'+(g.item.rarity||(g.item.type==='support'?'support':'tome'))); }
+    else { if(p.inv.length>=30){ this.log('Inventář je plný!','warn'); return; } p.inv.push(g.item); if(g.item.type==='support') this.ui?.hint?.('rune','Sebral jsi <b>runu</b>. Vlož ji do volného slotu dovednosti v okně <b>[K]</b> – runy mění, jak dovednost funguje.'); else if(g.item.type==='tome') this.ui?.hint?.('tome','<b>Kniha dovednosti</b>: klikni na ni v inventáři <b>[I]</b> a naučíš se novou dovednost (nebo zvýšíš úroveň známé).'); this.snd(g.item.rarity==='legendary'||g.item.rarity==='sporeborn'||g.item.rarity==='set'?'loot_leg':g.item.rarity==='rare'||g.item.type==='support'?'loot_rare':'loot'); this.log('Sebráno: '+g.item.name,'loot:'+(g.item.rarity||(g.item.type==='support'?'support':'tome'))); }
     this.ground.splice(this.ground.indexOf(g),1); this.ui?.refresh?.();
   }
   wait(){ return this.endTurn(); }
@@ -791,7 +792,7 @@ export class Game{
   }
   legChance(b){ return b*Math.min(1,0.25+this.depth*0.06); }
   gainXP(x){ const p=this.player; p.xp+=x; let up=false; while(p.xp>=this.xpNeed()){ p.xp-=this.xpNeed(); p.lvl++; p.points+=2; p.ppoints=(p.ppoints||0)+1; up=true; }
-    if(up){ this.snd('levelup'); this.recalc(); p.hp=p.stats.life; p.mp=p.stats.mana; this.log(`Úroveň ${p.lvl}! +2 atributy [C], +1 pasivní bod [P].`,'good'); this.burst(p.x,p.y,[1,0.9,0.5],30,120,1); this.flashLight(p.x,p.y,[1,0.85,0.5],6,1); this.ui?.refresh?.(); } }
+    if(up){ this.snd('levelup'); this.recalc(); p.hp=p.stats.life; p.mp=p.stats.mana; this.log(`Úroveň ${p.lvl}! +2 atributy [C], +1 pasivní bod [P].`,'good'); this.burst(p.x,p.y,[1,0.9,0.5],30,120,1); this.flashLight(p.x,p.y,[1,0.85,0.5],6,1); this.ui?.refresh?.(); this.ui?.hint?.('lvl','Nová úroveň! Body <b>atributů</b> rozdělíš v okně postavy <b>[C]</b>, <b>pasivní bod</b> v pasivním stromu <b>[P]</b>. Rozdělené body se uloží až tlačítkem <b>Potvrdit</b>.'); } }
   xpNeed(){ const l=this.player.lvl; return Math.round(30*Math.pow(1.25,l-1)+l*18); }
   riftReward(m){ const rw=this.floorMods?.reward; if(!rw) return; const n=2+Math.round(rw.qty*4); const top=rng.chance(this.legChance(0.55))?'legendary':rng.chance(0.35)?'set':'rare';
     for(let i=0;i<n;i++) this.dropItem(m.x,m.y,{boost:i===0?1.5:0.8,rarity:i===0?top:i<3?'rare':undefined,mfAdd:rw.mf}); for(let i=0;i<4;i++) this.dropGold(m.x,m.y,2);
@@ -835,7 +836,7 @@ export class Game{
     if(R.length>12) R.shift(); }
   riposteHit(m,b){ if(!m||m.hp<=0||m.ally) return; const c=this.ctx('attack'); c.melee=true; c.skill='riposte'; this.lunge(this.player,m); this.float(this.player.x,this.player.y,'Odveta','#ffd54a',0.85); this.strike([m],()=>this.weaponHit(b.ripo),c); }
   thorn(m,v){ if(m.hp>0){ m.hp-=v; this.float(m.x,m.y,fmt(v),'#c8a060',0.85); if(m.hp<=0) this.killMonster(m); } }
-  onDeath(by){ this.lastKiller=by; if(this.daily){ this.player.dead=true; this.save(); this.lbSync(true); } for(const mn of this.minions) this.burst(mn.x,mn.y,[0.5,0.7,0.3],8,50); this.minions=[]; this.snd('death'); this.log(`Padl jsi. Zabil tě: ${by}.`,'warn'); this.burst(this.player.x,this.player.y,[0.8,0.1,0.1],40,120,1.2); this.ui?.onDeath?.(by); }
+  onDeath(by){ this.lastKiller=by; if(this.daily){ this.player.dead=true; this.save(); this.lbSync(true); } for(const mn of this.minions) this.burst(mn.x,mn.y,[0.5,0.7,0.3],8,50); this.minions=[]; this.snd('death'); this.log(`Padl jsi. Zabil tě: ${by}.`,'warn'); this.burst(this.player.x,this.player.y,[0.8,0.1,0.1],40,120,1.2); this.ui?.onDeath?.(by); if(!this.daily) this.ui?.hint?.('death','Smrt není konec. Probudíš se v posledním <b>kontrolním bodě</b> – ten se posouvá každých 5 pater po poražení strážce. Ztratíš čtvrtinu zlata a polovinu zkušeností do další úrovně.'); }
   respawn(){ const p=this.player; this.recap=[]; p.form=null; this.minions=[]; const lost=Math.floor(p.gold*0.25); p.gold-=lost; p.xp=Math.floor(p.xp*0.5); p.buffs=[]; this.floorMods=null; p.cds={};
     this.enterFloor(this.checkpoint); p.hp=p.stats.life; p.mp=p.stats.mana; this.log(`Probouzíš se v hloubce ${this.checkpoint}. Ztraceno ${fmt(lost)} zlata.`,'sys'); this.save(); }
   // ================= equipment / progression =================
@@ -851,11 +852,12 @@ export class Game{
   unsocket(skill,idx){ const p=this.player; const L=p.links[skill]; if(!L||!L[idx]||p.inv.length>=30) return; p.inv.push(makeSupport(L[idx])); L[idx]=null; }
   canAlloc(id){ const p=this.player; if(p.passives.includes(id)||!(p.ppoints>0)) return false; return [...PASSIVE_MAP[id].adj].some(a=>p.passives.includes(a)); }
   alloc(id){ if(!this.canAlloc(id)) return false; const p=this.player; p.passives.push(id); p.ppoints--; this.recalc(); return true; }
+  unalloc(id){ const p=this.player; const i=p.passives.lastIndexOf(id); if(i<1) return false; p.passives.splice(i,1); p.ppoints=(p.ppoints||0)+1; this.recalc(); return true; }
   respecCost(){ return 20+this.player.lvl*6; }
   respec(){ const p=this.player; const c=this.respecCost(); if(p.dust<c) return false; p.dust-=c; p.ppoints+=p.passives.length-1; p.passives=['c']; this.recalc(); return true; }
   // ================= turn processing =================
   endTurn(){
-    const p=this.player; this.turn++;
+    const p=this.player; this.turn++; this.ui?.commitPending?.();
     if(this.extraTurn){ this.extraTurn=false; this.updateFOV(); this.ui?.refresh?.(); return true; }
     const inCombat=this.monsters.some(m=>m.hp>0&&m.aware&&dist(m.x,m.y,p.x,p.y)<=10)||this.turn-(this.lastHit||-99)<4;
     p.hp=Math.min(p.stats.life,p.hp+p.stats.regen+(inCombat||p.stats.ks.has('bloodfrenzy')?0:p.stats.life*0.02)); p.mp=Math.min(p.stats.mana,p.mp+p.stats.manaRegen+(inCombat?0:p.stats.mana*0.03));
