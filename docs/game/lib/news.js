@@ -1,5 +1,9 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:18, d:'9. 11. 2026', t:'Nový biom: Zhnilá katedrála', i:[
+    'Hloubky 11–15 tě zavedou do <b>Zhnilé katedrály</b>: mozaikové a šachovnicové podlahy, gotické oblouky, lavice, svícny, sochy světců, sarkofágy, varhany a padlé zvony.',
+    'Ze stropu dopadá barevné světlo neviditelných vitráží a svícny s relikviáři hřejí teplým světlem.',
+    'Utopené mycelium se posunulo na hloubky 16–20.']},
   {v:17, d:'9. 11. 2026', t:'Rychlá hniloba', i:[
     '<b>Jed</b> působí rychleji: trvá poloviční dobu, celkově dává o 15 % víc a první tik zasáhne hned při zásahu. Už nemusíš kličkovat, než nepřítel vytiká.',
     '<b>Hniloba oslabuje</b>: každý stack jedu sníží poškození monstra o 6 % (nejvýš −30 %). Uvidíš to nad jeho životem.',

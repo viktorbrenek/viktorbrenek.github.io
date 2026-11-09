@@ -60,6 +60,9 @@ export class SceneRenderer{
     // additive fx
     R.layer('add');
     for(const pr of g.props){ if(!g.isVis(pr.x,pr.y)) continue;
+      if(pr.shaft){ const c=pr.light.map(v=>v/1.6), fl=0.85+Math.sin(time*0.7+pr.ph)*0.15; const fx=pr.x*T+T/2, fy=pr.y*T+T/2;
+        R.glow(fx,fy,T*1.1,c,0.26*fl); R.q(fx-T*0.2,fy-T*4.0,T*1.3,T*4.4,0,0,1,1,c[0],c[1],c[2],0.2*fl,2,-0.2); R.q(fx-T*0.05,fy-T*3.5,T*0.7,T*3.8,0,0,1,1,1,0.95,0.9,0.09*fl,2,-0.2);
+        if(rng.chance(dt*3)) g.fx.push({type:'p',x:fx+rng.range(-T*0.4,T*0.4),y:fy-rng.range(0,T*2),vx:rng.range(-4,4),vy:rng.range(4,12),c:[c[0]*0.9+0.1,c[1]*0.9+0.1,c[2]*0.9+0.1],s:rng.range(2,4),life:2.2,max:2.2}); continue; }
       if(pr.type==='walltorch'||(pr.type==='brazier'&&pr.lit)){ const fx=pr.x*T+T/2, fy=pr.wall?pr.y*T+T*0.55:pr.y*T+T*0.25; R.glow(fx,fy,T*0.55*(1+Math.sin(time*11+pr.x)*0.08),[1,0.55,0.2],0.65); R.glow(fx,fy,T*1.6,[1,0.45,0.15],0.18);
         if(rng.chance(dt*14)) g.fx.push({type:'p',x:fx+rng.range(-5,5),y:fy,vx:rng.range(-8,8),vy:-rng.range(30,60),c:[1,0.6,0.2],s:rng.range(3,6),life:0.7,max:0.7}); }
       if(pr.type==='pillar'&&pr.state!=='done'){ R.glow(pr.x*T+T/2,pr.y*T+T*0.3,T*(pr.state==='active'?1.6:1.0)*(1+Math.sin(time*(pr.state==='active'?6:2))*0.12),[0.5,1,0.4],pr.state==='active'?0.45:0.25); }

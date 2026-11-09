@@ -107,18 +107,22 @@ export function generate(depth, seed, opt={}){
   // glow shrooms + decor
   for(const r of rooms){ const n=Math.floor(r.w*r.h/14)+R.int(0,2);
     for(let k=0;k<n;k++){ const p=randIn(r); if(!p) continue; const glow=R.chance(0.22);
-      if(glow){ put({type:'glow',x:p[0],y:p[1],spr:R.pick(['glowshroom','deco_shroom12','deco_shroom10']),block:false,light:R.pick([[0.55,0.9,0.4],[0.5,0.7,1.0],[0.85,0.5,1.0]]),lr:3,deco:true}); }
-      else { const blocky=interior(p[0],p[1])&&R.chance(0.35); const spr=R.pick(biome.deco); put({type:'deco',x:p[0],y:p[1],spr,block:blocky&&['pillar','pillars','barrels','crate','deadtree','stump','stump2','grave','obelisk','bench'].includes(spr),deco:true}); } } }
+      if(glow&&biome.id==='cathedral'&&R.chance(0.6)){ const cand=R.chance(0.7); put({type:'glow',x:p[0],y:p[1],spr:cand?'cath_candelabra':'cath_reliquary',block:interior(p[0],p[1]),light:cand?[1,0.7,0.38]:[1,0.78,0.35],lr:cand?4:3,deco:true}); }
+      else if(glow){ put({type:'glow',x:p[0],y:p[1],spr:R.pick(['glowshroom','deco_shroom12','deco_shroom10']),block:false,light:R.pick([[0.55,0.9,0.4],[0.5,0.7,1.0],[0.85,0.5,1.0]]),lr:3,deco:true}); }
+      else { const blocky=interior(p[0],p[1])&&R.chance(0.35); const spr=R.pick(biome.deco); put({type:'deco',x:p[0],y:p[1],spr,block:blocky&&['pillar','pillars','barrels','crate','deadtree','stump','stump2','grave','obelisk','bench','cath_pew','cath_pew_broken','cath_candelabra','cath_pillar','cath_statue','cath_lectern','cath_sarcophagus','cath_organ','cath_reliquary','cath_bell'].includes(spr),deco:true}); } } }
   // pools
   for(let k=0;k<R.int(1,4);k++){ const r=R.pick(rooms.slice(1)); const p=randIn(r); if(p) put({type:'pool',x:p[0],y:p[1],spr:biome.id==='drowned'?'pool_water':'pool_poison',block:false,hazard:biome.id!=='drowned',flat:true}); }
   // chests, altar, shrine
   for(let k=0;k<R.int(1,3);k++){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'chest',x:p[0],y:p[1],spr:R.chance(0.7)?'crate':'barrels',block:true,small:true}); }
   if(boss||R.chance(0.45)){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'altar',x:p[0],y:p[1],spr:'altar',block:true,light:[0.6,1,0.5],lr:3}); }
   if(R.chance(0.5)){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'shrine',x:p[0],y:p[1],spr:'shrine',block:true,used:false,light:[0.7,0.5,1],lr:3}); }
+  // cathedral: coloured light falling through unseen stained-glass windows
+  if(biome.shafts) for(const r of rooms){ if(r.w*r.h<16||!R.chance(0.75)) continue; for(let k=0;k<(r.w*r.h>40?2:1);k++){ const p=randIn(r); if(!p||props.some(q=>q.x===p[0]&&q.y===p[1])) continue;
+    const col=R.pick([[0.95,0.3,0.32],[0.35,0.5,1.0],[1.0,0.78,0.3],[0.45,0.95,0.55],[0.75,0.4,1.0]]); props.push({type:'shaft',x:p[0],y:p[1],spr:R.chance(0.5)?'decal_28':'decal_32',flat:true,decal:true,rot:R.range(0,6.28),sc:0.85,ox:0,oy:0,flip:false,shaft:true,light:col.map(v=>v*1.6),lr:4,ph:R.range(0,6.28)}); } }
   // floor decals (flat, non-blocking) to break texture repetition
-  const ROT=new Set([0,1,2,3,4,7,9,12,14,20,21,22,25]);
+  const ROT=new Set([0,1,2,3,4,7,9,12,14,20,21,22,25,28,31,32,36,38,39,41,42]);
   for(let y=1;y<H-1;y++) for(let x=1;x<W-1;x++){ const i=I(x,y); if(!t[i]) continue; const inRoom=room[i]>=0;
-    if(R.chance(inRoom?0.085:0.04)&&!props.some(p=>p.x===x&&p.y===y)){ const di=R.pick(biome.decals); props.push({type:'decal',x,y,spr:'decal_'+di,flat:true,decal:true,rot:ROT.has(di)?R.range(0,6.28):0,sc:R.range(0.55,0.9),ox:R.range(-0.18,0.18),oy:R.range(-0.18,0.18),flip:R.chance(0.5)}); } }
+    if(R.chance((inRoom?0.085:0.04)*(biome.shafts?1.25:1))&&!props.some(p=>p.x===x&&p.y===y)){ const di=R.pick(biome.decals); props.push({type:'decal',x,y,spr:'decal_'+di,flat:true,decal:true,rot:ROT.has(di)?R.range(0,6.28):0,sc:R.range(0.55,0.9),ox:R.range(-0.18,0.18),oy:R.range(-0.18,0.18),flip:R.chance(0.5)}); } }
   // monster spawn points
   const spawns=[];
   const dens=depth<=1?24:depth<=3?20:17;
