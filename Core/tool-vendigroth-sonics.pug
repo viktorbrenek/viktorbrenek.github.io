@@ -4,7 +4,7 @@ head
   meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
   meta(content="utf-8", http-equiv="encoding")
   meta(name="author" content="Viktor Brenek")
-  meta(name="description" content="Generátor ambientních soundtracků a herních smyček")
+  meta(name="description" content="Generátor hudby pro pusté světy: flétny, struny, bubny a spóry")
   meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
   meta(name="viewport" content="width=device-width,initial-scale=1.0")
   link(rel="stylesheet", href="styles.css")
@@ -48,7 +48,7 @@ body(data-page="tool-sonics")
       p.eyebrow Nástroje
       h1 Vendigroth Sonics
       p.lead
-        | Generátor dark fantasy ambientních smyček pro game dev, prototypy i worldbuilding. Každý seed mění náladu, instrumentaci i rytmus větru, ale všechno jde zároveň doladit ručně.
+        | Skladatel hudby pro pusté světy. Z názvu stopy složí téma, harmonii i stavbu skladby: flétny a struny z Východu, těžké bubny, občas kytara a spóry ve větru. Stejný název zní vždy stejně.
       p.hero-kicker
         a.link-pill(href="tools.html") Zpět na přehled nástrojů
 
@@ -60,13 +60,13 @@ body(data-page="tool-sonics")
             h2.tool-workbench__title Vendigroth Sonics
           .tool-workbench__body
             .tool-workbench__field
-              label.tool-workbench__label(for="track-name") Název stopy (seed)
+              label.tool-workbench__label(for="track-name") Název skladby (seed)
               input#track-name.tool-workbench__input(type="text" value="Vítr nad popelem" autocomplete="off")
             .tool-workbench__checkbox-row
               label.tool-workbench__checkbox
                 input#auto-seed(type="checkbox" checked)
                 span.tool-workbench__checkbox-box
-                span.tool-workbench__checkbox-text Vázat mixáž na název
+                span.tool-workbench__checkbox-text Nastavení podle názvu
             .tool-workbench__field
               label.tool-workbench__label(for="audio-biome") Atmosféra
               select#audio-biome.tool-workbench__input.manual-input
@@ -78,81 +78,79 @@ body(data-page="tool-sonics")
                 option(value="ruins") Průsmyk šeptajících spór
                 option(value="catacombs") Labyrint zrcadlových očí
             .tool-workbench__field
-              label.tool-workbench__label(for="audio-mood") Hudební tah
+              label.tool-workbench__label(for="audio-mood") Nálada
               select#audio-mood.tool-workbench__input.manual-input
-                option(value="joyful") Radostný
                 option(value="meditative") Meditativní
-                option(value="pilgrim") Poutnický
-                option(value="ominous") Zlověstný
+                option(value="pilgrim") Poutnická
+                option(value="melancholy") Melancholická
+                option(value="ominous") Zlověstná
                 option(value="ritual") Rituální
             .tool-workbench__field
-              label.tool-workbench__label(for="composition-style") Kompoziční styl
-              select#composition-style.tool-workbench__input.manual-input
-                option(value="lively") Krčemný / Rušný
-                option(value="wandering") Poutnický / osamělý
-                option(value="desolate") Pustý / melancholický
-                option(value="epic") Filmový / epický
-                option(value="ritualistic") Rituální / starobylý
+              label.tool-workbench__label(for="lead-inst") Sólový nástroj
+              select#lead-inst.tool-workbench__input.manual-input
+                option(value="auto") Podle atmosféry
+                option(value="shaku") Šakuhači
+                option(value="flute") Flétna
+                option(value="duduk") Duduk
             .tool-workbench__field
-              label.tool-workbench__label(for="story-curve") Vývojová křivka (Příběh)
+              label.tool-workbench__label(for="story-curve") Vývoj skladby
               select#story-curve.tool-workbench__input.manual-input
-                option(value="slow_burn") Pomalé probuzení (Klasika)
-                option(value="sudden_danger") Náhlá hrozba (Rychlý start)
-                option(value="ambient_waves") Temné vlny (Zklidněné)
-                option(value="constant_tension") Trvalé napětí (Agresivní)
+                option(value="slow_burn") Pomalé probuzení
+                option(value="sudden_danger") Náhlá hrozba
+                option(value="ambient_waves") Klidné vlny
+                option(value="constant_tension") Trvalé napětí
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-flute") Flétny
+                input#vol-flute.tool-workbench__range.mix-input(type="range" min="0" max="1" step="0.05" value="0.6")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-pluck") Struny a kytara
+                input#vol-pluck.tool-workbench__range.mix-input(type="range" min="0" max="1" step="0.05" value="0.6")
+            .tool-workbench__row
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-pad") Smyčce a plochy
+                input#vol-pad.tool-workbench__range.mix-input(type="range" min="0" max="1" step="0.05" value="0.5")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-drums") Bicí
+                input#vol-drums.tool-workbench__range.mix-input(type="range" min="0" max="1" step="0.05" value="0.5")
             .tool-workbench__row
               .tool-workbench__field
                 label.tool-workbench__label.tool-workbench__label--small(for="vol-drone") Drony
-                input#vol-drone.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.55")
+                input#vol-drone.tool-workbench__range.mix-input(type="range" min="0" max="1" step="0.05" value="0.55")
               .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="vol-wind") Vítr / opar
-                input#vol-wind.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.4")
+                label.tool-workbench__label.tool-workbench__label--small(for="vol-wind") Vítr a spóry
+                input#vol-wind.tool-workbench__range.mix-input(type="range" min="0" max="1" step="0.05" value="0.4")
             .tool-workbench__row
               .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="freq-pluck") Struny
-                input#freq-pluck.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.4")
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="freq-flute") Flétna
-                input#freq-flute.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.25")
-            .tool-workbench__row
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="freq-bells") Smyčce / doprovod
-                input#freq-bells.tool-workbench__range.manual-input(type="range" min="0" max="1" step="0.05" value="0.2")
-              .tool-workbench__field
-                label.tool-workbench__label.tool-workbench__label--small(for="tempo-density") Hustota motivů
+                label.tool-workbench__label.tool-workbench__label--small(for="tempo-density") Hustota melodie
                 input#tempo-density.tool-workbench__range.manual-input(type="range" min="0.2" max="1.4" step="0.05" value="0.8")
-            .tool-workbench__field
-              label.tool-workbench__label(for="strings-mode") Režim strun
-              select#strings-mode.tool-workbench__input.manual-input
-                option(value="lead") Lead strings
-                option(value="rhythmic") Rhythmic strings
-            .tool-workbench__field
-              label.tool-workbench__label(for="reverb-depth") Hloubka ozvěny
-              input#reverb-depth.tool-workbench__range.manual-input(type="range" min="0.1" max="1" step="0.05" value="0.65")
+              .tool-workbench__field
+                label.tool-workbench__label.tool-workbench__label--small(for="reverb-depth") Hloubka ozvěny
+                input#reverb-depth.tool-workbench__range.mix-input(type="range" min="0.1" max="1" step="0.05" value="0.65")
             .tool-workbench__actions
-              button#btn-play.world-map__button(type="button") Zahájit syntézu
-              button#btn-record.world-map__button.world-map__button--secondary(type="button") Nahrát 120s smyčku
+              button#btn-play.world-map__button(type="button") Zahrát skladbu
+              button#btn-record.world-map__button.world-map__button--secondary(type="button") Stáhnout skladbu (WAV)
         .tool-workbench__canvas-panel
           .tool-workbench__canvas-shell.tool-workbench__canvas-shell--sonics
             p.tool-workbench__canvas-title Náhled zvukové krajiny
-            p.tool-workbench__canvas-text#status-text Neaktivní. Spusť syntézu a nech nástroj vytvořit vlastní temný soundscape.
+            p.tool-workbench__canvas-text#status-text Neaktivní. Spusť hudbu a nech nástroj složit skladbu podle názvu.
             .tool-workbench__canvas-frame.tool-workbench__canvas-frame--wide
               canvas#audio-canvas(width="560" height="360")
             .sonics-meta-grid
               article.sonics-meta-card
-                p.sonics-meta-card__label Aktivní režim
+                p.sonics-meta-card__label Atmosféra
                 p#biome-readout.sonics-meta-card__value Popelavé pláně
               article.sonics-meta-card
-                p.sonics-meta-card__label Hudební tah
+                p.sonics-meta-card__label Nálada
                 p#mood-readout.sonics-meta-card__value Meditativní
               article.sonics-meta-card
-                p.sonics-meta-card__label Nahrávání
-                p#record-progress.sonics-meta-card__value Skryto
+                p.sonics-meta-card__label Export
+                p#record-progress.sonics-meta-card__value Celá skladba do WAV
               article.sonics-meta-card
-                p.sonics-meta-card__label Poznámka
-                p#pattern-readout.sonics-meta-card__value Vítr, drony a motivy se průběžně proměňují.
+                p.sonics-meta-card__label Tónina a tempo
+                p#pattern-readout.sonics-meta-card__value –
           .sonics-timeline-panel
-            p.sonics-timeline-title Vývoj příběhu
+            p.sonics-timeline-title Stavba skladby
             .sonics-timeline
               canvas#timeline-canvas(width="800" height="60")
               .sonics-timeline__labels#timeline-labels
