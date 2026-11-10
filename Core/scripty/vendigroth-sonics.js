@@ -96,31 +96,41 @@
 
   /* ---------- Samply ----------
      Základní frekvence jsou změřené z nahrávek, ne odhadnuté z názvů souborů. */
-  const SAMPLE_PATH = "assets/zvuky/";
+  const SAMPLE_PATH = "assets/zvuky/sonics/";
+  // Zdroje a licence: assets/zvuky/sonics/ZDROJE.md
   const BANK = {
-    kay: { url: "kayageum.wav" },
-    harp: { url: "celtic-harp-c5.wav" },
-    oudG: { url: "oud-g2.wav" },
-    oudA: { url: "oud-a2.wav" },
-    oudC: { url: "oud-c3.wav" },
-    gtrLow: { url: "guitar-note-9.wav" },
-    gtrGesture: { url: "acoustic-guitar.wav" },
-    pizz: { url: "violin-pizz-e4.wav" },
-    shakLow: { url: "shakuhachi-stretching-30.wav" },
-    shakE: { url: "shakuhachi-strretching-27.wav" },
-    shakG: { url: "shakuhachi-stretching-3.wav" },
-    duduk: { url: "duduk-c3.wav" },
-    fluteA: { url: "flute-a4.wav" },
-    fluteE: { url: "flute-e6.wav" },
-    violin: { url: "violin-arco-f5.wav" },
-    taiko: { url: "drum-1.wav" },
-    drumMid: { url: "drum-hard.wav" },
-    drumSoft: { url: "drum-muted.wav" },
-    tek: { url: "doumbek.wav" },
-    impact: { url: "guitar-impact.wav" },
-    bowlLow: { url: "tibetan-singing-bowl-long.wav" },
-    bowlHi: { url: "sing-bowl-ring.wav" },
-    scrape: { url: "violin-broken-string.wav" }
+    kay: { url: "kajagum-g4.flac" },
+    harp: { url: "harfa-c5.flac" },
+    oudG: { url: "ud-g2.flac" },
+    oudA: { url: "ud-a2.flac" },
+    oudC: { url: "ud-c3.flac" },
+    gtrLow: { url: "kytara-e2.flac" },
+    gtrG3: { url: "kytara-g3.flac" },
+    gtrGesture: { url: "kytara-gesto.flac" },
+    bassG1: { url: "basa-g1.flac" },
+    bassH1: { url: "basa-h1.flac" },
+    bassD2: { url: "basa-d2.flac" },
+    bassG2: { url: "basa-g2.flac" },
+    bassA2: { url: "basa-a2.flac" },
+    bassD3: { url: "basa-d3.flac" },
+    kalimba: { url: "kalimba-a3.flac" },
+    pizz: { url: "pizzicato-e5.flac" },
+    shakLow: { url: "sakuhaci-dis3.flac" },
+    shakE: { url: "sakuhaci-e4.flac" },
+    shakG: { url: "sakuhaci-g4.flac" },
+    bambus: { url: "bambus-g3.flac" },
+    duduk: { url: "duduk-c4.flac" },
+    fluteA: { url: "fletna-a5.flac" },
+    fluteE: { url: "fletna-e6.flac" },
+    violin: { url: "housle-fis6.flac" },
+    taiko: { url: "buben-taiko.flac" },
+    drumMid: { url: "buben-stredni.flac" },
+    drumSoft: { url: "buben-tlumeny.flac" },
+    tek: { url: "buben-tek.flac" },
+    impact: { url: "kytara-rana.flac" },
+    bowlLow: { url: "misa-hluboka.flac" },
+    bowlHi: { url: "misa-vysoka.flac" },
+    scrape: { url: "housle-skrip.flac" }
   };
 
   /* ---------- Nástroje ----------
@@ -131,7 +141,9 @@
     kayageum: { kind: "pluck", label: "kajagum", zones: [{ k: "kay", f: 392.0 }], lo: 50, hi: 77, center: 64, acc: 55, gain: 0.34, ring: 3.4 },
     harp: { kind: "pluck", label: "harfa", zones: [{ k: "harp", f: 525.0 }], lo: 57, hi: 84, center: 69, acc: 60, gain: 0.3, ring: 3.0 },
     oud: { kind: "pluck", label: "úd", zones: [{ k: "oudG", f: 98.0 }, { k: "oudA", f: 110.2 }, { k: "oudC", f: 131.1 }], lo: 38, hi: 62, center: 52, acc: 45, gain: 0.34, ring: 2.6 },
-    guitar: { kind: "pluck", label: "kytara", zones: [{ k: "gtrLow", f: 83.3 }], lo: 33, hi: 52, center: 43, acc: 40, gain: 0.42, ring: 2.6 },
+    guitar: { kind: "pluck", label: "kytara", zones: [{ k: "gtrLow", f: 83.3 }, { k: "gtrG3", f: 195.8 }], lo: 38, hi: 64, center: 53, acc: 47, gain: 0.4, ring: 3.2 },
+    bass: { kind: "pluck", label: "basa", zones: [{ k: "bassG1", f: 48.5 }, { k: "bassH1", f: 62.05 }, { k: "bassD2", f: 73.74 }, { k: "bassG2", f: 98.69 }, { k: "bassA2", f: 110.9 }, { k: "bassD3", f: 148.7 }], lo: 28, hi: 50, center: 40, acc: 40, gain: 0.42, ring: 3.4 },
+    kalimba: { kind: "pluck", label: "kalimba", zones: [{ k: "kalimba", f: 220.3 }], lo: 52, hi: 84, center: 69, acc: 62, gain: 0.3, ring: 2.4 },
     pizz: { kind: "pluck", label: "pizzicato", zones: [{ k: "pizz", f: 658.0 }], lo: 64, hi: 93, center: 81, acc: 76, gain: 0.2, ring: 1.2 },
     bowl: { kind: "pluck", label: "mísa", zones: [{ k: "bowlHi", f: 759.0 }], lo: 67, hi: 93, center: 81, acc: 79, gain: 0.26, ring: 2.0 },
     shaku: {
@@ -143,6 +155,7 @@
       ],
       lo: 52, hi: 76, center: 66, atk: 0.09, rel: 0.4, gain: 0.34
     },
+    bamboo: { kind: "sus", label: "bambusová flétna", zones: [{ k: "bambus", f: 197.3, off: 0.3, win: 3.4 }], lo: 48, hi: 62, center: 55, atk: 0.14, rel: 0.5, gain: 0.3 },
     duduk: { kind: "sus", label: "duduk", zones: [{ k: "duduk", f: 261.3, off: 0.05, win: 3.75 }], lo: 50, hi: 70, center: 60, atk: 0.05, rel: 0.35, gain: 0.3, vib: [4.7, 13] },
     flute: {
       kind: "sus", label: "flétna",
@@ -154,13 +167,13 @@
 
   /* ---------- Atmosféry ---------- */
   const BIOMES = {
-    tavern: { label: "Bazar", colors: ["#ffdd55", "#d8a247"], scales: ["dorian", "hijaz", "minPent"], bpm: [84, 96], leads: ["duduk", "flute"], pluck: "kayageum", acc: "oud", bass: "oud", kit: "bazaar", spore: 0.1, grit: 0, wind: 0.5, flow: 1.35, droneCut: 300, texInst: "pizz" },
-    ashlands: { label: "Terasové pole popela", colors: ["#d8a247", "#6b5131"], scales: ["hira", "insen", "minPent"], bpm: [58, 68], leads: ["shaku", "duduk"], pluck: "kayageum", acc: "kayageum", bass: "guitar", kit: "taiko", spore: 0.2, grit: 0.5, wind: 0.9, flow: 0.8, droneCut: 240, texInst: "bowl" },
-    bamboo: { label: "Lotosové břehy rzi", colors: ["#00ff9d", "#7ab37d"], scales: ["yo", "majPent", "kumoi"], bpm: [66, 78], leads: ["flute", "shaku"], pluck: "harp", acc: "kayageum", bass: "oud", kit: "taiko", spore: 0.35, grit: 0.15, wind: 0.6, flow: 1.1, droneCut: 320, texInst: "harp" },
-    dunes: { label: "Pohřebiště vzducholodí", colors: ["#ffbb6b", "#8b6132"], scales: ["phryg", "hijaz", "aeol"], bpm: [60, 72], leads: ["duduk", "shaku"], pluck: "oud", acc: "oud", bass: "guitar", kit: "bazaar", spore: 0.1, grit: 0.8, wind: 1, flow: 0.9, droneCut: 220, texInst: "pizz" },
+    tavern: { label: "Bazar", colors: ["#ffdd55", "#d8a247"], scales: ["dorian", "hijaz", "minPent"], bpm: [84, 96], leads: ["duduk", "flute"], pluck: "guitar", acc: "oud", bass: "oud", kit: "bazaar", spore: 0.1, grit: 0, wind: 0.5, flow: 1.35, droneCut: 300, texInst: "pizz" },
+    ashlands: { label: "Terasové pole popela", colors: ["#d8a247", "#6b5131"], scales: ["hira", "insen", "minPent"], bpm: [58, 68], leads: ["shaku", "duduk"], pluck: "kayageum", acc: "kayageum", bass: "bass", kit: "taiko", spore: 0.2, grit: 0.5, wind: 0.9, flow: 0.8, droneCut: 240, texInst: "bowl", call: true },
+    bamboo: { label: "Lotosové břehy rzi", colors: ["#00ff9d", "#7ab37d"], scales: ["yo", "majPent", "kumoi"], bpm: [66, 78], leads: ["flute", "shaku"], pluck: "harp", acc: "kayageum", bass: "oud", kit: "taiko", spore: 0.35, grit: 0.15, wind: 0.6, flow: 1.1, droneCut: 320, texInst: "kalimba", call: true },
+    dunes: { label: "Pohřebiště vzducholodí", colors: ["#ffbb6b", "#8b6132"], scales: ["phryg", "hijaz", "aeol"], bpm: [60, 72], leads: ["duduk", "shaku"], pluck: "guitar", acc: "oud", bass: "bass", kit: "bazaar", spore: 0.1, grit: 0.8, wind: 1, flow: 0.9, droneCut: 220, texInst: "pizz", call: true },
     fungal: { label: "Visuté město", colors: ["#5effd1", "#7b5d9c"], scales: ["minPent", "dorian", "kumoi"], bpm: [54, 64], leads: ["flute", "duduk"], pluck: "harp", acc: "kayageum", bass: "oud", kit: "taiko", spore: 1, grit: 0.1, wind: 0.5, flow: 0.8, droneCut: 340, texInst: "bowl", bowls: true },
-    ruins: { label: "Průsmyk šeptajících spór", colors: ["#ff7e62", "#c2b5a3"], scales: ["insen", "hira", "phryg"], bpm: [50, 60], leads: ["shaku", "duduk"], pluck: "kayageum", acc: "oud", bass: "guitar", kit: "taiko", spore: 0.7, grit: 1, wind: 0.9, flow: 0.7, droneCut: 200, texInst: "pizz", scrape: true },
-    catacombs: { label: "Labyrint zrcadlových očí", colors: ["#8eff78", "#73644b"], scales: ["hira", "kumoi", "insen"], bpm: [48, 56], leads: ["shaku", "flute"], pluck: "harp", acc: "kayageum", bass: "oud", kit: "taiko", spore: 0.5, grit: 0.3, wind: 0.4, flow: 0.6, droneCut: 260, texInst: "bowl", bowls: true, scrape: true }
+    ruins: { label: "Průsmyk šeptajících spór", colors: ["#ff7e62", "#c2b5a3"], scales: ["insen", "hira", "phryg"], bpm: [50, 60], leads: ["shaku", "duduk"], pluck: "kayageum", acc: "guitar", bass: "bass", kit: "taiko", spore: 0.7, grit: 1, wind: 0.9, flow: 0.7, droneCut: 200, texInst: "pizz", scrape: true, call: true },
+    catacombs: { label: "Labyrint zrcadlových očí", colors: ["#8eff78", "#73644b"], scales: ["hira", "kumoi", "insen"], bpm: [48, 56], leads: ["shaku", "flute"], pluck: "harp", acc: "kayageum", bass: "oud", kit: "taiko", spore: 0.5, grit: 0.3, wind: 0.4, flow: 0.6, droneCut: 260, texInst: "kalimba", bowls: true, scrape: true, call: true }
   };
 
   const MOODS = {
@@ -656,6 +669,18 @@
       }
     }
 
+    // Vzdálené volání hluboké bambusové flétny v tichých částech
+    if (biome.call && !rec.theme) {
+      const cr = sub(plan.seed, 5000 + cycle * 97 + si * 13);
+      if (cr.chance(0.85)) {
+        const bi = INST.bamboo;
+        const at = rec.gesture ? 1.5 : 7;
+        const first = fitMidi(plan.tonic + (cr.chance(0.5) ? 7 : scale.st[scale.st.length - 1]), bi);
+        ev.push({ t: at, type: "note", inst: "bamboo", midi: first, dur: 1.6 * plan.beat, vel: 0.5, bus: "lead", pan: 0.25 });
+        ev.push({ t: at + 1.5, type: "note", inst: "bamboo", midi: fitMidi(plan.tonic, bi), dur: Math.min(3.2, 3 * plan.beat), vel: 0.58, bus: "lead", pan: 0.25 });
+      }
+    }
+
     ev.sort((a, b) => a.t - b.t);
     return ev;
   }
@@ -681,6 +706,7 @@
   function neededKeys(plan) {
     const keys = { taiko: 1, drumMid: 1, drumSoft: 1, tek: 1, impact: 1, bowlLow: 1, scrape: 1, gtrGesture: 1, violin: 1 };
     const b = plan.biome;
+    if (b.call) keys.bambus = 1;
     [plan.lead1, plan.lead2, b.pluck, b.acc, b.bass, b.texInst].forEach((name) => INST[name].zones.forEach((z) => { keys[z.k] = 1; }));
     return Object.keys(keys);
   }
@@ -1149,7 +1175,7 @@
 
   const $ = (id) => document.getElementById(id);
   const els = {
-    trackName: $("track-name"), autoSeed: $("auto-seed"), biome: $("audio-biome"), mood: $("audio-mood"), lead: $("lead-inst"),
+    trackName: $("track-name"), preset: $("preset"), autoSeed: $("auto-seed"), biome: $("audio-biome"), mood: $("audio-mood"), lead: $("lead-inst"),
     storyCurve: $("story-curve"), volDrone: $("vol-drone"), volWind: $("vol-wind"), volPluck: $("vol-pluck"), volFlute: $("vol-flute"),
     volPad: $("vol-pad"), volDrums: $("vol-drums"), density: $("tempo-density"), reverb: $("reverb-depth"),
     btnPlay: $("btn-play"), btnRecord: $("btn-record"), canvas: $("audio-canvas"), status: $("status-text"),
@@ -1237,6 +1263,29 @@
     set(els.reverb, rng.range(0.45, 0.8).toFixed(2));
     updateReadout();
   }
+
+  // Hotová nastavení. Pořadí hodnot mixu: flétny, struny, plochy, bicí, drony, vítr, hustota, ozvěna.
+  const PRESETS = {
+    spory: { name: "Spóry v mlze", biome: "fungal", mood: "ominous", lead: "auto", curve: "sudden_danger", mix: [0.65, 0.55, 0.6, 0.9, 0.45, 0.25, 0.7, 0.7] },
+    popel: { name: "Vítr nad popelem", biome: "ashlands", mood: "meditative", lead: "shaku", curve: "slow_burn", mix: [0.65, 0.6, 0.5, 0.5, 0.5, 0.45, 0.7, 0.75] },
+    bazar: { name: "Bazar u brány", biome: "tavern", mood: "pilgrim", lead: "duduk", curve: "constant_tension", mix: [0.6, 0.65, 0.45, 0.6, 0.35, 0.2, 1.0, 0.5] },
+    vraky: { name: "Pohřebiště vzducholodí", biome: "dunes", mood: "ominous", lead: "duduk", curve: "slow_burn", mix: [0.6, 0.65, 0.55, 0.55, 0.55, 0.45, 0.8, 0.7] },
+    lotos: { name: "Lotosový břeh", biome: "bamboo", mood: "meditative", lead: "flute", curve: "ambient_waves", mix: [0.65, 0.6, 0.55, 0.3, 0.4, 0.3, 0.85, 0.75] },
+    prusmyk: { name: "Šeptající průsmyk", biome: "ruins", mood: "ritual", lead: "shaku", curve: "slow_burn", mix: [0.6, 0.6, 0.55, 0.65, 0.55, 0.4, 0.6, 0.8] }
+  };
+
+  function applyPreset(key) {
+    const pr = PRESETS[key];
+    if (!pr) return false;
+    const set = (el, v) => { if (el) el.value = v; };
+    set(els.trackName, pr.name); set(els.biome, pr.biome); set(els.mood, pr.mood); set(els.lead, pr.lead); set(els.storyCurve, pr.curve);
+    [els.volFlute, els.volPluck, els.volPad, els.volDrums, els.volDrone, els.volWind, els.density, els.reverb].forEach((el, i) => set(el, pr.mix[i]));
+    if (els.autoSeed) els.autoSeed.checked = false;
+    updateReadout();
+    return true;
+  }
+
+  const markCustom = () => { if (els.preset) els.preset.value = "custom"; };
 
   function initAudio() {
     if (audioCtx) return;
@@ -1476,6 +1525,7 @@
   /* ---------- Ovládání ---------- */
   if (els.trackName) {
     els.trackName.addEventListener("input", () => {
+      markCustom();
       if (els.autoSeed && els.autoSeed.checked) syncUIWithHash();
       restartIfPlaying();
     });
@@ -1483,6 +1533,7 @@
   // Volby, které mění skladbu, ji spustí znovu.
   document.querySelectorAll(".manual-input").forEach((input) => {
     input.addEventListener("change", () => {
+      markCustom();
       if (els.autoSeed) els.autoSeed.checked = false;
       restartIfPlaying();
     });
@@ -1490,20 +1541,30 @@
   // Posuvníky mixu působí hned, bez restartu.
   document.querySelectorAll(".mix-input").forEach((input) => {
     input.addEventListener("input", () => {
+      markCustom();
       if (els.autoSeed) els.autoSeed.checked = false;
       if (session) session.setMix(readMix());
     });
   });
   if (els.autoSeed) {
     els.autoSeed.addEventListener("change", () => {
-      if (els.autoSeed.checked) { syncUIWithHash(); restartIfPlaying(); }
+      if (els.autoSeed.checked) { markCustom(); syncUIWithHash(); restartIfPlaying(); }
+    });
+  }
+  if (els.preset) {
+    els.preset.addEventListener("change", () => {
+      if (applyPreset(els.preset.value)) {
+        if (session) session.setMix(readMix());
+        restartIfPlaying();
+      }
     });
   }
   if (els.btnPlay) els.btnPlay.addEventListener("click", togglePlay);
   if (els.btnRecord) els.btnRecord.addEventListener("click", exportWav);
 
-  window.VendigrothSonics = { buildPlan: buildPlan, sectionEvents: sectionEvents, themeB: themeB, renderOffline: renderOffline, describe: describe, SCALES: SCALES, BIOMES: BIOMES, MOODS: MOODS, CURVES: CURVES };
+  window.VendigrothSonics = { buildPlan: buildPlan, sectionEvents: sectionEvents, themeB: themeB, renderOffline: renderOffline, describe: describe, PRESETS: PRESETS, SCALES: SCALES, BIOMES: BIOMES, MOODS: MOODS, CURVES: CURVES };
 
-  if (els.autoSeed && els.autoSeed.checked) syncUIWithHash();
+  if (els.preset && applyPreset(els.preset.value)) { /* výchozí předvolba */ }
+  else if (els.autoSeed && els.autoSeed.checked) syncUIWithHash();
   else updateReadout();
 })();

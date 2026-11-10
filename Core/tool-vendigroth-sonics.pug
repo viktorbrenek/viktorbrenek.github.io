@@ -60,11 +60,21 @@ body(data-page="tool-sonics")
             h2.tool-workbench__title Vendigroth Sonics
           .tool-workbench__body
             .tool-workbench__field
+              label.tool-workbench__label(for="preset") Předvolba
+              select#preset.tool-workbench__input
+                option(value="spory") Spóry v mlze
+                option(value="popel") Vítr nad popelem
+                option(value="bazar") Bazar u brány
+                option(value="vraky") Pohřebiště vzducholodí
+                option(value="lotos") Lotosový břeh
+                option(value="prusmyk") Šeptající průsmyk
+                option(value="custom") Vlastní
+            .tool-workbench__field
               label.tool-workbench__label(for="track-name") Název skladby (seed)
-              input#track-name.tool-workbench__input(type="text" value="Vítr nad popelem" autocomplete="off")
+              input#track-name.tool-workbench__input(type="text" value="Spóry v mlze" autocomplete="off")
             .tool-workbench__checkbox-row
               label.tool-workbench__checkbox
-                input#auto-seed(type="checkbox" checked)
+                input#auto-seed(type="checkbox")
                 span.tool-workbench__checkbox-box
                 span.tool-workbench__checkbox-text Nastavení podle názvu
             .tool-workbench__field
