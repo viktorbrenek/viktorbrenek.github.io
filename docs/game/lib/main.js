@@ -44,10 +44,11 @@ async function boot(){
     if(/^Digit[1-4]$/.test(c)){ ui.onSkillKey(+c.slice(5)-1); return; }
     if(c==='KeyQ'){ g.quaff(); return; }
     if(c==='Enter'||c==='NumpadEnter'){ g.descend(); return; }
-    if(c==='Space'||c==='KeyE'){ e.preventDefault(); const p=g.player; const pr=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].map(([dx,dy])=>g.propAt(p.x+dx,p.y+dy,q=>['chest','cursed','lever','brazier','rune','obelisk','altar','shrine','gate','lore','pillar','rift','merchant','bellmaster','crystal','riddle','answer','grave','well'].includes(q.type))).find(Boolean);
-      if(pr){ if(g.interact(pr)) g.endTurn(); } else { const st=g.map.stairs; if(st.x===p.x&&st.y===p.y) g.descend(); else g.wait(); } return; }
+    if(c==='Space'||c==='KeyE'){ e.preventDefault(); interactKey(); return; }
     if(c==='KeyZ'||c==='Period'||c==='Numpad5'){ g.wait(); return; }
   });
+  function interactKey(){ const p=g.player; const pr=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].map(([dx,dy])=>g.propAt(p.x+dx,p.y+dy,q=>['chest','cursed','lever','brazier','rune','obelisk','altar','shrine','gate','lore','pillar','rift','merchant','bellmaster','crystal','riddle','answer','grave','well'].includes(q.type))).find(Boolean);
+      if(pr){ if(g.interact(pr)) g.endTurn(); } else { const st=g.map.stairs; if(st.x===p.x&&st.y===p.y) g.descend(); else g.wait(); } }
   addEventListener('keyup',e=>{ held.delete(e.code); });
   addEventListener('blur',()=>held.clear());
   const toTile=e=>{ const r=canvas.getBoundingClientRect(); const x=(e.clientX-r.left-r.width/2)/R.cam.z+R.cam.x, y=(e.clientY-r.top-r.height/2)/R.cam.z+R.cam.y; return [Math.floor(x/T),Math.floor(y/T)]; };
@@ -60,13 +61,57 @@ async function boot(){
     else { const pr=g.propAt(x,y,q=>q.type!=='deco'&&q.type!=='decal'&&q.type!=='glow'&&q.type!=='pool'&&q.type!=='walltorch'); if(pr&&g.explored[y*g.map.W+x]){ const n={chest:'Truhla',cursed:'Prokletá truhla (spustí vlny)',lever:'Pulzující kokon',brazier:pr.lit?'Hořící žároviště':'Vyhaslé žároviště',rune:'Runový kámen '+pr.sym,obelisk:'Obelisk',altar:'Oltář hniloby (výroba)',shrine:pr.used?'Vyčerpaná svatyně':'Svatyně',gate:'Mříž trezoru',stairs:pr.locked?'Zapečetěné schodiště':'Schodiště dolů',riftexit:pr.locked?'Zapečetěný portál (zabij Srdce jeskyně)':'Portál zpět',lore:pr.read?'Přečtená runová deska':'Runová deska (lore)',pillar:pr.state==='idle'?'Plodnice pradávných – aktivuj pro vlny a zkažená jádra':pr.state==='active'?'Probuzená plodnice':'Vyčerpaná plodnice',rift:'Zkažená jeskyně (dobrovolný vstup)',merchant:'Hnilobný překupník',bellmaster:'Matka krystalů (zahraje melodii)',crystal:'Zpívající krystal',riddle:'Hrob mudrce (hádanka)',well:pr.used?'Vyschlá studna':'Hnilobná studna – hoď předmět, vylov cizí',answer:'Kámen s odpovědí: „'+pr.ans+'“',plate:'Dýchající plotna'}[pr.type]; if(pr.type==='grave'){ const gt=g.graveText(pr); ui.tip(`<div class="tt-name" style="color:#cfd8e6">✝ ${gt.t}</div><div class="tt-sub">${gt.s}</div>${gt.m?`<div class="tt-line">„${gt.m}“</div>`:''}<div class="tt-hint">${pr.respected?'Vzdal jsi čest.':'E = vzdát čest'}</div>`,e); } else if(n) ui.tip(`<div class="tt-name">${n}</div>`,e); else ui.tip(null); } else ui.tip(null); }
   });
   canvas.addEventListener('mouseleave',()=>{ scene.hover=null; ui.tip(null); });
-  canvas.addEventListener('mousedown',e=>{ if(!started||ui.modal) return; if(ui.panel&&innerWidth<900) ui.close(); const [x,y]=toTile(e);
+  canvas.addEventListener('mousedown',e=>{ if(!started||ui.modal||performance.now()-lastTouch<900) return; if(ui.panel&&innerWidth<900) ui.close(); const [x,y]=toTile(e);
     if(e.button===2){ g.targeting=null; ui.refresh(); return; }
     if(g.targeting){ const id=g.targeting; if(scene.targetValid(g,id,x,y)){ g.targeting=null; g.useSkill(id,x,y); } else g.log('Neplatný cíl.','warn'); ui.refresh(); return; }
     g.clickTile(x,y); if(g.player.path) stepT=STEP; });
   canvas.addEventListener('contextmenu',e=>e.preventDefault());
   canvas.addEventListener('wheel',e=>{ scene.zoom=Math.max(0.6,Math.min(1.8,scene.zoom*(e.deltaY>0?0.9:1.1))); e.preventDefault(); },{passive:false});
   addEventListener('mousemove',e=>ui.moveTip(e));
+  // ================= touch / phone controls =================
+  const TOUCH=matchMedia('(pointer:coarse)').matches||('ontouchstart' in window&&navigator.maxTouchPoints>0);
+  let lastTouch=0;
+  if(TOUCH){ document.body.classList.add('touch');
+    const ptrs=new Map(); let pinch=null, tap=null, lpT=null;
+    const tileTip=(x,y,e)=>{ const gr=g.ground.find(q=>q.x===x&&q.y===y&&g.isVis(x,y)&&g.lootOk(q)); const m=g.monAt(x,y);
+      if(gr&&gr.item) ui.tip(ui.itemTip(gr.item),e); else if(m&&g.canSee(m)) ui.tip(ui.monTip(m),e); else return false; return true; };
+    canvas.style.touchAction='none';
+    canvas.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse') return; e.preventDefault(); lastTouch=performance.now(); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),z:scene.zoom}; tap=null; clearTimeout(lpT); return; }
+      if(!started||ui.modal) return; ui.tip(null);
+      tap={x:e.clientX,y:e.clientY,t:performance.now(),long:false};
+      clearTimeout(lpT); lpT=setTimeout(()=>{ if(!tap) return; const [x,y]=toTile({clientX:tap.x,clientY:tap.y}); if(tileTip(x,y,{clientX:tap.x,clientY:tap.y-40})){ tap.long=true; if(navigator.vibrate) navigator.vibrate(12); } },420); },{passive:false});
+    canvas.addEventListener('pointermove',e=>{ if(e.pointerType==='mouse'||!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(pinch&&ptrs.size>=2){ const [a,b]=[...ptrs.values()]; const d=Math.hypot(a.x-b.x,a.y-b.y); scene.zoom=Math.max(0.55,Math.min(2.2,pinch.z*d/pinch.d)); return; }
+      if(tap&&Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>14){ tap=null; clearTimeout(lpT); } });
+    const end=e=>{ if(e.pointerType==='mouse') return; ptrs.delete(e.pointerId); lastTouch=performance.now(); clearTimeout(lpT);
+      if(pinch){ if(ptrs.size<2) pinch=null; tap=null; return; }
+      if(!tap||e.type==='pointercancel'){ tap=null; return; } const t=tap; tap=null; if(t.long){ setTimeout(()=>ui.tip(null),2200); return; }
+      if(!started||ui.modal) return; if(ui.panel) ui.close(); const [x,y]=toTile({clientX:t.x,clientY:t.y});
+      if(g.targeting){ const id=g.targeting; if(scene.targetValid(g,id,x,y)){ g.targeting=null; g.useSkill(id,x,y); } else { g.targeting=null; g.log('Neplatný cíl – dovednost zrušena.','warn'); } ui.refresh(); return; }
+      g.clickTile(x,y); if(g.player.path) stepT=STEP; };
+    canvas.addEventListener('pointerup',end); canvas.addEventListener('pointercancel',end);
+    // on-screen pad + buttons
+    const tui=document.createElement('div'); tui.id='touchui';
+    tui.innerHTML=`<div class="dpad">${[[-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1]].map(([dx,dy])=>`<button data-d="${dx},${dy}" class="${dx||dy?'dir':'mid'}">${dx||dy?['↖','↑','↗','←','','→','↙','↓','↘'][(dy+1)*3+dx+1]:'E'}</button>`).join('')}</div>
+      <div class="tbtns"><button data-t="menu" title="Menu">☰</button><button data-t="map" title="Mapa">⌖</button><button data-t="down" title="Sestoupit">⇣</button><button data-t="wait" title="Čekat">⧗</button></div>`;
+    document.body.appendChild(tui);
+    tui.querySelectorAll('.dir').forEach(b=>{ const code='T'+b.dataset.d; const [dx,dy]=b.dataset.d.split(',').map(Number); MOVE[code]=[dx,dy];
+      const on=e=>{ e.preventDefault(); if(!started||ui.modal) return; if(ui.panel) ui.close(); if(!held.has(code)){ held.add(code); if(doMove()){ moveT=STEP*2.2; firstStep=false; } else { moveT=0; firstStep=true; } } b.classList.add('on'); };
+      const off=e=>{ held.delete(code); b.classList.remove('on'); };
+      b.addEventListener('pointerdown',on); b.addEventListener('pointerup',off); b.addEventListener('pointerleave',off); b.addEventListener('pointercancel',off); });
+    tui.querySelector('.mid').addEventListener('click',()=>{ if(started&&!ui.modal&&g.canAct()) interactKey(); });
+    tui.querySelectorAll('[data-t]').forEach(b=>b.addEventListener('click',()=>{ if(!started) return; const t=b.dataset.t;
+      if(t==='menu'){ if(document.body.classList.contains('mapon')){ document.body.classList.remove('mapon'); return; } if(ui.modal) return; if(ui.panel){ ui.close(); return; } if(g.targeting){ g.targeting=null; ui.refresh(); return; } if(g.player.hp>0) ui.pauseMenu(toTitle); }
+      else if(ui.modal) return;
+      else if(t==='map') document.body.classList.toggle('mapon');
+      else if(t==='down'){ if(g.canAct()) g.descend(); }
+      else if(t==='wait'){ if(g.canAct()) g.wait(); } }));
+    // portrait hint
+    const ori=document.createElement('div'); ori.id='rotate'; ori.innerHTML=`<div><b>⟲</b><p>Sporium se nejlépe hraje na šířku.<br>Otoč telefon.</p><button>Hrát i tak</button></div>`; document.body.appendChild(ori);
+    ori.querySelector('button').onclick=()=>document.body.classList.add('portrait-ok');
+  }
+  ui.isTouch=TOUCH;
   // ---- loop ----
   const STEP=0.1; let last=performance.now(), stepT=0;
   function frame(now){ const dt=Math.min(0.05,(now-last)/1000); last=now; const t=now/1000;

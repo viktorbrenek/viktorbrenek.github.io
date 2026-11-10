@@ -343,3 +343,48 @@ body.mapon #mapov{display:block}
 .privacy{text-align:left;max-width:620px;margin:0 auto;max-height:46vh;overflow:auto;padding-right:6px;font-size:15px;line-height:1.45}
 .privacy h3{margin:12px 0 4px;font-size:15px;color:#d9c9a8}.privacy ul{margin:4px 0 8px 18px;padding:0}.privacy li{margin:3px 0}
 .privacy a{color:#cfd8e6}.privacy .warn{color:#ffd59a}
+
+/* ================= touch / phone ================= */
+.tzb{display:none}
+#touchui,#rotate{display:none}
+body.touch{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+body.touch input{-webkit-user-select:text;user-select:text}
+body.touch .tzb{display:inline-flex;gap:6px;margin-right:10px}
+body.touch .tzb button{width:40px;height:34px;border-radius:7px;border:1px solid #5a4630;background:#2a2018;color:#f2d36b;font:700 18px inherit}
+body.touch.ingame #touchui{display:block}
+#touchui .dpad{position:fixed;left:calc(10px + env(safe-area-inset-left));bottom:10px;z-index:12;display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px);gap:4px;opacity:.82}
+#touchui .dpad button{border-radius:10px;border:1px solid rgba(160,130,90,.55);background:rgba(20,15,12,.62);color:#e8d7b0;font:700 20px sans-serif;touch-action:none;padding:0}
+#touchui .dpad button.mid{border-radius:50%;background:rgba(60,80,40,.65);color:#d6f5b8;font:800 16px sans-serif}
+#touchui .dpad button.on,#touchui .dpad button:active{background:rgba(120,95,55,.75)}
+#touchui .tbtns{position:fixed;right:calc(8px + env(safe-area-inset-right));top:8px;z-index:12;display:flex;flex-direction:column;gap:6px}
+#touchui .tbtns button{width:44px;height:44px;border-radius:10px;border:1px solid rgba(160,130,90,.55);background:rgba(20,15,12,.7);color:#e8d7b0;font:700 20px sans-serif;padding:0}
+body.touch #log{display:none}
+body.touch #tooltip{max-width:min(330px,calc(100vw - 20px));font-size:13px}
+body.touch #tooltip.wide{max-width:calc(100vw - 16px)}
+body.touch #gtip{bottom:auto;top:10px}
+#rotate{position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;text-align:center;background:rgba(8,6,5,.94);color:#e8d7b0}
+#rotate b{display:block;font-size:64px;color:#9df07a}#rotate p{font-size:18px;line-height:1.5}
+#rotate button{margin-top:10px;padding:8px 18px;border-radius:8px;border:1px solid #5a4630;background:#2a2018;color:#f2d36b;font:600 15px inherit}
+@media (orientation:portrait){ body.touch:not(.portrait-ok) #rotate{display:flex} }
+/* small landscape screens (phones) */
+@media (max-height:540px){
+  #topleft{transform:scale(.72);transform-origin:top left;left:calc(6px + env(safe-area-inset-left));top:4px}
+  #skillbar{transform:scale(.8);transform-origin:bottom center;bottom:4px}
+  body.touch #skillbar{left:auto;right:calc(58px + env(safe-area-inset-right));transform:scale(.78);transform-origin:bottom right}
+  #panel,#panel.wide{top:4px;bottom:4px;right:4px;width:calc(100vw - 8px);border-width:24px 20px 20px;padding:4px 10px}
+  body.touch #panel,body.touch #panel.wide{right:calc(56px + env(safe-area-inset-right));width:calc(100vw - 64px - env(safe-area-inset-right))}
+  #panel h2,#modal h2{font-size:20px;margin-bottom:4px;padding-bottom:10px}
+  #modal .box{border-width:24px;padding:4px 10px;max-height:calc(100vh - 8px)}
+  #treesvg{max-height:calc(100vh - 120px)!important}
+  #bossbar{top:4px}
+  #banner{top:30%}
+}
+body.touch.panelon #touchui .dpad{display:none}
+@media (max-height:540px){
+  .title h1{font-size:46px;margin:0 0 4px;line-height:1}
+  .title .season{transform:scale(.82);margin:-8px auto -6px}
+  .title .tag{display:none}
+  .title .lbrow{margin:6px 0}
+  .classes button{padding:8px}
+}
+body.touch.mapon #touchui .dpad{display:none}

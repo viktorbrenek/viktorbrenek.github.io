@@ -1,5 +1,11 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:21, d:'10. 11. 2026', t:'Hraní na telefonu', i:[
+    'Sporium jde hrát na telefonu a tabletu, nejlépe <b>na šířku</b> (na výšku tě hra upozorní).',
+    'Ťukni na pole = pohyb a útok, <b>podrž prst</b> = popis nepřítele nebo předmětu, <b>dva prsty</b> = zoom.',
+    'Vlevo dole jsou šipky pro chůzi a <b>E</b> pro interakci, vpravo nahoře menu, mapa, sestup a čekání.',
+    'V oknech první ťuknutí na předmět nebo uzel stromu ukáže popis, druhé ho použije. Strom má tlačítka + a − pro zoom.',
+    'Na úvodní obrazovce je na telefonu tlačítko Celá obrazovka.']},
   {v:20, d:'10. 11. 2026', t:'Soukromí', i:[
     'V menu i na úvodní obrazovce je nová stránka <b>Soukromí</b>: co hra ukládá, kde a jak dlouho.',
     'Tlačítkem <b>Smazat moje online data</b> si sám smažeš přezdívku, výsledky, hroby, předměty ve studně i zálohu na serveru.',
