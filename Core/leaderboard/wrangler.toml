@@ -6,3 +6,7 @@ compatibility_date = "2025-06-01"
 binding = "DB"
 database_name = "sporium"
 database_id = "dfac7afd-6e19-4179-9a73-bd68c2b196cb"
+
+# Denní úklid starých dat (limity, zálohy, hroby, denní žebříčky, studna) – viz RETENTION ve worker.js
+[triggers]
+crons = ["17 3 * * *"]

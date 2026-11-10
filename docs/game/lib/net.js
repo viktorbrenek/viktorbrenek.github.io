@@ -20,6 +20,7 @@ export const LB={
   async daily(day){ if(!LB_URL) return null; try{ const r=await fetch(`${this.base()}/daily?day=${day||this.today()}`); return r.ok?await r.json():null; }catch(e){ return null; } },
   async graves(depth,day){ if(!LB_URL) return null; try{ const r=await fetch(`${this.base()}/graves?season=${SEASON.n}&depth=${depth}&day=${day||''}`); return r.ok?await r.json():null; }catch(e){ return null; } },
   grave(g,killer,msg){ const p=g.player; if(!LB_URL||!p?.nick) return null; return this.post('/grave',{season:SEASON.n,day:g.daily?.day||'',depth:g.depth,key:this.player().key,nick:p.nick,cls:p.cls,lvl:p.lvl,killer:String(killer||'').slice(0,40),msg}); },
+  forget(){ return this.post('/forget',{key:this.player().key}); },
   well(item,nick){ return this.post('/well',{season:SEASON.n,key:this.player().key,nick:nick||'',item}); },
   async top(cls='all'){ if(!LB_URL) return null; try{ const r=await fetch(`${LB_URL.replace(/\/$/,'')}/top?season=${SEASON.n}&cls=${cls}&limit=50`); return r.ok?await r.json():null; }catch(e){ return null; } },
   async me(id){ if(!LB_URL||!id) return null; try{ const r=await fetch(`${LB_URL.replace(/\/$/,'')}/me?season=${SEASON.n}&id=${encodeURIComponent(id)}`); return r.ok?await r.json():null; }catch(e){ return null; } },

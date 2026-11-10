@@ -340,3 +340,6 @@ body.mapon #mapov{display:block}
 .bkcode{font:700 26px monospace;letter-spacing:3px;color:#9df07a;text-align:center;padding:6px;border:1px dashed #4a6a34;border-radius:8px;user-select:all}
 .bkr{display:flex;gap:6px}.bkr input{flex:1;min-width:0;background:#120d0a;border:1px solid #5a4630;color:#e8dcc4;padding:6px 8px;border-radius:6px;font:600 14px monospace;text-transform:uppercase}
 .bkmsg{min-height:1.4em}
+.privacy{text-align:left;max-width:620px;margin:0 auto;max-height:46vh;overflow:auto;padding-right:6px;font-size:15px;line-height:1.45}
+.privacy h3{margin:12px 0 4px;font-size:15px;color:#d9c9a8}.privacy ul{margin:4px 0 8px 18px;padding:0}.privacy li{margin:3px 0}
+.privacy a{color:#cfd8e6}.privacy .warn{color:#ffd59a}

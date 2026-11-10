@@ -34,6 +34,9 @@ Po nahrání na GitHub Pages se žebříček ve hře zapne sám.
   `npx wrangler d1 execute sporium --remote --command "DELETE FROM runs WHERE nick='Jmeno'"`
 - Uvolnit obsazenou přezdívku:
   `npx wrangler d1 execute sporium --remote --command "DELETE FROM nicks WHERE nick_l='jmeno'"`
+- **Smazat všechna data hráče na žádost (GDPR):** přezdívka, výsledky sezóny i denní hlubiny, hroby, předměty ve studně a záloha savu najednou:
+  `node smazat.mjs "Přezdívka"` nebo podle kódu zálohy `node smazat.mjs --kod K7QXM-3PZ9A`.
+  S `--nanecisto` jen vypíše SQL a nic nesmaže. Žádosti vyřiď do 30 dnů a hráči odpověz, že je hotovo.
 - Nová sezóna: ve hře zvyš `SEASON.n` v `lib/data.js`. Žebříček se začne plnit znovu a staré sezóny zůstanou v databázi.
 
 ## Jak to funguje
@@ -69,3 +72,13 @@ npx wrangler deploy
 ```
 
 Hráč pak v menu **Záloha** dostane kód (např. `K7QXM-3PZ9A`), kterým si postavy obnoví v jiném prohlížeči nebo po smazání historie. Záloha se po zapnutí sama obnovuje zhruba každých 10 minut hraní.
+
+## Soukromí a úklid dat (v4)
+
+- Ve hře je stránka **Soukromí** (menu Esc a úvodní obrazovka). Popisuje, co se ukládá, jak dlouho a kam psát o smazání. Když změníš, co server ukládá, uprav i ji (`lib/ui.js`, funkce `privacy`).
+- Worker má Cron Trigger (`[triggers]` ve `wrangler.toml`), který jednou denně maže stará data podle `RETENTION` ve `worker.js`:
+  limity (hash IP) po 3 dnech, zálohy neaktualizované 180 dní, hroby po 180 dnech, denní žebříčky po 90 dnech, předměty ve studně po 365 dnech.
+  Výsledky sezóny a přezdívky zůstávají, dokud o smazání někdo nepožádá.
+- IP adresa se nikdy neukládá. Pro omezení obnovy zálohy se z ní dělá solený hash, který se mění každý den. Sůl nastavíš jednorázově:
+  `npx wrangler secret put IP_SALT` (zadej libovolný dlouhý náhodný text).
+- Po změně stačí `npx wrangler deploy`. Cron se nastaví sám a ručně ho spustíš přes Cloudflare dashboard → Workers → sporium-lb → Triggers.

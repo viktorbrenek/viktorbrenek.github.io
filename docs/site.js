@@ -1,10 +1,8 @@
-const FONT_PRECONNECTS = [
-  "https://fonts.googleapis.com",
-  "https://fonts.gstatic.com"
-];
+// Fonty jsou hostované lokálně (assets/fonts) – žádné požadavky na Google Fonts kvůli GDPR.
+const SITE_BASE = document.currentScript && document.currentScript.src ? new URL(".", document.currentScript.src) : new URL("/", location.href);
+const FONT_PRECONNECTS = [];
 
-const FONT_HREF =
-  "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap";
+const FONT_HREF = new URL("assets/fonts/fonts.css", SITE_BASE).href;
 
 const RUNES = [
   { match: /about\.html/, rune: "fehu" },
@@ -480,7 +478,7 @@ async function initYoutubeWidget() {
 
           const pubDate = new Date(video.pubDate).toLocaleDateString("cs-CZ");
           item.innerHTML = `
-            <img class="yt-thumbnail" src="${video.thumbnail}" alt="Náhled videa" loading="lazy">
+            ${video.thumbnail && !/^https?:/.test(video.thumbnail) ? `<img class="yt-thumbnail" src="${video.thumbnail}" alt="Náhled videa" loading="lazy">` : `<div class="yt-thumbnail yt-thumb-empty" aria-hidden="true">▶</div>`}
             <div class="yt-info">
               <span class="yt-title">${video.title}</span>
               <span class="yt-date">Publikováno: ${pubDate}</span>
@@ -588,8 +586,39 @@ function initGamedevLightbox() {
   });
 }
 
+// ---------- GDPR: YouTube videa se načtou až po kliknutí (youtube-nocookie), odkaz na Soukromí v patičce ----------
+function initYoutubeEmbeds() {
+  document.querySelectorAll("[data-yt]").forEach((card) => {
+    const btn = card.querySelector("button");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const id = card.dataset.yt.replace(/[^\w-]/g, "");
+      const f = document.createElement("iframe");
+      f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+      f.title = "YouTube video";
+      f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+      f.allowFullscreen = true;
+      card.innerHTML = "";
+      card.appendChild(f);
+    });
+  });
+}
+
+function initPrivacyFooter() {
+  let footer = document.querySelector("footer.site-footer");
+  if (!footer) { footer = document.createElement("footer"); footer.className = "site-footer"; document.body.appendChild(footer); }
+  if (footer.querySelector(".privacy-link")) return;
+  const a = document.createElement("a");
+  a.className = "privacy-link";
+  a.href = new URL("soukromi.html", SITE_BASE).href;
+  a.textContent = "Soukromí";
+  footer.appendChild(a);
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   ensureFonts();
+  initPrivacyFooter();
+  initYoutubeEmbeds();
   createSpores();
   initHeaderMenu();
   decoratePanels();

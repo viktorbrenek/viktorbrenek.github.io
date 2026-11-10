@@ -31,9 +31,24 @@ async function updateFeed() {
         title,
         link,
         pubDate,
-        thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+        videoId,
+        // náhled se stahuje k nám (docs/assets/yt), aby web nenačítal obrázky z Googlu (GDPR)
+        thumbnail: `/assets/yt/${videoId}.jpg`
       };
     }).slice(0, 5);
+
+    // 2b. Stažení náhledů do docs/assets/yt a úklid starých
+    const dir = 'docs/assets/yt';
+    fs.mkdirSync(dir, { recursive: true });
+    for (const v of videos) {
+      const file = `${dir}/${v.videoId}.jpg`;
+      if (fs.existsSync(file)) continue;
+      const img = await fetch(`https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`);
+      if (img.ok) fs.writeFileSync(file, Buffer.from(await img.arrayBuffer()));
+      else v.thumbnail = '';
+    }
+    const keep = new Set(videos.map(v => `${v.videoId}.jpg`));
+    for (const f of fs.readdirSync(dir)) if (f.endsWith('.jpg') && !keep.has(f)) fs.unlinkSync(`${dir}/${f}`);
 
     // 3. DŮLEŽITÉ: Uložení souboru přímo do tvé složky docs!
     fs.writeFileSync('docs/youtube-data.json', JSON.stringify(videos, null, 2));

@@ -1,0 +1,86 @@
+doctype html
+head
+  title Soukromí | Viktor Břenek
+  meta(content="text/html;charset=utf-8", http-equiv="Content-Type")
+  meta(content="utf-8", http-equiv="encoding")
+  meta(name="author" content="Viktor Brenek")
+  meta(name="description" content="Jaké údaje web a hra Sporium zpracovávají a jak je smazat")
+  meta(property="og:image" content="http://viktorbrenek.github.io/assets/images/icon-512.png")
+  meta(name="viewport" content="width=device-width,initial-scale=1.0")
+  link(rel="stylesheet", href="styles.css")
+  link(rel="icon" href="assets/images/favicon.png" sizes="any")
+  link(rel="icon" href="assets/images/icon.svg" type="image/svg+xml")
+  link(rel="apple-touch-icon" href="assets/images/apple-touch-icon.png")
+  link(rel="manifest" href="/manifest.json")
+  script(src="site.js" defer)
+
+body(data-page="soukromi")
+  header.site-header
+    .site-header__inner
+      a.brand(href="index.html")
+        span.brand__sigil V
+        span.brand__text
+          span.brand__eyebrow Soukromí
+          span.brand__name Viktor Břenek
+      button.nav-toggle(type="button" aria-expanded="false") Menu
+      nav.site-nav
+        a(href="about.html") O mně
+        a(href="blog.html") Blog
+        a(href="gamedev.html") Vývoj her
+        a(href="design.html") Design
+        a(href="illustrations.html") Ilustrace
+        a(href="uxdesign.html") UX/UI
+      ul.social-links
+        li
+          a(href="https://instagram.com/viktorbrenek" target="_blank" rel="noreferrer") Instagram
+        li
+          a(href="https://facebook.com/brenekviktor/" target="_blank" rel="noreferrer") Facebook
+        li
+          a(href="https://twitch.tv/viktorbrenek" target="_blank" rel="noreferrer") Twitch
+        li
+          a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+        li
+          a(href="https://www.youtube.com/ViktorBrenekYT" target="_blank" rel="noreferrer") Youtube
+
+
+  main.page-shell
+    section.page-hero
+      p.eyebrow Soukromí
+      h1 Ochrana osobních údajů
+      p.lead Tenhle web a hra Sporium nepoužívají cookies, analytiku ani reklamu. Tady je přehledně, co se přesto zpracovává a jak to smazat.
+
+    section.section-card.privacy-page
+      h2 Kdo data zpracovává
+      p
+        | Správcem je Viktor Břenek, kontakt: 
+        a(href="mailto:viktorbrenek@gmail.com") viktorbrenek@gmail.com
+        | . Napsat můžeš i na 
+        a(href="https://discord.com/invite/2Uj6N5N" target="_blank" rel="noreferrer") Discord
+        | .
+
+      h2 Web brenek.art
+      ul
+        li Web hostuje #[b GitHub Pages] (GitHub, Inc.). GitHub může kvůli bezpečnosti a provozu krátce zaznamenávat IP adresy návštěvníků. Víc v jeho #[a(href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer") prohlášení o ochraně soukromí].
+        li Písma, knihovny i náhledy videí se načítají přímo z tohoto webu, ne od Googlu ani z jiných cizích serverů.
+        li #[b Videa z YouTube] se načtou až po kliknutí na „Přehrát video“, a to z adresy youtube-nocookie.com. Od té chvíle platí #[a(href="https://policies.google.com/privacy" target="_blank" rel="noreferrer") pravidla Googlu].
+        li Odkazy na sociální sítě (Instagram, Facebook, Twitch, Discord, YouTube) jsou jen obyčejné odkazy. Dokud na ně neklikneš, nic se z nich nenačítá.
+        li Nástroje na webu (konvertory, generátory, export členů YouTube…) běží celé v tvém prohlížeči. Soubory, které do nich vložíš, se nikam neodesílají. Některé si v prohlížeči pamatují nastavení (localStorage), které smažeš vymazáním dat webu.
+
+      h2 Hra Sporium
+      p Hra se ukládá jen v tvém prohlížeči. Na server (Cloudflare Workers a D1, Cloudflare zde vystupuje jako zpracovatel) se něco dostane jen tehdy, když si sám zapneš online funkce:
+      ul
+        li #[b Žebříček sezóny]: přezdívka, třída, hloubka, úroveň, zabití a čas hraní. Drží se po dobu sezóny.
+        li #[b Denní hlubina]: totéž pro daný den, maže se po 90 dnech.
+        li #[b Hroby padlých]: přezdívka, kdo tě zabil a vybraný vzkaz. Maže se po 180 dnech.
+        li #[b Hnilobná studna]: hozený předmět s přezdívkou. Maže se po 365 dnech.
+        li #[b Záloha savu]: tvoje postavy pod kódem zálohy. Maže se 180 dní po poslední aktualizaci.
+        li Klíč hráče server zná jen jako hash. #[b IP adresu neukládáme]: pro ochranu obnovy zálohy proti zneužití se z ní počítá hash, který se každý den mění a po 3 dnech se maže.
+      p Online data zpracováváme jen proto, že sis funkci sám zapnul a bez nich by nefungovala. Přezdívka je veřejně vidět, proto #[b nepoužívej své skutečné jméno].
+      p Všechna svoje online data smažeš sám ve hře: menu → #[b Soukromí] → #[b Smazat moje online data].
+
+      h2 Tvoje práva
+      p Máš právo na přístup ke svým údajům, jejich opravu a výmaz a můžeš proti zpracování vznést námitku. Napiš e-mail a do 30 dnů to vyřídím. Stížnost můžeš podat u #[a(href="https://uoou.gov.cz" target="_blank" rel="noreferrer") Úřadu pro ochranu osobních údajů].
+
+      p.privacy-updated Naposledy upraveno: 10. 11. 2026
+
+  footer.site-footer

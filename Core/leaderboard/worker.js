@@ -70,7 +70,23 @@ function validItem(it, maxIlvl) {
   return { ok: out, tier };
 }
 
+// ---------- automatický úklid (Cron Trigger v wrangler.toml, jednou denně) ----------
+// Doby uchování odpovídají stránce Soukromí ve hře – při změně uprav obojí.
+export const RETENTION = { limitsDays: 3, backupsDays: 180, gravesDays: 180, dailyDays: 90, wellDays: 365 };
+export async function cleanup(env) {
+  const now = Date.now(), d = n => now - n * 864e5, R = RETENTION;
+  const res = await env.DB.batch([
+    env.DB.prepare('DELETE FROM limits WHERE day < ?').bind(today(-R.limitsDays)),
+    env.DB.prepare('DELETE FROM backups WHERE updated < ?').bind(d(R.backupsDays)),
+    env.DB.prepare('DELETE FROM graves WHERE created < ?').bind(d(R.gravesDays)),
+    env.DB.prepare('DELETE FROM daily WHERE day < ?').bind(today(-R.dailyDays)),
+    env.DB.prepare('DELETE FROM well WHERE created < ?').bind(d(R.wellDays)),
+  ]);
+  return res.map(r => r.meta?.changes ?? 0);
+}
+
 export default {
+  async scheduled(event, env, ctx) { ctx.waitUntil(cleanup(env)); },
   async fetch(req, env) {
     const url = new URL(req.url), P = url.pathname, q = k => url.searchParams.get(k);
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors });
@@ -180,11 +196,20 @@ export default {
       if (req.method === 'GET' && P === '/restore') {
         const code = String(q('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
         if (code.length !== 10) return json({ error: 'code' }, 400);
+        // IP se nikdy neukládá: jen solený hash, který se mění každý den a záznam limitu se po 3 dnech maže
         const ip = req.headers.get('CF-Connecting-IP') || 'x';
-        if (!(await limit(env, await sha('ip:' + ip), 'restore', 40, 300))) return json({ error: 'throttled' }, 429);
+        if (!(await limit(env, await sha('ip:' + (env.IP_SALT || 'sporium') + ':' + today() + ':' + ip), 'restore', 40, 300))) return json({ error: 'throttled' }, 429);
         const r = await env.DB.prepare('SELECT data,updated FROM backups WHERE code=?').bind(code.slice(0, 5) + '-' + code.slice(5)).first();
         if (!r) return json({ error: 'not found' }, 404);
         return json({ ok: true, data: r.data, updated: r.updated });
+      }
+      // ===== smazání vlastních online dat (GDPR – hráč si je smaže sám ze hry) =====
+      if (req.method === 'POST' && P === '/forget') {
+        const b = await req.json();
+        if (typeof b.key !== 'string' || b.key.length < 16 || b.key.length > 80) return json({ error: 'values' }, 400);
+        const kh = await sha(b.key);
+        const res = await env.DB.batch(['backups', 'graves', 'well', 'daily', 'runs', 'nicks', 'limits'].map(t => env.DB.prepare(`DELETE FROM ${t} WHERE keyhash=?`).bind(kh)));
+        return json({ ok: true, deleted: res.reduce((a, r) => a + (r.meta?.changes ?? 0), 0) });
       }
       return json({ error: 'not found' }, 404);
     } catch (e) { return json({ error: 'server', msg: String(e.message || e) }, 500); }

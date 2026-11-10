@@ -50,8 +50,12 @@ body(data-page="youtube")
 
     section.section-card
       .embed-grid
-        each video in ["ucYxFS0W2P4?si=gj9AAF093N1UHAev", "Hf5h6LMkheI?si=K8J3SJxXzGXL6VCv", "c7tbkW5Ghcw?si=ffkmZ_0nwh7B21dp", "GNt_lCG288Y?si=fSTxUfP_4EtidlcE"]
-          .embed-card
-            iframe(src=`https://www.youtube.com/embed/${video}` title="YouTube video" loading="lazy" allowfullscreen)
+        //- Videa se načtou z youtube-nocookie až po kliknutí (GDPR) – obsluha je v site.js (initYoutubeEmbeds)
+        each video in ["ucYxFS0W2P4", "Hf5h6LMkheI", "c7tbkW5Ghcw", "GNt_lCG288Y"]
+          .embed-card.yt-facade(data-yt=video)
+            button(type="button")
+              span.yt-play ▶
+              span Přehrát video
+              small Video se načte z YouTube (Google) až po kliknutí.
 
   footer.site-footer

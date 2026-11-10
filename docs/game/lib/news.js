@@ -1,5 +1,10 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:20, d:'10. 11. 2026', t:'Soukromí', i:[
+    'V menu i na úvodní obrazovce je nová stránka <b>Soukromí</b>: co hra ukládá, kde a jak dlouho.',
+    'Tlačítkem <b>Smazat moje online data</b> si sám smažeš přezdívku, výsledky, hroby, předměty ve studně i zálohu na serveru.',
+    'Stará online data se teď mažou automaticky (zálohy po 180 dnech bez aktualizace, hroby po 180 dnech, denní žebříčky po 90 dnech).',
+    'Písma hra načítá ze svého webu, ne od Googlu.']},
   {v:19, d:'10. 11. 2026', t:'Záloha postav, potvrzování a nápověda', i:[
     '<b>Záloha</b> (úvodní obrazovka i menu Esc): stáhni si postavy do souboru, nebo si vytvoř <b>kód zálohy</b> a obnov je v jiném prohlížeči či po smazání historie. Záloha se pak sama obnovuje.',
     'Body atributů a pasivního stromu se ukládají až tlačítkem <b>Potvrdit</b> – překliknutí jde vrátit tlačítkem Zrušit.',

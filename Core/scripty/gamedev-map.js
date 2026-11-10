@@ -1,4 +1,4 @@
-import FastNoiseLite from "https://cdn.jsdelivr.net/npm/fastnoise-lite@1.1.0/FastNoiseLite.js";
+import FastNoiseLite from "./vendor/FastNoiseLite.js";
 
 const f32 = Math.fround;
 const COLORS = {
