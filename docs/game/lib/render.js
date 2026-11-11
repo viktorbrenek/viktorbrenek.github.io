@@ -3,8 +3,9 @@ import {T} from './game.js';
 import {WALL,FLOOR} from './dungeon.js';
 import {rng,edist,dist} from './util.js';
 import {rarityColor} from './items.js';
-import {SKILLS} from './data.js';
+import {SKILLS,biomeFor} from './data.js';
 import {drawRig,animTick,RIGS,drawBeast,drawForm,beastKey} from './rig.js';
+import {royalTrapActive} from './community.js';
 
 const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
 export class SceneRenderer{
@@ -27,14 +28,16 @@ export class SceneRenderer{
     R.setLight(g.computeLight(time),map.W,map.H);
     const flick=1+Math.sin(time*8.3)*0.05+Math.sin(time*19.7)*0.03+(rng.next()-0.5)*0.03;
     R.torch=[p.rx*T+T/2,p.ry*T+T/2-10,p.stats.torch*T*1.1,1.15*flick]; R.ambient=map.biome.ambient; g.renderHurt=(g.renderHurt||0)*Math.pow(0.15,dt); R.hurt=Math.max(g.renderHurt,p.hp/p.stats.life<0.3?0.25+Math.sin(time*4)*0.1:0);
-    const fl=map.biome.floors; const W=map.W; const tiles=R.meta.tiles||{};
+    const court=map.community?.area==='king'&&biomeFor(11);
+    const W=map.W; const tiles=R.meta.tiles||{};
     R.layer('base');
     for(let y=y0;y<=y1;y++) for(let x=x0;x<=x1;x++){ const i=y*W+x; if(!g.explored[i]) continue;
-      if(map.t[i]===FLOOR){ const n=fl[map.fv[i]%fl.length], cv=tiles[n]||[1,1]; const tw=cv[0], th=cv[1]; const qx=x%tw, qy=y%th;
+      const biome=court&&y>=map.community.top-1?court:map.biome;
+      if(map.t[i]===FLOOR){ const fl=biome.floors, n=fl[map.fv[i]%fl.length], cv=tiles[n]||[1,1]; const tw=cv[0], th=cv[1]; const qx=x%tw, qy=y%th;
         R.sprite(n,x*T,y*T,T+0.6,T+0.6,{sub:[qx/tw,qy/th,(qx+1)/tw,(qy+1)/th],tint:[0.8,0.78,0.76]}); }
       else { const below=y+1<map.H&&map.t[i+W]===FLOOR;
         const q=4, ux=x%q, uy=y%q; R.sprite('tex_walltop',x*T,y*T,T+0.6,T+0.6,{sub:[ux/q,uy/q,(ux+1)/q,(uy+1)/q]});
-        if(below){ const n=map.biome.wall, cw=(tiles[n]||[8])[0], ux2=x%cw; const h=T*1.25; R.sprite(n,x*T,(y+1)*T-h,T+0.6,h,{sub:[ux2/cw,0,(ux2+1)/cw,1]}); } } }
+        if(below){ const n=biome.wall, cw=(tiles[n]||[8])[0], ux2=x%cw; const h=T*1.25; R.sprite(n,x*T,(y+1)*T-h,T+0.6,h,{sub:[ux2/cw,0,(ux2+1)/cw,1]}); } } }
     // ambient occlusion along walls
     for(let y=y0;y<=y1;y++) for(let x=x0;x<=x1;x++){ const i=y*W+x; if(map.t[i]!==FLOOR||!g.explored[i]) continue;
       if(y>0&&map.t[i-W]!==FLOOR){ R.rect(x*T,y*T,T+0.5,T*0.12,[0,0,0],0.32); R.rect(x*T,y*T,T+0.5,T*0.28,[0,0,0],0.16); R.rect(x*T,y*T,T+0.5,T*0.5,[0,0,0],0.07); }
@@ -44,7 +47,10 @@ export class SceneRenderer{
     // flat props
     for(const pr of g.props) if(pr.flat&&this.onScreen(pr,x0,x1,y0,y1)&&g.explored[pr.y*W+pr.x]){ if(pr.decal){ const [w,h]=this.fitSprite(pr.spr,T*pr.sc,T*pr.sc); R.sprite(pr.spr,(pr.x+0.5+pr.ox)*T-w/2,(pr.y+0.5+pr.oy)*T-h/2,w,h,{rot:pr.rot,flip:pr.flip,tint:[0.82,0.8,0.78]}); continue; } const [w,h]=this.fitSprite(pr.spr,T*1.1,T*0.9); R.sprite(pr.spr,pr.x*T+T/2-w/2,pr.y*T+T/2-h/2,w,h); }
     // telegraphs (on floor, base layer, tinted)
-    for(const m of g.monsters) if(m.tele&&(g.canSee(m)||m.tele.tiles.some(([x,y])=>g.isVis(x,y)))) for(const [x,y] of m.tele.tiles){ R.rect(x*T+3,y*T+3,T-6,T-6,[0.95,0.12,0.05],0.3+Math.sin(time*12)*0.12); }
+    for(const m of g.monsters) if(m.tele&&(g.canSee(m)||m.tele.tiles.some(([x,y])=>g.isVis(x,y)))) for(const [x,y] of m.tele.tiles){
+      const color=m.ai==='winged'?[0.8,0.42,0.95]:[0.95,0.12,0.05];
+      R.rect(x*T+3,y*T+3,T-6,T-6,color,0.3+Math.sin(time*12)*0.12);
+    }
     for(const h of g.hazards){ const st=h.look==='storm', col=st?[0.55,0.62,0.3]:h.el==='fire'?[0.62,0.2,0.04]:h.el==='decay'?[0.38,0.15,0.48]:[0.26,0.46,0.1]; const warn=h.warn>0, fade=!warn&&h.turns<=1?0.55:1;
       const S=h._set||(h._set=new Set(h.tiles.map(([x,y])=>x+','+y))); const a=warn?0.16+Math.sin(time*6)*0.06:(st?0.34:0.62)*fade;
       for(const [x,y] of h.tiles){ if(!g.explored[y*W+x]) continue; R.fill(x*T,y*T,T,[S.has((x-1)+','+y),S.has(x+','+(y-1)),S.has((x+1)+','+y),S.has(x+','+(y+1))],col,a); } }
@@ -127,11 +133,31 @@ export class SceneRenderer{
     const breathe=1+Math.sin(time*3+(e.x||0)*1.7)*0.018; const bx=e.rx*T+T/2+ox, by=e.ry*T+T*0.96+oy;
     R.q(bx-w*0.38,by-8,w*0.76,14,0,0,1,1,0,0,0,0.45,2);
     let tint=e.tint||[1,1,1]; if(e.ally) tint=e.spirit?[1,1.05,1.15]:[0.85,1.08,0.9]; if(e.flash>0) tint=[2.2,2.2,2.2]; if(e.status?.poison) tint=[tint[0]*0.75,tint[1]*1.1,tint[2]*0.7]; if(e.status?.stun) tint=[tint[0]*0.8,tint[1]*0.8,tint[2]*1.1]; if(e.status?.fear) tint=[tint[0]*0.95,tint[1]*0.8,tint[2]*1.15]; if(e.status?.weak) tint=[tint[0]*0.82,tint[1]*0.78,tint[2]*0.9];
+    if(e.def?.wingRig){ this.drawAngel(g,e,bx,by,T*0.96*sc/99,time,tint); return; }
     if(isP&&e.form){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; if(drawForm(R,e,bx,by,T*0.92*1.1/99,time,tint)) return; }
     { const bk=!isP&&beastKey(spr); if(bk&&drawBeast(R,bk,e,bx,by,T*0.92*sc,time,tint)){ if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } return; } }
     if(isP&&!e.form&&RIGS[e.cls]){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; drawRig(R,e,g,bx,by,T*0.92*sc*1.1/99,time,tint); return; }
     const hop=Math.abs(Math.sin(e._wp||0))*(e._mv||0), sway=Math.sin(e._wp||0)*(e._mv||0)*0.07;
     R.sprite(spr,bx-w/2,by-h*breathe-hop*T*0.07,w,h*breathe,{flip:!e.flip,tint,rot:sway}); if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } }
+  drawAngel(g,e,bx,by,k,time,tint){
+    const R=this.r, mv=e._mv||0;
+    const pose=e.tele?1:e.anim?Math.sin(e.anim.t*Math.PI)*0.9:0;
+    const flap=Math.sin(time*(3+mv*4)+e.x)*(0.12+mv*0.22);
+    const variant=e.def.wingAttack==='wingSweep'?[0.82,0.85,0.71]:e.def.wingAttack==='wingRing'?[0.89,0.72,1]:[0.92,0.83,0.64];
+    const bodyTint=tint.map((v,i)=>v*variant[i]);
+    for(const side of [-1,1]){
+      const near=(side===1)===!!e.flip;
+      const w=(near?89:72)*(0.84+pose*0.22)*k, h=w*2/3;
+      const rot=side*(0.34-pose*0.7+flap+(near?0:0.12));
+      const dx=side*w*0.43, dy=-h*0.13;
+      const x=bx+side*6*k+dx*Math.cos(rot)-dy*Math.sin(rot);
+      const y=by-(64+pose*4)*k+dx*Math.sin(rot)+dy*Math.cos(rot);
+      R.sprite('angel_wing',x-w/2,y-h/2,w,h,{flip:side===1,rot,tint:bodyTint.map(v=>v*(near?1.36:1.03))});
+    }
+    const hat={wingSweep:'hat_slice8',wingRing:'hat_slice9',wingCross:'hat_slice14'}[e.def.wingAttack];
+    const equip={weapon:{spr:e.def.weapon},offhand:e.def.offhand&&{spr:e.def.offhand},helm:{spr:hat}};
+    drawRig(R,e,g,bx,by,k,time,bodyTint,e.def.wingRig,equip);
+  }
   spores_(g,dt,time,x0,x1,y0,y1){ const R=this.r, S=this.spores, c=g.map.biome.spore; const N=Math.round((x1-x0)*(y1-y0)*0.9);
     while(S.length<N) S.push(this.newSpore(x0,x1,y0,y1,true));
     for(let i=S.length-1;i>=0;i--){ const s=S[i]; s.life+=dt; s.x+=(s.vx+Math.sin(time*0.7+s.ph)*7)*dt; s.y+=(s.vy+Math.cos(time*0.5+s.ph)*4)*dt;
@@ -144,6 +170,16 @@ export class SceneRenderer{
     c.setTransform(1,0,0,1,0,0); c.clearRect(0,0,cv.width,cv.height);
     const z=R.cam.z*d; const sx=x=>(x-R.cam.x)*z+cv.width/2, sy=y=>(y-R.cam.y)*z+cv.height/2;
     c.textAlign='center'; c.textBaseline='middle';
+    const traps=g.map.community?.traps;
+    if(traps){
+      c.font=`700 ${22*d}px sans-serif`; c.lineWidth=3*d; c.strokeStyle='#1a1418';
+      for(const trap of traps){
+        if(!g.isVis(trap.x,trap.y)) continue;
+        const active=royalTrapActive(trap,g.turn), symbol=trap.kind==='crack'?'ϟ':active?'✦':'◇';
+        const px=sx((trap.x+0.5)*T), py=sy((trap.y+0.5)*T);
+        c.fillStyle=active?'#f77b70':'#f9e4ad'; c.strokeText(symbol,px,py); c.fillText(symbol,px,py);
+      }
+    }
     // monster bars
     for(const m of g.monsters){ if(m.hp<=0||!g.canSee(m)) continue; const special=m.rarity!=='normal'||m.boss||m.nest; if(m.hp>=m.maxhp&&!special) continue;
       const w=T*0.8*z*(m.boss?1.6:1), x=sx(m.rx*T+T/2)-w/2, y=sy(m.ry*T+T-T*0.95*(m.sc||1))-10*d;
@@ -156,6 +192,12 @@ export class SceneRenderer{
     for(const mn of g.minions){ if(mn.hp<=0||!g.isVis(mn.x,mn.y)) continue; const w=T*0.6*z, x=sx(mn.rx*T+T/2)-w/2, y=sy(mn.ry*T+T-T*0.95*(mn.sc||1))-6*d; c.fillStyle='rgba(0,0,0,0.7)'; c.fillRect(x-1,y-1,w+2,5*d); c.fillStyle='#7ee05a'; c.fillRect(x,y,w*Math.max(0,mn.hp/mn.maxhp),3*d); }
     // rune symbols
     for(const pr of g.props) if(pr.type==='rune'&&g.isVis(pr.x,pr.y)){ c.font=`700 ${20*d}px serif`; c.fillStyle=pr.on?'#bfe8ff':'rgba(200,210,230,0.55)'; c.fillText(pr.sym,sx(pr.x*T+T/2),sy(pr.y*T+T*0.45)); }
+    for(const pr of g.props) if(pr.type==='communityNpc'&&!pr.deco&&g.isVis(pr.x,pr.y)){
+      const x=sx((pr.x+0.5)*T), y=sy(pr.y*T)-9*d;
+      c.font=`700 ${13*d}px "Alegreya Sans",sans-serif`;
+      c.lineWidth=3*d; c.strokeStyle='#170f12'; c.fillStyle='#f2dcb0';
+      c.strokeText(pr.label||pr.name,x,y); c.fillText(pr.label||pr.name,x,y);
+    }
     // floating texts
     for(const t of g.texts){ const a=Math.min(1,t.life/t.max*1.6); const yy=t.y-(1-t.life/t.max)*T*0.9; c.globalAlpha=a; c.font=`800 ${Math.round(15*t.size*d)}px "Alegreya Sans",sans-serif`; c.lineWidth=3*d; c.strokeStyle='rgba(10,6,8,0.85)'; c.strokeText(t.text,sx(t.x),sy(yy)); c.fillStyle=t.color; c.fillText(t.text,sx(t.x),sy(yy)); }
     c.globalAlpha=1;

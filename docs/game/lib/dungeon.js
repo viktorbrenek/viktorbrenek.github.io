@@ -1,14 +1,24 @@
-import {RNG} from './util.js';
-import {biomeFor,RIDDLES} from './data.js';
+import {DIRS8,RNG} from './util.js';
+import {ANGEL_CITY,biomeFor,RIDDLES} from './data.js';
+import {communityEncounter,communityRoom} from './community.js';
 export const WALL=0, FLOOR=1;
 const RUNES=['ᚱ','ᚦ','ᛟ','ᛉ','ᚨ','ᛃ'];
 export function generate(depth, seed, opt={}){
-  const R=new RNG(seed); const W=58, H=42; const biome=biomeFor(depth);
+  const R=new RNG(seed); const W=58, H=42;
+  const city=opt.city!==false&&!opt.rift&&depth>=21&&depth<=25;
+  const biome=city?ANGEL_CITY:biomeFor(depth);
   const t=new Uint8Array(W*H); const fv=new Uint8Array(W*H); const room=new Int16Array(W*H).fill(-1);
   const I=(x,y)=>y*W+x; const inb=(x,y)=>x>0&&y>0&&x<W-1&&y<H-1;
   const rooms=[]; let tries=0;
   const target=R.int(11,15);
-  while(rooms.length<target&&tries++<600){
+  if(city){
+    for(let row=0;row<3;row++) for(let col=0;col<4;col++){
+      const x=3+col*13+R.int(0,2), y=3+row*12+R.int(0,2);
+      const w=R.int(7,10), h=R.int(6,8);
+      rooms.push({x,y,w,h,cx:x+(w>>1),cy:y+(h>>1),id:rooms.length,cave:false});
+    }
+  }
+  while(!city&&rooms.length<target&&tries++<600){
     const w=R.int(5,11), h=R.int(4,8), x=R.int(2,W-w-3), y=R.int(2,H-h-3);
     if(rooms.some(r=>x<r.x+r.w+2&&x+w+2>r.x&&y<r.y+r.h+2&&y+h+2>r.y)) continue;
     rooms.push({x,y,w,h,cx:x+(w>>1),cy:y+(h>>1),id:rooms.length,cave:opt.cave||(biome.id!=='halls'&&R.chance(0.45))});
@@ -107,7 +117,7 @@ export function generate(depth, seed, opt={}){
   // glow shrooms + decor
   for(const r of rooms){ const n=Math.floor(r.w*r.h/14)+R.int(0,2);
     for(let k=0;k<n;k++){ const p=randIn(r); if(!p) continue; const glow=R.chance(0.22);
-      if(glow&&biome.id==='cathedral'&&R.chance(0.6)){ const cand=R.chance(0.7); put({type:'glow',x:p[0],y:p[1],spr:cand?'cath_candelabra':'cath_reliquary',block:interior(p[0],p[1]),light:cand?[1,0.7,0.38]:[1,0.78,0.35],lr:cand?4:3,deco:true}); }
+      if(glow&&biome.shafts&&R.chance(0.6)){ const cand=R.chance(0.7); put({type:'glow',x:p[0],y:p[1],spr:cand?'cath_candelabra':'cath_reliquary',block:interior(p[0],p[1]),light:cand?[1,0.7,0.38]:[1,0.78,0.35],lr:cand?4:3,deco:true}); }
       else if(glow){ put({type:'glow',x:p[0],y:p[1],spr:R.pick(['glowshroom','deco_shroom12','deco_shroom10']),block:false,light:R.pick([[0.55,0.9,0.4],[0.5,0.7,1.0],[0.85,0.5,1.0]]),lr:3,deco:true}); }
       else { const blocky=interior(p[0],p[1])&&R.chance(0.35); const spr=R.pick(biome.deco); put({type:'deco',x:p[0],y:p[1],spr,block:blocky&&['pillar','pillars','barrels','crate','deadtree','stump','stump2','grave','obelisk','bench','cath_pew','cath_pew_broken','cath_candelabra','cath_pillar','cath_statue','cath_lectern','cath_sarcophagus','cath_organ','cath_reliquary','cath_bell'].includes(spr),deco:true}); } } }
   // pools
@@ -137,10 +147,47 @@ export function generate(depth, seed, opt={}){
     if(p){ put(ev==='nest'?{type:'nest',x:p[0],y:p[1],spr:'shroom_house2',block:true,hp:1,light:[0.6,1,0.3],lr:4,timer:0}:{type:'cursed',x:p[0],y:p[1],spr:'chest',block:true,light:[0.9,0.2,0.3],lr:4}); evData={x:p[0],y:p[1],room:r.id}; } }
   if(ev==='blackout') for(const p of props) if(p.type==='walltorch'){ p.dead=true; delete p.light; }
   // safety: stairs must always be reachable from the start (blocking props must never wall them in)
-  const reach=()=>{ const blk=new Set(props.filter(p=>p.block&&p.type!=='gate').map(p=>I(p.x,p.y))); const seen=new Uint8Array(W*H), q=[I(start.cx,start.cy)]; seen[q[0]]=1;
-    while(q.length){ const c=q.pop(), x=c%W, y=(c/W)|0; for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const n=I(x+dx,y+dy); if(!seen[n]&&t[n]===FLOOR&&!blk.has(n)){ seen[n]=1; q.push(n); } } } return seen[I(stairs.x,stairs.y)]===1; };
+  const reach=(encounter)=>{ const blk=new Set(props.filter(p=>p.block&&p.type!=='gate').map(p=>I(p.x,p.y))); const seen=new Uint8Array(W*H), q=[I(start.cx,start.cy)]; seen[q[0]]=1;
+    while(q.length){ const c=q.pop(), x=c%W, y=(c/W)|0; for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const n=I(x+dx,y+dy); if(!seen[n]&&t[n]===FLOOR&&!blk.has(n)){ seen[n]=1; q.push(n); } } }
+    return seen[I(stairs.x,stairs.y)]===1&&(!encounter||DIRS8.some(([dx,dy])=>seen[I(encounter.x+dx,encounter.y+dy)])); };
   if(!reach()){ for(const p of props) if(p.block&&(p.deco||p.type==='deco')) p.block=false; }
   if(!reach()){ for(const p of props) if(p.block&&p.type!=='gate'&&Math.max(Math.abs(p.x-stairs.x),Math.abs(p.y-stairs.y))<=2){ const n=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1],[1,-1],[-1,1],[2,0],[0,2],[-2,0],[0,-2]].map(([dx,dy])=>[p.x+dx*2,p.y+dy*2]).find(([x,y])=>t[I(x,y)]===FLOOR&&!props.some(o=>o.x===x&&o.y===y)&&Math.max(Math.abs(x-stairs.x),Math.abs(y-stairs.y))>2); if(n){ p.x=n[0]; p.y=n[1]; } else p.block=false; } }
   if(!reach()){ for(const p of props) if(p.block&&p.type!=='gate') p.block=false; }
-  return {W,H,t,fv,room,rooms,start:[start.cx,start.cy],stairs,props,spawns,puzzle,biome,depth,boss,vault,event:ev,evData};
+  const map={W,H,t,fv,room,rooms,start:[start.cx,start.cy],stairs,props,spawns,puzzle,biome,depth,boss,vault,event:ev,evData};
+  if(opt.community&&!opt.rift){
+    const npc=communityEncounter(opt.characterSeed??seed,depth,opt.completedEncounters);
+    if(npc){
+      const cells=[];
+      for(let y=2;y<H-2;y++) for(let x=2;x<W-2;x++){
+        const id=room[I(x,y)];
+        if(id<=0||id>=rooms.length||id===far.id||dist[I(x,y)]<15||Math.max(Math.abs(x-start.cx),Math.abs(y-start.cy))<9||!free(x,y)||!interior(x,y)) continue;
+        if(!props.some(p=>p.x===x&&p.y===y&&!p.decal)) cells.push([x,y]);
+      }
+      for(const [x,y] of R.shuffle(cells)){
+        const prop=put({type:'communityNpc',x,y,block:true,light:[0.75,0.85,1],lr:2,...npc});
+        if(!reach(prop)){ props.pop(); occ.delete(I(x,y)); continue; }
+        if(npc.area){
+          const top=H+2, side=communityRoom(npc.area,Math.floor(W/2),top);
+          map.H=Math.max(...side.tiles.map(([,sy])=>sy))+2;
+          map.t=new Uint8Array(W*map.H); map.t.set(t);
+          map.fv=new Uint8Array(W*map.H); map.fv.set(fv);
+          map.room=new Int16Array(W*map.H).fill(-1); map.room.set(room);
+          for(const [sx,sy] of side.tiles){ map.t[I(sx,sy)]=FLOOR; map.fv[I(sx,sy)]=Math.abs(sx+sy)%3; }
+          map.community={...side,top,entry:prop};
+          props.push(...side.props);
+        }
+        break;
+      }
+    }
+    if(city){
+      for(const [dx,dy] of DIRS8){
+        const x=stairs.x+dx, y=stairs.y+dy;
+        if(t[I(x,y)]!==FLOOR||props.some(p=>p.x===x&&p.y===y&&!p.decal)) continue;
+        props.push({type:'communityNpc',action:'cityBell',name:'Poslední městský zvon',x,y,block:true,spr:'cath_bell',light:[0.74,0.66,1],lr:3});
+        if(reach()) break;
+        props.pop();
+      }
+    }
+  }
+  return map;
 }

@@ -6,6 +6,16 @@ export const BIOMES=[
   {id:'drowned', name:'Utopené mycelium', floors:['tex_drowned_a','tex_drowned_b','tex_drowned_c'], wall:'wall_drowned', decals:[0,1,2,3,4,7,8,9,12,21,22], ambient:[0.035,0.06,0.07], spore:[0.6,1.0,0.85], deco:['deco_reeds','deco_grass3','deco_shroom12','deco_shroom11','vines','pillars','deco_shroom10','deco_shroom13','deco_shroom14']},
 ];
 export const biomeFor=d=>BIOMES[Math.floor((d-1)/5)%BIOMES.length];
+export const ANGEL_CITY={
+  ...BIOMES[2],id:'angel_city',name:'Město bez svítání',
+  floors:['tex_cath_b','tex_cath_c','tex_cath_a'],ambient:[0.065,0.045,0.08],spore:[0.84,0.6,0.95],
+  deco:['cath_banner','cath_pillar','cath_statue','cath_pew_broken','cath_bell','cath_reliquary','cath_sarcophagus','glowshroom_big','roots'],
+};
+export const CITY_QUEST={
+  name:'Zvon beze sboru',
+  task:'Jandir tě požádal, abys rozezněl poslední městský zvon. Hledej ho u schodiště v Městě bez svítání (hloubky 21–25).',
+  done:'Zvon se rozezněl a výtrusy na okamžik ztichly.',
+};
 // resist penalty like PoE acts: every 5 floors −12 %, max −60 %
 export const resPenalty=d=>-Math.min(60,Math.floor((d-1)/5)*12);
 
@@ -36,6 +46,11 @@ export const MONSTERS=[
   {id:'warlock', name:'Mykotický warlock', spr:'warlock', hp:34, dmg:[7,11], arm:2, spd:100, xp:26, ai:'healer', d:[12,99], el:'decay', res:{decay:40}},
   {id:'void', name:'Prázdnoústý', spr:'void_maw', hp:54, dmg:[9,15], arm:5, spd:100, xp:30, ai:'ranged', d:[13,99], el:'decay', light:[0.7,0.3,1], res:{decay:50,poison:30}},
   {id:'gazer', name:'Pozorovatel', spr:'gazer_big', hp:62, dmg:[10,16], arm:5, spd:90, xp:36, ai:'caster', d:[15,99], el:'decay', res:{decay:40,fire:30}, puddle:true},
+];
+export const FALLEN_ANGELS=[
+  {id:'fallen_guard',name:'Padlý štítonoš',spr:'hero_knight',wingRig:'warden',weapon:'spear',offhand:'shield_wood',hp:76,dmg:[9,13],arm:10,spd:90,xp:39,ai:'winged',wingAttack:'wingSweep',tip:'Napřáhne křídlo a udeří do tří polí před sebou.',sc:1.12,res:{poison:25}},
+  {id:'fallen_cantor',name:'Výtrusný kantor',spr:'hero_mage',wingRig:'myco',weapon:'staff_purple',hp:52,dmg:[8,12],arm:4,spd:90,xp:34,ai:'winged',wingAttack:'wingRing',tip:'Označí prstenec kolem cíle. Střed prstence zůstává bezpečný.',sc:1.05,el:'decay',res:{decay:40},light:[0.62,0.3,0.82]},
+  {id:'fallen_bell',name:'Zvoník z podhoubí',spr:'hero_axe',wingRig:'summoner',weapon:'club3',hp:65,dmg:[8,13],arm:6,spd:85,xp:37,ai:'winged',wingAttack:'wingCross',tip:'Rozezní kříž polí. Ustup šikmo mimo jeho ramena.',sc:1.1,el:'poison',res:{poison:45},light:[0.55,0.65,0.32]},
 ];
 // boss patterns: slam, charge, nova, spit, summon
 export const BOSSES=[

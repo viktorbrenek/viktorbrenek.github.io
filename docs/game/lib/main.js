@@ -8,7 +8,18 @@ import {drawMap} from './mapov.js';
 
 const loadImg=src=>new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
 async function boot(){
-  const [img,meta]=await Promise.all([loadImg('assets/atlas.webp'),fetch('assets/atlas.json').then(r=>r.json())]);
+  const [atlas,meta,wing]=await Promise.all([
+    loadImg('assets/atlas.webp'),fetch('assets/atlas.json').then(r=>r.json()),loadImg('assets/angel-wing.webp').catch(()=>null),
+  ]);
+  let img=atlas;
+  if(wing){
+    const y=Math.max(...Object.values(meta.s).map(([,y,,h])=>y+h))+4;
+    if(y+wing.height<=meta.h){
+      img=document.createElement('canvas'); img.width=meta.w; img.height=meta.h;
+      const ctx=img.getContext('2d'); ctx.drawImage(atlas,0,0); ctx.drawImage(wing,2,y);
+      meta.s.angel_wing=[2,y,wing.width,wing.height];
+    }
+  }
   const canvas=document.getElementById('gl'), over=document.getElementById('over');
   let R; try{ R=new Renderer(canvas,img,meta); }catch(e){ document.getElementById('loading').textContent='Tvůj prohlížeč nepodporuje WebGL2: '+e.message; return; }
   const scene=new SceneRenderer(R,over); const ui=new UI(img,meta); const g=new Game(null);
@@ -47,17 +58,24 @@ async function boot(){
     if(c==='Space'||c==='KeyE'){ e.preventDefault(); interactKey(); return; }
     if(c==='KeyZ'||c==='Period'||c==='Numpad5'){ g.wait(); return; }
   });
-  function interactKey(){ const p=g.player; const pr=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].map(([dx,dy])=>g.propAt(p.x+dx,p.y+dy,q=>['chest','cursed','lever','brazier','rune','obelisk','altar','shrine','gate','lore','pillar','rift','merchant','bellmaster','crystal','riddle','answer','grave','well'].includes(q.type))).find(Boolean);
+  function interactKey(){ const p=g.player; const pr=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]].map(([dx,dy])=>g.propAt(p.x+dx,p.y+dy,q=>['chest','cursed','lever','brazier','rune','obelisk','altar','shrine','gate','lore','pillar','rift','merchant','bellmaster','crystal','riddle','answer','grave','well','communityNpc'].includes(q.type))).find(Boolean);
       if(pr){ if(g.interact(pr)) g.endTurn(); } else { const st=g.map.stairs; if(st.x===p.x&&st.y===p.y) g.descend(); else g.wait(); } }
   addEventListener('keyup',e=>{ held.delete(e.code); });
   addEventListener('blur',()=>held.clear());
   const toTile=e=>{ const r=canvas.getBoundingClientRect(); const x=(e.clientX-r.left-r.width/2)/R.cam.z+R.cam.x, y=(e.clientY-r.top-r.height/2)/R.cam.z+R.cam.y; return [Math.floor(x/T),Math.floor(y/T)]; };
+  const communityTip=(x,y,e)=>{
+    const npc=g.propAt(x,y,p=>p.type==='communityNpc');
+    if(!npc||!g.isVis(x,y)) return false;
+    ui.communityTip(npc,e);
+    return true;
+  };
   addEventListener('keyup',e=>{ if(e.key==='Alt') g.altHeld=false; }); addEventListener('blur',()=>{ g.altHeld=false; });
   canvas.addEventListener('mousemove',e=>{ if(!started) return; const [x,y]=toTile(e); scene.hover=[x,y];
     { const mm=g.monAt(x,y); const pp=g.propAt(x,y,q=>!q.decal&&!q.deco&&q.type!=='pool'&&q.type!=='walltorch'); canvas.classList.toggle('attack',!!(mm&&g.canSee(mm))); canvas.classList.toggle('interact',!(mm&&g.canSee(mm))&&!!(pp&&g.explored[y*g.map.W+x]||g.ground.some(q=>q.x===x&&q.y===y&&g.isVis(x,y)&&g.lootOk(q)))); }
     const gr=g.ground.find(q=>q.x===x&&q.y===y&&g.isVis(x,y)&&g.lootOk(q)); const m=g.monAt(x,y);
     if(gr&&gr.item){ const it=gr.item; ui.tip(ui.itemTip(it),e); }
     else if(m&&g.canSee(m)) ui.tip(ui.monTip(m),e);
+    else if(communityTip(x,y,e)) return;
     else { const pr=g.propAt(x,y,q=>q.type!=='deco'&&q.type!=='decal'&&q.type!=='glow'&&q.type!=='pool'&&q.type!=='walltorch'); if(pr&&g.explored[y*g.map.W+x]){ const n={chest:'Truhla',cursed:'Prokletá truhla (spustí vlny)',lever:'Pulzující kokon',brazier:pr.lit?'Hořící žároviště':'Vyhaslé žároviště',rune:'Runový kámen '+pr.sym,obelisk:'Obelisk',altar:'Oltář hniloby (výroba)',shrine:pr.used?'Vyčerpaná svatyně':'Svatyně',gate:'Mříž trezoru',stairs:pr.locked?'Zapečetěné schodiště':'Schodiště dolů',riftexit:pr.locked?'Zapečetěný portál (zabij Srdce jeskyně)':'Portál zpět',lore:pr.read?'Přečtená runová deska':'Runová deska (lore)',pillar:pr.state==='idle'?'Plodnice pradávných – aktivuj pro vlny a zkažená jádra':pr.state==='active'?'Probuzená plodnice':'Vyčerpaná plodnice',rift:'Zkažená jeskyně (dobrovolný vstup)',merchant:'Hnilobný překupník',bellmaster:'Matka krystalů (zahraje melodii)',crystal:'Zpívající krystal',riddle:'Hrob mudrce (hádanka)',well:pr.used?'Vyschlá studna':'Hnilobná studna – hoď předmět, vylov cizí',answer:'Kámen s odpovědí: „'+pr.ans+'“',plate:'Dýchající plotna'}[pr.type]; if(pr.type==='grave'){ const gt=g.graveText(pr); ui.tip(`<div class="tt-name" style="color:#cfd8e6">✝ ${gt.t}</div><div class="tt-sub">${gt.s}</div>${gt.m?`<div class="tt-line">„${gt.m}“</div>`:''}<div class="tt-hint">${pr.respected?'Vzdal jsi čest.':'E = vzdát čest'}</div>`,e); } else if(n) ui.tip(`<div class="tt-name">${n}</div>`,e); else ui.tip(null); } else ui.tip(null); }
   });
   canvas.addEventListener('mouseleave',()=>{ scene.hover=null; ui.tip(null); });
@@ -74,7 +92,7 @@ async function boot(){
   if(TOUCH){ document.body.classList.add('touch');
     const ptrs=new Map(); let pinch=null, tap=null, lpT=null;
     const tileTip=(x,y,e)=>{ const gr=g.ground.find(q=>q.x===x&&q.y===y&&g.isVis(x,y)&&g.lootOk(q)); const m=g.monAt(x,y);
-      if(gr&&gr.item) ui.tip(ui.itemTip(gr.item),e); else if(m&&g.canSee(m)) ui.tip(ui.monTip(m),e); else return false; return true; };
+      if(gr&&gr.item) ui.tip(ui.itemTip(gr.item),e); else if(m&&g.canSee(m)) ui.tip(ui.monTip(m),e); else return communityTip(x,y,e); return true; };
     canvas.style.touchAction='none';
     canvas.addEventListener('pointerdown',e=>{ if(e.pointerType==='mouse') return; e.preventDefault(); lastTouch=performance.now(); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
       if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={d:Math.hypot(a.x-b.x,a.y-b.y),z:scene.zoom}; tap=null; clearTimeout(lpT); return; }

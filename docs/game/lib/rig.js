@@ -15,7 +15,7 @@ const ARM={w:29,h:49,sh:[10,9],hand:[19,42]}, LEG={w:28,h:35,hip:[14,5]};
 const WEAP={sword:52,sword2:52,axe:50,axe2:54,club:52,club2:52,club3:56,dagger_r:38,dagger_p:40,spear:90,staff_moss:84,staff_green:84,staff_crystal:86,staff_purple:84,staff_shroom:80,staff_red:84,wand_shroom:52,bow:58,crossbow:52,crossbow2:52};
 // helm item sprite -> hand-drawn hat; [hat, bottom of hat as fraction of head height]
 const HATMAP={helm_red:'hat_slice1',helm_brown:'hat_slice4',helm_purple:'hat_slice9',helm_tan:'hat_slice14',helm_violet:'hat_slice12',helm_rust:'hat_slice5',helm_purple2:'hat_slice13'};
-const HATFIT={hat_slice1:0.5,hat_slice2:1.04,hat_slice3:0.42,hat_slice4:0.45,hat_slice5:0.45,hat_slice6:0.98,hat_slice7:0.62,hat_slice8:0.42,hat_slice9:0.45,hat_slice10:0.45,hat_slice11:1.04,hat_slice12:0.98,hat_slice13:0.5,hat_slice14:0.72,hat_slice15:1.0};
+const HATFIT={hat_slice1:0.5,hat_slice2:1.04,hat_slice3:0.42,hat_slice4:0.45,hat_slice5:0.45,hat_slice6:0.98,hat_slice7:0.8,hat_slice8:0.42,hat_slice9:0.45,hat_slice10:0.45,hat_slice11:1.04,hat_slice12:0.98,hat_slice13:0.5,hat_slice14:0.72,hat_slice15:1.0};
 const BOWS=new Set(['bow','crossbow','crossbow2']);
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
 export function animTick(e,dt){
@@ -25,10 +25,10 @@ export function animTick(e,dt){
   if(e._hurt>0) e._hurt=Math.max(0,e._hurt-dt*3);
 }
 // draw the rig. bx,by = world foot point, k = world px per unit, mirror = face right
-export function drawRig(R,e,g,bx,by,k,time,tint){
-  const rig=RIGS[e.cls]; if(!rig) return false; const size=n=>{ const s=R.meta.s[n]; return s?[s[2]/2,s[3]/2]:[0,0]; };
+export function drawRig(R,e,g,bx,by,k,time,tint,rigId=e.cls,eq=e.equip||{}){
+  const rig=RIGS[rigId]; if(!rig) return false; const size=n=>{ const s=R.meta.s[n]; return s?[s[2]/2,s[3]/2]:[0,0]; };
   const M=!e.flip; // native art faces left; e.flip=true means facing left
-  const eq=e.equip||{}; const wspr=eq.weapon?.spr, ospr=eq.offhand?.spr, hspr=eq.helm?.spr, off=eq.offhand?.base;
+  const wspr=eq.weapon?.spr, ospr=eq.offhand?.spr, hspr=eq.helm?.spr, off=eq.offhand?.base;
   // ---- animation parameters ----
   const wp=e._wp||0, mv=e._mv||0, sw=Math.sin(wp);
   let bob=-Math.abs(sw)*2.6*mv + Math.sin(time*3)*0.5*(1-mv), lean=0;

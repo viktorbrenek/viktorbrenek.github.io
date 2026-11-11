@@ -1,5 +1,12 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:23, d:'11. 11. 2026', t:'Město bez svítání', i:[
+    'V hloubkách 21–25 najdeš podzemní město obývané padlými anděly. Hlídej si kříže, prstence a švihy křídel.',
+    'Až při průzkumu potkáš Jandira, může ti dát úkol s posledním městským zvonem. Průběh najdeš v Kronice [J].']},
+  {v:22, d:'11. 11. 2026', t:'První postavy podporovatelů', i:[
+    'Při průzkumu můžeš vzácně narazit na Jandira, Feckeho, Dandýsův váček s runou nebo na skrytou odbočku.',
+    'V Doupěti Psa z Brna můžeš vyšetřit zmizení zvonu. Za Gothmogovou branou čekají rozpadlé ruiny, pasti a odměna u trůnu.',
+    'Na úvodní obrazovce najdeš <b>Síň slávy</b> s poděkováním podporovatelům.']},
   {v:21, d:'10. 11. 2026', t:'Hraní na telefonu', i:[
     'Sporium jde hrát na telefonu a tabletu, nejlépe <b>na šířku</b> (na výšku tě hra upozorní).',
     'Ťukni na pole = pohyb a útok, <b>podrž prst</b> = popis nepřítele nebo předmětu, <b>dva prsty</b> = zoom.',
