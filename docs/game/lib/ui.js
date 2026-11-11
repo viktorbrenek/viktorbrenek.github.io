@@ -351,10 +351,15 @@ export class UI{
     const sendGrave=()=>{ if(canGrave&&!this._graveSent){ this._graveSent=true; LB.grave(g,by,msg); } };
     this._graveSent=false;
     setTimeout(()=>this.showModal(daily?`<h2 class="dead">Denní hlubina skončila</h2><p>Zabil tě: <b>${esc(by)}</b>. Došel jsi do hloubky <b>${g.best}</b> (úroveň ${p.lvl}).</p>${this.recapHTML()}${graveUI}<p class="hint">Zítra čeká nová hlubina.</p><div class="pmenu"><button class="big" id="d-lb">Denní žebříček</button><button class="big" id="d-menu">Do menu</button></div>`
-      :`<h2 class="dead">Padl jsi</h2><p>Zabil tě: <b>${esc(by)}</b> v hloubce ${g.depth}.</p>${this.recapHTML()}${graveUI}<p class="hint">Probudíš se na kontrolním bodě (hloubka ${g.checkpoint}). Ztratíš čtvrtinu zlata a polovinu zkušeností do další úrovně.</p><button class="big" id="resp">Vstát z výtrusů</button>`,
+      :`<h2 class="dead">Padl jsi</h2><p>Zabil tě: <b>${esc(by)}</b> v hloubce ${g.depth}.</p>${this.recapHTML()}${graveUI}<p class="hint">Ztratíš čtvrtinu zlata a polovinu zkušeností do další úrovně.</p><div class="pmenu"><button class="big" id="resp">Vstát v hloubce ${g.checkpoint}</button>${g.checkpoint>1?`<form id="resp-retreat"><label>Ustoupit do hloubky <input name="depth" type="number" min="1" max="${g.checkpoint-5}" step="5" value="${g.checkpoint-5}" required></label> <button class="big" type="submit">Ustoupit</button><p class="hint">Kontrolní body jsou v hloubkách 1, 6, 11 a dál po pěti.</p></form>`:''}</div>`,
     m=>{ m.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>{ msg=+b.dataset.gm; m.querySelectorAll('[data-gm]').forEach(x=>x.classList.toggle('on',x===b)); });
       if(daily){ m.querySelector('#d-lb').onclick=()=>{ sendGrave(); this.leaderboard(()=>this.onDeath(by),'daily'); }; m.querySelector('#d-menu').onclick=()=>{ sendGrave(); this.hideModal(); this.toTitleFn?.(); }; }
-      else m.querySelector('#resp').onclick=()=>{ sendGrave(); this.hideModal(); g.respawn(); }; }),900); }
+      else {
+        const revive=depth=>{ sendGrave(); this.hideModal(); g.respawn(depth); };
+        m.querySelector('#resp').onclick=()=>revive(g.checkpoint);
+        const retreat=m.querySelector('#resp-retreat');
+        if(retreat) retreat.onsubmit=e=>{ e.preventDefault(); revive(retreat.elements.depth.valueAsNumber); };
+      } }),900); }
   openWell(pr){ this.panel='well'; this.wellPr=pr; this.wellSel=null; this.renderPanel(); }
   wellHTML(){ const g=this.g,p=g.player, pr=this.wellPr; const items=p.inv.map((it,i)=>[it,i]).filter(([it])=>it.base||it.type==='support');
     if(!pr||pr.used) return `<h2>Hnilobná studna</h2><div class="hint">Studna vyschla.</div>${this.wellRes?`<div class="shopres">${this.wellRes}</div>`:''}`;

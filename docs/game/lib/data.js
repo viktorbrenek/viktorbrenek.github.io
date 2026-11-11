@@ -16,8 +16,9 @@ export const CITY_QUEST={
   task:'Jandir tě požádal, abys rozezněl poslední městský zvon. Hledej ho u schodiště v Městě bez svítání (hloubky 21–25).',
   done:'Zvon se rozezněl a výtrusy na okamžik ztichly.',
 };
-// resist penalty like PoE acts: every 5 floors −12 %, max −60 %
-export const resPenalty=d=>-Math.min(60,Math.floor((d-1)/5)*12);
+export const MAX_SCALING_DEPTH=60;
+// Hloubky se generují dál. Síla nepřátel a úroveň nové výbavy mají společný strop.
+export const resPenalty=d=>-Math.min(36,Math.floor((d-1)/5)*9);
 
 // ai: melee | ranged | caster | burster | swarm | charger | healer | lasher | mine | boss
 // res: base monster resistances (%), el: hit element
@@ -47,6 +48,7 @@ export const MONSTERS=[
   {id:'void', name:'Prázdnoústý', spr:'void_maw', hp:54, dmg:[9,15], arm:5, spd:100, xp:30, ai:'ranged', d:[13,99], el:'decay', light:[0.7,0.3,1], res:{decay:50,poison:30}},
   {id:'gazer', name:'Pozorovatel', spr:'gazer_big', hp:62, dmg:[10,16], arm:5, spd:90, xp:36, ai:'caster', d:[15,99], el:'decay', res:{decay:40,fire:30}, puddle:true},
 ];
+export const monstersFor=depth=>MONSTERS.filter(m=>depth>=m.d[0]&&(m.d[1]===99||depth<=m.d[1]));
 export const FALLEN_ANGELS=[
   {id:'fallen_guard',name:'Padlý štítonoš',spr:'hero_knight',wingRig:'warden',weapon:'spear',offhand:'shield_wood',hp:76,dmg:[9,13],arm:10,spd:90,xp:39,ai:'winged',wingAttack:'wingSweep',tip:'Napřáhne křídlo a udeří do tří polí před sebou.',sc:1.12,res:{poison:25}},
   {id:'fallen_cantor',name:'Výtrusný kantor',spr:'hero_mage',wingRig:'myco',weapon:'staff_purple',hp:52,dmg:[8,12],arm:4,spd:90,xp:34,ai:'winged',wingAttack:'wingRing',tip:'Označí prstenec kolem cíle. Střed prstence zůstává bezpečný.',sc:1.05,el:'decay',res:{decay:40},light:[0.62,0.3,0.82]},

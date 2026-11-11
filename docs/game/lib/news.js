@@ -1,5 +1,9 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:24, d:'12. 11. 2026', t:'Hlubiny a bossové', i:[
+    'Po varování před útokem bosse máš tah na reakci a místo k úhybu. Ve větší hloubce roste poškození pomaleji a postih k odolnostem je menší.',
+    'Hra dál generuje patra za hloubkou 100. Od hloubky 60 má základní síla monster a úroveň nové výbavy strop, zatímco patra, bossové a korupce se dál střídají.',
+    'Po smrti můžeš ustoupit na dřívější kontrolní bod a doplnit výbavu. Dosažený rekord ti zůstane.']},
   {v:23, d:'11. 11. 2026', t:'Město bez svítání', i:[
     'V hloubkách 21–25 najdeš podzemní město obývané padlými anděly. Hlídej si kříže, prstence a švihy křídel.',
     'Až při průzkumu potkáš Jandira, může ti dát úkol s posledním městským zvonem. Průběh najdeš v Kronice [J].']},

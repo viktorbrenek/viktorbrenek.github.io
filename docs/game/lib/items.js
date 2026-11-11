@@ -1,4 +1,4 @@
-import {BASES,AFFIXES,RARITY,RARE_A,RARE_B,UNIQUES,STAT_NAMES,PCT,SLOT_NAMES,SUPPORTS,CORRUPT_IMPL,CORRUPT_GOOD,CORRUPT_BAD,CONVERT_GROUPS,SETS} from './data.js';
+import {BASES,AFFIXES,RARITY,RARE_A,RARE_B,UNIQUES,STAT_NAMES,PCT,SLOT_NAMES,SUPPORTS,CORRUPT_IMPL,CORRUPT_GOOD,CORRUPT_BAD,CONVERT_GROUPS,SETS,MAX_SCALING_DEPTH} from './data.js';
 import {rng,fmt} from './util.js';
 let UID=1;
 const slotTag=b=>b.slot==='ring'?'ring':b.slot;
@@ -35,11 +35,12 @@ export function rollRarity(mf=0,boost=0,ilvl=10){
   if(r<lg+sb+(40+boost*10)*M) return 'magic';
   return 'common';
 }
-export function makeSetItem(ilvl,setId,pi){ const cands=[]; for(const S of SETS) S.pieces.forEach((pc,i)=>{ const b=BASES.find(x=>x.id===pc.base); if(b&&b.min<=ilvl+4&&(!setId||S.id===setId)&&(pi==null||pi===i)) cands.push([S,pc,i]); });
+export function makeSetItem(ilvl,setId,pi){ ilvl=Math.min(ilvl,MAX_SCALING_DEPTH); const cands=[]; for(const S of SETS) S.pieces.forEach((pc,i)=>{ const b=BASES.find(x=>x.id===pc.base); if(b&&b.min<=ilvl+4&&(!setId||S.id===setId)&&(pi==null||pi===i)) cands.push([S,pc,i]); });
   if(!cands.length) return null; const [S,pc,i]=rng.pick(cands); const it=makeItem(ilvl,{baseId:pc.base,rarity:'common'}); it.rarity='set'; it.set=S.id; it.piece=i; it.name=pc.name;
   for(const [st,v] of Object.entries(pc.fixed)){ const a=AFFIXES.find(a=>a.s===st); it.aff.push({id:'s_'+st,s:st,v:a?Math.round(scaleVal(a,ilvl,v)*10)/10:v,fixed:1}); }
   addAffixes(it,rng.int(1,2)); return it; }
 export function makeItem(ilvl,{rarity,baseId,uniqueId,mf=0,boost=0,spore=0}={}){
+  ilvl=Math.min(ilvl,MAX_SCALING_DEPTH);
   let base;
   if(rarity==='set'||(!rarity&&!uniqueId&&!baseId&&(rarity=rollRarity(mf,boost,ilvl))==='set')){ const it=makeSetItem(ilvl); if(it) return it; rarity='rare'; }
   if(uniqueId){ const u=UNIQUES.find(x=>x.id===uniqueId); base=BASES.find(b=>b.id===u.base); rarity='legendary'; }
