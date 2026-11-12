@@ -17,6 +17,7 @@ export const CITY_QUEST={
   done:'Zvon se rozezněl a výtrusy na okamžik ztichly.',
 };
 export const MAX_SCALING_DEPTH=60;
+export const MAX_LEVEL=99; // v26: strop úrovně. Starší postavy nad 99 si úroveň nechají, jen už nerostou.
 // Hloubky se generují dál. Síla nepřátel a úroveň nové výbavy mají společný strop.
 export const resPenalty=d=>-Math.min(36,Math.floor((d-1)/5)*9);
 
@@ -148,6 +149,20 @@ export const BASES=[
   {id:'charm', name:'Houbový talisman', slot:'amulet', spr:'shrooms_purple', imp:{dot:8}, min:6},
   {id:'scroll', name:'Svitek hniloby', slot:'offhand', spr:'scroll', imp:{spell:8,ailDur:10}, min:6},
   {id:'barkshield', name:'Štít z kůry', slot:'offhand', spr:'shield_wood2', imp:{armor:14,block:12,dr:2}, min:12},
+  // ---- v25 hlubinné základy: padají jen ve Výtrusných mapách ----
+  {id:'eg_blade', name:'Čepel podhoubí', slot:'weapon', spr:'sword2', kind:'melee', dmg:[12,20], imp:{crit:6,leech:1}, min:999, eg:1},
+  {id:'eg_maul', name:'Zvonařské kladivo', slot:'weapon', spr:'club3', kind:'melee', dmg:[15,24], imp:{stun:10,meleePct:10}, min:999, eg:1},
+  {id:'eg_bow', name:'Luk z kořene trůnu', slot:'weapon', spr:'bow', kind:'bow', dmg:[11,18], imp:{projPct:15}, min:999, eg:1},
+  {id:'eg_staff', name:'Žezlo šedé dvorany', slot:'weapon', spr:'staff_shroom', kind:'staff', dmg:[7,12], imp:{spell:45,cdr:5}, min:999, eg:1},
+  {id:'eg_shield', name:'Pavéza zvonů', slot:'offhand', spr:'shield_leaf', imp:{armor:20,block:16,res:6}, min:999, eg:1},
+  {id:'eg_censer', name:'Kadidelnice výtrusů', slot:'offhand', spr:'lantern2', imp:{torch:1,spell:15,dot:10}, min:999, eg:1},
+  {id:'eg_crown', name:'Výtrusná koruna', slot:'helm', spr:'helm_violet', imp:{armor:12,life:15,res:5}, min:999, eg:1},
+  {id:'eg_robe', name:'Roucho dvorní hniloby', slot:'chest', spr:'cloak_dark', imp:{armor:14,lifePct:6,dodge:5}, min:999, eg:1},
+  {id:'eg_plate', name:'Kořenový pancíř', slot:'chest', spr:'armor_moss2', imp:{armor:28,dr:3}, min:999, eg:1},
+  {id:'eg_gauntlet', name:'Rukavice zvoníka', slot:'gloves', spr:'gauntlet', imp:{armor:10,cdr:4}, min:999, eg:1},
+  {id:'eg_boots', name:'Boty tichého průvodu', slot:'boots', spr:'boots_tan', imp:{armor:8,dodge:8}, min:999, eg:1},
+  {id:'eg_amulet', name:'Slza Mirun', slot:'amulet', spr:'amulet_heart', imp:{res:8,lifePct:5}, min:999, eg:1},
+  {id:'eg_ring', name:'Prsten podhoubí', slot:'ring', spr:'ring_violet', imp:{elemPct:10,mana:10}, min:999, eg:1},
 ];
 export const STAT_NAMES={life:'Život',mana:'Esence',armor:'Zbroj',dmg:'Fyzické poškození',dmgPct:'% poškození',crit:'% šance na kritický zásah',critMult:'% kritický násobič',
   fire:'Ohnivé poškození',poison:'Jedové poškození',decay:'Hnilobné poškození',poisonCh:'% šance otrávit',burnCh:'% šance zapálit',bleed:'% šance na krvácení',
@@ -295,6 +310,15 @@ export const UNIQUES=[
   {id:'oathring', name:'Prsten přísahy', base:'ring', spr:'ring_gold', fixed:{dr:4,life:20}, power:'Dokud máš plný život, způsobuješ o 25 % více poškození.'},
   {id:'moth_wings', name:'Můří křídla', base:'leafarmor', spr:'armor_leaf', fixed:{dodge:10,buffDur:20}, power:'Výtrusný skok a Krok stínem nemají přebíjení, ale stojí dvojnásobek.'},
   {id:'bonebreaker', name:'Kostolam', base:'spikeclub', spr:'club3', fixed:{stun:15,physPct:25}, power:'Omráčení nepřátelé utrží o 40 % více poškození a tvé omráčení trvá o 1 tah déle.'},
+  // ---- v25 endgame: eg:'map' padají jen ve Výtrusných mapách, eg:'queen' jen ze Šedé královny ----
+  {id:'eg_seedcrown', eg:'map', name:'Koruna klíčení', base:'eg_crown', spr:'eg_seedcrown', fixed:{skill:1,life:40}, power:'Za každý tier dokončený v Kořenové síti způsobuješ o 1 % více poškození (max 16 %).'},
+  {id:'eg_rootplate', eg:'map', name:'Trůnní kůra', base:'eg_plate', spr:'eg_rootplate', fixed:{lifePct:15,dr:4}, power:'Za každých 400 zbroje +1 % snížení utrženého poškození (max +10 %).'},
+  {id:'eg_bellring', eg:'map', name:'Prsten posledního zvonu', base:'eg_ring', spr:'eg_bellring', fixed:{cdr:10,elemPct:20}, power:'+1 k úrovni všech dovedností, ale −10 % maximálního života.'},
+  {id:'eg_mirestep', eg:'map', name:'Kroky průvodu', base:'eg_boots', spr:'eg_mirestep', fixed:{dodge:10,res:10}, power:'Ve Výtrusných mapách +40 % vzácnosti předmětů.'},
+  {id:'q_crown', eg:'queen', name:'Koruna Šedé královny', base:'eg_crown', spr:'q_crown', fixed:{skill:2,lifePct:12,res:10}, power:'Koruna myslí za tebe: tvé zásahy průrazí o 15 % odolností nepřátel navíc.'},
+  {id:'q_heart', eg:'queen', name:'Srdce, které nespí', base:'eg_amulet', spr:'q_heart', fixed:{lifePct:20,regenPct:2}, power:'Jednou za patro tě smrtelný zásah nezabije – vstaneš s 30 % života.'},
+  {id:'q_scepter', eg:'queen', name:'Žezlo poslední písně', base:'eg_staff', spr:'q_scepter', fixed:{spell:60,elemPct:30,skill:1}, power:'Způsobuješ o 20 % více poškození, ve Výtrusných mapách o dalších 20 % více.'},
+  {id:'q_blade', eg:'queen', name:'Mirunin trn', base:'eg_blade', spr:'q_blade', fixed:{physPct:60,crit:10,execPct:60,leech:3}, power:'Trn dorazí každého: +60 % poškození proti raněným nepřátelům (pod 35 % života).'},
 ];
 // ---------- sets ----------
 export const SETS=[

@@ -12,10 +12,10 @@ export const RIGS={
 };
 const FOOT=99, CX=25;
 const ARM={w:29,h:49,sh:[10,9],hand:[19,42]}, LEG={w:28,h:35,hip:[14,5]};
-const WEAP={sword:52,sword2:52,axe:50,axe2:54,club:52,club2:52,club3:56,dagger_r:38,dagger_p:40,spear:90,staff_moss:84,staff_green:84,staff_crystal:86,staff_purple:84,staff_shroom:80,staff_red:84,wand_shroom:52,bow:58,crossbow:52,crossbow2:52};
+const WEAP={sword:52,sword2:52,axe:50,axe2:54,club:52,club2:52,club3:56,dagger_r:38,dagger_p:40,spear:90,staff_moss:84,staff_green:84,staff_crystal:86,staff_purple:84,staff_shroom:80,staff_red:84,wand_shroom:52,bow:58,crossbow:52,crossbow2:52,q_blade:46,q_blade_held:46,q_scepter:86,q_scepter_held:86};
 // helm item sprite -> hand-drawn hat; [hat, bottom of hat as fraction of head height]
-const HATMAP={helm_red:'hat_slice1',helm_brown:'hat_slice4',helm_purple:'hat_slice9',helm_tan:'hat_slice14',helm_violet:'hat_slice12',helm_rust:'hat_slice5',helm_purple2:'hat_slice13'};
-const HATFIT={hat_slice1:0.5,hat_slice2:1.04,hat_slice3:0.42,hat_slice4:0.45,hat_slice5:0.45,hat_slice6:0.98,hat_slice7:0.8,hat_slice8:0.42,hat_slice9:0.45,hat_slice10:0.45,hat_slice11:1.04,hat_slice12:0.98,hat_slice13:0.5,hat_slice14:0.72,hat_slice15:1.0};
+const HATMAP={helm_red:'hat_slice1',helm_brown:'hat_slice4',helm_purple:'hat_slice9',helm_tan:'hat_slice14',helm_violet:'hat_slice12',helm_rust:'hat_slice5',helm_purple2:'hat_slice13',q_crown:'q_crown',eg_seedcrown:'eg_seedcrown'};
+const HATFIT={hat_slice1:0.5,hat_slice2:1.04,hat_slice3:0.42,hat_slice4:0.45,hat_slice5:0.45,hat_slice6:0.98,hat_slice7:0.8,hat_slice8:0.42,hat_slice9:0.45,hat_slice10:0.45,hat_slice11:1.04,hat_slice12:0.98,hat_slice13:0.5,hat_slice14:0.72,hat_slice15:1.0,q_crown_worn:0.5,eg_seedcrown_worn:0.55,q_crown:0.66,eg_seedcrown:0.42};
 const BOWS=new Set(['bow','crossbow','crossbow2']);
 const ease=x=>x<0?0:x>1?1:x*x*(3-2*x);
 export function animTick(e,dt){
@@ -28,7 +28,15 @@ export function animTick(e,dt){
 export function drawRig(R,e,g,bx,by,k,time,tint,rigId=e.cls,eq=e.equip||{}){
   const rig=RIGS[rigId]; if(!rig) return false; const size=n=>{ const s=R.meta.s[n]; return s?[s[2]/2,s[3]/2]:[0,0]; };
   const M=!e.flip; // native art faces left; e.flip=true means facing left
-  const wspr=eq.weapon?.spr, ospr=eq.offhand?.spr, hspr=eq.helm?.spr, off=eq.offhand?.base;
+  const alt=(n,suf)=>n&&R.meta.s[n+suf]?n+suf:n;
+  const art=(part)=>{ const n=`rig_art_${rigId}_${part}`; return rigId===e.cls&&R.meta.s[n]?n:rig[part]; };
+  const headName=art('head'), bodyName=art('body'), armName=art('arm'), legName=art('leg');
+  const worn=(slot)=>{ const spr=eq[slot]?.spr; return spr&&R.meta.s[spr+'_worn']?spr+'_worn':null; };
+  const chest=worn('chest')||bodyName, leg=worn('boots')||legName, gloves=worn('gloves');
+  const glovedArm=gloves&&`${armName}_${gloves}`;
+  const arm=R.meta.s[glovedArm]?glovedArm:armName;
+  const wspr=alt(eq.weapon?.spr,'_held'), ospr=alt(eq.offhand?.spr,'_held'), off=eq.offhand?.base;
+  const hspr=eq.helm?.spr;
   // ---- animation parameters ----
   const wp=e._wp||0, mv=e._mv||0, sw=Math.sin(wp);
   let bob=-Math.abs(sw)*2.6*mv + Math.sin(time*3)*0.5*(1-mv), lean=0;
@@ -42,7 +50,7 @@ export function drawRig(R,e,g,bx,by,k,time,tint,rigId=e.cls,eq=e.equip||{}){
     else if(an.k==='summon'){ const u=Math.sin(Math.PI*t); aNear=-2.5*u; aFar=0.25+2.3*u; phi=-1.2+1.0*u; bob-=5*u; }
   }
   const hurt=e._hurt||0; lean+=hurt*4;
-  const body=size(rig.body), head=size(rig.head);
+  const body=size(bodyName), head=size(headName);
   // ---- part drawing helper (local unmirrored coords; pivot in displayed part coords) ----
   const part=(n,lx,ly,w,h,o={})=>{ if(!R.meta.s[n]) return; const a=o.rot||0, px=o.pv?o.pv[0]:w/2, py=o.pv?o.pv[1]:h/2;
     const Px=lx+px, Py=ly+py, dx=w/2-px, dy=h/2-py, c=Math.cos(a), s=Math.sin(a);
@@ -50,31 +58,60 @@ export function drawRig(R,e,g,bx,by,k,time,tint,rigId=e.cls,eq=e.equip||{}){
     const fl=!!o.flip!==M; const X=bx+(M?CX-cx:cx-CX)*k, Y=by-(FOOT-cy)*k;
     R.sprite(n,X-w*k/2,Y-h*k/2,w*k,h*k,{rot:M?-a:a,flip:fl,tint:o.tint||tint,sub:o.sub}); };
   const rotP=(px,py,ox,oy,a)=>{ const dx=px-ox, dy=py-oy, c=Math.cos(a), s=Math.sin(a); return [ox+dx*c-dy*s, oy+dx*s+dy*c]; };
+  const fitted=(n,x,y,length,o={})=>{
+    const [iw,ih]=size(n), edge=Math.max(iw,ih); if(!edge) return;
+    const w=length*iw/edge, h=length*ih/edge;
+    part(n,x-w/2,y-h/2,w,h,o);
+  };
   const dark=[tint[0]*0.72,tint[1]*0.72,tint[2]*0.74];
   const [ax,ay]=rig.armAt, [lx,ly]=rig.legAt, [bxx,byy]=rig.bodyAt;
   const farArmX=bxx-11, farLegX=lx-15;
+  const legLayer=(x,angle,far)=>{
+    const legacy=leg===rig.leg;
+    const [w,h]=legacy?[LEG.w,LEG.h]:size(leg);
+    // Both new legs use the same facing. Their atlas midpoint is the hip.
+    const hipX=w/2;
+    part(leg,x+LEG.hip[0]-hipX,ly,w,h,{
+      flip:far||!legacy,pv:[hipX,LEG.hip[1]],rot:angle,tint:far?dark:tint,noBob:true,
+    });
+  };
+  const armLayer=(x,angle,flip,shade,ring)=>{
+    const shoulder=flip?ARM.w-ARM.sh[0]:ARM.sh[0];
+    const hand=flip?ARM.w-ARM.hand[0]:ARM.hand[0];
+    part(arm,x,ay,ARM.w,ARM.h,{flip,pv:[shoulder,ARM.sh[1]],rot:angle,tint:shade});
+    const [hx,hy]=rotP(x+hand,ay+ARM.hand[1],x+shoulder,ay+ARM.sh[1],angle);
+    fitted(eq[ring]?.spr,hx,hy,6,{flip,rot:angle,tint:shade});
+    return [hx,hy];
+  };
   // far leg
-  part(rig.leg,farLegX,ly,LEG.w,LEG.h,{flip:true,pv:[LEG.w-LEG.hip[0],LEG.hip[1]],rot:lFar,tint:dark,noBob:true});
+  legLayer(farLegX,lFar,true);
   // quiver on the back
   if(ospr&&off==='quiver'){ const s0=size(ospr); const mx=Math.max(s0[0],s0[1])||1; const sz=34; part(ospr,bxx+30,byy-12,sz*s0[0]/mx,sz*s0[1]/mx,{rot:0.35}); }
-  // weapon in far hand, then the far arm over the grip
-  const farSh=[farArmX+(ARM.w-ARM.sh[0]),ay+ARM.sh[1]];
-  part(rig.arm,farArmX,ay,ARM.w,ARM.h,{flip:true,pv:[ARM.w-ARM.sh[0],ARM.sh[1]],rot:aFar,tint:dark});
-  if(wspr){ const [hx,hy]=rotP(farArmX+(ARM.w-ARM.hand[0]),ay+ARM.hand[1],farSh[0],farSh[1],aFar); const s0=size(wspr); const mx=Math.max(s0[0],s0[1])||1; const L=WEAP[wspr]||54; const w=L*s0[0]/mx, h=L*s0[1]/mx;
-    const bow=BOWS.has(wspr);
+  // weapon shares the animated pivot of the far hand
+  const [hx,hy]=armLayer(farArmX,aFar,true,dark,'ring2');
+  if(wspr){ const s0=size(wspr); const mx=Math.max(s0[0],s0[1])||1; const L=WEAP[wspr]||WEAP[eq.weapon.spr]||54; const w=L*s0[0]/mx, h=L*s0[1]/mx;
+    const bow=BOWS.has(eq.weapon.spr);
     if(bow){ const gx=w*0.5, gy=h*0.5; part(wspr,hx-gx,hy-gy,w,h,{flip:true,pv:[gx,gy],rot:-0.78+0.45+bowR}); }
     else { const gx=w*0.76, gy=h*0.76; part(wspr,hx-gx,hy-gy,w,h,{flip:true,pv:[gx,gy],rot:phi+0.785}); } }
   // near leg, body, head, helm (only the cap of the helm, so the face stays visible)
-  part(rig.leg,lx,ly,LEG.w,LEG.h,{pv:LEG.hip,rot:lNear,noBob:true});
-  part(rig.body,bxx,byy,body[0],body[1]);
-  part(rig.head,0,0,head[0],head[1],{rot:headR,pv:[head[0]*0.5,head[1]*0.9]});
-  const hat=hspr&&(hspr.startsWith('hat_')?hspr:HATMAP[hspr]);
-  if(hat&&R.meta.s[hat]){ const [w,h]=size(hat); const fit=HATFIT[hat]??0.5; part(hat,head[0]*0.5-w/2,head[1]*fit-h,w,h,{rot:headR,pv:[w/2,h+head[1]*(0.9-fit)]}); }
+  legLayer(lx,lNear,false);
+  part(chest,bxx,byy,body[0],body[1]);
+  fitted(eq.amulet?.spr,bxx+body[0]*0.54,Math.max(byy+body[1]*0.49,head[1]+6),12);
+  part(headName,0,0,head[0],head[1],{rot:headR,pv:[head[0]*0.5,head[1]*0.9]});
+  const baseHat=hspr&&(hspr.startsWith('hat_')||hspr.endsWith('_worn')?hspr:HATMAP[hspr]);
+  const hat=rigId===e.cls?alt(baseHat||hspr,'_worn'):baseHat;
+  if(hat&&R.meta.s[hat]){
+    const [w,h]=size(hat), fit=HATFIT[hat]??HATFIT[baseHat]??0.5;
+    part(hat,head[0]*0.5-w/2,head[1]*fit-h,w,h,{rot:headR,pv:[w/2,h+head[1]*(0.9-fit)]});
+  }
   // near arm, offhand item held in front of it
-  const sh=[ax+ARM.sh[0],ay+ARM.sh[1]];
-  part(rig.arm,ax,ay,ARM.w,ARM.h,{pv:ARM.sh,rot:aNear});
-  if(ospr&&off!=='quiver'){ const [hx,hy]=rotP(ax+ARM.hand[0],ay+ARM.hand[1],sh[0],sh[1],aNear); const s0=size(ospr); const mx=Math.max(s0[0],s0[1])||1;
-    const sz=off==='shield'||off==='lshield'?34:off==='tome'?24:off==='lantern'?24:24; const w=sz*s0[0]/mx, h=sz*s0[1]/mx; part(ospr,hx-w*0.5,hy-h*(off==='lantern'?0.15:0.5),w,h,{rot:aNear*0.3}); }
+  const [nearX,nearY]=armLayer(ax,aNear,false,tint,'ring1');
+  if(ospr&&off!=='quiver'){
+    const [iw,ih]=size(ospr), edge=Math.max(iw,ih)||1;
+    const shield=eq.offhand.spr.startsWith('shield_'), hanging=eq.offhand.spr.startsWith('lantern');
+    const length=shield?34:24, w=length*iw/edge, h=length*ih/edge;
+    part(ospr,nearX-w/2,nearY-h*(hanging?0.15:0.5),w,h,{rot:aNear*0.3});
+  }
   return true;
 }
 
@@ -91,7 +128,7 @@ export function drawBeast(R,key,e,bx,by,targetH,time,tint,form){
   if(an&&(an.k==='cast'||an.k==='summon')) bob-=3*at;
   const hurt=e._hurt||0; lean+=hurt*3;
   const dark=[tint[0]*0.72,tint[1]*0.72,tint[2]*0.74];
-  for(const p of B.parts){ if(!R.meta.s[p.n]) continue;
+  for(const p of B.parts){ const artName='form_art_'+p.n; const sprite=form&&R.meta.s[artName]?artName:p.n; if(!R.meta.s[sprite]) continue;
     let a=0, ox=0, oy=0; const r=p.r;
     if(r==='leg'){ a=stand? (fly?Math.sin(time*3+p.ph)*0.12:Math.sin(wp+p.ph)*0.3*mv) : fly? Math.sin(time*3+p.ph+seed)*0.18 : Math.sin(wp+p.ph)*0.28*mv+(p.far?0:lt*-0.2); oy=fly||stand?0:0; }
     else if(r==='arm'){ a=Math.sin(wp+p.ph)*0.35*mv+Math.sin(time*2.1+p.ph)*0.04; if(!p.far){ if(an&&an.k==='swing') a-=1.3*at*(p.f?-1:1); else if(e.lunge) a-=1.0*lt*(p.f?-1:1); } if(an&&(an.k==='cast'||an.k==='shoot')) a-=0.9*at*(p.f?-1:1); }
@@ -103,6 +140,7 @@ export function drawBeast(R,key,e,bx,by,targetH,time,tint,form){
     const Px=C0x+qx*c0-qy*s0, Py=C0y+qx*s0+qy*c0, dx=C0x-Px, dy=C0y-Py, c=Math.cos(a), s=Math.sin(a);
     let cx=Px+dx*c-dy*s+ox, cy=Py+dx*s+dy*c+oy; cx-=lean; if(!(r==='leg'&&!fly)) cy+=bob;
     const X=bx+(M?-cx:cx)*k, Y=by+cy*k;
-    R.sprite(p.n,X-p.w*k/2,Y-p.h*k/2,p.w*k,p.h*k,{rot:M?-(a0+a):a0+a,flip:fl!==M,tint:p.far?dark:tint}); }
+    const facingFlip=form&&!fly&&r==='leg'?false:fl;
+    R.sprite(sprite,X-p.w*k/2,Y-p.h*k/2,p.w*k,p.h*k,{rot:M?-(a0+a):a0+a,flip:facingFlip!==M,tint:p.far?dark:tint}); }
   return true; }
 export function drawForm(R,e,bx,by,k99,time,tint){ const key=FORM_RIG[e.form]; if(!key) return false; return drawBeast(R,key,e,bx,by,k99*99*FORM_MUL[e.form],time,tint,true); }

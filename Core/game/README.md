@@ -9,6 +9,14 @@ Hra samotná je statická v `docs/game/` (žádný build krok, ES moduly + WebGL
 3. Převeď na webp a zkopíruj do `docs/game/assets/` (atlas.webp, atlas.json).
    Jména spritů a jejich pozice v mřížce (řádek, sloupec) jsou v `pack.py`.
 
+## Paper-doll hráčských postav
+
+Samostatné díly hrdinů, zvířecích podob a výbavy jsou v `raw6/rig_art/`. Nasazené
+verze výbavy z endgamu jsou v `raw6/endgame/worn/`. Po jejich úpravě spusť
+`python Core/game/tools/pack_rig_art.py` z kořene repozitáře. Skript vytvoří
+`docs/game/assets/rig-art.webp` a `rig-art.json`, které hra načítá se základním atlasem.
+Při balení zarovná nohy podle kyčle a kotníku a sestaví varianty paží s nasazenými rukavicemi.
+
 ## Struktura hry (`docs/game/lib`)
 - `gl.js` – WebGL2 renderer: sprite batch, světelná mapa, pochodeň per-pixel, spory, post FX
 - `dungeon.js` – generátor pater, trezory, hádanky, světla

@@ -20,7 +20,9 @@ function checkRun(b) {
   if (!NICK_RE.test(cleanNick(b.nick))) return 'nick';
   if (!CLASSES.includes(b.cls)) return 'cls';
   if (!int(b.best, 1, 6000) || !int(b.lvl, 1, 999) || !int(b.kills ?? 0, 0, 1e8) || !int(b.playsec ?? 0, 0, 1e8)) return 'values';
-  if (b.best > 8 + b.lvl * 2.5) return 'implausible depth for level';
+  if (!int(b.eg ?? 0, 0, 16) || !int(b.queen ?? 0, 0, 1e6)) return 'values';
+  if ((b.eg || b.queen) && b.best < 60) return 'implausible endgame'; // v26: mapy jdou až od hloubky 60
+  if (b.lvl < 99 && b.best > 8 + b.lvl * 2.5) return 'implausible depth for level'; // v26: na max úrovni 99 může hráč jít libovolně hluboko
   if (b.playsec < (b.best - 1) * 25) return 'too fast';
   if (b.kills < (b.best - 1) * 5) return 'too few kills';
   return null;
@@ -94,6 +96,10 @@ export default {
       // ===== season leaderboard =====
       if (req.method === 'GET' && P === '/top') {
         const season = +q('season') || 1, cls = q('cls') || 'all', lim = Math.min(100, Math.max(1, +q('limit') || 50));
+        if (q('sort') === 'eg') { // v26: endgame žebříček – nejvyšší dokončený tier Výtrusné mapy, pak porážky královny
+          const { results } = await env.DB.prepare('SELECT id,nick,cls,best,lvl,eg,queen,playsec FROM runs WHERE season=? AND (eg>0 OR queen>0) ORDER BY eg DESC,queen DESC,lvl DESC,playsec ASC LIMIT ?').bind(season, lim).all();
+          return json({ season, cls: 'eg', rows: results.map(r => ({ ...r, id: r.id.slice(-6) })) });
+        }
         const st = cls !== 'all' && CLASSES.includes(cls)
           ? env.DB.prepare('SELECT id,nick,cls,best,lvl,kills,playsec FROM runs WHERE season=? AND cls=? ORDER BY best DESC,lvl DESC,playsec ASC LIMIT ?').bind(season, cls, lim)
           : env.DB.prepare('SELECT id,nick,cls,best,lvl,kills,playsec FROM runs WHERE season=? ORDER BY best DESC,lvl DESC,playsec ASC LIMIT ?').bind(season, lim);
@@ -115,10 +121,10 @@ export default {
         const prev = await env.DB.prepare('SELECT keyhash,updated FROM runs WHERE season=? AND id=?').bind(b.season, b.id).first();
         if (prev && prev.keyhash !== kh) return json({ error: 'forbidden' }, 403);
         if (prev && now - prev.updated < 15000) return json({ ok: true, throttled: true });
-        await env.DB.prepare(`INSERT INTO runs (season,id,keyhash,nick,cls,best,lvl,kills,playsec,updated) VALUES (?,?,?,?,?,?,?,?,?,?)
-          ON CONFLICT(season,id) DO UPDATE SET nick=excluded.nick, cls=excluded.cls, best=MAX(runs.best,excluded.best), lvl=MAX(runs.lvl,excluded.lvl),
+        await env.DB.prepare(`INSERT INTO runs (season,id,keyhash,nick,cls,best,lvl,kills,playsec,updated,eg,queen) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+          ON CONFLICT(season,id) DO UPDATE SET nick=excluded.nick, cls=excluded.cls, best=MAX(runs.best,excluded.best), lvl=MAX(runs.lvl,excluded.lvl), eg=MAX(runs.eg,excluded.eg), queen=MAX(runs.queen,excluded.queen),
           kills=MAX(runs.kills,excluded.kills), playsec=CASE WHEN excluded.best>runs.best THEN excluded.playsec ELSE runs.playsec END, updated=excluded.updated`)
-          .bind(b.season, b.id, kh, nick, b.cls, b.best, b.lvl, b.kills || 0, b.playsec || 0, now).run();
+          .bind(b.season, b.id, kh, nick, b.cls, b.best, b.lvl, b.kills || 0, b.playsec || 0, now, b.eg || 0, b.queen || 0).run();
         return json({ ok: true });
       }
       // ===== daily depth =====

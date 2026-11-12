@@ -6,7 +6,7 @@ const RUNES=['ᚱ','ᚦ','ᛟ','ᛉ','ᚨ','ᛃ'];
 export function generate(depth, seed, opt={}){
   const R=new RNG(seed); const W=58, H=42;
   const city=opt.city!==false&&!opt.rift&&depth>=21&&depth<=25;
-  const biome=city?ANGEL_CITY:biomeFor(depth);
+  const biome=city?ANGEL_CITY:(opt.biome||biomeFor(depth));
   const t=new Uint8Array(W*H); const fv=new Uint8Array(W*H); const room=new Int16Array(W*H).fill(-1);
   const I=(x,y)=>y*W+x; const inb=(x,y)=>x>0&&y>0&&x<W-1&&y<H-1;
   const rooms=[]; let tries=0;
@@ -53,7 +53,7 @@ export function generate(depth, seed, opt={}){
   const free=(x,y)=>t[I(x,y)]===FLOOR&&!occ.has(I(x,y))&&!(x===start.cx&&y===start.cy)&&Math.max(Math.abs(x-far.cx),Math.abs(y-far.cy))>1;
   const interior=(x,y)=>{ for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++) if(!t[I(x+dx,y+dy)]) return false; return true; };
   const randIn=(r,f=()=>true)=>{ for(let k=0;k<60;k++){ const x=R.int(r.x,r.x+r.w-1), y=R.int(r.y,r.y+r.h-1); if(free(x,y)&&f(x,y)) return [x,y]; } return null; };
-  const boss=depth%5===0&&!opt.rift;
+  const boss=(opt.boss??depth%5===0)&&!opt.rift;
   const stairs=put({type:'stairs',x:far.cx,y:far.cy,spr:'stairs',block:false,locked:boss});
   occ.add(I(far.cx,far.cy));
   // vault
@@ -105,9 +105,9 @@ export function generate(depth, seed, opt={}){
   }
   // extras: lore inscription, season pillar, rift portal, merchant
   const extraRoom=()=>R.pick(rooms.slice(1).filter(r=>r!==far));
-  if(!opt.rift&&R.chance(0.6)){ for(let k=0;k<(R.chance(0.3)?2:1);k++){ const p=randIn(extraRoom(),interior); if(p) put({type:'lore',x:p[0],y:p[1],spr:'tomb',block:true,read:false,light:[0.55,0.7,0.9],lr:2}); } }
-  if(!opt.rift&&depth>=2&&R.chance(0.42)){ const p=randIn(extraRoom(),interior); if(p) put({type:'pillar',x:p[0],y:p[1],spr:'glowshroom_big',block:true,state:'idle',light:[0.5,1,0.45],lr:4}); }
-  if(!opt.rift&&depth>=3&&!boss&&R.chance(0.35)){ const p=randIn(extraRoom(),interior); if(p) put({type:'rift',x:p[0],y:p[1],spr:'arch',block:true,light:[0.75,0.3,1],lr:5}); }
+  if(!opt.rift&&!opt.endgame&&R.chance(0.6)){ for(let k=0;k<(R.chance(0.3)?2:1);k++){ const p=randIn(extraRoom(),interior); if(p) put({type:'lore',x:p[0],y:p[1],spr:'tomb',block:true,read:false,light:[0.55,0.7,0.9],lr:2}); } }
+  if(!opt.rift&&!opt.endgame&&depth>=2&&R.chance(0.42)){ const p=randIn(extraRoom(),interior); if(p) put({type:'pillar',x:p[0],y:p[1],spr:'glowshroom_big',block:true,state:'idle',light:[0.5,1,0.45],lr:4}); }
+  if(!opt.rift&&!opt.endgame&&depth>=3&&!boss&&R.chance(0.35)){ const p=randIn(extraRoom(),interior); if(p) put({type:'rift',x:p[0],y:p[1],spr:'arch',block:true,light:[0.75,0.3,1],lr:5}); }
   if(opt.event==='merchant'){ const p=randIn(rooms[0],interior)||randIn(extraRoom(),interior); if(p) put({type:'merchant',x:p[0],y:p[1],spr:'npc_sage',block:true,light:[1,0.8,0.5],lr:3}); }
   if(opt.rift){ stairs.type='riftexit'; stairs.spr='arch_broken'; stairs.locked=true; stairs.light=[0.75,0.3,1]; stairs.lr=4; }
   // wall torches: wall tile with floor below
@@ -124,7 +124,8 @@ export function generate(depth, seed, opt={}){
   for(let k=0;k<R.int(1,4);k++){ const r=R.pick(rooms.slice(1)); const p=randIn(r); if(p) put({type:'pool',x:p[0],y:p[1],spr:biome.id==='drowned'?'pool_water':'pool_poison',block:false,hazard:biome.id!=='drowned',flat:true}); }
   // chests, altar, shrine
   for(let k=0;k<R.int(1,3);k++){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'chest',x:p[0],y:p[1],spr:R.chance(0.7)?'crate':'barrels',block:true,small:true}); }
-  if(boss||R.chance(0.45)){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'altar',x:p[0],y:p[1],spr:'altar',block:true,light:[0.6,1,0.5],lr:3}); }
+  if(!opt.endgame&&depth>=60){ const p=randIn(rooms[0],interior)||randIn(rooms[0])||randIn(R.pick(rooms.slice(1)),interior); if(p) put({type:'altar',x:p[0],y:p[1],spr:'altar',block:true,light:[0.6,1,0.5],lr:3,known:true}); } // v26: od 60 je oltář hned u startu
+  else if(!opt.endgame&&(boss||R.chance(0.45))){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'altar',x:p[0],y:p[1],spr:'altar',block:true,light:[0.6,1,0.5],lr:3}); }
   if(R.chance(0.5)){ const r=R.pick(rooms.slice(1)); const p=randIn(r,interior); if(p) put({type:'shrine',x:p[0],y:p[1],spr:'shrine',block:true,used:false,light:[0.7,0.5,1],lr:3}); }
   // cathedral: coloured light falling through unseen stained-glass windows
   if(biome.shafts) for(const r of rooms){ if(r.w*r.h<16||!R.chance(0.75)) continue; for(let k=0;k<(r.w*r.h>40?2:1);k++){ const p=randIn(r); if(!p||props.some(q=>q.x===p[0]&&q.y===p[1])) continue;

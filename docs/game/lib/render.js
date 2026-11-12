@@ -79,7 +79,7 @@ export class SceneRenderer{
       if(pr.type==='grave'&&!pr.respected) R.glow(pr.x*T+T/2,pr.y*T+T*0.5,T*0.5,[0.75,0.82,0.95],0.12);
       if(pr.type==='merchant') R.glow(pr.x*T+T/2,pr.y*T+T*0.5,T*0.9,[1,0.8,0.5],0.18);
       if(pr.type==='glow'||pr.type==='altar'||pr.type==='shrine'&&!pr.used||(pr.type==='rune'&&pr.on)){ const c=pr.light||[0.6,0.9,0.5]; R.glow(pr.x*T+T/2,pr.y*T+T*0.45,T*0.9,c,0.22+Math.sin(time*2+pr.x)*0.06); } }
-    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)||!g.lootOk(gr)) continue; const c=gr.gold?[1,0.85,0.3]:gr.item.type?[1,0.4,0.4]:hex(rarityColor(gr.item.rarity)); const leg=gr.item&&(gr.item.rarity==='legendary'||gr.item.rarity==='sporeborn'||gr.item.rarity==='set');
+    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)||!g.lootOk(gr)) continue; const c=gr.gold?[1,0.85,0.3]:gr.item.type==='seed'?[0.6,1,0.4]:gr.item.type==='frag'?[0.8,0.6,1]:gr.item.type?[1,0.4,0.4]:hex(rarityColor(gr.item.rarity)); const leg=gr.item&&(gr.item.rarity==='legendary'||gr.item.rarity==='sporeborn'||gr.item.rarity==='set');
       R.glow(gr.x*T+T/2,gr.y*T+T*0.6,T*(leg?0.9:0.5),c,leg?0.5:0.28); if(leg) R.rect(gr.x*T+T/2-3,gr.y*T-T*2.2,6,T*2.6,c,0.12+Math.sin(time*3)*0.04); }
     for(const f of g.fx){ const a=f.life/f.max;
       if(f.type==='p'){ R.glow(f.x,f.y,f.s,f.c,a*0.9); }
@@ -121,7 +121,7 @@ export class SceneRenderer{
     if(pr.type==='walltorch'){ const [w,h]=this.fitSprite('torch_wall',T*0.5,T*0.75); R.sprite('torch_wall',pr.x*T+T/2-w/2,pr.y*T+T*0.35,w,h); return; }
     if(pr.type==='stairs'){ const [w,h]=this.fitSprite('stairs',T*1.0,T*1.0); R.sprite('stairs',pr.x*T+T/2-w/2,pr.y*T+T-h,w,h,{tint:pr.locked?[0.5,0.45,0.5]:[1,1,1]}); return; }
     const big=['gate','arch','arch_broken','altar','shrine','obelisk','chest','pillar','pillars','deadtree','glowshroom_big','brazier','grave','tomb','npc_sage'].includes(pr.spr)||pr.type==='gate';
-    const maxH=pr.type==='gate'?T*1.25:big?T*1.15:pr.deco?T*0.8:T*0.9; const maxW=pr.type==='gate'?T*1.05:T*(big?1.0:0.85);
+    const maxH=pr.sz?T*pr.sz[1]:pr.type==='gate'?T*1.25:big?T*1.15:pr.deco?T*0.8:T*0.9; const maxW=pr.sz?T*pr.sz[0]:pr.type==='gate'?T*1.05:T*(big?1.0:0.85);
     const [w,h]=this.fitSprite(pr.spr,maxW,maxH); const bob=pr.type==='lever'?Math.sin(time*3+pr.x)*2:0;
     let tint=[1,1,1]; if(pr.type==='brazier'&&!pr.lit) tint=[0.55,0.55,0.6]; if(pr.type==='rune') tint=pr.on?[0.8,1,1.3]:[0.75,0.75,0.8]; if(pr.type==='shrine'&&pr.used) tint=[0.5,0.5,0.55]; if(pr.type==='pillar') tint=pr.state==='done'?[0.45,0.45,0.45]:pr.state==='active'?[1.2+Math.sin(time*6)*0.2,1.3,1.1]:[1,1,1]; if(pr.type==='riftexit'&&pr.locked) tint=[0.55,0.5,0.6]; if(pr.type==='lore'&&pr.read) tint=[0.7,0.7,0.75]; if(pr.type==='grave') tint=pr.respected?[0.55,0.55,0.6]:[0.85,0.88,0.95]; if(pr.type==='lever') tint=[1.05+Math.sin(time*4)*0.08,0.95,0.85];
     R.sprite(pr.spr,pr.x*T+T/2-w/2,pr.y*T+T-h-2+bob,w,h,{tint});

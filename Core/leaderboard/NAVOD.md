@@ -82,3 +82,14 @@ Hráč pak v menu **Záloha** dostane kód (např. `K7QXM-3PZ9A`), kterým si po
 - IP adresa se nikdy neukládá. Pro omezení obnovy zálohy se z ní dělá solený hash, který se mění každý den. Sůl nastavíš jednorázově:
   `npx wrangler secret put IP_SALT` (zadej libovolný dlouhý náhodný text).
 - Po změně stačí `npx wrangler deploy`. Cron se nastaví sám a ručně ho spustíš přes Cloudflare dashboard → Workers → sporium-lb → Triggers.
+
+## Aktualizace v4: endgame žebříček (v26)
+
+Jednorázově ve složce `Core/leaderboard` spusť (nejdřív schéma, pak deploy – jinak by odesílání skóre selhalo):
+
+```
+npx wrangler d1 execute sporium --remote --file schema_v4.sql
+npx wrangler deploy
+```
+
+Žebříček **Endgame** řadí podle nejvyššího dokončeného tieru Výtrusné mapy, pak počtu porážek Šedé královny. Worker zároveň povoluje libovolnou hloubku postavám na úrovni 99.

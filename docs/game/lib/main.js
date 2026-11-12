@@ -8,16 +8,24 @@ import {drawMap} from './mapov.js';
 
 const loadImg=src=>new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=src; });
 async function boot(){
-  const [atlas,meta,wing]=await Promise.all([
-    loadImg('assets/atlas.webp'),fetch('assets/atlas.json').then(r=>r.json()),loadImg('assets/angel-wing.webp').catch(()=>null),
+  const [atlas,meta,wing,rigArt]=await Promise.all([
+    loadImg('assets/atlas.webp?v=26'),fetch('assets/atlas.json?v=26').then(r=>r.json()),loadImg('assets/angel-wing.webp').catch(()=>null),
+    Promise.all([loadImg('assets/rig-art.webp?v=3'),fetch('assets/rig-art.json?v=3').then(r=>r.json())]).catch(()=>null),
   ]);
   let img=atlas;
-  if(wing){
-    const y=Math.max(...Object.values(meta.s).map(([,y,,h])=>y+h))+4;
-    if(y+wing.height<=meta.h){
-      img=document.createElement('canvas'); img.width=meta.w; img.height=meta.h;
-      const ctx=img.getContext('2d'); ctx.drawImage(atlas,0,0); ctx.drawImage(wing,2,y);
-      meta.s.angel_wing=[2,y,wing.width,wing.height];
+  const wingY=Math.max(...Object.values(meta.s).map(([,y,,h])=>y+h))+4;
+  const wingFits=wing&&wingY+wing.height<=meta.h;
+  const rigY=meta.h+4;
+  const [art,artMeta]=rigArt||[];
+  const artFits=art&&artMeta?.s&&art.width===artMeta.w&&art.height===artMeta.h&&art.width<=meta.w&&rigY+art.height<=4096;
+  if(wingFits||artFits){
+    img=document.createElement('canvas'); img.width=meta.w; img.height=artFits?rigY+art.height:meta.h;
+    const ctx=img.getContext('2d'); ctx.drawImage(atlas,0,0);
+    if(wingFits){ ctx.drawImage(wing,2,wingY); meta.s.angel_wing=[2,wingY,wing.width,wing.height]; }
+    if(artFits){
+      ctx.drawImage(art,0,rigY);
+      for(const [name,[x,y,w,h]] of Object.entries(artMeta.s)) meta.s[name]=[x,y+rigY,w,h];
+      meta.h=img.height;
     }
   }
   const canvas=document.getElementById('gl'), over=document.getElementById('over');

@@ -388,3 +388,39 @@ body.touch.panelon #touchui .dpad{display:none}
   .classes button{padding:8px}
 }
 body.touch.mapon #touchui .dpad{display:none}
+/* v25 endgame: Výtrusné mapy, Kořenová síť */
+.tt-aff .t1{color:#ffd27a;text-shadow:0 0 6px rgba(255,190,90,.35)}
+.tt-eg{color:#9df07a}
+.tt-line.good{color:#9df07a}
+.egbio{display:block;margin:0 0 8px}
+.egbio select{background:#1a1410;color:#e8dcc0;border:1px solid #5a4630;padding:3px 6px}
+.lbeg .lbh,.lbeg .lbr{grid-template-columns:44px 1.3fr 1.3fr 64px 60px 60px}.lbeg .lbr span:nth-child(5){color:#c9a0ff;font-weight:800}
+/* v26b: oltář – záložky a Kořenová síť v herním UI */
+.ctabs{display:flex;gap:4px;align-items:flex-end;margin:-4px 0 8px;flex-wrap:wrap}
+.ctabs button{border:0;border-radius:0;background:url(assets/ui/tab_inactive.webp) center/100% 100% no-repeat;color:#bba98a;font:700 15px "Alegreya Sans",sans-serif;min-width:150px;height:40px;padding:0 18px 2px;cursor:pointer;text-shadow:0 1px 2px #000}
+.ctabs button:hover{color:#f2e3c0}
+.ctabs button.on{background-image:url(assets/ui/tab_active.webp);height:48px;color:#ffe7a8;padding-bottom:6px}
+.egbtn{border-style:solid;border-color:transparent;border-width:8px 22px;border-image:url(assets/ui/btn.webp) 40 170 fill / 8px 22px stretch;background:none;border-radius:0;color:#e8d7b0;font-weight:700;padding:2px 6px;cursor:pointer}
+.egbtn:hover{border-image-source:url(assets/ui/btn_hover.webp)}
+.atinfo{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:4px 0 6px;color:#cdbb98}.atinfo b{color:#9df07a}
+.attiers{display:flex;gap:2px;flex-wrap:wrap;margin:4px 0 14px}
+.att{width:40px;height:40px;display:grid;place-items:center;background:center/100% 100% no-repeat;color:#7d6b57;font:800 14px "Alegreya Sans",sans-serif;text-shadow:0 1px 2px #000}
+.att.on{color:#e9ffd8}
+.att.next{color:#ffe7a8;filter:drop-shadow(0 0 6px rgba(255,210,120,.7));animation:attp 1.6s ease-in-out infinite}
+@keyframes attp{50%{filter:drop-shadow(0 0 2px rgba(255,210,120,.3))}}
+.atlas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:14px 8px 10px;border-radius:10px;background:radial-gradient(ellipse at 50% 0,rgba(110,170,80,.10),transparent 65%),rgba(10,8,6,.45);box-shadow:inset 0 0 30px rgba(0,0,0,.6)}
+.atcol{display:flex;flex-direction:column;align-items:center}
+.atbr{font:600 19px "Grenze Gotisch",serif;color:#d9c38c;margin-bottom:8px;letter-spacing:.5px}
+.atn{width:72px;height:72px;background:center/100% 100% no-repeat;display:grid;place-items:center;cursor:pointer;transition:filter .15s,transform .15s}
+.atn img{width:38px;height:38px;pointer-events:none}
+.atn.key{width:88px;height:88px}.atn.key img{width:46px;height:46px}
+.atn.lock{filter:brightness(.55) saturate(.5);cursor:default}
+.atn.can{filter:brightness(1.25) drop-shadow(0 0 7px #d9c38c)}
+.atn.can:hover{transform:scale(1.06);filter:brightness(1.45) drop-shadow(0 0 9px #ffe7a8)}
+.atn.on{filter:drop-shadow(0 0 8px #9df07a)}
+.atname{font:700 13.5px "Alegreya Sans",sans-serif;color:#9a8a72;text-align:center;margin-top:2px;max-width:150px}
+.atname.on{color:#9df07a}
+.atl{width:5px;height:22px;margin:2px 0;border-radius:3px;background:#3a2e24;box-shadow:0 0 0 2px #1a120c}
+.atl.on{background:#8db25a}
+@media (max-width:700px){.ctabs button{min-width:0;font-size:13px;padding:0 10px 2px}.atn{width:58px;height:58px}.atn.key{width:68px;height:68px}.atn img{width:30px;height:30px}.atname{font-size:12px}}
+@media (max-height:540px){#panel .craftsel .cbtn{margin-right:30px}}

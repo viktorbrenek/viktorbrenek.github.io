@@ -1,5 +1,23 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:27, d:'12. 11. 2026', t:'Kořenová síť všude', i:[
+    '<b>Kořenová síť</b> má vlastní tlačítko <b>N</b> vedle pasivního stromu (objeví se od hloubky 60). Body utratíš kdekoli, zelený odznak ukazuje volné body.',
+    'Od hloubky 60 stojí <b>Oltář hniloby hned ve startovní místnosti</b> a na mapě [Tab] je vidět hned.',
+    'Oltář a Kořenová síť mají nové herní rámy a záložky.']},
+  {v:26, d:'12. 11. 2026', t:'Úroveň 99 a těžší mapy', i:[
+    'Nejvyšší úroveň je <b>99</b>. Od úrovně 60 je každá další úroveň výrazně dražší, cesta na 99 je dlouhá. Postavy, které už jsou výš, si úroveň nechají, jen dál nerostou.',
+    'Za hloubkou 60 se leveluje ve <b>Výtrusných mapách</b>: monstra v nich dávají zkušenosti ×1,12 za tier (T16 zhruba ×6), běžná patra pod hloubkou 60 jen polovinu. Nový žebříček <b>Endgame</b> řadí podle nejvyššího dokončeného tieru a porážek Mirun.',
+    'Výtrusné mapy jsou s tierem mnohem nebezpečnější: monstra +15 % života a +12 % poškození za tier a hlubina ti ubírá úhyb i blok (až −24 %). T1 zvládne každá postava na 99, T16 chce špičkovou výbavu.',
+    'Šedá královna Mirun má víc života a regeneruje se. Bez dost silné výbavy ji neudoláš. Má vlastní podobu, za ní stojí trůn a v síni visí zvony.',
+    'Odraz poškození (Zrcadla, mod Odrážející) má strop za jeden zásah, takže už plošné buildy nezabije během pár tahů.',
+    'Semena, úlomky a endgame unikáty mají vlastní ikony.']},
+  {v:25, d:'12. 11. 2026', t:'Endgame: Výtrusné mapy', i:[
+    'Od hloubky 60 padají <b>Výtrusná semena</b> (T1–T16), strážci hloubky je upustí vždy. Na každém patře od hloubky 60 je Oltář hniloby.',
+    'Semeno zasadíš u Oltáře v záložce <b>Výtrusná semena</b>. Otevře mapu: 3 patra a strážce. Mody semene zesílí monstra a zvýší odměny, vyšší tier je těžší. Strážce upustí semeno vyššího tieru.',
+    'Semena jde craftit: přerolovat mody (jádro), přidat mod (prach), zkazit (jádro – vyšší tier, víc modů… nebo prach).',
+    '<b>Kořenová síť</b>: každý tier dokončený poprvé dá bod. Body utratíš v síti za lepší odměny z map, volbu biomu, bezpečné klíčení nebo <b>dvojí zkažení</b> předmětů.',
+    'Předměty z map mají šanci na <b>★ hlubinné vlastnosti</b> (silnější než běžný strop), nové <b>hlubinné základy</b> a 4 unikáty, které jinde nepadají.',
+    'Od T10 padají <b>úlomky Šedé královny</b>. Čtyři různé otevřou Síň královny Mirun – za ni jsou 4 vlastní unikáty a konec jejího příběhu v Kronice.']},
   {v:24, d:'12. 11. 2026', t:'Hlubiny a bossové', i:[
     'Po varování před útokem bosse máš tah na reakci a místo k úhybu. Ve větší hloubce roste poškození pomaleji a postih k odolnostem je menší.',
     'Hra dál generuje patra za hloubkou 100. Od hloubky 60 má základní síla monster a úroveň nové výbavy strop, zatímco patra, bossové a korupce se dál střídají.',

@@ -9,7 +9,7 @@ export const LB={
   validNick(n){ return /^[\p{L}\p{N} _.\-]{2,16}$/u.test(String(n||'').trim()); },
   last:0, lastErr:null,
   async submit(g,force){ if(!LB_URL) return null; const p=g.player; if(!p?.nick||!g.charId) return null; const now=Date.now(); if(!force&&now-this.last<16000) return null; this.last=now;
-    const body={season:SEASON.n,id:g.charId,key:this.player().key,nick:p.nick,cls:p.cls,best:g.best|0,lvl:p.lvl|0,kills:g.kills|0,playsec:Math.round(p.playSec||0)};
+    const body={season:SEASON.n,id:g.charId,key:this.player().key,nick:p.nick,cls:p.cls,best:g.best|0,lvl:p.lvl|0,kills:g.kills|0,playsec:Math.round(p.playSec||0),eg:Math.max(0,...(p.atlas?.done||[]))|0,queen:(p.atlas?.queen||0)|0};
     try{ const r=await fetch(LB_URL.replace(/\/$/,'')+'/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const j=await r.json().catch(()=>({})); this.lastErr=r.ok?null:(j.error||r.status); return {ok:r.ok,status:r.status,...j}; }
     catch(e){ this.lastErr='offline'; return {ok:false,error:'offline'}; } },
   today(){ return new Date().toISOString().slice(0,10); },
@@ -22,6 +22,6 @@ export const LB={
   grave(g,killer,msg){ const p=g.player; if(!LB_URL||!p?.nick) return null; return this.post('/grave',{season:SEASON.n,day:g.daily?.day||'',depth:g.depth,key:this.player().key,nick:p.nick,cls:p.cls,lvl:p.lvl,killer:String(killer||'').slice(0,40),msg}); },
   forget(){ return this.post('/forget',{key:this.player().key}); },
   well(item,nick){ return this.post('/well',{season:SEASON.n,key:this.player().key,nick:nick||'',item}); },
-  async top(cls='all'){ if(!LB_URL) return null; try{ const r=await fetch(`${LB_URL.replace(/\/$/,'')}/top?season=${SEASON.n}&cls=${cls}&limit=50`); return r.ok?await r.json():null; }catch(e){ return null; } },
+  async top(cls='all'){ if(!LB_URL) return null; try{ const r=await fetch(`${LB_URL.replace(/\/$/,'')}/top?season=${SEASON.n}&cls=${cls==='eg'?'all&sort=eg':cls}&limit=50`); return r.ok?await r.json():null; }catch(e){ return null; } },
   async me(id){ if(!LB_URL||!id) return null; try{ const r=await fetch(`${LB_URL.replace(/\/$/,'')}/me?season=${SEASON.n}&id=${encodeURIComponent(id)}`); return r.ok?await r.json():null; }catch(e){ return null; } },
 };

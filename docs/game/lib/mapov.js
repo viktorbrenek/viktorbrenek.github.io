@@ -16,7 +16,7 @@ export function drawMap(g,cv,time){
   c.stroke();
   // points of interest
   c.textAlign='center'; c.textBaseline='middle'; c.font=`800 ${Math.round(s*1.05)}px "Alegreya Sans",sans-serif`;
-  for(const pr of g.props){ const P=PROP[pr.type]; if(!P||!ex[pr.y*MW+pr.x]) continue; if(pr.type==='chest'&&pr.opened) continue; if((pr.type==='brazier'&&pr.lit)||(pr.type==='lever'&&pr.on)||(pr.type==='rune'&&pr.on)) continue;
+  for(const pr of g.props){ const P=PROP[pr.type]; if(!P||!(ex[pr.y*MW+pr.x]||pr.known)) continue; if(pr.type==='chest'&&pr.opened) continue; if((pr.type==='brazier'&&pr.lit)||(pr.type==='lever'&&pr.on)||(pr.type==='rune'&&pr.on)) continue;
     let col=P[0]; if(pr.type==='stairs'&&pr.locked) col='#ff6a5a'; if(pr.type==='pillar'&&pr.state==='done') col='#667'; if(pr.type==='lore'&&pr.read) col='#556';
     const X=ox+(pr.x+0.5)*s, Y=oy+(pr.y+0.5)*s; if(pr.type==='stairs'||pr.type==='rift'||pr.type==='riftexit'||pr.type==='pillar'){ c.fillStyle=col+'44'; c.beginPath(); c.arc(X,Y,s*(1.1+Math.sin(time*3)*0.15),0,7); c.fill(); }
     c.fillStyle='#000'; c.fillText(P[1],X+1,Y+1); c.fillStyle=col; c.fillText(P[1],X,Y); }
@@ -32,6 +32,6 @@ export function drawMap(g,cv,time){
   const X=ox+(p.rx+0.5)*s, Y=oy+(p.ry+0.5)*s; c.fillStyle='rgba(255,220,140,0.25)'; c.beginPath(); c.arc(X,Y,s*(1+Math.sin(time*4)*0.2),0,7); c.fill();
   c.fillStyle='#fff'; c.strokeStyle='#000'; c.lineWidth=2*d; c.beginPath(); c.arc(X,Y,s*0.42,0,7); c.fill(); c.stroke();
   // header
-  c.font=`700 ${Math.round(22*d)}px "Grenze Gotisch",serif`; c.fillStyle='rgba(242,230,200,0.9)'; c.textAlign='center'; c.fillText(`Hloubka ${g.depth} · ${map.biome.name}${g.inRift?' · Zkažená jeskyně':''}`,W/2,H-150*d);
+  c.font=`700 ${Math.round(22*d)}px "Grenze Gotisch",serif`; c.fillStyle='rgba(242,230,200,0.9)'; c.textAlign='center'; c.fillText(`Hloubka ${g.depth} · ${map.biome.name}${g.inRift?' · Zkažená jeskyně':''}${g.mapRun?' · '+(g.floorMods?.name||'Výtrusná mapa'):''}`,W/2,H-150*d);
   c.font=`600 ${Math.round(13*d)}px "Alegreya Sans",sans-serif`; c.fillStyle='rgba(200,190,170,0.75)'; c.fillText('▼ schody   ✝ hrob   ◍ studna   ✦ plodnice   ◎ portál   $ překupník   ⛧ oltář   ■ truhla   ᚱ lore   ● nepřátelé   [Tab] zavřít',W/2,H-126*d);
 }
