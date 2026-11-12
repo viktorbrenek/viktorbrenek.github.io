@@ -3,7 +3,7 @@ import {rng,RNG,clamp,dist,edist,fov,los,astar,DIRS8,fmt,line} from './util.js';
 import {generate,WALL,FLOOR} from './dungeon.js';
 import {MONSTERS,monstersFor,BOSSES,MINIBOSSES,MON_MODS,MON_RARE_A,MON_RARE_B,SKILLS,SUPPORTS,CLASSES,CORRUPTIONS,BASES,PASSIVE_MAP,EVENTS,resPenalty,SPECIAL,RIFT_MODS,LORE,MINIONS,FORMS,SETS,skillsFor,GRAVE_MSGS,dailySeed,dailyMod,FALLEN_ANGELS,CITY_QUEST,MAX_SCALING_DEPTH,MAX_LEVEL} from './data.js';
 import {GameEG} from './endgame.js';
-import {makeItem,makeSupport,itemStats,itemValue,corruptItem,setTooltipCtx} from './items.js';
+import {makeItem,makeSupport,itemStats,itemValue,corruptItem,setTooltipCtx,repairItem} from './items.js';
 import {audio} from './audio.js';
 import {LB} from './net.js';
 import {Backup} from './backup.js';
@@ -42,7 +42,7 @@ export class Game{
   }
   load(id){ try{ const s=Roster.get(id); if(!s||!s.player) return false; this.charId=id; this.floorMods=null; this.msgs=[]; this.minions=[];
       Object.assign(this,{depth:s.depth,checkpoint:s.checkpoint,best:s.best,kills:s.kills||0,seed:s.seed,daily:s.daily||null});
-      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]) if(it&&it.type==='support') it.spr='rune_'+it.sup; { const cd=CLASSES.find(c=>c.id===this.player.cls); if(cd) this.player.spr=cd.spr; } if(this.player.playSec==null) this.player.playSec=(s.best||1)*60; if(!(this.player.hp>0)){ this.recalc(); this.player.hp=this.player.stats.life; this.player.mp=this.player.stats.mana; } if(this.player.nick==null) this.player.nick=''; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); if(s.mapRun) this.resumeMap(s.mapRun); return true; }catch(e){ console.warn(e); return false; } }
+      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]){ if(it&&it.type==='support') it.spr='rune_'+it.sup; repairItem(it); } { const st=Stash.get(); if(st.map(repairItem).some(Boolean)) Stash.set(st); } { const cd=CLASSES.find(c=>c.id===this.player.cls); if(cd) this.player.spr=cd.spr; } if(this.player.playSec==null) this.player.playSec=(s.best||1)*60; if(!(this.player.hp>0)){ this.recalc(); this.player.hp=this.player.stats.life; this.player.mp=this.player.stats.mana; } if(this.player.nick==null) this.player.nick=''; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); if(s.mapRun) this.resumeMap(s.mapRun); return true; }catch(e){ console.warn(e); return false; } }
   static hasSave(){ return Roster.list().length>0; }
   save(){ try{ const p=this.player; const {buffs,status,path,rx,ry,lunge,flash,stats,anim,_wp,_mv,_hurt,...rest}=p;
       if(!this.charId) this.charId='c'+Date.now()+Math.floor(Math.random()*1000); Roster.put(this.charId,{depth:this.depth,checkpoint:this.checkpoint,best:this.best,kills:this.kills,seed:this.seed,daily:this.daily||null,time:Date.now(),player:rest,...(this.mapRun?{mapRun:this.mapRun}:{})}); }catch(e){ console.warn(e); }
@@ -873,7 +873,8 @@ export class Game{
     if(mn){ if(su.has('leech')) mn.hp=Math.min(mn.maxhp,mn.hp+total*0.05); }
     else if(!ks.has('executioner')){ const lch=(st.leech+(su.has('leech')?5:0))*(st.setPow.has('bloodset')&&p.hp<st.life*0.5?2:1); if(lch) this.healPlayer(total*lch/100,true); }
     // reflect
-    if(!mn&&(m.mods.includes('reflect')||this.floorMods?.mon?.reflectAll)){ { const own=m.mods.includes('reflect'); this.hurtPlayer(Math.min(total*(own?0.2:0.1),this.player.stats.life*(own?0.12:0.06)),null,null,m.name+' (odraz)',true); } }
+    if(!mn&&(m.mods.includes('reflect')||this.floorMods?.mon?.reflectAll)){ { const own=m.mods.includes('reflect'), p=this.player, L=p.stats.life; if(this._reflT!==this.turn){ this._reflT=this.turn; this._refl=0; } // v27b: odraz má strop za zásah i za tah a nikdy tě nezabije
+      let d=Math.min(total*(own?0.2:0.1),L*(own?0.12:0.06),Math.max(0,L*0.2-this._refl)); d=Math.min(d,Math.max(0,p.hp+(p.es||0)-1)); if(d>0){ this._refl+=d; this.hurtPlayer(d,null,null,m.name+' (odraz)',true); } } }
     if(m.hp<=0) this.killMonster(m,c);
     return total;
   }

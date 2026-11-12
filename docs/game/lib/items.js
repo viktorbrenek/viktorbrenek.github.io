@@ -49,6 +49,9 @@ export function makeItem(ilvl,{rarity,baseId,uniqueId,mf=0,boost=0,spore=0,eg=0}
   else if(baseId) base=BASES.find(b=>b.id===baseId);
   else base=eg&&rng.chance(Math.min(0.45,0.2+eg*0.015))?rng.pick(BASES.filter(b=>b.eg)):rng.pick(BASES.filter(b=>!b.eg&&b.min<=ilvl+1));
   rarity=rarity||rollRarity(mf,boost,ilvl);
+  // v27b: pevný základ (překupník, odměny) – sadový/legendární jen pokud pro ten základ existuje, jinak vzácný (dřív vznikal fialový předmět bez vlastností nebo předmět jiného slotu)
+  if(baseId&&!uniqueId&&rarity==='set'){ const ok=SETS.some(S=>S.pieces.some(pc=>pc.base===baseId)); if(ok){ for(let k=0;k<30;k++){ const st=makeSetItem(ilvl); if(st&&st.base===baseId) return st; } } rarity='rare'; }
+  if(baseId&&!uniqueId&&rarity==='legendary'){ const us=UNIQUES.filter(u=>u.base===baseId&&!u.eg); if(us.length) return makeItem(ilvl,{uniqueId:rng.pick(us).id,eg}); rarity='rare'; }
   if(rarity==='rare'&&spore&&rng.chance(spore)) rarity='sporeborn';
   const it={uid:UID++,base:base.id,slot:base.slot,spr:base.spr,ilvl,rarity,aff:[],name:base.name}; if(eg) it.eg=eg;
   if(base.dmg){ const m=Math.pow(1.095,ilvl-1); const q=0.85+rng.next()*0.3; it.dmg=[Math.max(1,Math.round(base.dmg[0]*m*q)),Math.max(2,Math.round(base.dmg[1]*m*q))]; it.kind=base.kind; }
@@ -145,3 +148,6 @@ export function corruptAgain(it){
   const first=it.corrRes; it.corrupted=false; let r=corruptItem(it,true); if(!r) r='nothing';
   it.corrupted=true; it.corrRes=first; it.corr2=r; return r;
 }
+
+// v27b: oprava starých rozbitých předmětů (sadová rarita bez sady = fialový bez vlastností) → vzácný s vlastnostmi
+export function repairItem(it){ if(!it||!it.base||it.rarity!=='set'||it.set) return false; it.rarity='rare'; addAffixes(it,rng.int(3,5)); nameItem(it); return true; }

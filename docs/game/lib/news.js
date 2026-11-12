@@ -1,5 +1,8 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:28, d:'12. 11. 2026', t:'Opravy: překupník a odraz', i:[
+    'Překupník už neprodává fialové (sadové) předměty bez vlastností ani legendární předmět jiného typu, než sis koupil. Takové předměty, které už máš v inventáři nebo truhle, se po načtení změní na vzácné s vlastnostmi.',
+    'Odraz poškození už tě nezabije: za tah ti sebere nejvýš 20 % života a vždy ti nechá aspoň 1 život. Pořád ale pozor, ostatní monstra tě dorazí.']},
   {v:27, d:'12. 11. 2026', t:'Kořenová síť všude', i:[
     '<b>Kořenová síť</b> má vlastní tlačítko <b>N</b> vedle pasivního stromu (objeví se od hloubky 60). Body utratíš kdekoli, zelený odznak ukazuje volné body.',
     'Od hloubky 60 stojí <b>Oltář hniloby hned ve startovní místnosti</b> a na mapě [Tab] je vidět hned.',
