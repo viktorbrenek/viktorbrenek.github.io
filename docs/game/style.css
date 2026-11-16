@@ -424,3 +424,33 @@ body.touch.mapon #touchui .dpad{display:none}
 .atl.on{background:#8db25a}
 @media (max-width:700px){.ctabs button{min-width:0;font-size:13px;padding:0 10px 2px}.atn{width:58px;height:58px}.atn.key{width:68px;height:68px}.atn img{width:30px;height:30px}.atname{font-size:12px}}
 @media (max-height:540px){#panel .craftsel .cbtn{margin-right:30px}}
+
+.rune-pouch{margin-top:16px;border-top:1px solid var(--line)}
+.runes .slot{position:relative}
+.rune-count{position:absolute;right:3px;bottom:2px;color:#e8fff7;text-shadow:1px 1px 2px #000,-1px -1px 2px #000;pointer-events:none}
+.runes [data-dim="true"]{opacity:.55}
+.runes [data-picked="true"]{outline:2px solid #9df07a;outline-offset:1px}
+.tree-tools{display:flex;align-items:center;gap:6px;margin:4px 0 8px}
+.tree-tools button{min-width:44px;min-height:38px;background:#231a13;border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:22px}
+.tree-tools .treeq{min-width:0;max-width:100%;margin:0}
+#treesvg{touch-action:none;user-select:none}
+body.touch.panelon #touchui .tbtns{display:none}
+@media (max-width:900px), (max-height:540px){
+  #panel,#panel.wide,body.touch #panel,body.touch #panel.wide{
+    left:max(4px,env(safe-area-inset-left));right:max(4px,env(safe-area-inset-right));width:auto;
+    top:max(4px,env(safe-area-inset-top));bottom:max(4px,env(safe-area-inset-bottom));
+    border-width:20px 16px 16px;padding:4px 9px;
+  }
+  #panel .x{margin:0 0 0 6px;width:40px!important;height:40px!important;top:0!important}
+  #panel .inv,#panel .skwrap,#panel .char{grid-template-columns:minmax(0,1fr)}
+  #panel .bag,#panel .equip{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:5px}
+  #panel .equip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #panel .bag .slot,#panel .equip .slot{width:100%;height:auto;max-width:64px;aspect-ratio:1}
+  #panel .slot img{max-width:83%;max-height:83%;object-fit:contain}
+  #treesvg{height:clamp(160px,54dvh,400px);max-height:none!important}
+}
+@media (min-width:590px) and (max-height:540px){
+  #panel .inv{grid-template-columns:minmax(150px,30%) minmax(0,1fr);gap:12px}
+  #panel .inv .bag{grid-template-columns:repeat(6,minmax(0,1fr));max-width:390px}
+}
+body.touch #panel .x::after{content:none}

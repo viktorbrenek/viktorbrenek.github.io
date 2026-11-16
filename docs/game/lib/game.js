@@ -32,17 +32,39 @@ export class Game{
     this.daily=opt.daily?{day:opt.daily,mod:dailyMod(opt.daily).id}:null; this.charId=null; this.floorMods=null; this.msgs=[]; this.minions=[];
     const c=CLASSES.find(x=>x.id===clsId);
     const p=this.player={cls:c.id,spr:c.spr,name:c.name,lvl:1,xp:0,base:{...c.stats},points:0,ppoints:1,passives:['c'],gold:0,dust:0,
-      equip:{},inv:[],skills:{attack:1},links:{},bar:[null,null,null,null],form:null,nick:'',playSec:0,potions:3,potionMax:3,stats:{},hp:1,mp:1,es:0,cores:0,lore:[],buffs:[],status:{},steps:0,x:0,y:0,rx:0,ry:0,cds:{}};
+      equip:{},inv:[],runes:[],skills:{attack:1},links:{},bar:[null,null,null,null],form:null,nick:'',playSec:0,potions:3,potionMax:3,stats:{},hp:1,mp:1,es:0,cores:0,lore:[],buffs:[],status:{},steps:0,x:0,y:0,rx:0,ry:0,cds:{}};
     for(const s of c.skills) p.skills[s]=1; p.bar[0]=c.skills[0]; p.bar[1]=c.skills[1];
     for(const b of c.gear){ const it=makeItem(1,{baseId:b,rarity:'common'}); const base=BASES.find(x=>x.id===b); this.equip(it,base.slot==='ring'?'ring1':base.slot,true); }
-    p.inv.push(makeSupport(c.rune||'crit'));
+    p.runes.push(makeSupport(c.rune||'crit'));
     this.depth=1; this.checkpoint=1; this.best=1; this.kills=0; this.seed=this.daily?dailySeed(this.daily.day):(Math.random()*1e9)|0; if(this.daily) p.nickAsked=true;
     this.recalc(); p.hp=p.stats.life; p.mp=p.stats.mana;
     this.enterFloor(1); this.log(this.daily?`Denní hlubina ${this.daily.day} · ${c.name}. Jeden život. Kletba dne: ${dailyMod(this.daily.day).name}.`:`${c.name} sestupuje do Sporia. Hloubka 1.`,'sys'); this.log('Tip: [P] pasivní strom, [K] dovednosti a runy.','hint'); this.save();
   }
   load(id){ try{ const s=Roster.get(id); if(!s||!s.player) return false; this.charId=id; this.floorMods=null; this.msgs=[]; this.minions=[];
       Object.assign(this,{depth:s.depth,checkpoint:s.checkpoint,best:s.best,kills:s.kills||0,seed:s.seed,daily:s.daily||null});
-      this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null}; for(const it of [...this.player.inv,...Object.values(this.player.equip)]){ if(it&&it.type==='support') it.spr='rune_'+it.sup; repairItem(it); } { const st=Stash.get(); if(st.map(repairItem).some(Boolean)) Stash.set(st); } { const cd=CLASSES.find(c=>c.id===this.player.cls); if(cd) this.player.spr=cd.spr; } if(this.player.playSec==null) this.player.playSec=(s.best||1)*60; if(!(this.player.hp>0)){ this.recalc(); this.player.hp=this.player.stats.life; this.player.mp=this.player.stats.mana; } if(this.player.nick==null) this.player.nick=''; { const p=this.player; const ok=p.passives.filter(id=>PASSIVE_MAP[id]); const lost=p.passives.length-ok.length; if(lost){ p.passives=['c']; p.ppoints+=Math.max(0,lost+ok.length-1); this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good'); } } this.recalc(); this.enterFloor(this.depth); this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys'); if(s.mapRun) this.resumeMap(s.mapRun); return true; }catch(e){ console.warn(e); return false; } }
+      const p=this.player={links:{},passives:['c'],ppoints:0,cds:{},cores:0,lore:[],es:0,...s.player,buffs:[],status:{},steps:0,rx:0,ry:0,form:null};
+      p.runes=[...(p.runes||[]),...p.inv.filter(it=>it?.type==='support')];
+      p.inv=p.inv.filter(it=>it?.type!=='support');
+      const stash=Stash.get();
+      if(stash.map(repairItem).some(Boolean)) Stash.set(stash);
+      for(const it of [...p.inv,...p.runes,...Object.values(p.equip)]){
+        if(it?.type==='support') it.spr=SUPPORTS[it.sup]?.spr||it.spr;
+        repairItem(it);
+      }
+      const cls=CLASSES.find(c=>c.id===p.cls);
+      if(cls) p.spr=cls.spr;
+      if(p.playSec==null) p.playSec=(s.best||1)*60;
+      if(!(p.hp>0)){ this.recalc(); p.hp=p.stats.life; p.mp=p.stats.mana; }
+      if(p.nick==null) p.nick='';
+      if(p.passives.some(id=>!PASSIVE_MAP[id])){
+        p.ppoints+=Math.max(0,p.passives.length-1); p.passives=['c'];
+        this.log('Pasivní strom se rozrostl – body ti byly vráceny [P].','good');
+      }
+      this.recalc(); this.enterFloor(this.depth);
+      this.log('Návrat do hlubin. Hloubka '+this.depth+'.','sys');
+      if(s.mapRun) this.resumeMap(s.mapRun);
+      return true;
+    }catch(e){ console.warn(e); return false; } }
   static hasSave(){ return Roster.list().length>0; }
   save(){ try{ const p=this.player; const {buffs,status,path,rx,ry,lunge,flash,stats,anim,_wp,_mv,_hurt,...rest}=p;
       if(!this.charId) this.charId='c'+Date.now()+Math.floor(Math.random()*1000); Roster.put(this.charId,{depth:this.depth,checkpoint:this.checkpoint,best:this.best,kills:this.kills,seed:this.seed,daily:this.daily||null,time:Date.now(),player:rest,...(this.mapRun?{mapRun:this.mapRun}:{})}); }catch(e){ console.warn(e); }
@@ -286,7 +308,7 @@ export class Game{
     const p=this.player;
     if(g.gold){ this.snd('coin'); p.gold+=g.gold; this.float(g.x,g.y,'+'+fmt(g.gold)+' zl','#f2d36b'); }
     else if(g.item.type==='potion'){ if(p.potions<p.potionMax){ p.potions++; this.float(g.x,g.y,'+lektvar','#e66'); } else return; }
-    else { if(p.inv.length>=30){ this.log('Inventář je plný!','warn'); return; } p.inv.push(g.item); if(g.item.type==='support') this.ui?.hint?.('rune','Sebral jsi <b>runu</b>. Vlož ji do volného slotu dovednosti v okně <b>[K]</b> – runy mění, jak dovednost funguje.'); else if(g.item.type==='tome') this.ui?.hint?.('tome','<b>Kniha dovednosti</b>: klikni na ni v inventáři <b>[I]</b> a naučíš se novou dovednost (nebo zvýšíš úroveň známé).'); this.snd(g.item.rarity==='legendary'||g.item.rarity==='sporeborn'||g.item.rarity==='set'?'loot_leg':g.item.rarity==='rare'||g.item.type==='support'?'loot_rare':'loot'); this.log('Sebráno: '+g.item.name,'loot:'+(g.item.rarity||(g.item.type==='support'?'support':'tome'))); }
+    else { if(!this.storeLoot(g.item)) return; if(g.item.type==='support') this.ui?.hint?.('rune','Sebral jsi <b>runu</b>. Vlož ji do volného slotu dovednosti v okně <b>[K]</b> – runy mění, jak dovednost funguje.'); else if(g.item.type==='tome') this.ui?.hint?.('tome','<b>Kniha dovednosti</b>: klikni na ni v inventáři <b>[I]</b> a naučíš se novou dovednost (nebo zvýšíš úroveň známé).'); this.snd(g.item.rarity==='legendary'||g.item.rarity==='sporeborn'||g.item.rarity==='set'?'loot_leg':g.item.rarity==='rare'||g.item.type==='support'?'loot_rare':'loot'); this.log('Sebráno: '+g.item.name,'loot:'+(g.item.rarity||(g.item.type==='support'?'support':'tome'))); }
     this.ground.splice(this.ground.indexOf(g),1); this.ui?.refresh?.();
   }
   wait(){ return this.endTurn(); }
@@ -544,8 +566,8 @@ export class Game{
     const p=this.player; p.x=p.rx=S.pos[0]; p.y=p.ry=S.pos[1]; p.path=null; this.stash=null; this.inRift=false; this.placeMinions(); this.lightCache=new Map(); this.recalc(); this.updateFOV(); this.ui?.onFloor?.(); this.snd('descend');
     this.log('Vracíš se z jeskyně. Podhoubí za tebou zarůstá vchod.','sys'); this.save(); }
   // ---- shared stash (via merchant) ----
-  stashPut(it){ const st=Stash.get(); if(st.length>=STASH_MAX){ this.log('Sdílená truhla je plná.','warn'); return false; } const p=this.player; const i=p.inv.indexOf(it); if(i<0) return false; p.inv.splice(i,1); st.push(it); Stash.set(st); this.save(); this.snd('chest'); return true; }
-  stashTake(i){ const st=Stash.get(); const p=this.player; if(!st[i]) return false; if(p.inv.length>=30){ this.log('Inventář je plný!','warn'); return false; } p.inv.push(st.splice(i,1)[0]); Stash.set(st); this.save(); this.snd('equip'); return true; }
+  stashPut(it){ const st=Stash.get(); if(st.length>=STASH_MAX){ this.log('Sdílená truhla je plná.','warn'); return false; } const p=this.player; const bag=it.type==='support'?p.runes:p.inv; const i=bag.indexOf(it); if(i<0) return false; bag.splice(i,1); st.push(it); Stash.set(st); this.save(); this.snd('chest'); return true; }
+  stashTake(i){ const st=Stash.get(); if(!st[i]||!this.storeLoot(st[i])) return false; st.splice(i,1); Stash.set(st); this.save(); this.snd('equip'); return true; }
   // ---- merchant gamble ----
   gambleCost(){ return Math.round(45*Math.pow(1.1,this.scalingDepth())); }
   gamble(slot){ const p=this.player, c=this.gambleCost(); if(p.gold<c){ this.log('Nemáš dost zlata.','warn'); return null; } if(p.inv.length>=30){ this.log('Inventář je plný!','warn'); return null; }
@@ -568,11 +590,11 @@ export class Game{
   payRespects(pr){ const g=this.graveText(pr); this.log(`✝ ${g.t} (${g.s})${g.m?` – „${g.m}“`:''}`,'hint'); if(!pr.respected){ pr.respected=true; this.gainXP(this.xpNeed()*0.03); this.float(pr.x,pr.y,'✝ Čest památce','#cfd8e6'); this.snd('rune',pr.x,pr.y); } }
   placeWell(){ if(!LB.enabled()||this.daily||this.inRift||this.depth<3) return; if(!this.R.chance(0.06)) return; const pos=this.freeFloorTile(this.R); if(!pos) return;
     this.props.push({type:'well',x:pos[0],y:pos[1],spr:'pool_water',flat:true,block:true,light:[0.6,0.4,1],lr:3}); }
-  async wellThrow(it,pr){ const p=this.player; const i=p.inv.indexOf(it); if(i<0||pr.used) return null; p.inv.splice(i,1); this.save();
+  async wellThrow(it,pr){ const p=this.player, bag=it.type==='support'?p.runes:p.inv; const i=bag.indexOf(it); if(i<0||pr.used) return null; bag.splice(i,1); this.save();
     const {fromWell,...clean}=it; const r=await LB.well(clean,p.nick);
-    if(!r||!r.ok){ p.inv.push(it); this.save(); return {error:r?.error||'offline'}; }
+    if(!r||!r.ok){ bag.splice(i,0,it); this.save(); return {error:r?.error||'offline'}; }
     pr.used=true; pr.light=[0.25,0.2,0.35]; this.invalidateLight(); this.burst(pr.x,pr.y,[0.6,0.4,1],24,90); this.snd(r.item?'loot_leg':'curse',pr.x,pr.y);
-    if(r.item){ const got={...r.item,uid:Math.random(),fromWell:r.from||'?'}; p.inv.push(got); this.log(`Studna vydala: ${got.name} (hodil ${got.fromWell}).`,'loot:'+(got.rarity||'support')); this.save(); return {item:got}; }
+    if(r.item){ const got={...r.item,uid:Math.random(),fromWell:r.from||'?'}; if(!this.storeLoot(got)) this.ground.push({x:p.x,y:p.y,item:got}); this.log(`Studna vydala: ${got.name} (hodil ${got.fromWell}).`,'loot:'+(got.rarity||'support')); this.save(); return {item:got}; }
     this.log('Studna mlčí. Tvůj předmět klesl do tmy… a nic se nevynořilo.','warn'); this.save(); return {item:null}; }
   // ================= minions =================
   minionMax(kind,sk){ const st=this.player.stats, def=MINIONS[kind]; const su=this.sups(sk); if(def.fixedMax) return def.max; return kind==='ent'?1+(st.ks.has('swarm')?1:0)+(su.has('fertile')?1:0):def.max+(kind==='sprout'?st.minionMax:Math.floor(st.minionMax/2))+(st.ks.has('swarm')?2:0)+(su.has('fertile')?1:0); }
@@ -629,7 +651,7 @@ export class Game{
   skillReady(id){ const p=this.player; return (p.cds?.[id]||0)<=0&&this.canPay(this.skillCost(id)); }
   canPay(c){ const p=this.player; return this.usesLife()?p.hp>c+1:p.mp>=c; }
   pay(c){ const p=this.player; if(this.usesLife()) p.hp-=c; else p.mp-=c; }
-  ctx(id,extra={}){ const su=this.sups(id), L=this.skillLevel(id); return {skill:id,sups:su,lm:1+(L-1)*0.12,tags:SKILLS[id].tags,...extra}; }
+  ctx(id,extra={}){ const su=this.sups(id), L=this.skillLevel(id); return {skill:id,sups:su,lm:1+Math.min(9,L-1)*0.12+Math.max(0,L-10)*0.06,tags:SKILLS[id].tags,...extra}; }
   // deliver hit to target(s) with multi/chain/echo support
   strike(targets,mkHit,ctx,fxFn){
     const p=this.player, st=p.stats; const hitSet=new Set(); let total=0;
@@ -742,7 +764,7 @@ export class Game{
         const remP=ps?ps.reduce((a,q)=>a+q.d*q.t,0):0, remB=bl?bl.dmg*bl.turns:0; delete m.status.poison; delete m.status.bleed;
         const mult=1.2*lm*(c.sageMore||1), dmg=(remP+remB)*mult; this.proj(p.x,p.y,m.x,m.y,remP>=remB?[0.6,1,0.3]:[0.9,0.2,0.2]); this.flashLight(m.x,m.y,remP>=remB?[0.6,1,0.3]:[1,0.25,0.2],2); this.shake=Math.max(this.shake,5);
         if(remB>0&&m.tele){ m.tele=null; this.float(m.x,m.y,'přerušeno','#ffd54a',0.95); } if(remB>0&&!m.boss) m.status.stun=Math.max(m.status.stun||0,1);
-        m.hp-=dmg; m.aware=true; m.flash=0.2; this.float(m.x,m.y,'Sklizeň '+fmt(dmg),remP>=remB?'#a6e86a':'#ff5a4a',1.3); this.burst(m.x,m.y,remP>=remB?[0.6,1,0.3]:[0.9,0.15,0.15],16,90);
+        const dealt=this.damageMonster(m,dmg); m.aware=true; m.flash=0.2; this.float(m.x,m.y,'Sklizeň '+fmt(dealt),remP>=remB?'#a6e86a':'#ff5a4a',1.3); this.burst(m.x,m.y,remP>=remB?[0.6,1,0.3]:[0.9,0.15,0.15],16,90);
         if(m.hp<=0){ if(remP>0){ this.fx.push({type:'cloud',x:m.x,y:m.y,r:1,life:0.8,max:0.8}); for(const o of this.monsters) if(o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1){ (o.status.poison||(o.status.poison=[])).push({d:Math.max(1,remP*mult*0.4/2),t:2}); this.burst(o.x,o.y,[0.6,1,0.3],6,40); } } this.killMonster(m,c); }
         break; }
       case 'burstrot': { const m=this.monAt(tx,ty); if(!m||!this.canSee(m)||edist(p.x,p.y,m.x,m.y)>s.range+0.5||!losOk(m)){ ok=false; this.log('Neplatný cíl.','warn'); break; }
@@ -778,6 +800,20 @@ export class Game{
     return this.endTurn();
   }
   weaponHit(mult=1){ const st=this.player.stats; return {phys:rng.range(st.dmg[0],st.dmg[1])*mult,fire:st.fire*mult,poison:st.poison*mult,decay:st.decay*mult,crit:st.crit,critMult:st.critMult,attack:true}; }
+  damageMonster(m,raw){
+    let damage=raw;
+    if(this.mapRun&&(m.mapBoss||m.unique||m.rarity==='rare')){
+      const limit=m.queen?0.24:m.mapBoss?0.38:0.88;
+      const budget=m.maxhp*limit;
+      if(m.damageTurn!==this.turn){ m.damageTurn=this.turn; m.damageTaken=0; }
+      damage=Math.min(damage,Math.max(0,m.hp),Math.max(0,budget-m.damageTaken));
+      if(m.queen&&!m.enraged) damage=Math.min(damage,Math.max(0,m.hp-m.maxhp*0.5));
+      if(m.queen&&m.rageTurn===this.turn) damage=0;
+      m.damageTaken+=damage;
+    }
+    m.hp-=damage;
+    return damage;
+  }
   spellHit(mult,el){ const st=this.player.stats; const h={phys:0,fire:0,poison:0,decay:0,crit:st.crit*0.7,critMult:st.critMult,spell:true}; h[el]=st.spellBase*rng.range(0.85,1.15)*mult; return h; }
   lunge(a,t){ a.lunge={dx:t.x-a.x,dy:t.y-a.y,t:0}; this.face(a,t.x); }
   basicAttack(m){
@@ -838,18 +874,18 @@ export class Game{
     if(!c.flat){ if(su.has('firststrike')&&m.hp>=m.maxhp*0.99) more*=1.8;
       if(m.status.burn&&un.has('emberheart')) more*=1.25; if(m.status.weak&&un.has('witherhand')) more*=1.2; if(m.status.fear&&un.has('tusked_helm')) more*=1.25; if(m.status.stun&&un.has('bonebreaker')) more*=1.4; }
     // crit
-    let cc=h.crit+(su.has('crit')?10:0)+(c.critBonus||0); if(ks.has('rotsoul')&&!mn) cc=0; const crit=!c.flat&&(c.forceCrit||rng.next()*100<cc); const cm=crit?(h.critMult+(su.has('crit')?40:0))/100:1;
+    let cc=h.crit+(su.has('crit')?10:0)+(c.critBonus||0); if(ks.has('rotsoul')&&!mn) cc=0; const crit=!c.flat&&(c.forceCrit||rng.next()*100<Math.min(95,cc)); const cm=crit?(h.critMult+(su.has('crit')?40:0))/100:1;
     const dbl=!c.flat&&!mn&&st.doubleDmg>0&&rng.next()*100<st.doubleDmg; if(dbl) more*=2;
     const hx=m.status.hex?1:0; let phys=h.phys*cm*more; const red=Math.min(0.75,m.arm*(hx?0.8:1)/(m.arm*(hx?0.8:1)+phys*3+6)); phys*=1-red;
     let total=phys; const parts={phys}; for(const k of EL){ const r=Math.max(-50,(m.res[k]||0)-st.pen-hx*20-(k==='decay'&&un.has('void_ring')?20:0)); parts[k]=h[k]*cm*more*(1-r/100); total+=parts[k]; }
     total=Math.max(1,total);
     if(m.shield>0){ const a=Math.min(m.shield,total); m.shield-=a; total-=a; this.float(m.x,m.y,'štít','#9cf',0.8); if(m.shield<=0) this.burst(m.x,m.y,[0.6,0.8,1],10,60); }
-    m.hp-=total; m.aware=true; m.flash=0.15; this.snd(crit?'crit':'hit',m.x,m.y);
+    total=this.damageMonster(m,total); m.aware=true; m.flash=0.15; this.snd(crit?'crit':'hit',m.x,m.y);
     const dom=Object.entries(parts).sort((a,b)=>b[1]-a[1])[0][0];
     this.float(m.x,m.y,(crit?'✸ ':'')+(dbl?'×2 ':'')+fmt(total),crit?'#ffd54a':{phys:'#fff',fire:'#ff9c4a',poison:'#a6e86a',decay:'#d38cff'}[dom],crit||dbl?1.35:1);
     this.burst(m.x,m.y,dom==='fire'?[1,0.5,0.1]:dom==='poison'?[0.6,1,0.3]:dom==='decay'?[0.8,0.4,1]:[0.9,0.25,0.2],crit?12:6,crit?110:70,0.45);
     if(crit) this.shake=Math.max(this.shake,4);
-    if(ks.has('executioner')&&!m.boss&&m.hp>0&&m.hp<m.maxhp*0.12&&!c.flat){ m.hp=0; this.float(m.x,m.y,'Poprava','#ff5a4a',1.1); }
+    if(ks.has('executioner')&&!m.boss&&m.hp>0&&m.hp<m.maxhp*0.12&&!c.flat){ this.damageMonster(m,m.hp); if(m.hp<=0) this.float(m.x,m.y,'Poprava','#ff5a4a',1.1); }
     if(c.flat){ if(m.hp<=0) this.killMonster(m,c); return total; }
     if(su.has('hex')) m.status.hex=3;
     if(crit&&!mn&&st.setPow.has('hunterset')&&!c.cdrDone){ c.cdrDone=true; for(const k in p.cds) if(p.cds[k]>0) p.cds[k]--; }
@@ -862,7 +898,7 @@ export class Game{
     if(c.forcePoison||(mn&&un.has('rot_totem'))||(h.spell&&!mn&&un.has('heartwood'))||rng.next()*100<pch){ ail.poison=(h.poison*cm*more+h.phys*cm*more*0.3)*0.35+1; this.applyPoison(m,ail.poison,4,c,dotM,false,true); }
     const bch=(mn?0:st.burnCh)+(c.burnCh||0)+(su.has('pyre')?40:0)+(crit&&ks.has('resonance')&&!mn?100:0);
     if(rng.next()*100<bch){ ail.burn=(h.fire*cm*more+base*0.15)*0.5*dotM*(1-(m.res.fire||0)/100); this.addAil(m,'burn',ail.burn,Math.round(3*durM)+(ks.has('cinder')?3:0)); }
-    if(!(ks.has('avatar')&&!mn)&&(c.forceBleed||(h.attack&&rng.next()*100<(mn?0:st.bleed)+(c.bleedCh||0)))){ ail.bleed=h.phys*cm*more*0.55*(c.forceBleed||1)*dotM; this.addAil(m,'bleed',ail.bleed,Math.max(1,Math.round(2*durM))+1); if(m.hp>0){ const B=m.status.bleed; m.hp-=B.dmg; this.float(m.x,m.y,fmt(B.dmg),'#d44',0.75); if(--B.turns<=0) delete m.status.bleed; } }
+    if(!(ks.has('avatar')&&!mn)&&(c.forceBleed||(h.attack&&rng.next()*100<(mn?0:st.bleed)+(c.bleedCh||0)))){ ail.bleed=h.phys*cm*more*0.55*(c.forceBleed||1)*dotM; this.addAil(m,'bleed',ail.bleed,Math.max(1,Math.round(2*durM))+1); if(m.hp>0){ const B=m.status.bleed; const dealt=this.damageMonster(m,B.dmg); this.float(m.x,m.y,fmt(dealt),'#d44',0.75); if(--B.turns<=0) delete m.status.bleed; } }
     if(h.attack&&!m.boss&&rng.next()*100<(mn?0:st.stun)+(su.has('stun')?30:0)){ m.status.stun=1+(un.has('bonebreaker')&&!mn?1:0); m.tele=null; }
     if(c.forceWeak||su.has('weaken')||(!mn&&st.weakCh&&rng.next()*100<st.weakCh)) m.status.weak=Math.max(m.status.weak||0,c.forceWeak||3);
     if(!m.boss&&((su.has('fear')&&rng.chance(0.25))||(!mn&&st.fearCh&&rng.next()*100<st.fearCh))){ if(!m.status.fear) this.float(m.x,m.y,'strach','#c9a0ff',0.8); m.status.fear=Math.max(m.status.fear||0,2); m.tele=null; }
@@ -885,7 +921,7 @@ export class Game{
     const tt=Math.max(1,Math.ceil(turns/2)); dmg=dmg*turns/tt*POISON_BUFF; turns=tt;
     const d=Math.max(1,dmg*dotM*(1-(m.res.poison||0)/100)); const n=st.uniques.has('fruiting')?2:1; const P=m.status.poison||(m.status.poison=[]);
     const added=[]; for(let i=0;i<n;i++){ const q={d,t:turns+(ks.has('rotsoul')?1:0)}; P.push(q); added.push(q); } const cap=ks.has('rotsoul')?999:12; while(P.length>cap){ P.sort((a,b)=>a.d-b.d); P.shift(); }
-    if(now&&m.hp>0){ let dealt=0; for(const q of added){ dealt+=q.d; q.t--; } m.status.poison=P.filter(q=>q.t>0); if(!m.status.poison.length) delete m.status.poison; m.hp-=dealt; this.float(m.x,m.y,fmt(dealt),'#8fd45a',0.75); if(st.uniques.has('devour_root')&&st.leech) this.healPlayer(dealt*(st.leech+5)/100,true); return dealt; }
+    if(now&&m.hp>0){ let dealt=0; for(const q of added){ dealt+=q.d; q.t--; } m.status.poison=P.filter(q=>q.t>0); if(!m.status.poison.length) delete m.status.poison; dealt=this.damageMonster(m,dealt); this.float(m.x,m.y,fmt(dealt),'#8fd45a',0.75); if(st.uniques.has('devour_root')&&st.leech) this.healPlayer(dealt*(st.leech+5)/100,true); return dealt; }
     return 0; }
   addAil(m,k,dmg,turns){ const s=m.status[k]; if(s){ if(k==='bleed'&&this.player.stats.uniques.has('gutripper')) s.dmg+=dmg*0.5; else s.dmg=Math.max(s.dmg,dmg); s.turns=Math.max(s.turns,turns); } else m.status[k]={dmg:Math.max(1,dmg),turns}; }
   killMonster(m,c){
@@ -950,7 +986,7 @@ export class Game{
       if(ring.length) return rng.pick(ring); }
     return fall||[this.player.x,this.player.y]; }
   healPlayer(v,quiet){ const p=this.player; if(p.stats.ks?.has('chitin')){ p.es=Math.min(p.stats.esMax,(p.es||0)+v*0.5); return; } const before=p.hp; p.hp=Math.min(p.stats.life,p.hp+v); if(!quiet&&p.hp-before>=1) this.float(p.x,p.y,'+'+fmt(p.hp-before),'#7f7'); }
-  hurtPlayer(dmg,el,src,srcName,noAvoid){
+  hurtPlayer(dmg,el,src,srcName,noAvoid,maxDamage=Infinity){
     const p=this.player, st=p.stats; if(p.hp<=0) return 0;
     if(src&&!noAvoid&&rng.next()*100<Math.min(75,st.dodge+(st.uniques.has('pact_ring')?2*this.minions.length:0))){ this.float(p.x,p.y,'úhyb','#9cf'); this.snd('dodge'); return 0; }
     if(src&&!noAvoid&&st.block>0&&rng.next()*100<st.block){ this.float(p.x,p.y,'blok','#ccc'); this.snd('block'); if(st.uniques.has('thistle')) this.thorn(src,dmg*0.4); if(st.setPow.has('wardset')){ this.healPlayer(st.life*0.04,true); if(!src.boss&&src.status){ src.status.stun=1; src.tele=null; } } if(p.buffs.some(b=>b.wall)&&!src.ally) this.thorn(src,dmg*0.6); if(st.uniques.has('bulwark')) this.addBuff({id:'bulw',name:'Kořenný val',dmgPct:0.15,turns:3}); return 0; }
@@ -960,6 +996,8 @@ export class Game{
     d=Math.max(1,d);
     { let dr=st.dr||0; if(st.uniques.has('oakheart')) dr+=Math.floor(Math.max(0,1-p.hp/st.life)*10)*3; if(dr) d*=1-Math.min(0.6,dr/100); }
     if(src?.boss&&this._hitNote) d=Math.min(d,(st.life+st.esMax)*0.8);
+    d=Math.min(d,maxDamage);
+    if(d<=0) return 0;
     const ripo=p.buffs.find(b=>b.ripo); const melee=src&&!src.ally&&dist(src.x,src.y,p.x,p.y)<=1; if(ripo&&melee) d*=0.7;
     const ssh=p.buffs.find(b=>b.absorb>0); if(ssh){ const a=Math.min(ssh.absorb,d); ssh.absorb-=a; d-=a; if(ssh.absorb<=0) p.buffs=p.buffs.filter(b=>b!==ssh); if(d<=0){ this.float(p.x,p.y,'pohlceno','#9df07a',0.85); if(ripo&&melee) this.riposteHit(src,ripo); return 0; } }
     if(st.ks.has('symbiosis')&&this.minions.length){ const mn=this.minions.slice().sort((a,b)=>dist(a.x,a.y,p.x,p.y)-dist(b.x,b.y,p.x,p.y))[0]; const a=d*0.35; d-=a; this.hurtMinion(mn,a,null,true); }
@@ -980,7 +1018,7 @@ export class Game{
     else R.push({t:this.turn,who,el:el||null,d,n:1,hp:Math.max(0,p.hp),max:p.stats.life,mon,dot:!!dot,note,haz:this.hazards.some(h=>h.src===who)||/jezírko|bouře/i.test(who)});
     if(R.length>12) R.shift(); }
   riposteHit(m,b){ if(!m||m.hp<=0||m.ally) return; const c=this.ctx('attack'); c.melee=true; c.skill='riposte'; this.lunge(this.player,m); this.float(this.player.x,this.player.y,'Odveta','#ffd54a',0.85); this.strike([m],()=>this.weaponHit(b.ripo),c); }
-  thorn(m,v){ if(m.hp>0){ m.hp-=v; this.float(m.x,m.y,fmt(v),'#c8a060',0.85); if(m.hp<=0) this.killMonster(m); } }
+  thorn(m,v){ if(m.hp>0){ const dealt=this.damageMonster(m,v); if(dealt>0) this.float(m.x,m.y,fmt(dealt),'#c8a060',0.85); if(m.hp<=0) this.killMonster(m); } }
   onDeath(by){ this.lastKiller=by; if(this.daily){ this.player.dead=true; this.save(); this.lbSync(true); } for(const mn of this.minions) this.burst(mn.x,mn.y,[0.5,0.7,0.3],8,50); this.minions=[]; this.snd('death'); this.log(`Padl jsi. Zabil tě: ${by}.`,'warn'); this.burst(this.player.x,this.player.y,[0.8,0.1,0.1],40,120,1.2); this.ui?.onDeath?.(by); if(!this.daily) this.ui?.hint?.('death','Smrt není konec. Probudíš se v posledním <b>kontrolním bodě</b> – ten se posouvá každých 5 pater po poražení strážce. Ztratíš čtvrtinu zlata a polovinu zkušeností do další úrovně.'); }
   respawn(checkpoint=this.checkpoint){
     if(!Number.isSafeInteger(checkpoint)||checkpoint<1||checkpoint>this.checkpoint||(checkpoint-1)%5!==0) return false;
@@ -996,8 +1034,33 @@ export class Game{
   learn(tome){ this.snd('learn'); const p=this.player; p.skills[tome.skill]=(p.skills[tome.skill]||0)+1; p.inv.splice(p.inv.indexOf(tome),1);
     if(!p.bar.includes(tome.skill)){ const e=p.bar.indexOf(null); if(e>=0) p.bar[e]=tome.skill; }
     this.log(`${SKILLS[tome.skill].name} – úroveň ${p.skills[tome.skill]}.`,'good'); }
-  socket(skill,idx,sup){ const p=this.player; const L=p.links[skill]||(p.links[skill]=[null,null,null]); const old=L[idx]; L[idx]=sup.sup; p.inv.splice(p.inv.indexOf(sup),1); if(old) p.inv.push(makeSupport(old)); }
-  unsocket(skill,idx){ const p=this.player; const L=p.links[skill]; if(!L||!L[idx]||p.inv.length>=30) return; p.inv.push(makeSupport(L[idx])); L[idx]=null; }
+  storeLoot(it){
+    const p=this.player;
+    if(it.type==='support'){ (p.runes||=[]).push(it); return true; }
+    if(p.inv.length>=30){ this.log('Inventář je plný!','warn'); return false; }
+    p.inv.push(it); return true;
+  }
+  socket(skill,idx,sup){
+    const p=this.player;
+    sup=typeof sup==='string'?sup:sup?.sup;
+    if(!p.skills[skill]||!SKILLS[skill]||![0,1,2].includes(idx)||!SUPPORTS[sup]) return false;
+    const i=p.runes.findIndex(it=>it.sup===sup);
+    if(i<0) return false;
+    const links=p.links[skill]||(p.links[skill]=[null,null,null]);
+    if(links[idx]===sup) return false;
+    const old=links[idx];
+    p.runes.splice(i,1);
+    links[idx]=sup;
+    if(old) p.runes.push(makeSupport(old));
+    this.save(); return true;
+  }
+  unsocket(skill,idx){
+    const p=this.player, links=p.links[skill];
+    if(![0,1,2].includes(idx)||!links?.[idx]) return false;
+    p.runes.push(makeSupport(links[idx]));
+    links[idx]=null;
+    this.save(); return true;
+  }
   canAlloc(id){ const p=this.player; if(p.passives.includes(id)||!(p.ppoints>0)) return false; return [...PASSIVE_MAP[id].adj].some(a=>p.passives.includes(a)); }
   alloc(id){ if(!this.canAlloc(id)) return false; const p=this.player; p.passives.push(id); p.ppoints--; this.recalc(); return true; }
   unalloc(id){ const p=this.player; const i=p.passives.lastIndexOf(id); if(i<1) return false; p.passives.splice(i,1); p.ppoints=(p.ppoints||0)+1; this.recalc(); return true; }
@@ -1033,6 +1096,10 @@ export class Game{
     for(const m of this.monsters.slice()){
       if(m.hp<=0) continue;
       this.tickMonsterDots(m); if(m.hp<=0) continue;
+      if(m.queen&&!m.enraged&&m.hp<=m.maxhp*0.5){
+        // Change phase before regeneration can lift her above the threshold.
+        m.tele=null; this.startBossRage(m); continue;
+      }
       if(m.regen&&m.hp<m.maxhp&&!(m.status.weak&&this.player.stats.uniques.has('witherhand'))) m.hp=Math.min(m.maxhp,m.hp+m.maxhp*m.regen);
       if(m.status.stun){ m.status.stun--; if(m.status.stun<=0) delete m.status.stun; continue; }
       m.energy+=m.spd*(m.status.slow?0.5:1); let acts=0;
@@ -1056,7 +1123,7 @@ export class Game{
     if(m.status.poison){ const P=m.status.poison; let d=0; for(const s of P){ d+=s.d; s.t--; } m.status.poison=P.filter(s=>s.t>0); if(!m.status.poison.length) delete m.status.poison; if(d>0){ tot+=d; this.float(m.x,m.y,fmt(d)+(P.length>1?` ×${P.length}`:''),'#8fd45a',0.8); } }
     for(const k of ['burn','bleed']){ const s=m.status[k]; if(s){ tot+=s.dmg; this.float(m.x,m.y,fmt(s.dmg),k==='burn'?'#ff9c4a':'#d44',0.8); if(k==='burn'&&st.ks.has('cinder')) s.dmg*=1.15; if(--s.turns<=0) delete m.status[k]; } }
     if(m.status.poison&&st.setPow.has('plagueset')){ const top=m.status.poison.reduce((a,q)=>q.d>a.d?q:a,m.status.poison[0]); const o=this.monsters.find(o=>o!==m&&o.hp>0&&dist(o.x,o.y,m.x,m.y)<=1&&!(o.status.poison?.length>=6)); if(top&&o) (o.status.poison||(o.status.poison=[])).push({d:top.d*0.5,t:2}); }
-    if(tot>0){ m.hp-=tot; if(st.uniques.has('devour_root')&&st.leech) this.healPlayer(tot*(st.leech+5)/100,true); if(m.hp<=0) this.killMonster(m); } }
+    if(tot>0){ const dealt=this.damageMonster(m,tot); if(st.uniques.has('devour_root')&&st.leech) this.healPlayer(dealt*(st.leech+5)/100,true); if(m.hp<=0) this.killMonster(m); } }
   tickV12(){ const p=this.player, st=p.stats;
     for(const z of this.fx.filter(f=>f.type==='flyzone'&&f.life>0)){ const c=this.ctx(z.skill); for(const m of this.monsters) if(m.hp>0&&dist(m.x,m.y,z.x,z.y)<=z.r){ m.status.slow=Math.max(m.status.slow||0,1); this.hitMonster(m,this.spellHit(z.mult,'decay'),c); } if(--z.turns<=0) z.life=0; }
     if(p.form&&st.ks.has('primal')) p.primal=Math.min(15,(p.primal||0)+1);
@@ -1131,9 +1198,12 @@ export class Game{
   alertPack(m){ for(const o of this.monsters) if(o!==m&&!o.aware&&dist(o.x,o.y,m.x,m.y)<=4) o.aware=true; }
   monHit(m,mult,el,tgt){ const p=this.player; let dm=rng.range(m.dmg[0],m.dmg[1])*mult; if(m.mods.includes('berserk')&&m.hp<m.maxhp*0.5) dm*=1.5; if(m.enraged) dm*=1.25; if(m.status.weak) dm*=0.7; if(m.status.poison?.length) dm*=1-poisonWeak(m);
     if(tgt&&tgt.ally){ this.hurtMinion(tgt,dm,el); if(m.mods.includes('vampiric')) m.hp=Math.min(m.maxhp,m.hp+dm*0.3); return; }
-    const dealt=this.hurtPlayer(dm,el,m,m.name); if(m.addEl&&dealt>=0) this.hurtPlayer(dm*m.addEl,m.mods.includes('fireench')?'fire':'decay',m,m.name,true);
-    if(m.el==='poison'&&dealt>0&&rng.chance(0.35)) this.addStatusP('poison',dm*0.25,3);
-    if(m.el==='fire'&&dealt>0&&rng.chance(0.25)) this.addStatusP('burn',dm*0.3,2);
+    const endgame=this.mapRun||this.depth>=60;
+    const limit=endgame?(p.stats.life+(p.es||0))*(this._hitNote?0.8:0.58):Infinity;
+    const dealt=this.hurtPlayer(dm,el,m,m.name,false,limit);
+    if(m.addEl&&dealt>0) this.hurtPlayer(dm*m.addEl,m.mods.includes('fireench')?'fire':'decay',m,m.name,true,limit-dealt);
+    if(m.el==='poison'&&dealt>0&&rng.chance(0.35)) this.addStatusP('poison',Math.min(dm*0.25,limit*0.22),3);
+    if(m.el==='fire'&&dealt>0&&rng.chance(0.25)) this.addStatusP('burn',Math.min(dm*0.3,limit*0.28),2);
     if(m.mods.includes('vampiric')&&dealt>0) m.hp=Math.min(m.maxhp,m.hp+dealt*0.6); }
   cross(x,y,r){ const t=[]; for(let dy=-r;dy<=r;dy++) for(let dx=-r;dx<=r;dx++) if(Math.abs(dx)+Math.abs(dy)<=r&&this.tile(x+dx,y+dy)===FLOOR) t.push([x+dx,y+dy]); return t; }
   area(x,y,r){ const t=[]; for(let dy=-r;dy<=r;dy++) for(let dx=-r;dx<=r;dx++) if(this.tile(x+dx,y+dy)===FLOOR) t.push([x+dx,y+dy]); return t; }
@@ -1182,9 +1252,14 @@ export class Game{
     m.cd=2;
     return true;
   }
+  startBossRage(m){
+    m.enraged=true; m.rageTurn=this.turn; if(m.def.sprRage) m.spr=m.def.sprRage; m.spd*=1.3;
+    this.snd('roar',m.x,m.y); this.log(`${m.name} zuří!`,'warn');
+    this.ui?.banner?.(m.name+' zuří!','Druhá fáze'); this.shake=14; this.bossSummon(m,3); m.cd=1;
+  }
   bossAct(m,d,sight){
     const p=this.player;
-    if(!m.enraged&&m.hp<m.maxhp*0.5){ m.enraged=true; if(m.def.sprRage) m.spr=m.def.sprRage; m.spd*=1.3; this.snd('roar',m.x,m.y); this.log(`${m.name} zuří! Výtrusy vře krev.`,'warn'); this.ui?.banner?.(m.name+' zuří!','Druhá fáze'); this.shake=14; this.bossSummon(m,3); m.cd=1; return; }
+    if(!m.enraged&&m.hp<=m.maxhp*0.5){ this.startBossRage(m); return; }
     if(m.cd<=0&&d<=7&&sight){ const pat=m.patterns[m.patI++%m.patterns.length];
       if(pat==='slam'&&d<=3&&this.bossTelegraph(m,this.cross(p.x,p.y,1),'slam',1.65)) return;
       if(pat==='charge'&&d>=2){

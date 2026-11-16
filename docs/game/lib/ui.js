@@ -118,8 +118,10 @@ export class UI{
     this.refresh(); }
   // ---- HUD tooltips ----
   // touch: first tap on an item/node shows its tooltip, second tap on the same thing acts
-  wireTouchTaps(){ if(this._tt) return; this._tt=true; const SEL='[data-inv],[data-eq],[data-craft],[data-stash],[data-sput],[data-node],[data-rune],.skc,#panel .slot';
-    document.addEventListener('click',e=>{ if(!this.isTouch) return; if(performance.now()-(this.treeDragged||0)<200) return; const t=e.target.closest?.(SEL); if(!t){ this._armed=null; this._tipLock=0; this.tip(null); return; }
+  wireTouchTaps(){ if(this._tt) return; this._tt=true; const SEL='[data-inv],[data-eq],[data-craft],[data-stash],[data-sput],[data-node],[data-rune],[data-link],.skc,#panel .slot';
+    document.addEventListener('click',e=>{ if(!this.isTouch) return; const t=e.target.closest?.(SEL);
+      if(e.isTrusted&&e.target.closest?.('#treesvg')&&performance.now()-(this.treeTouchEnd??-Infinity)<450){ e.preventDefault(); e.stopImmediatePropagation(); return; }
+      if(!t){ this._armed=null; this._tipLock=0; this.tip(null); return; }
       if(this._armed===t) { this._armed=null; this._tipLock=0; setTimeout(()=>this.tip(null),50); return; }
       const hasTip=t.onmouseenter||t.closest('#panel'); if(!hasTip) return; e.preventDefault(); e.stopImmediatePropagation(); this._armed=t; this._tipLock=0;
       const r=t.getBoundingClientRect(); const fake={clientX:r.left+r.width/2,clientY:r.top}; if(t.onmouseenter) t.onmouseenter(fake); else t.dispatchEvent(new MouseEvent('mouseenter',{clientX:fake.clientX,clientY:fake.clientY})); this.moveTip(fake); this._tipLock=performance.now(); },true); }
@@ -196,12 +198,23 @@ export class UI{
     const f={well:()=>this.wellHTML(),inv:()=>this.invHTML(),char:()=>this.charHTML(),skills:()=>this.skillsHTML(),craft:()=>this.craftHTML(),atlas:()=>this.egAtlasHTML(),tree:()=>this.treeHTML(),lore:()=>this.loreHTML(),shop:()=>this.shopHTML()}[this.panel];
     const pk=this.panel+':'+(this.panel==='craft'?this.craftTab||'items':''); if(this._pk!==pk){ el.scrollTop=0; this._pk=pk; }
     el.innerHTML=`<button class="x">✕</button>`+f(); el.querySelector('.x').onclick=()=>this.close(); this.wirePanel(el); }
-  slotHTML(it,attrs,eq){ if(!it) return `<div class="slot empty" ${attrs} ${eq?`style="background-image:url(${UI_('eq_'+(eq==='ring2'?'ring1':eq))})"`:''}></div>`; const c=it.rarity?rarityColor(it.rarity):it.type==='seed'?'#9df07a':it.type==='frag'?'#c9a0ff':it.type==='tome'?'#b9f':it.type==='support'?SUPC:'#e66'; return `<div class="slot r-${it.rarity||it.type||'x'}" style="--rc:${c}" ${attrs}><img src="${this.icon(it.spr,64)}"></div>`; }
+  slotHTML(it,attrs,eq,count=1){ if(!it) return `<div class="slot empty" ${attrs} ${eq?`style="background-image:url(${UI_('eq_'+(eq==='ring2'?'ring1':eq))})"`:''}></div>`; const c=it.rarity?rarityColor(it.rarity):it.type==='seed'?'#9df07a':it.type==='frag'?'#c9a0ff':it.type==='tome'?'#b9f':it.type==='support'?SUPC:'#e66'; return `<div class="slot r-${it.rarity||it.type||'x'}" style="--rc:${c}" ${attrs}><img src="${this.icon(it.spr,64)}">${count>1?`<b class="rune-count">×${count}</b>`:''}</div>`; }
+  runeBagHTML(fits=()=>true){
+    const stacks=new Map();
+    for(const it of this.g.player.runes){
+      const stack=stacks.get(it.sup);
+      if(stack) stack.count++;
+      else if(SUPPORTS[it.sup]) stacks.set(it.sup,{it,count:1});
+    }
+    return `<div class="bag runes">${[...stacks.values()].map(({it,count})=>this.slotHTML(it,
+      `data-rune="${it.sup}" data-picked="${this.panel==='skills'&&this.pickRune===it.sup}" data-dim="${!fits(it.sup)}"`,null,count)).join('')||'<div class="hint">Žádné volné runy.</div>'}</div>`;
+  }
   invHTML(){ const p=this.g.player; const offX=p.stats?.ks?.has('apex'); const eq=SLOTS.map(s=>`<div class="eqs ${offX&&s==='offhand'?'offx':''}" ${offX&&s==='offhand'?'title="Vrcholový predátor: druhá ruka nedává bonusy"':''}><label>${SLOT_NAMES[s]}${offX&&s==='offhand'?' ✕':''}</label>${this.slotHTML(p.equip[s],`data-eq="${s}"`,s)}</div>`).join('');
     const bag=Array.from({length:30},(_,i)=>this.slotHTML(p.inv[i],`data-inv="${i}"`)).join('');
     return `<h2>Inventář</h2><div class="inv"><div class="equip">${eq}</div><div><div class="bag">${bag}</div>
       <div class="invbar"><span>${IC('i_gold')} ${fmt(p.gold)}</span><span class="dust">${IC('i_dust')} ${fmt(p.dust)} prachu</span><button class="sal ${this.salvageMode?'on':''}">${this.salvageMode?'Rozkládání: ZAP':'Rozložit předměty'}</button><button class="salall">Rozložit obyčejné a kouzelné</button></div>
-      <div class="hint">Klik = nasadit / použít · Shift+klik = rozložit · Pravý klik na nasazený = sundat · Runy vkládej v [K]</div></div></div>`; }
+      <div class="hint">Klik = nasadit / použít · Shift+klik = rozložit · Pravý klik na nasazený = sundat</div></div></div>
+      <section class="rune-pouch"><h3 class="sm">Runy</h3>${this.runeBagHTML()}</section>`; }
   charHTML(){ const g=this.g,p=g.player,st=p.stats; const at=(k,n,d)=>`<div class="attr"><b>${n}</b><span>${Math.round(st[k])}</span>${p.points?`<button data-attr="${k}">+</button>`:''}<small>${d}</small></div>`;
     const row=(n,v)=>`<div class="row" data-h="${n}"><span>${n}</span><b>${v}</b></div>`; const pct=v=>Math.round(v*10)/10+' %'; const rc=v=>`<b class="${v<0?'down':v>=60?'up':''}">${Math.round(v)} %</b>`;
     return `<h2>${CLASSES.find(c=>c.id===p.cls).name} · úroveň ${p.lvl}</h2><div class="char"><div><div class="pts">Volné body: <b>${p.points}</b></div>${this.pend?.attr?.length?`<div class="pendbar">Rozděleno ${this.pend.attr.length} ${this.pend.attr.length===1?'bod':this.pend.attr.length<5?'body':'bodů'} <button data-pend="ok:attr">Potvrdit</button><button data-pend="x:attr">Zrušit</button></div>`:''}
@@ -211,24 +224,27 @@ export class UI{
       ${[...st.ks].filter(k=>KEYSTONES[k]).map(k=>`<div class="pw ks">⬢ ${KEYSTONES[k]}</div>`).join('')}
       ${Object.entries(st.setCnt||{}).map(([sid,n])=>{ const S=SETS.find(x=>x.id===sid); return S?`<div class="pw set">❖ ${S.name} (${n}/4)${n>=4?': '+S.power:''}</div>`:''; }).join('')}</div>
       <div class="stats">${row('Život',fmt(st.life))}${row('Esence',fmt(st.mana))}${row('Poškození zbraně',fmt(st.dmg[0])+'–'+fmt(st.dmg[1]))}${row('Zvýšené poškození',pct(st.dmgPct)+' (+'+st.physPct+' % fyz, +'+st.elemPct+' % elem)')}${row('Síla kouzel',fmt(st.spellBase)+' (+'+Math.round(st.spell)+' %)')}
-      ${row('Kritický zásah',pct(st.crit)+' ×'+st.critMult+' %')}${row('Násobič v čase / průraz',`+${st.dot} % / ${st.pen} %`)}${row('Zbroj',fmt(st.armor))}${row('Úhyb / blok',pct(st.dodge)+' / '+pct(st.block))}
+      ${row('Kritický zásah',pct(st.crit)+' ×'+pct(st.critMult))}${row('Násobič v čase / průraz',`+${st.dot} % / ${st.pen} %`)}${row('Zbroj',fmt(st.armor))}${row('Úhyb / blok',pct(st.dodge)+' / '+pct(st.block))}
       <div class="row"><span>Odolnost jed / oheň / hniloba <small class="tt-dim">(postih hloubky ${st.resPen} %)</small></span><span>${rc(st.resPoison)} ${rc(st.resFire)} ${rc(st.resDecay)}</span></div>
       ${row('Regenerace',Math.round(st.regen*10)/10+' / tah')}${row('Esence regen.',Math.round(st.manaRegen*10)/10+' / tah')}${row('Život za zabití',fmt(st.lifeKill))}
       ${st.minionDmg||st.minionLife||st.minionMax?row('Přisluhovači',`+${st.minionDmg} % poškození · +${st.minionLife} % života · +${st.minionMax} max`):''}${p.cls==='summoner'||st.reserve?row('Daň přisluhovačů',`${Math.round((st.reserve||0)*100)} % života rezervováno · úprava ${st.minionUpkeep} %`):''}${st.formPct||st.formLife?row('Podoba zvířete',`+${st.formPct} % poškození · +${st.formLife} % života`):''}${row('Pochodeň',st.torch)}${row('Šance otrávit / zapálit / krvácení',`${st.poisonCh} / ${st.burnCh} / ${st.bleed} %`)}${row('Vysátí života',pct(st.leech))}${row('Kouzelné předměty',pct(st.mf))}${row('Zkrácení přebíjení',pct(st.cdr))}${(()=>{ const ex=['meleePct','projPct','aoePct','firePct','poisonPct','decayPct','doubleDmg','ailDur','buffDur','costRed','dr','weakCh','fearCh','manaKill','regenPct'].filter(k=>st[k]); return ex.length?`<div class="row ex"><span>Další</span><span>${ex.map(k=>statLine(k,st[k])).join('<br>')}</span></div>`:''; })()}
       ${[...st.uniques].map(u=>`<div class="pw">✦ ${UNIQUES.find(x=>x.id===u).power}</div>`).join('')}</div></div>`; }
   skillsHTML(){ const g=this.g,p=g.player; const known=Object.keys(p.skills); const sel=this.selSkill&&p.skills[this.selSkill]?this.selSkill:known[0]; this.selSkill=sel;
-    const links=p.links[sel]||[null,null,null]; const supInv=p.inv.map((it,i)=>[it,i]).filter(([it])=>it.type==='support');
+    const links=p.links[sel]||[null,null,null];
     const fits=id=>SUPPORTS[id].tags.some(t=>SKILLS[sel].tags.includes(t));
     const pool=skillsFor(p.cls); const cname=CLASSES.find(c=>c.id===p.cls)?.name;
     const book=`<div class="book"><span>Kniha třídy · ${cname}:</span>${pool.map(id=>`<img class="${p.skills[id]?'on':''}" title="${SKILLS[id].name}${p.skills[id]?'':' (zatím nenaučeno)'}" src="${this.icon(SKILLS[id].icon,40)}">`).join('')}</div>`;
-    return `<h2>Dovednosti a runy</h2>${book}<div class="hint">Knihy dovedností padají jen pro tvou třídu (a univerzální). Vyber dovednost vlevo. Klikni na runu ve sklepě a pak na volný slot dovednosti. Do lišty 1–4 dáš dovednost tlačítky pod ní.</div>
+    return `<h2>Dovednosti a runy</h2>${book}<div class="hint">Knihy dovedností padají jen pro tvou třídu (a univerzální). Vyber dovednost vlevo. Vyber runu a pak její slot v dovednosti. Do lišty 1–4 dáš dovednost tlačítky pod ní.</div>
       <div class="skwrap"><div class="skl">${known.map(id=>`<div class="skc ${sel===id?'sel':''}" data-skill="${id}"><img src="${this.icon(SKILLS[id].icon,48)}"><div><b>${SKILLS[id].name}</b> <small>úr. ${g.skillLevel(id)}</small><div class="mini">${(p.links[id]||[]).filter(Boolean).map(s=>`<i style="color:${fits(s)||true?SUPC:'#777'}">◆ ${SUPPORTS[s].name}</i>`).join(' ')}</div></div></div>`).join('')}</div>
       <div class="skdet"><div class="skhead"><img src="${this.icon(SKILLS[sel].icon,64)}"><div><h3>${SKILLS[sel].name} <small>úr. ${g.skillLevel(sel)}</small></h3><p>${SKILLS[sel].desc}</p><p class="tt-dim">Cena ${g.skillCost(sel)} · přebíjení ${SKILLS[sel].cd} · štítky: ${SKILLS[sel].tags.join(', ')}</p></div></div>
         <div class="links">${[0,1,2].map(i=>{ const s=links[i]; return `<div class="link ${s&&!fits(s)?'bad':''}" data-link="${i}">${s?`<img src="${this.icon(SUPPORTS[s].spr,48)}"><b>${SUPPORTS[s].name}</b><small>${SUPPORTS[s].desc}</small>`:'<span>Prázdný slot runy</span>'}</div>`; }).join('')}</div>
         ${sel!=='attack'?`<div class="barset">Dát na lištu: ${[0,1,2,3].map(i=>`<button data-bar="${i}" class="${p.bar[i]===sel?'on':''}">${i+1}</button>`).join('')}</div>`:'<div class="hint">Základní útok se používá klikem / pohybem do nepřítele.</div>'}
-        <h3 class="sm">Runy ve sklepě</h3><div class="bag runes">${supInv.length?supInv.map(([it,i])=>`<div class="slot r-support ${this.pickRune===i?'picked':''} ${fits(it.sup)?'':'dim'}" style="--rc:${SUPC}" data-rune="${i}"><img src="${this.icon(it.spr,64)}"></div>`).join(''):'<div class="hint">Žádné runy. Padají z vzácných monster, trezorů a bossů.</div>'}</div>
+        <h3 class="sm">Runy</h3>${this.runeBagHTML(fits)}
       </div></div>`; }
-  treeHTML(){ const p=this.g.player; return `<h2>Mycelium · pasivní strom</h2><div class="treehead"></div><div class="tree"><svg id="treesvg" viewBox="-1450 -1450 2900 2900"></svg></div><div class="hint"><span class="tzb"><button data-tz="1">＋</button><button data-tz="-1">－</button></span>Kolečko = zoom · táhni = posun · <input class="treeq" placeholder="Hledat (např. jed, krit, přisluhovač)…"></div>`; }
+  treeHTML(){ return `<h2>Mycelium · pasivní strom</h2><div class="treehead"></div>
+    <div class="tree-tools"><button data-tz="1" aria-label="Přiblížit strom">+</button><button data-tz="-1" aria-label="Oddálit strom">−</button>
+    <input class="treeq" aria-label="Hledat ve stromu" placeholder="Hledat uzel"></div>
+    <div class="tree"><svg id="treesvg" viewBox="-1450 -1450 2900 2900"></svg></div>`; }
   updateTreeHead(){ const p=this.g.player, h=$('#panel .treehead'); if(!h) return; h.innerHTML=`Volné pasivní body: <b>${p.ppoints||0}</b> · Přidělené: ${p.passives.length-1} ${this.pend?.pas?.length?`<span class="pendbar">Nově ${this.pend.pas.length} <button data-pend="ok:pas">Potvrdit</button><button data-pend="x:pas">Zrušit</button></span>`:''} <button class="respec">Přerozdělit vše (${this.g.respecCost()} ✦)</button>`; h.querySelectorAll('[data-pend]').forEach(b=>b.onclick=()=>{ const [act,kind]=b.dataset.pend.split(':'); if(act==='ok') this.commitPending(kind); else this.cancelPending(kind); }); h.querySelector('.respec').onclick=()=>{ this.commitPending(); if(this.g.respec()){ this.drawTree(); this.updateTreeHead(); this.refresh(); } else this.g.log('Nedostatek výtrusného prachu.','warn'); }; }
   drawTree(){ const svg=$('#treesvg'); if(!svg) return; const g=this.g,p=g.player; const has=id=>p.passives.includes(id);
     let h=''; const seen=new Set(); const L=[];
@@ -243,16 +259,60 @@ export class UI{
     svg.querySelectorAll('[data-node]').forEach(el=>{ const n=PASSIVE_MAP[el.dataset.node];
       el.onmouseenter=e=>this.tip(`<div class="tt-name" style="color:${n.k?'#f08a3c':n.notable?'#f2d36b':'#ddd'}">${n.n}</div>${n.k?`<div class="tt-power">${KEYSTONES[n.k]}</div>`:''}<div class="tt-aff">${Object.entries(n.s).map(([s,v])=>statLine(s,v)).join('<br>')}</div>${p.passives.includes(n.id)?'<div class="tt-dim">Přiděleno</div>':g.canAlloc(n.id)?'<div class="tt-hint">Klikni pro přidělení</div>':''}`,e);
       el.onmouseleave=()=>this.tip(null);
-      el.onclick=()=>{ if(performance.now()-(this.treeDragged||0)<150) return; if(g.alloc(n.id)){ (this.pend||(this.pend={attr:[],pas:[]})).pas.push(n.id); this.drawTree(); this.updateTreeHead(); this.refresh(); this.tip(null); } }; }); }
+      el.onclick=()=>{ if(performance.now()-(this.treeDragged??-Infinity)<200) return; if(g.alloc(n.id)){ (this.pend||(this.pend={attr:[],pas:[]})).pas.push(n.id); this.drawTree(); this.updateTreeHead(); this.refresh(); this.tip(null); } }; }); }
   markTree(){ const svg=$('#treesvg'); if(!svg) return; const t=(this.treeQ||'').trim().toLowerCase(); svg.querySelectorAll('[data-node]').forEach(el=>{ const n=PASSIVE_MAP[el.dataset.node]; let hit=false;
       if(t.length>=2){ const txt=(n.n+' '+(n.k?KEYSTONES[n.k]:'')+' '+Object.keys(n.s).map(k=>STAT_NAMES[k]||k).join(' ')).toLowerCase(); hit=txt.includes(t); } el.classList.toggle('hit',hit); }); }
-  wireTreeNav(svg){ if(svg._nav) return; svg._nav=true; let vb=this.treeVB&&this.treeVB[2]>0?this.treeVB:[-1000,-1000,2000,2000]; const set=()=>{ svg.setAttribute('viewBox',vb.join(' ')); this.treeVB=vb; }; set();
-    svg.addEventListener('wheel',e=>{ e.preventDefault(); const r=svg.getBoundingClientRect(); const mx=vb[0]+(e.clientX-r.left)/r.width*vb[2], my=vb[1]+(e.clientY-r.top)/r.height*vb[3]; const f=e.deltaY>0?1.15:1/1.15; const nw=Math.max(400,Math.min(3000,vb[2]*f)); const k=nw/vb[2]; vb=[mx-(mx-vb[0])*k,my-(my-vb[1])*k,nw,nw]; set(); },{passive:false});
-    document.querySelectorAll('#panel [data-tz]').forEach(b=>b.onclick=()=>{ const f=+b.dataset.tz>0?1/1.3:1.3; const nw=Math.max(400,Math.min(3000,vb[2]*f)); const cx=vb[0]+vb[2]/2, cy=vb[1]+vb[3]/2; vb=[cx-nw/2,cy-nw/2,nw,nw]; set(); });
-    svg.style.touchAction='none';
-    let drag=null; svg.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY,vb:vb.slice(),moved:false}; });
-    addEventListener('pointermove',e=>{ if(!drag) return; const r=svg.getBoundingClientRect(); const dx=(e.clientX-drag.x)/r.width*vb[2], dy=(e.clientY-drag.y)/r.height*vb[3]; if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4) drag.moved=true; vb=[drag.vb[0]-dx,drag.vb[1]-dy,vb[2],vb[3]]; set(); });
-    addEventListener('pointerup',()=>{ if(drag?.moved) this.treeDragged=performance.now(); drag=null; }); }
+  wireTreeNav(svg){
+    if(svg._nav) return; svg._nav=true;
+    let vb=this.treeVB||[-1000,-1000,2000,2000];
+    const set=()=>{ svg.setAttribute('viewBox',vb.join(' ')); this.treeVB=vb; };
+    const world=(x,y)=>new DOMPoint(x,y).matrixTransform(svg.getScreenCTM().inverse());
+    const zoom=(factor,x,y,toX=x,toY=y)=>{
+      const from=world(x,y), to=world(toX,toY), width=Math.max(280,Math.min(3200,vb[2]*factor)), scale=width/vb[2];
+      vb=[from.x-(to.x-vb[0])*scale,from.y-(to.y-vb[1])*scale,width,width]; set();
+    };
+    set();
+    svg.addEventListener('wheel',e=>{ e.preventDefault(); zoom(e.deltaY>0?1.15:1/1.15,e.clientX,e.clientY); },{passive:false});
+    document.querySelectorAll('#panel [data-tz]').forEach(b=>b.onclick=()=>{
+      const r=svg.getBoundingClientRect(); zoom(+b.dataset.tz>0?1/1.3:1.3,r.left+r.width/2,r.top+r.height/2);
+    });
+    const pointers=new Map();
+    let moved=false;
+    const midpoint=(a,b)=>[(a.x+b.x)/2,(a.y+b.y)/2];
+    const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+    svg.addEventListener('pointerdown',e=>{
+      if(e.button!==0||pointers.size>=2) return;
+      if(!pointers.size) moved=false;
+      pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(pointers.size===2) moved=true;
+    });
+    svg.addEventListener('pointermove',e=>{
+      const old=pointers.get(e.pointerId); if(!old) return;
+      const point={x:e.clientX,y:e.clientY}, other=[...pointers].find(([id])=>id!==e.pointerId)?.[1];
+      if(other){
+        const [x,y]=midpoint(old,other), [toX,toY]=midpoint(point,other);
+        zoom(Math.max(1,distance(old,other))/Math.max(1,distance(point,other)),x,y,toX,toY);
+      } else {
+        if(!moved&&distance(old,point)<5) return;
+        const from=world(old.x,old.y), to=world(point.x,point.y);
+        vb=[vb[0]+from.x-to.x,vb[1]+from.y-to.y,vb[2],vb[3]]; set();
+      }
+      moved=true; pointers.set(e.pointerId,point);
+      if(!svg.hasPointerCapture(e.pointerId)) svg.setPointerCapture(e.pointerId);
+      this._armed=null; this._tipLock=0; this.tip(null);
+    });
+    const end=e=>{
+      if(!pointers.delete(e.pointerId)) return;
+      if(moved) this.treeDragged=performance.now();
+      if(e.pointerType==='touch'&&e.type==='pointerup'){
+        this.treeTouchEnd=performance.now();
+        if(!moved&&this.isTouch) e.target.closest('[data-node]')?.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+      }
+    };
+    svg.addEventListener('pointerup',end);
+    svg.addEventListener('pointercancel',end);
+    svg.addEventListener('pointerleave',e=>{ if(!svg.hasPointerCapture(e.pointerId)) end(e); });
+  }
   craftHTML(){ if(this.craftTab==='seeds') return this.egTabs()+this.egSeedsHTML(); if(this.craftTab==='atlas') return this.egTabs()+this.egAtlasHTML(); const p=this.g.player; const it=this.craftSel; const items=[...Object.values(p.equip).filter(Boolean),...p.inv.filter(i=>i.base)];
     let act=''; if(it){ const up=upgradeCost(it), rc=rerollCost(it), ex=Math.ceil(itemValue(it)*4); const cor=it.corrupted;
       act=`<div class="craftsel"><div class="ttc">${tooltipHTML(it)}</div><div class="cbtn">${cor?'<div class="hint">Zkažený předmět už nejde měnit.</div>'+this.egDoubleBtn(it):`<button data-c="corrupt" class="corrbtn" ${(p.cores||0)<1?'disabled':''}>☣ Zkazit · 1 jádro (${p.cores||0})</button>`}
@@ -261,12 +321,12 @@ export class UI{
         ${(it.rarity==='rare'||it.rarity==='legendary'||it.rarity==='sporeborn')&&it.aff.length<7&&!cor?`<button data-c="ex" ${p.dust<ex?'disabled':''}>Přidat vlastnost · ${ex} ✦</button>`:''}
         ${it.rarity!=='common'&&!cor&&it.aff.some(canReforge)?`<div class="reforge"><div class="hint">Přeroubovat · ${reforgeCost(it)} ✦ · vyber vlastnost, nová se zamkne:</div>${it.aff.map((a,i)=>canReforge(a)?`<button data-rf="${i}" ${p.dust<reforgeCost(it)?'disabled':''}>${statLine(a.s,a.v)}</button>`:'').join('')}</div>`:''}</div></div>`; }
     return `${this.egTabs()}<h2>Oltář hniloby</h2><div class="hint">Výtrusný prach (✦ ${fmt(p.dust)}) získáš rozkládáním předmětů. Zkažená jádra (${p.cores||0}) z Plodnic pradávných, jeskyní a skřítků. <b>Zkažení</b> je nevratné: může předmět vylepšit, proklít, přeměnit vlastnost… nebo zničit.</div><div class="bag craftbag">${items.map((i,k)=>this.slotHTML(i,`data-craft="${k}" ${i===it?'data-sel="1"':''}`)).join('')}</div>${act}`; }
-  wirePanel(el){ const g=this.g,p=g.player; this.egWire(el);
+  wirePanel(el){ const g=this.g,p=g.player, owned=[...p.inv,...p.runes]; this.egWire(el);
     const hoverTip=(node,it,cmp)=>{ node.onmouseenter=e=>this.tip(cmp!==undefined&&it.base?this.itemTip(it):tooltipHTML(it,cmp),e); node.onmouseleave=()=>this.tip(null); };
     el.querySelectorAll('[data-eq]').forEach(n=>{ const it=p.equip[n.dataset.eq]; if(!it) return; hoverTip(n,it); n.oncontextmenu=e=>{ e.preventDefault(); g.unequip(n.dataset.eq); this.tip(null); this.refresh(); }; });
     el.querySelectorAll('[data-inv]').forEach(n=>{ const it=p.inv[+n.dataset.inv]; if(!it) return; hoverTip(n,it,it.base?null:undefined);
       n.onclick=e=>{ this.tip(null); if(e.shiftKey||this.salvageMode){ if(it.type==='tome'){ g.learn(it); } else { const v=g.salvage(it); g.log(`Rozloženo: +${v} ✦`,'sys'); } this.refresh(); return; }
-        if(it.type==='seed'||it.type==='frag'){ this.egInvClick(it); return; } if(it.type==='tome') g.learn(it); else if(it.type==='support'){ this.panel='skills'; this.pickRune=p.inv.indexOf(it); } else if(it.base) g.equip(it); this.refresh(); }; });
+        if(it.type==='seed'||it.type==='frag'){ this.egInvClick(it); return; } if(it.type==='tome') g.learn(it); else if(it.type==='support'){ this.panel='skills'; this.pickRune=it.sup; } else if(it.base) g.equip(it); this.refresh(); }; });
     el.querySelector('.sal')&&(el.querySelector('.sal').onclick=()=>{ this.salvageMode=!this.salvageMode; this.renderPanel(); });
     el.querySelector('.salall')&&(el.querySelector('.salall').onclick=()=>{ let v=0; for(const it of p.inv.slice()) if(it.base&&(it.rarity==='common'||it.rarity==='magic')) v+=g.salvage(it); g.log(`Rozloženo: +${v} ✦`,'sys'); this.refresh(); });
     el.querySelectorAll('[data-attr]').forEach(b=>b.onclick=()=>{ if(p.points>0){ p.points--; p.base[b.dataset.attr]++; (this.pend||(this.pend={attr:[],pas:[]})).attr.push(b.dataset.attr); g.recalc(); this.refresh(); } });
@@ -274,10 +334,13 @@ export class UI{
     el.querySelectorAll('[data-h]').forEach(n=>{ const h=STAT_HELP[n.dataset.h]; if(!h) return; n.onmouseenter=e=>this.tip(`<div class="tt-name">${n.dataset.h}</div><div class="tt-line">${h}</div>`,e); n.onmouseleave=()=>this.tip(null); });
     el.querySelectorAll('[data-skill]').forEach(n=>{ n.onclick=()=>{ this.selSkill=n.dataset.skill; this.renderPanel(); }; n.onmouseenter=e=>this.tip(this.skillTip(n.dataset.skill),e); n.onmouseleave=()=>this.tip(null); });
     el.querySelectorAll('[data-bar]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.bar, s=this.selSkill; const j=p.bar.indexOf(s); if(j>=0) p.bar[j]=p.bar[i]; p.bar[i]=s; this.refresh(); });
-    el.querySelectorAll('[data-rune]').forEach(n=>{ const it=p.inv[+n.dataset.rune]; hoverTip(n,it); n.onclick=()=>{ this.pickRune=this.pickRune===+n.dataset.rune?null:+n.dataset.rune; this.renderPanel(); }; });
+    el.querySelectorAll('[data-rune]').forEach(n=>{ const id=n.dataset.rune, it=p.runes.find(r=>r.sup===id); if(!it) return;
+      hoverTip(n,it); n.onclick=()=>{ const open=this.panel==='inv'; this.panel='skills'; this.pickRune=open||this.pickRune!==id?id:null; this.renderPanel(); }; });
     el.querySelectorAll('[data-link]').forEach(n=>{ const i=+n.dataset.link; const cur=(p.links[this.selSkill]||[])[i];
-      if(cur){ n.onmouseenter=e=>this.tip(`<div class="tt-name" style="color:${SUPC}">${SUPPORTS[cur].name}</div><div class="tt-line">${SUPPORTS[cur].desc}</div><div class="tt-hint">Pravý klik = vyjmout</div>`,e); n.onmouseleave=()=>this.tip(null); }
-      n.onclick=()=>{ if(this.pickRune!=null&&p.inv[this.pickRune]?.type==='support'){ g.socket(this.selSkill,i,p.inv[this.pickRune]); this.pickRune=null; this.tip(null); this.refresh(); } };
+      if(cur){ n.onmouseenter=e=>this.tip(`<div class="tt-name" style="color:${SUPC}">${SUPPORTS[cur].name}</div><div class="tt-line">${SUPPORTS[cur].desc}</div><div class="tt-hint">${this.isTouch?'Další klepnutí vyjme runu':'Pravý klik = vyjmout'}</div>`,e); n.onmouseleave=()=>this.tip(null); }
+      n.onclick=()=>{ if(this.pickRune!=null){ if(!g.socket(this.selSkill,i,this.pickRune)) return; this.pickRune=null; }
+        else if(!this.isTouch||!cur||!g.unsocket(this.selSkill,i)) return;
+        this.tip(null); this.refresh(); };
       n.oncontextmenu=e=>{ e.preventDefault(); g.unsocket(this.selSkill,i); this.tip(null); this.refresh(); }; });
     const items=[...Object.values(p.equip).filter(Boolean),...p.inv.filter(i=>i.base)];
     el.querySelectorAll('[data-craft]').forEach(n=>{ const it=items[+n.dataset.craft]; n.onclick=()=>{ this.craftSel=it; this.renderPanel(); }; hoverTip(n,it); });
@@ -287,11 +350,11 @@ export class UI{
       const cost=c==='up'?upgradeCost(it):c==='re'?rerollCost(it):Math.ceil(itemValue(it)*4); if(p.dust<cost) return; p.dust-=cost;
       if(c==='up') craftUpgrade(it); else if(c==='re') craftReroll(it); else craftExalt(it); g.recalc(); g.log('Oltář pulzuje: '+it.name,'good'); this.refresh(); });
     el.querySelectorAll('[data-stash]').forEach(n=>{ const it=Stash.get()[+n.dataset.stash]; if(!it) return; n.onmouseenter=e=>this.tip(this.itemTip(it),e); n.onmouseleave=()=>this.tip(null); n.onclick=()=>{ this.tip(null); g.stashTake(+n.dataset.stash); this.refresh(); }; });
-    el.querySelectorAll('[data-sput]').forEach(n=>{ const it=p.inv[+n.dataset.sput]; if(!it) return; n.onmouseenter=e=>this.tip(tooltipHTML(it),e); n.onmouseleave=()=>this.tip(null); n.onclick=()=>{ this.tip(null); g.stashPut(it); this.refresh(); }; });
+    el.querySelectorAll('[data-sput]').forEach(n=>{ const it=owned[+n.dataset.sput]; if(!it) return; n.onmouseenter=e=>this.tip(tooltipHTML(it),e); n.onmouseleave=()=>this.tip(null); n.onclick=()=>{ this.tip(null); g.stashPut(it); this.refresh(); }; });
     el.querySelectorAll('[data-gam]').forEach(b=>b.onclick=()=>{ const it=g.gamble(b.dataset.gam); if(it){ this.lastGamble=it; g.log('Z pytle vypadl: '+it.name,'loot:'+it.rarity); } this.refresh(); });
     el.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{ const ok=b.dataset.buy==='pot'?g.buyPotionSlot():g.buyCore(); if(ok) g.log(b.dataset.buy==='pot'?'Brašna rozšířena.':'Koupeno zkažené jádro.','good'); this.refresh(); });
-    el.querySelectorAll('[data-wsel]').forEach(n=>{ const it=p.inv[+n.dataset.wsel]; hoverTip(n,it); n.onclick=()=>{ this.wellSel=+n.dataset.wsel; this.renderPanel(); }; });
-    const wt=el.querySelector('#w-throw'); if(wt) wt.onclick=async()=>{ const it=p.inv[this.wellSel]; if(!it) return; wt.disabled=true; wt.textContent='Předmět padá do tmy…'; const r=await g.wellThrow(it,this.wellPr);
+    el.querySelectorAll('[data-wsel]').forEach(n=>{ const it=owned[+n.dataset.wsel]; hoverTip(n,it); n.onclick=()=>{ this.wellSel=+n.dataset.wsel; this.renderPanel(); }; });
+    const wt=el.querySelector('#w-throw'); if(wt) wt.onclick=async()=>{ const it=owned[this.wellSel]; if(!it) return; wt.disabled=true; wt.textContent='Předmět padá do tmy…'; const r=await g.wellThrow(it,this.wellPr);
       if(r?.error){ this.wellRes=`<div class="hint" style="color:#ff8a7a">Studna tě odmítla (${esc(r.error)}). Předmět ti zůstal.</div>`; this.renderPanel(); el.querySelector('.hint').insertAdjacentHTML('afterend',this.wellRes); return; }
       this.wellRes=r.item?`<div class="tt-sub">Vylovil jsi:</div>${tooltipHTML(r.item)}`:'<div class="hint">Studna mlčí… nic se nevynořilo.</div>'; this.banner(r.item?'Studna vydala předmět':'Studna mlčí',r.item?r.item.name:''); this.wellSel=null; this.renderPanel(); this.refresh(); };
     if(this.panel==='tree'){ this.drawTree(); this.updateTreeHead(); }
@@ -306,7 +369,7 @@ export class UI{
       <div class="shopres">${this.lastGamble?tooltipHTML(this.lastGamble):''}</div>
       ${g.daily?'<h3 class="sm">Sdílená truhla</h3><div class="hint">V denní hlubině je sdílená truhla zapečetěná.</div>':`<h3 class="sm">Sdílená truhla (${Stash.get().length}/${STASH_MAX})</h3><div class="hint">Předměty v truhle uvidí každá tvoje postava, když potká překupníka. Klik na předmět v truhle = vzít, klik v batohu = vložit.</div>
       <div class="bag">${Array.from({length:STASH_MAX},(_,i)=>this.slotHTML(Stash.get()[i],`data-stash="${i}"`)).join('')}</div>
-      <h3 class="sm">Batoh</h3><div class="bag">${p.inv.map((it,i)=>this.slotHTML(it,`data-sput="${i}"`)).join('')}</div>`}`; }
+      <h3 class="sm">Batoh</h3><div class="bag">${[...p.inv,...p.runes].map((it,i)=>this.slotHTML(it,`data-sput="${i}"`)).join('')}</div>`}`; }
   openShop(){ this.panel='shop'; this.lastGamble=null; this.renderPanel(); }
   loreModal(title,text,runes){ this.showModal(`${runes?'<div class="runes-h">ᚢᛚ · ᛗᛁᚱ</div>':''}<h2>${title}</h2><p class="loretext">${text}</p><button class="big" id="lclose">Pokračovat</button>`,m=>m.querySelector('#lclose').onclick=()=>this.hideModal()); }
   communityTip(npc,e){
@@ -364,9 +427,9 @@ export class UI{
         if(retreat) retreat.onsubmit=e=>{ e.preventDefault(); revive(retreat.elements.depth.valueAsNumber); };
       } }),900); }
   openWell(pr){ this.panel='well'; this.wellPr=pr; this.wellSel=null; this.renderPanel(); }
-  wellHTML(){ const g=this.g,p=g.player, pr=this.wellPr; const items=p.inv.map((it,i)=>[it,i]).filter(([it])=>it.base||it.type==='support');
+  wellHTML(){ const g=this.g,p=g.player, pr=this.wellPr; const owned=[...p.inv,...p.runes]; const items=owned.map((it,i)=>[it,i]).filter(([it])=>it.base||it.type==='support');
     if(!pr||pr.used) return `<h2>Hnilobná studna</h2><div class="hint">Studna vyschla.</div>${this.wellRes?`<div class="shopres">${this.wellRes}</div>`:''}`;
-    const sel=this.wellSel!=null?p.inv[this.wellSel]:null;
+    const sel=this.wellSel!=null?owned[this.wellSel]:null;
     return `<h2>Hnilobná studna</h2><div class="hint">Do studny smíš hodit <b>jeden</b> předmět. Studna ti na oplátku vydá předmět podobné hodnoty, který do ní hodil jiný poutník – když tam nějaký je. Když je prázdná, nedostaneš nic. Pak vyschne.</div>
       <div class="bag">${items.map(([it,i])=>this.slotHTML(it,`data-wsel="${i}" ${this.wellSel===i?'data-sel="1"':''}`)).join('')||'<div class="hint">Nemáš co hodit.</div>'}</div>
       ${sel?`<div class="craftsel"><div class="ttc">${tooltipHTML(sel)}</div><div class="cbtn"><button id="w-throw" class="corrbtn">Hodit do studny</button></div></div>`:''}`; }

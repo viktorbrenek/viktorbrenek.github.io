@@ -7,6 +7,8 @@ import {rng,RNG,fmt,dist} from './util.js';
 
 export const EG_MIN_DEPTH=60;
 export const SEED_MAX_TIER=16;
+const mapLife=t=>1.20**t;
+const mapDamage=t=>1.075**t;
 const uid=()=>1e9+Math.floor(Math.random()*1e9);
 const esc=s=>String(s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 
@@ -57,7 +59,7 @@ export function seedReward(seed,fx={}){ let qty=0.3+seed.tier*0.03+(fx.qty||0), 
 export function seedTooltip(seed,fx){ const r=seedReward(seed,fx);
   return `<div class="tt-name" style="color:#9df07a">${esc(seed.name)}</div><div class="tt-sub">Výtrusná mapa · 3 patra + strážce${seed.corrupted?' · <span style="color:#d77">ZKAŽENÉ</span>':''}</div>
   <div class="tt-aff">${seed.mods.map(id=>{ const m=RIFT_MODS.find(x=>x.id===id); return m?`<div class="cu">${m.name}: ${m.desc}</div>`:''; }).join('')}${(seed.cmods||[]).map(c=>`<div class="cr">${CSEED[c]?.n||c}</div>`).join('')}</div>
-  <div class="tt-line">Monstra: +${Math.round((1.15**seed.tier-1)*100)} % života, +${Math.round((1.12**seed.tier-1)*100)} % poškození · tvůj úhyb a blok −${Math.min(24,Math.round(seed.tier*1.5))} %</div>
+  <div class="tt-line">Monstra: +${Math.round((mapLife(seed.tier)-1)*100)} % života, +${Math.round((mapDamage(seed.tier)-1)*100)} % poškození · tvůj úhyb a blok −${Math.min(24,Math.round(seed.tier*1.5))} %</div>
   <div class="tt-line good">Odměna: +${Math.round(r.qty*100)} % kvantity · +${Math.round(r.mf)} % vzácnosti · zkušenosti ×${(1.12**seed.tier*(1+r.xp)).toFixed(1)}</div>
   <div class="tt-hint">Zasaď ho u Oltáře hniloby. Předměty z map mají šanci na ★ hlubinné vlastnosti.</div>`; }
 export function fragTooltip(it,have){ return `<div class="tt-name" style="color:#c9a0ff">${esc(it.name)}</div><div class="tt-sub">Úlomek Šedé královny (${have}/4)</div><div class="tt-line">Čtyři různé úlomky otevřou u Oltáře hniloby Síň Šedé královny.</div>`; }
@@ -67,7 +69,7 @@ const fragSet=p=>new Set(p.inv.filter(i=>i.type==='frag').map(i=>i.frag));
 // ---------- floor mods pro běh mapy ----------
 function runFloorMods(run,p){ const fx=atlasFx(p); const t=run.tier; const fm={name:'',mon:{},loot:{corrupt:0.04},torch:0,eg:t};
   for(const id of run.mods){ const md=RIFT_MODS.find(x=>x.id===id); if(!md) continue; for(const [k,v] of Object.entries(md.mon||{})) fm.mon[k]=typeof v==='number'&&fm.mon[k]?fm.mon[k]*v:v; if(md.torch) fm.torch+=md.torch; if(md.noRegen) fm.noRegen=true; if(md.resDown) fm.resDown=(fm.resDown||0)+md.resDown; if(md.loot?.corrupt) fm.loot.corrupt+=md.loot.corrupt; }
-  fm.mon.hp=(fm.mon.hp||1)*1.15**t; fm.mon.dmg=(fm.mon.dmg||1)*1.12**t; fm.blind=Math.min(24,Math.round(t*1.5)); fm.mon.res=(fm.mon.res||0)+Math.min(20,Math.round(t*1.5));
+  fm.mon.hp=(fm.mon.hp||1)*mapLife(t); fm.mon.dmg=(fm.mon.dmg||1)*mapDamage(t); fm.blind=Math.min(24,Math.round(t*1.5)); fm.mon.res=(fm.mon.res||0)+Math.min(20,Math.round(t*1.5));
   const r=run.queen?{qty:1,mf:120,xp:0.8}:seedReward(run,fx); fm.loot.qty=r.qty; fm.loot.mf=r.mf; fm.loot.xp=r.xp; fm.loot.xpMul=1.12**t; fm.loot.gf=40+t*5;
   fm.name=run.queen?'Síň Šedé královny':`Výtrusná mapa T${t} · patro ${run.floor}/3`; fm.mods=run.mods.map(id=>RIFT_MODS.find(x=>x.id===id)).filter(Boolean);
   return fm; }
@@ -113,6 +115,19 @@ export const GameEG={
     this.mapStash={pos:[this.player.x,this.player.y]}; for(const k of keep) this.mapStash[k]=this[k]; this.mapRun={...run};
     if(run.done){ this.exitMap(); return; } this.mapFloor(false); this.log('Vracíš se do rozehrané mapy (patro se vygenerovalo znovu).','sys'); },
   mapBossDef(){ const r=this.mapRun; if(!r) return null; return r.queen?QUEEN:BOSSES[r.boss%BOSSES.length]; },
+  awardMapKey(item){
+    const p=this.player;
+    if(p.inv.length<30) p.inv.push(item);
+    else (atlasOf(p).pending||=[]).push(item);
+    this.log('✦ '+item.name+(p.inv.includes(item)?' přidáno do inventáře.':' čeká u oltáře.'),'loot:sporeborn');
+  },
+  claimMapKeys(){
+    const pending=atlasOf(this.player).pending;
+    if(!pending?.length||!this.altarNear()||this.mapRun||this.inRift||this.daily) return false;
+    const space=30-this.player.inv.length;
+    if(space<=0){ this.log('Inventář je plný!','warn'); return false; }
+    this.player.inv.push(...pending.splice(0,space)); this.save(); return true;
+  },
   // ---- drops ----
   egDrops(m){ if(this.daily||m.thief||m.mapBoss) return; const p=this.player, fx=atlasFx(p), run=this.mapRun;
     let ch, tier;
@@ -122,7 +137,7 @@ export const GameEG={
     if(!m.boss) ch*=1+(fx.seedCh||0);
     if(rng.chance(ch)) this.dropSeed(m.x,m.y,tier+(rng.chance(0.2+(fx.up||0))?1:0)); },
   dropSeed(x,y,tier){ const s=makeSeed(tier); const pos=this.scatter(x,y); this.ground.push({x:pos[0],y:pos[1],item:s}); this.log('✦ '+s.name+' leží na zemi!','loot:sporeborn'); this.snd('loot_leg'); this.ui?.hint?.('seed','<b>Výtrusné semeno</b> otevře endgame mapu. Zasaď ho u <b>Oltáře hniloby</b> (od hloubky 60 stojí hned u startu patra) v záložce <b>Výtrusná semena</b>. Strážce mapy upustí semeno vyššího tieru.'); return s; },
-  mapBossKilled(m){ const run=this.mapRun; if(!run) return; const p=this.player, a=atlasOf(p), fx=atlasFx(p), t=run.tier; run.done=true;
+  mapBossKilled(m){ const run=this.mapRun; if(!run||run.done) return; const p=this.player, a=atlasOf(p), fx=atlasFx(p), t=run.tier; run.done=true;
     const lm=this.floorMods?.loot||{};
     const n=3+Math.round((lm.qty||0)*3)+(fx.bossItems||0)+(run.queen?3:0);
     for(let i=0;i<n;i++) this.dropItem(m.x,m.y,{boost:i===0?2:1,rarity:i===0?(run.queen||rng.chance(this.legChance(0.6))?'legendary':'rare'):i<3?'rare':undefined});
@@ -138,7 +153,18 @@ export const GameEG={
       if(t<SEED_MAX_TIER) this.dropSeed(m.x,m.y,t+1); else this.dropSeed(m.x,m.y,t);
       if(fx.twin||rng.chance(0.5)) this.dropSeed(m.x,m.y,t+(rng.chance(fx.up||0)?1:0));
       if((run.cmods||[]).includes('seed')) this.dropSeed(m.x,m.y,t);
-      const fmin=fx.frag?8:10; if(t>=fmin&&rng.chance(Math.min(0.75,0.35+(t-fmin)*0.05+(fx.frag?0.15:0)))){ const it=makeFrag(); const pos=this.scatter(m.x,m.y); this.ground.push({x:pos[0],y:pos[1],item:it}); this.log('✦ '+it.name+' leží na zemi!','loot:set'); }
+      const fmin=fx.frag?8:10;
+      if(t===SEED_MAX_TIER||(t>=fmin&&rng.chance(Math.min(0.75,0.35+(t-fmin)*0.05+(fx.frag?0.15:0))))){
+        const have=fragSet(p);
+        for(const item of a.pending||[]) if(item.type==='frag') have.add(item.frag);
+        const missing=FRAGS.map((_,i)=>i).filter(i=>!have.has(i));
+        this.awardMapKey(makeFrag(missing.length?rng.pick(missing):undefined));
+      }
+      if(t===SEED_MAX_TIER){
+        const seed=makeSeed(t); seed.corrupted=true; seed.cmods=[rng.pick(['qty','mf','xp','seed'])];
+        seed.spr=seedSpr(seed); seed.name='Zkažené výtrusné semeno · T'+t;
+        this.awardMapKey(seed);
+      }
       this.ui?.banner?.('Mapa T'+t+' dobyta','Východ je otevřený'); }
     if(!run.queen&&!a.done.includes(t)){ a.done.push(t); a.pts++; this.log(`Kořenová síť: tier ${t} poprvé dokončen, +1 bod. Utratíš ho v Kořenové síti [N].`,'good'); this.ui?.hint?.('atlas','<b>Kořenová síť [N]</b>: za první dokončení každého tieru mapy dostaneš bod. Utratíš ho kdykoli tlačítkem <b>N</b> vedle pasivního stromu – a body jdou zdarma vrátit.'); }
     this.save(); },
@@ -186,7 +212,9 @@ export const UIEG={
         ${canAdd?`<button data-eg="add" ${p.dust<add?'disabled':''}>Přidat mod · ${fmt(add)} ✦</button>`:''}
         <button data-eg="corrupt" ${(p.cores||0)<1?'disabled':''}>☣ Zkazit semeno · 1 jádro${fx.safe?' (nezničí se)':''}</button>`}</div></div>`; }
     const q=have.size>=4?`<button data-eg="queen" class="egbtn corrbtn" ${block?'disabled':''}>👑 Otevřít Síň Šedé královny (spotřebuje 4 úlomky)</button>`:'';
-    return `<h2>Oltář hniloby · Výtrusná semena</h2><div class="hint">Semena padají od hloubky ${EG_MIN_DEPTH} (strážci hloubky je upustí vždy). Oltář stojí od hloubky 60 hned u startu patra. Semeno otevře mapu: 3 patra a strážce. Strážce upustí semeno vyššího tieru. Od T10 padají úlomky Šedé královny. Smrt v mapě mapu ukončí.</div>
+    const waiting=atlasOf(p).pending?.length||0;
+    return `<h2>Oltář hniloby · Výtrusná semena</h2><div class="hint">Semena padají od hloubky ${EG_MIN_DEPTH}. Mapa má 3 patra a strážce. Od T10 můžeš získat úlomek Šedé královny. T16 vždy odmění úlomkem a zkaženým semenem. Úlomky nejdřív doplňují chybějící kusy. Smrt v mapě mapu ukončí.</div>
+      ${waiting?`<button data-eg="claim" class="egbtn" ${block?'disabled':''}>Vyzvednout odměny (${waiting})</button>`:''}
       <div class="bag craftbag">${seeds.map(i=>this.slotHTML(i,`data-seed="${p.inv.indexOf(i)}" ${i===s?'data-sel="1"':''}`)).join('')||'<div class="hint">Nemáš žádné semeno.</div>'}</div>${act}
       <h3 class="sm">Úlomky královny (${have.size}/4)</h3><div class="bag craftbag">${frags.map(i=>this.slotHTML(i,`data-frag="${p.inv.indexOf(i)}"`)).join('')||'<div class="hint">Žádné úlomky.</div>'}</div>${q}`; },
   egAtlasHTML(){ const g=this.g,p=g.player, a=atlasOf(p); const UI=n=>`assets/ui/${n}.webp`;
@@ -210,6 +238,7 @@ export const UIEG={
     el.querySelectorAll('[data-eg]').forEach(b=>b.onclick=()=>{ const s=this.seedSel, c=b.dataset.eg; this.tip(null);
       if(c==='plant'&&s){ if(g.plantSeed(s,this.egBiome)){ this.seedSel=null; this.panel=null; this.renderPanel(); this.refresh(); } return; }
       if(c==='queen'){ if(g.openQueen()){ this.panel=null; this.renderPanel(); this.refresh(); } return; }
+      if(c==='claim') g.claimMapKeys();
       if(c==='reroll'&&s){ if(g.seedReroll(s)) g.log('Semeno přerostlo: '+s.mods.map(id=>RIFT_MODS.find(m=>m.id===id)?.name).join(', '),'good'); }
       if(c==='add'&&s){ if(g.seedAdd(s)) g.log('Semenu narostl nový mod.','good'); }
       if(c==='corrupt'&&s){ const r=g.seedCorrupt(s); if(r){ const t={destroyed:'Semeno se rozpadlo v prach.',nothing:'Zkaženo – beze změny.',tier:'Semeno povyrostlo o tier!',mods:'Semenu narostly 2 mody a lepší odměna.',qty:'Zkažené: +25 % kvantity.',xp:'Zkažené: +30 % zkušeností.',seed:'Zkažené: strážce upustí semeno navíc.'}[r]; g.log('Oltář: '+t,r==='destroyed'?'warn':'loot:sporeborn'); this.banner(r==='destroyed'?'Rozpadlo se':'Zkaženo',t); if(r==='destroyed') this.seedSel=null; } }
