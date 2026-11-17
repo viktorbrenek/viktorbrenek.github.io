@@ -1,7 +1,7 @@
 // Záloha savu: soubor (export/import) a cloudový kód přes worker.
 import {LB_URL} from './config.js';
 import {LB} from './net.js';
-const KEYS=['sporium_roster_v1','sporium_stash_v1','sporium_player_v1','sporium_news_seen','sporium_lootfilter','sporium_tips','sporium_intro_off'];
+const KEYS=['sporium_roster_v1','sporium_stash_v1','sporium_stash_s2','sporium_player_v1','sporium_news_seen','sporium_lootfilter','sporium_tips','sporium_intro_off'];
 const AUTO='sporium_backup_auto', CODE='sporium_backup_code', LAST='sporium_backup_last';
 const ls={ get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ if(v==null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} } };
 const b64=u8=>{ let s=''; for(let i=0;i<u8.length;i+=0x8000) s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000)); return btoa(s); };

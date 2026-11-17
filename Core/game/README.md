@@ -17,6 +17,11 @@ verze výbavy z endgamu jsou v `raw6/endgame/worn/`. Po jejich úpravě spusť
 `docs/game/assets/rig-art.webp` a `rig-art.json`, které hra načítá se základním atlasem.
 Při balení zarovná nohy podle kyčle a kotníku a sestaví varianty paží s nasazenými rukavicemi.
 
+Sezónní andělé jsou v `raw6/s2/`. Tentýž skript vyřízne díly ze sheetů
+`angel_*_rig.png` (mřížka 4 × 4, 256 px na políčko v pořadí `ANGEL_SHEETS`)
+a přidá sestavené náhledy i oba stavy Ofana. Úchyty a animace andělů jsou
+v `docs/game/lib/angel-rig.js`.
+
 ## Struktura hry (`docs/game/lib`)
 - `gl.js` – WebGL2 renderer: sprite batch, světelná mapa, pochodeň per-pixel, spory, post FX
 - `dungeon.js` – generátor pater, trezory, hádanky, světla

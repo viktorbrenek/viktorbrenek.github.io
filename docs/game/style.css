@@ -454,3 +454,29 @@ body.touch.panelon #touchui .tbtns{display:none}
   #panel .inv .bag{grid-template-columns:repeat(6,minmax(0,1fr));max-width:390px}
 }
 body.touch #panel .x::after{content:none}
+.dtag.etag{color:#c9a0ff}.dtag.stag{color:#9df07a}
+/* S2: recepty a krystaly */
+.wallet{display:grid;gap:4px;margin:6px 0 8px;padding:8px 10px;border-radius:8px;background:rgba(10,8,6,.45)}
+.wf{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.wn{min-width:118px;font:700 15px "Alegreya Sans",sans-serif;display:flex;align-items:center;gap:4px}
+.cico{width:22px;height:22px;vertical-align:middle}
+.cico.c-war{filter:hue-rotate(-95deg) saturate(1.6) brightness(1.1)}
+.cico.c-mind{filter:hue-rotate(25deg) saturate(1.2)}
+.wg{position:relative;display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border:1px solid #4a3a28;border-radius:6px;font-size:12px;color:#cdbb98;background:#1a1410}
+.wg b{color:#f2e3c0;font-size:14px}.wg.z{opacity:.45}
+.wg button{border:0;background:#2a4420;color:#cfefb0;border-radius:4px;padding:0 5px;cursor:pointer;font-weight:800}
+.famsel{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.famsel button{flex:1;min-width:150px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid #4a3a28;border-radius:8px;background:#1a1410;color:#e8d7b0;padding:6px 10px;font-weight:700;cursor:pointer}
+.famsel button small{font-weight:400;color:#9a8a72;font-size:11.5px}
+.famsel button.on{border-color:var(--fc);box-shadow:0 0 10px color-mix(in srgb,var(--fc) 40%,transparent) inset}
+@media (max-width:700px){.wn{min-width:90px}.famsel button{min-width:110px}}
+.feath{margin:4px 0 8px;color:#e0c8ff;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.feath b{color:#fff}.feath small{color:#9a8a72}
+/* v29: 6 větví Kořenové sítě, zkažené dokončení */
+.atlas{grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.atlas .atbr{font-size:16px;white-space:nowrap}
+.atlas .atn{width:60px;height:60px}.atlas .atn img{width:32px;height:32px}.atlas .atn.key{width:72px;height:72px}.atlas .atn.key img{width:38px;height:38px}
+.atlas .atname{font-size:12px;line-height:1.1;min-height:2.2em}
+.atlas .atl{height:14px}
+@media (max-width:900px){.atlas{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:16px}}
+.att.cd{box-shadow:inset 0 -3px 0 #b05cff;border-radius:50%}
+.att.cd::after{content:'';}

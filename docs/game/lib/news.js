@@ -1,5 +1,16 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:29, d:'17. 11. 2026', t:'Sezóna 2: Padlí z jádra', i:[
+    '<b>Začíná Sezóna 2.</b> Nové postavy hrají S2 se samostatnou truhlou a žebříčkem. Všechny dosavadní postavy jsou teď <b>Věčné (♾)</b>: hrají dál, nic neztratí a mají vlastní žebříček „Věčná“.',
+    '<b>Přepočet čísel</b> (styl Diablo 2): poškození a životy jsou o řády menší a procenta se sčítají místo násobení. Nadpoložky „více“, kritický zásah, redukce poškození, regenerace a vysávání mají stropy. Staré předměty se přepočítají automaticky, pasivní strom je slabší a bodů je méně (1 za úroveň do 60, pak 1 za 2 úrovně). Pokud ti po přepočtu body chybí, strom se vrátí a rozdělíš ho znovu.',
+    '<b>Kořist padá výrazně méně</b>, za to stojí víc. Nalezení magických předmětů (MF) už na předmětech není, dávají ho jen mapy, Kořenová síť a speciální zdroje.',
+    '<b>Nové řemeslo: Krystaly a Recepty.</b> Z monster padají krystaly tří rodin (Život, Válka, Mysl) v pěti stupních. Recepty: povýšení na magický a vzácný, přehození hodnot, výměna a přidání vlastnosti, výroba unikátu, fúze tří unikátů. Najdeš je v záložce <b>Recepty</b>.',
+    '<b>Taktická monstra:</b> elitní monstra mají taktiky. Kořenné kotvy chrání pána, zrcadlení vrací poškození v rytmu, krunýř ignoruje útoky zepředu a propojená dvojice sdílí životy. Najetím myší na monstrum uvidíš, jak na něj.',
+    '<b>Nakažení andělé z jádra mycelia:</b> Cherubín (střemhlavý nálet v linii, pak je vyčerpaný), Serafín (kříž, který léčí anděly), Ofan (oko, zranitelné jen otevřené) a Archanděl (soud po celé místnosti, schovej se na bezpečná pole). Žádné stání na místě, sleduj varování na zemi.',
+    '<b>Události:</b> <b>Trhlina jádra</b> (3 vlny andělů a Archanděl, odměnou pírka a krystaly) a <b>Padlý anděl</b> (očistit vlastní krví, nebo dorazit). Za 6 andělských pírek koupíš sezónní unikát. Kdo očistí tři padlé anděly, toho si všimne Kronikář Ashvel.',
+    '<b>6 sezónních unikátů</b> s vlastními mechanikami (Svatozář z jádra, Čepel padlého křídla, Kadidelnice jádra, Pírkové kroky, Serafínská zbroj, Amulet chóru).',
+    'Nebezpečí (bouře, výbuchy, louže, jezírka) teď berou procenta života, takže bolí i v hloubce.',
+    '<b>Kořenová síť má 36 uzlů v 6 větvích</b> (Hojnost, Semena, Kořeny, Nebezpečí, Strážci, Hlubina): dvojčata strážců, tajné komory, Archanděl v mapách, jednopatrové mapy nebo <b>Probuzená královna</b>. Nové body: každý tier poprvé se zkaženým semenem a porážka Probuzené královny.']},
   {v:28, d:'12. 11. 2026', t:'Opravy: překupník a odraz', i:[
     'Překupník už neprodává fialové (sadové) předměty bez vlastností ani legendární předmět jiného typu, než sis koupil. Takové předměty, které už máš v inventáři nebo truhle, se po načtení změní na vzácné s vlastnostmi.',
     'Odraz poškození už tě nezabije: za tah ti sebere nejvýš 20 % života a vždy ti nechá aspoň 1 život. Pořád ale pozor, ostatní monstra tě dorazí.']},

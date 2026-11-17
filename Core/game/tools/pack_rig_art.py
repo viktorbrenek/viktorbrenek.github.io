@@ -9,7 +9,6 @@ from PIL import Image
 PROJECT = Path(__file__).resolve().parents[3]
 RAW = PROJECT / "Core/game/raw6"
 ASSETS = PROJECT / "docs/game/assets"
-WIDTH = 2048
 PADDING = 3
 WRIST_ROWS = {
     "blade": 66,
@@ -21,11 +20,56 @@ WRIST_ROWS = {
 }
 GLOVES = ("gloves_worn", "gauntlet_worn")
 BOOTS = ("boots_leather_worn", "boots_tan_worn", "eg_mirestep_worn")
+ANGEL_PARTS = (
+    "head", "body", "upper_near", "lower_near",
+    "upper_far", "lower_far", "leg_near", "leg_far",
+    "wing_l", "wing_r",
+)
+ANGEL_SHEETS = {
+    "cherub": (*ANGEL_PARTS, "weapon"),
+    "seraph": (*ANGEL_PARTS, "face_l", "face_r", "foot_l", "foot_r", "cross"),
+    "arch": (*ANGEL_PARTS, "weapon", "banner"),
+}
+ANGEL_STILLS = (*(f"{kind}_full" for kind in ANGEL_SHEETS), "ophan_closed", "ophan_open")
 
 
 def load_sprite(path):
     with Image.open(path) as image:
         return image.convert("RGBA")
+
+
+def trim_sprite(sprite, name):
+    bounds = sprite.getchannel("A").point(lambda alpha: 255 if alpha >= 24 else 0).getbbox()
+    if bounds is None:
+        raise ValueError(f"Empty sprite: {name}")
+    return sprite.crop(bounds)
+
+
+def angel_parts(folder):
+    for kind, parts in ANGEL_SHEETS.items():
+        path = folder / f"angel_{kind}_rig.png"
+        if not path.exists():
+            continue
+        sheet = load_sprite(path)
+        if sheet.size != (1024, 1024):
+            raise ValueError(f"{path.name} must be a 1024 × 1024 PNG")
+        for i, part in enumerate(parts):
+            x, y = i % 4 * 256, i // 4 * 256
+            name = f"angel_{kind}_{part}"
+            yield name, trim_sprite(sheet.crop((x, y, x + 256, y + 256)), name)
+
+
+def add_angel_art(sprites):
+    folder = RAW / "s2"
+    for name, sprite in angel_parts(folder):
+        sprite.thumbnail((144, 144), Image.Resampling.LANCZOS)
+        sprites[name] = sprite
+    for kind in ANGEL_STILLS:
+        path = folder / f"angel_{kind}.png"
+        if path.exists():
+            sprite = trim_sprite(load_sprite(path), path.stem)
+            sprite.thumbnail((168, 168), Image.Resampling.LANCZOS)
+            sprites[path.stem] = sprite
 
 
 def alpha_span(sprite, row):
@@ -98,12 +142,15 @@ def main():
     if not sprites:
         raise ValueError("No paper-doll sprites found")
     fit_rig_sprites(sprites)
+    add_angel_art(sprites)
 
+    base = json.loads((ASSETS / "atlas.json").read_text(encoding="utf-8"))
+    width = base["w"]
     positions = {}
     x = y = PADDING
     row_height = 0
     for name, sprite in sorted(sprites.items(), key=lambda item: (-item[1].height, item[0])):
-        if x + sprite.width + PADDING > WIDTH:
+        if x + sprite.width + PADDING > width:
             x = PADDING
             y += row_height + PADDING
             row_height = 0
@@ -112,19 +159,18 @@ def main():
         row_height = max(row_height, sprite.height)
 
     height = y + row_height + PADDING
-    base_height = json.loads((ASSETS / "atlas.json").read_text(encoding="utf-8"))["h"]
-    if base_height + height + 4 > 4096:
+    if base["h"] + height + 4 > 4096:
         raise ValueError("The paper-doll atlas exceeds the combined texture size")
-    atlas = Image.new("RGBA", (WIDTH, height))
+    atlas = Image.new("RGBA", (width, height))
     for name, sprite in sprites.items():
         atlas.paste(sprite, tuple(positions[name][:2]))
 
     atlas.save(ASSETS / "rig-art.webp", lossless=True, method=6)
     (ASSETS / "rig-art.json").write_text(
-        json.dumps({"w": WIDTH, "h": height, "s": positions}, separators=(",", ":")) + "\n",
+        json.dumps({"w": width, "h": height, "s": positions}, separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
-    print(f"Packed {len(sprites)} sprites into {WIDTH} × {height}")
+    print(f"Packed {len(sprites)} sprites into {width} × {height}")
 
 
 if __name__ == "__main__":

@@ -3,12 +3,16 @@ import {rng,fmt} from './util.js';
 let UID=1;
 const slotTag=b=>b.slot==='ring'?'ring':b.slot;
 export const isEquip=it=>!!it.base;
+const ATTR=new Set(['might','finesse','wits']);
+export const WEAP_SCALE=ilvl=>1+(Math.min(ilvl,60)-1)*0.11, IMP_SCALE=ilvl=>1+(Math.min(ilvl,60)-1)*0.14;
 export function scaleVal(a,ilvl,v){
-  if(a.sc==='exp') return v*Math.pow(1.075,ilvl-1);
-  if(a.sc==='lin') return v*(1+Math.min(ilvl,60)*0.02);
+  // S2: lineární škálování (dřív ×1,075^úroveň → ×71 na úrovni 60)
+  const L=Math.min(ilvl,60)-1;
+  if(a.sc==='exp') return v*(1+L*(ATTR.has(a.s)?0.035:0.06));
+  if(a.sc==='lin') return v*(1+L*0.012);
   return v;
 }
-function rollAffix(a,ilvl){
+export function rollAffix(a,ilvl){
   const t=0.75+rng.next()*0.25*(1+Math.min(ilvl,40)/40);
   let v=scaleVal(a,ilvl,a.v[0]+(a.v[1]-a.v[0])*rng.next()*t);
   v=PCT.has(a.s)||a.sc==='none'||v>=10?Math.round(v):Math.round(v*10)/10;
@@ -16,25 +20,32 @@ function rollAffix(a,ilvl){
   return {id:a.id,s:a.s,v:Math.max(1,v)};
 }
 function poolFor(base){ const tag=slotTag(base); return AFFIXES.filter(a=>a.slots==='*'||a.slots.split(',').includes(tag)); }
-function addAffixes(it,n){
+// S2: rodiny vlastností pro výrobu (krystaly Mízy / Zuřivosti / Mysli)
+export const FAM={life:new Set(['life','lifePct','regen','regenPct','res','resPoison','resFire','resDecay','armor','armorPct','dodge','dr','maxRes','formLife','minionLife','potion','thorns','leech']),
+  war:new Set(['dmg','dmgPct','physPct','crit','critMult','bleed','meleePct','projPct','aoePct','execPct','doubleDmg','stun','might','finesse','pen','lifeKill','formPct']),
+  mind:new Set(['mana','manaRegen','spell','elemPct','fire','poison','decay','firePct','poisonPct','decayPct','dot','poisonCh','burnCh','ailDur','cdr','costRed','wits','minionDmg','skill','minionMax','aoe','buffDur','weakCh','fearCh','manaKill','torch','xp','gf'])};
+export const famOf=s=>FAM.life.has(s)?'life':FAM.war.has(s)?'war':'mind';
+export function addAffixes(it,n,fam){
   const base=BASES.find(b=>b.id===it.base); const pool=poolFor(base);
   for(let i=0;i<n;i++){
-    const cand=pool.filter(a=>!it.aff.some(x=>x.id===a.id)&&(!a.rare||rng.chance(a.rare)));
+    let cand=pool.filter(a=>!a.noRoll&&!it.aff.some(x=>x.id===a.id)&&(!a.rare||rng.chance(a.rare)));
+    if(fam){ const f=cand.filter(a=>FAM[fam].has(a.s)); if(f.length) cand=f; }
     if(!cand.length) break; const a=rng.pick(cand), r=rollAffix(a,it.ilvl);
     if(it.eg&&rng.chance(Math.min(0.15,0.02+it.eg*0.008))){ r.v=PCT.has(a.s)||a.sc==='none'||r.v>=10?Math.round(r.v*1.35):Math.round(r.v*1.35*10)/10; if(a.cap) r.v=Math.min(r.v,Math.round(a.cap*1.35)); r.t1=1; }
     it.aff.push(r);
   }
 }
 // MF s klesajícími výnosy: násobič 1 + 1,5·MF/(MF+120) → max 2,5×. Unikáty a sety mají vlastní strop.
-export function mfMult(mf=0){ mf=Math.max(-90,mf); return mf>=0?1+1.5*mf/(mf+120):1+mf/100; }
+export function mfMult(mf=0){ mf=Math.max(-90,mf); return mf>=0?1+0.9*mf/(mf+150):1+mf/100; } // S2: max ~1,9×
 export function rollRarity(mf=0,boost=0,ilvl=10){
   const f=Math.min(1,0.2+ilvl*0.08), M=mfMult(mf);
   const r=rng.next()*100;
-  const lg=Math.min((1.0+boost*1.5)*f*M, 3+boost*4), sb=ilvl>=3?Math.min((0.8+boost*1.2)*f*M, 2.5+boost*3):0;
+  // S2: unikát ~0,4 %, sada ~0,5 % (bez bonusu), vzácný 8 %, kouzelný 30 %
+  const lg=Math.min((0.4+boost*0.6)*f*M, 1.2+boost*1.5), sb=ilvl>=3?Math.min((0.5+boost*0.7)*f*M, 1.4+boost*1.8):0;
   if(r<lg) return 'legendary';
   if(r<lg+sb) return 'set';
-  if(r<lg+sb+(10+boost*8)*M) return 'rare';
-  if(r<lg+sb+(40+boost*10)*M) return 'magic';
+  if(r<lg+sb+(8+boost*7)*M) return 'rare';
+  if(r<lg+sb+(30+boost*10)*M) return 'magic';
   return 'common';
 }
 export function makeSetItem(ilvl,setId,pi){ ilvl=Math.min(ilvl,MAX_SCALING_DEPTH); const cands=[]; for(const S of SETS) S.pieces.forEach((pc,i)=>{ const b=BASES.find(x=>x.id===pc.base); if(b&&b.min<=ilvl+4&&(!setId||S.id===setId)&&(pi==null||pi===i)) cands.push([S,pc,i]); });
@@ -53,9 +64,9 @@ export function makeItem(ilvl,{rarity,baseId,uniqueId,mf=0,boost=0,spore=0,eg=0}
   if(baseId&&!uniqueId&&rarity==='set'){ const ok=SETS.some(S=>S.pieces.some(pc=>pc.base===baseId)); if(ok){ for(let k=0;k<30;k++){ const st=makeSetItem(ilvl); if(st&&st.base===baseId) return st; } } rarity='rare'; }
   if(baseId&&!uniqueId&&rarity==='legendary'){ const us=UNIQUES.filter(u=>u.base===baseId&&!u.eg); if(us.length) return makeItem(ilvl,{uniqueId:rng.pick(us).id,eg}); rarity='rare'; }
   if(rarity==='rare'&&spore&&rng.chance(spore)) rarity='sporeborn';
-  const it={uid:UID++,base:base.id,slot:base.slot,spr:base.spr,ilvl,rarity,aff:[],name:base.name}; if(eg) it.eg=eg;
-  if(base.dmg){ const m=Math.pow(1.095,ilvl-1); const q=0.85+rng.next()*0.3; it.dmg=[Math.max(1,Math.round(base.dmg[0]*m*q)),Math.max(2,Math.round(base.dmg[1]*m*q))]; it.kind=base.kind; }
-  it.imp={...(base.imp||{})}; if(it.imp.armor) it.imp.armor=Math.round(it.imp.armor*Math.pow(1.075,ilvl-1)); if(it.imp.life) it.imp.life=Math.round(it.imp.life*Math.pow(1.075,ilvl-1)); if(it.imp.mana) it.imp.mana=Math.round(it.imp.mana*Math.pow(1.06,ilvl-1));
+  const it={uid:UID++,base:base.id,slot:base.slot,spr:base.spr,ilvl,rarity,aff:[],name:base.name,s2:1}; if(eg) it.eg=eg;
+  if(base.dmg){ const m=WEAP_SCALE(ilvl); const q=0.85+rng.next()*0.3; it.dmg=[Math.max(1,Math.round(base.dmg[0]*m*q)),Math.max(2,Math.round(base.dmg[1]*m*q))]; it.kind=base.kind; }
+  it.imp={...(base.imp||{})}; if(it.imp.armor) it.imp.armor=Math.round(it.imp.armor*IMP_SCALE(ilvl)); if(it.imp.life) it.imp.life=Math.round(it.imp.life*IMP_SCALE(ilvl)); if(it.imp.mana) it.imp.mana=Math.round(it.imp.mana*(1+(Math.min(ilvl,60)-1)*0.08));
   if(rarity==='legendary'){
     const u=uniqueId?UNIQUES.find(x=>x.id===uniqueId):eg&&rng.chance(0.25)?rng.pick(UNIQUES.filter(u=>u.eg==='map')):rng.pick(UNIQUES.filter(u=>!u.eg&&BASES.find(b=>b.id===u.base).min<=ilvl+4));
     if(u){ const ub=BASES.find(b=>b.id===u.base);
@@ -69,7 +80,7 @@ export function makeItem(ilvl,{rarity,baseId,uniqueId,mf=0,boost=0,spore=0,eg=0}
   if(rarity==='sporeborn'){ it.aff.forEach(a=>{ if(!a.fixed&&!['torch','skill','aoe'].includes(a.s)) a.v=Math.round(a.v*1.35*10)/10; }); it.aff.push({id:'sb',s:'skill',v:1}); }
   nameItem(it); return it;
 }
-function nameItem(it){
+export function nameItem(it){
   const base=BASES.find(b=>b.id===it.base);
   if(it.rarity==='magic'){ const p=it.aff.find(a=>AFFIXES.find(x=>x.id===a.id)?.p==='P'); const s=it.aff.find(a=>AFFIXES.find(x=>x.id===a.id)?.p==='S');
     it.name=(p?AFFIXES.find(x=>x.id===p.id).name[0]+' ':'')+base.name.toLowerCase()+(s?' '+AFFIXES.find(x=>x.id===s.id).name[0]:'');
@@ -126,7 +137,7 @@ export function craftReforge(it,idx){ const a=it.aff[idx]; if(!a||!canReforge(a)
 // corruption (season craft). mild=true → drop-corruption without destroy/curse extremes
 const CORR_TXT={nothing:'Zkaženo – beze změny.',implicit:'Zkažený implicit!',cursed:'Prokletí: něco skvělého, něco zlého.',lucky:'Šťastné prokletí!',convert:'Přeměna vlastnosti.',reroll:'Výtrusné přerození – silnější vlastnosti.',sporeborn:'Proměna ve Výtrusorozený!',destroyed:'Předmět se rozpadl v prach.'};
 export const corruptText=r=>CORR_TXT[r]||r;
-const scaleObj=(o,f,ilvl)=>Object.entries(o).map(([s,v])=>{ const a=AFFIXES.find(x=>x.s===s); let val=v*f; if(a&&a.sc==='exp'&&Math.abs(val)>=1) val=val*Math.pow(1.04,ilvl-1); return {id:'c_'+s,s,v:Math.round(val*10)/10,corr:1}; });
+const scaleObj=(o,f,ilvl)=>Object.entries(o).map(([s,v])=>{ const a=AFFIXES.find(x=>x.s===s); let val=v*f; if(a&&a.sc==='exp'&&Math.abs(val)>=1) val=val*(1+(Math.min(ilvl,60)-1)*0.04); return {id:'c_'+s,s,v:Math.round(val*10)/10,corr:1}; });
 export function corruptItem(it,mild=false){
   if(!it.base||it.corrupted) return null; const r=Math.random(); let res;
   if(!mild&&r<0.06) res='destroyed';
@@ -151,3 +162,17 @@ export function corruptAgain(it){
 
 // v27b: oprava starých rozbitých předmětů (sadová rarita bez sady = fialový bez vlastností) → vzácný s vlastnostmi
 export function repairItem(it){ if(!it||!it.base||it.rarity!=='set'||it.set) return false; it.rarity='rare'; addAffixes(it,rng.int(3,5)); nameItem(it); return true; }
+
+// ===== S2: převod předmětů ze sezóny 1 (Věčná říše) na nové stupnice =====
+const oldScale=(a,ilvl)=>a.sc==='exp'?Math.pow(1.075,ilvl-1):a.sc==='lin'?(1+Math.min(ilvl,60)*0.02):1;
+const roundAff=(s,v)=>PCT.has(s)||Math.abs(v)>=10?Math.round(v):Math.round(v*10)/10;
+export function convertItemS2(it){
+  if(!it||!it.base||it.s2) return false; const base=BASES.find(b=>b.id===it.base); if(!base){ it.s2=1; return false; } const il=it.ilvl||1;
+  if(it.dmg&&base.dmg){ const f=WEAP_SCALE(il)/Math.pow(1.095,il-1); it.dmg=[Math.max(1,Math.round(it.dmg[0]*f)),Math.max(2,Math.round(it.dmg[1]*f))]; }
+  if(it.imp){ if(it.imp.armor&&base.imp?.armor) it.imp.armor=Math.round(it.imp.armor*IMP_SCALE(il)/Math.pow(1.075,il-1)); if(it.imp.life&&base.imp?.life) it.imp.life=Math.round(it.imp.life*IMP_SCALE(il)/Math.pow(1.075,il-1)); if(it.imp.mana&&base.imp?.mana) it.imp.mana=Math.round(it.imp.mana*(1+(Math.min(il,60)-1)*0.08)/Math.pow(1.06,il-1)); }
+  for(const a of it.aff){ let def=AFFIXES.find(x=>x.id===a.id)||AFFIXES.find(x=>x.s===(a.from||a.s)); if(!def) continue; let f;
+    if(a.corr) f=def.sc==='exp'&&Math.abs(a.v)>=1?(1+(Math.min(il,60)-1)*0.04)/Math.pow(1.04,il-1):1;
+    else f=scaleVal(def,il,1)/oldScale(def,il);
+    if(f!==1) a.v=roundAff(a.s,a.v*f); if(def.cap&&!a.fixed&&!a.corr&&!a.t1) a.v=Math.min(a.v,def.cap); }
+  it.s2=1; return true;
+}

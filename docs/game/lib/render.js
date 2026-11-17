@@ -5,6 +5,7 @@ import {rng,edist,dist} from './util.js';
 import {rarityColor} from './items.js';
 import {SKILLS,biomeFor} from './data.js';
 import {drawRig,animTick,RIGS,drawBeast,drawForm,beastKey} from './rig.js';
+import {angelStill,drawCoreAngel} from './angel-rig.js';
 import {royalTrapActive} from './community.js';
 
 const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
@@ -59,7 +60,12 @@ export class SceneRenderer{
     for(const pr of g.props){ if(pr.flat||!this.onScreen(pr,x0,x1,y0,y1)||!g.explored[pr.y*W+pr.x]) continue; list.push({y:pr.y+(pr.wall?-0.5:0),f:()=>this.drawProp(g,pr,time)}); }
     for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)&&!g.explored[gr.y*W+gr.x]) continue; if(!g.lootOk(gr)) continue; list.push({y:gr.y-0.2,f:()=>this.drawGround(g,gr,time)}); }
     for(const m of g.monsters){ if(m.hp<=0||!g.canSee(m)) continue; list.push({y:m.ry,f:()=>this.drawActor(g,m,m.spr,time)}); }
-    for(const f of g.fx) if(f.type==='corpse') list.push({y:f.y-0.1,f:()=>{ const a=f.life/f.max; const [w,h]=this.spritesize(f.spr,T*0.95*f.sc); R.sprite(f.spr,f.x*T+T/2-w/2,f.y*T+T-h*a,w,h*a,{a,tint:[0.5,0.5,0.5],flip:f.flip}); }});
+    for(const f of g.fx) if(f.type==='corpse') list.push({y:f.y-0.1,f:()=>{
+      const angel=angelStill(f.core,f.closed), hasArt=angel&&R.meta.s[angel];
+      const spr=hasArt?angel:f.spr, a=f.life/f.max;
+      const [w,h]=this.spritesize(spr,T*0.95*f.sc);
+      R.sprite(spr,f.x*T+T/2-w/2,f.y*T+T-h*a,w,h*a,{a,tint:[0.5,0.5,0.5],flip:hasArt?f.core!=='ophan'&&!!f.flip:f.flip});
+    }});
     for(const mn of g.minions){ if(mn.hp<=0||!g.explored[mn.y*W+mn.x]) continue; list.push({y:mn.ry,f:()=>this.drawActor(g,mn,mn.spr,time)}); }
     if(p.hp>0) list.push({y:p.ry+0.01,f:()=>this.drawActor(g,p,p.drawSpr||p.spr,time,true)});
     list.sort((a,b)=>a.y-b.y); for(const d of list) d.f();
@@ -79,7 +85,7 @@ export class SceneRenderer{
       if(pr.type==='grave'&&!pr.respected) R.glow(pr.x*T+T/2,pr.y*T+T*0.5,T*0.5,[0.75,0.82,0.95],0.12);
       if(pr.type==='merchant') R.glow(pr.x*T+T/2,pr.y*T+T*0.5,T*0.9,[1,0.8,0.5],0.18);
       if(pr.type==='glow'||pr.type==='altar'||pr.type==='shrine'&&!pr.used||(pr.type==='rune'&&pr.on)){ const c=pr.light||[0.6,0.9,0.5]; R.glow(pr.x*T+T/2,pr.y*T+T*0.45,T*0.9,c,0.22+Math.sin(time*2+pr.x)*0.06); } }
-    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)||!g.lootOk(gr)) continue; const c=gr.gold?[1,0.85,0.3]:gr.item.type==='seed'?[0.6,1,0.4]:gr.item.type==='frag'?[0.8,0.6,1]:gr.item.type?[1,0.4,0.4]:hex(rarityColor(gr.item.rarity)); const leg=gr.item&&(gr.item.rarity==='legendary'||gr.item.rarity==='sporeborn'||gr.item.rarity==='set');
+    for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)||!g.lootOk(gr)) continue; const c=gr.gold?[1,0.85,0.3]:gr.item.type==='crystal'?(gr.item.tint||[0.8,0.8,1]).map(v=>Math.min(1,v)*0.55):gr.item.type==='seed'?[0.6,1,0.4]:gr.item.type==='frag'?[0.8,0.6,1]:gr.item.type?[1,0.4,0.4]:hex(rarityColor(gr.item.rarity)); const leg=gr.item&&(gr.item.rarity==='legendary'||gr.item.rarity==='sporeborn'||gr.item.rarity==='set');
       R.glow(gr.x*T+T/2,gr.y*T+T*0.6,T*(leg?0.9:0.5),c,leg?0.5:0.28); if(leg) R.rect(gr.x*T+T/2-3,gr.y*T-T*2.2,6,T*2.6,c,0.12+Math.sin(time*3)*0.04); }
     for(const f of g.fx){ const a=f.life/f.max;
       if(f.type==='p'){ R.glow(f.x,f.y,f.s,f.c,a*0.9); }
@@ -123,16 +129,21 @@ export class SceneRenderer{
     const big=['gate','arch','arch_broken','altar','shrine','obelisk','chest','pillar','pillars','deadtree','glowshroom_big','brazier','grave','tomb','npc_sage'].includes(pr.spr)||pr.type==='gate';
     const maxH=pr.sz?T*pr.sz[1]:pr.type==='gate'?T*1.25:big?T*1.15:pr.deco?T*0.8:T*0.9; const maxW=pr.sz?T*pr.sz[0]:pr.type==='gate'?T*1.05:T*(big?1.0:0.85);
     const [w,h]=this.fitSprite(pr.spr,maxW,maxH); const bob=pr.type==='lever'?Math.sin(time*3+pr.x)*2:0;
-    let tint=[1,1,1]; if(pr.type==='brazier'&&!pr.lit) tint=[0.55,0.55,0.6]; if(pr.type==='rune') tint=pr.on?[0.8,1,1.3]:[0.75,0.75,0.8]; if(pr.type==='shrine'&&pr.used) tint=[0.5,0.5,0.55]; if(pr.type==='pillar') tint=pr.state==='done'?[0.45,0.45,0.45]:pr.state==='active'?[1.2+Math.sin(time*6)*0.2,1.3,1.1]:[1,1,1]; if(pr.type==='riftexit'&&pr.locked) tint=[0.55,0.5,0.6]; if(pr.type==='lore'&&pr.read) tint=[0.7,0.7,0.75]; if(pr.type==='grave') tint=pr.respected?[0.55,0.55,0.6]:[0.85,0.88,0.95]; if(pr.type==='lever') tint=[1.05+Math.sin(time*4)*0.08,0.95,0.85];
+    let tint=[1,1,1]; if(pr.type==='brazier'&&!pr.lit) tint=[0.55,0.55,0.6]; if(pr.type==='rune') tint=pr.on?[0.8,1,1.3]:[0.75,0.75,0.8]; if(pr.type==='fallen') tint=pr.state==='done'?[0.5,0.48,0.5]:[1.15,1.05,1.25]; if(pr.type==='shrine'&&pr.used) tint=[0.5,0.5,0.55]; if(pr.type==='pillar') tint=pr.state==='done'?[0.45,0.45,0.45]:pr.state==='active'?[1.2+Math.sin(time*6)*0.2,1.3,1.1]:[1,1,1]; if(pr.type==='riftexit'&&pr.locked) tint=[0.55,0.5,0.6]; if(pr.type==='corerift') tint=pr.state==='done'?[0.5,0.45,0.55]:[1.15+Math.sin(time*3)*0.15,0.85,1.35]; if(pr.type==='lore'&&pr.read) tint=[0.7,0.7,0.75]; if(pr.type==='grave') tint=pr.respected?[0.55,0.55,0.6]:[0.85,0.88,0.95]; if(pr.type==='lever') tint=[1.05+Math.sin(time*4)*0.08,0.95,0.85];
     R.sprite(pr.spr,pr.x*T+T/2-w/2,pr.y*T+T-h-2+bob,w,h,{tint});
     if(pr.type==='rune'){ /* symbol drawn in overlay */ } }
   drawGround(g,gr,time){ const R=this.r; const n=gr.gold?'coins':gr.item.spr; const [w,h]=this.fitSprite(n,T*0.55,T*0.55); const b=Math.sin(time*2.5+gr.x*1.3)*2;
-    R.sprite(n,gr.x*T+T/2-w/2,gr.y*T+T*0.85-h+b,w,h,{rot:gr.gold?0:-0.25}); }
+    R.sprite(n,gr.x*T+T/2-w/2,gr.y*T+T*0.85-h+b,w,h,{rot:gr.gold?0:-0.25,tint:gr.item?.tint}); }
   drawActor(g,e,spr,time,isP){ const R=this.r; const sc=e.sc||1; const [w,h]=this.spritesize(spr,T*0.92*sc);
     let ox=0,oy=0; if(e.lunge){ const k=Math.sin(e.lunge.t*Math.PI)*0.32; ox=e.lunge.dx*k*T; oy=e.lunge.dy*k*T; }
     const breathe=1+Math.sin(time*3+(e.x||0)*1.7)*0.018; const bx=e.rx*T+T/2+ox, by=e.ry*T+T*0.96+oy;
     R.q(bx-w*0.38,by-8,w*0.76,14,0,0,1,1,0,0,0,0.45,2);
     let tint=e.tint||[1,1,1]; if(e.ally) tint=e.spirit?[1,1.05,1.15]:[0.85,1.08,0.9]; if(e.flash>0) tint=[2.2,2.2,2.2]; if(e.status?.poison) tint=[tint[0]*0.75,tint[1]*1.1,tint[2]*0.7]; if(e.status?.stun) tint=[tint[0]*0.8,tint[1]*0.8,tint[2]*1.1]; if(e.status?.fear) tint=[tint[0]*0.95,tint[1]*0.8,tint[2]*1.15]; if(e.status?.weak) tint=[tint[0]*0.82,tint[1]*0.78,tint[2]*0.9];
+    if(e.def?.core){
+      const dye=e.def.tint;
+      const artTint=dye&&!(e.flash>0)?tint.map((value,i)=>value/dye[i]):tint;
+      if(drawCoreAngel(R,e,bx,by,T*0.96*sc/99,time,artTint)) return;
+    }
     if(e.def?.wingRig){ this.drawAngel(g,e,bx,by,T*0.96*sc/99,time,tint); return; }
     if(isP&&e.form){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; if(drawForm(R,e,bx,by,T*0.92*1.1/99,time,tint)) return; }
     { const bk=!isP&&beastKey(spr); if(bk&&drawBeast(R,bk,e,bx,by,T*0.92*sc,time,tint)){ if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } return; } }
@@ -154,7 +165,7 @@ export class SceneRenderer{
       const y=by-(64+pose*4)*k+dx*Math.sin(rot)+dy*Math.cos(rot);
       R.sprite('angel_wing',x-w/2,y-h/2,w,h,{flip:side===1,rot,tint:bodyTint.map(v=>v*(near?1.36:1.03))});
     }
-    const hat={wingSweep:'hat_slice8',wingRing:'hat_slice9',wingCross:'hat_slice14'}[e.def.wingAttack];
+    const hat=e.def.hat||{wingSweep:'hat_slice8',wingRing:'hat_slice9',wingCross:'hat_slice14'}[e.def.wingAttack];
     const equip={weapon:{spr:e.def.weapon},offhand:e.def.offhand&&{spr:e.def.offhand},helm:{spr:hat}};
     drawRig(R,e,g,bx,by,k,time,bodyTint,e.def.wingRig,equip);
   }

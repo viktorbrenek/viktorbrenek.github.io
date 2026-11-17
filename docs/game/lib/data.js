@@ -207,7 +207,7 @@ export const AFFIXES=[
   {id:'resDecay', s:'resDecay', v:[10,22], sc:'lin', slots:'chest,helm,boots,gloves,ring,offhand,amulet', p:'S', name:['Věčnosti'], cap:48},
   {id:'maxRes', s:'maxRes', v:[1,2], sc:'none', slots:'chest,offhand', p:'S', name:['Nezdolnosti'], rare:0.2, cap:3},
   {id:'torch', s:'torch', v:[1,1], sc:'none', slots:'helm,offhand,amulet', p:'S', name:['Plamene'], cap:3},
-  {id:'mf', s:'mf', v:[6,14], sc:'lin', slots:'helm,amulet,ring,boots', p:'S', name:['Štěstí']},
+  {id:'mf', s:'mf', v:[6,14], sc:'lin', slots:'helm,amulet,ring,boots', p:'S', name:['Štěstí'], noRoll:true}, // S2: nepadá na náhodných předmětech
   {id:'gf', s:'gf', v:[10,25], sc:'lin', slots:'gloves,amulet,ring', p:'S', name:['Lakoty']},
   {id:'cdr', s:'cdr', v:[4,8], sc:'lin', slots:'helm,amulet,gloves,offhand', p:'S', name:['Spěchu'], cap:30},
   {id:'thorns', s:'thorns', v:[2,5], sc:'exp', slots:'chest,offhand,helm', p:'S', name:['Bodláku']},
@@ -311,6 +311,13 @@ export const UNIQUES=[
   {id:'moth_wings', name:'Můří křídla', base:'leafarmor', spr:'armor_leaf', fixed:{dodge:10,buffDur:20}, power:'Výtrusný skok a Krok stínem nemají přebíjení, ale stojí dvojnásobek.'},
   {id:'bonebreaker', name:'Kostolam', base:'spikeclub', spr:'club3', fixed:{stun:15,physPct:25}, power:'Omráčení nepřátelé utrží o 40 % více poškození a tvé omráčení trvá o 1 tah déle.'},
   // ---- v25 endgame: eg:'map' padají jen ve Výtrusných mapách, eg:'queen' jen ze Šedé královny ----
+  // ---- S2 sezónní unikáty (Padlí z jádra): za andělská pera nebo z Archanděla ----
+  {id:'s2_halo', eg:'season', name:'Svatozář z jádra', base:'wizhat', spr:'hat_slice3', fixed:{skill:1,res:12}, power:'Andělé jádra ti způsobují o 30 % méně poškození.'},
+  {id:'s2_wingblade', eg:'season', name:'Čepel padlého křídla', base:'sword', spr:'sword2', fixed:{physPct:40,crit:6}, power:'Proti andělům jádra a elitám s taktikou způsobuješ o 40 % více poškození.'},
+  {id:'s2_corecensor', eg:'season', name:'Kadidelnice jádra', base:'lantern', spr:'lantern2', fixed:{torch:2,spell:25}, power:'Posvěcená zem serafínů tě léčí (5 % života za tah) místo zraňování.'},
+  {id:'s2_featherstep', eg:'season', name:'Pírkové kroky', base:'boots2', spr:'boots_tan', fixed:{dodge:12,res:8}, power:'Po každém úhybu je tvůj další útok kritický.'},
+  {id:'s2_seraphmail', eg:'season', name:'Serafínská zbroj', base:'barkarmor', spr:'armor_moss2', fixed:{lifePct:15,dr:4}, power:'Když klesneš pod 35 % života, dostaneš na 3 tahy +30 % snížení poškození (jednou za 12 tahů).'},
+  {id:'s2_choir', eg:'season', name:'Amulet chóru', base:'amulet', spr:'amulet_heart', fixed:{skill:1,elemPct:20}, power:'Za každého anděla jádra v dosahu pochodně +8 % více poškození (max +40 %).'},
   {id:'eg_seedcrown', eg:'map', name:'Koruna klíčení', base:'eg_crown', spr:'eg_seedcrown', fixed:{skill:1,life:40}, power:'Za každý tier dokončený v Kořenové síti způsobuješ o 1 % více poškození (max 16 %).'},
   {id:'eg_rootplate', eg:'map', name:'Trůnní kůra', base:'eg_plate', spr:'eg_rootplate', fixed:{lifePct:15,dr:4}, power:'Za každých 400 zbroje +1 % snížení utrženého poškození (max +10 %).'},
   {id:'eg_bellring', eg:'map', name:'Prsten posledního zvonu', base:'eg_ring', spr:'eg_bellring', fixed:{cdr:10,elemPct:20}, power:'+1 k úrovni všech dovedností, ale −10 % maximálního života.'},
@@ -558,6 +565,8 @@ export const PASSIVES=(()=>{
     for(let k=7;k<=10;k++){ for(let i=0;i<O.length-1;i++) link(id(s,k,O[i]),id(s,k,O[i+1])); link(id(s,k,'R3'),id(ns,k,'L3'));
       if(k<10){ link(id(s,k,'M'),id(s,k+1,'M')); for(const e of {7:['L3','R3'],8:['L1','R2'],9:['L2','R1']}[k]) link(id(s,k,e),id(s,k+1,e)); } }
     link(id(s,10,'L1'),`${th.id}K2`); link(id(s,10,'R1'),`${th.id}K3`); });
+  // S2: menší síla uzlů (×0,6), celočíselné bonusy zůstávají
+  const INT=new Set(['skill','minionMax','aoe','reach','torch','maxRes']); for(const n of N) if(!n.k&&!n.start&&n.s) n.s=Object.fromEntries(Object.entries(n.s).map(([k,v])=>[k,INT.has(k)?v:Math.round(v*0.6*10)/10]));
   return N; })();
 export const KEYSTONES={
   rootwill:'Kořenová vůle: nemůžeš uhýbat, šance na blok ×2 (max 75 %).',
@@ -676,4 +685,6 @@ export const GRAVE_MSGS=['Dál nechoď.','Bylo jich moc.','Měl jsem pít lektva
 // daily depth: deterministic seed + one daily curse from the corruption list
 export const dailySeed=day=>{ let h=2166136261; for(const c of 'sporium:'+day){ h^=c.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; };
 export const dailyMod=day=>{ const pool=CORRUPTIONS.filter(c=>c.id!=='hunted'); return pool[dailySeed(day+':mod')%pool.length]; };
-export const SEASON={n:1,name:'Obchod se štěstím',desc:'Probuď Plodnice pradávných, sbírej zkažená jádra a zkoušej štěstí na Oltáři hniloby. Štěstí přeje odvážným – a chamtivé rozdrtí na prach.'};
+export const SEASON={n:2,name:'Padlí z jádra',desc:'Z jádra mycelia se protrhly Trhliny. Sestupují jimi andělé, které podhoubí nakazilo – zářící, krásní a nesmírně hladoví. Zavři Trhliny, než prorostou celý Ul-Myr.'};
+export const SEASONS={1:{n:1,name:'Obchod se štěstím'},2:SEASON};
+export const ETERNAL=1; // postavy ze sezóny 1 hrají ve Věčné říši

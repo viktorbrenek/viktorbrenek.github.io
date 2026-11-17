@@ -108,6 +108,9 @@ export function generate(depth, seed, opt={}){
   if(!opt.rift&&!opt.endgame&&R.chance(0.6)){ for(let k=0;k<(R.chance(0.3)?2:1);k++){ const p=randIn(extraRoom(),interior); if(p) put({type:'lore',x:p[0],y:p[1],spr:'tomb',block:true,read:false,light:[0.55,0.7,0.9],lr:2}); } }
   if(!opt.rift&&!opt.endgame&&depth>=2&&R.chance(0.42)){ const p=randIn(extraRoom(),interior); if(p) put({type:'pillar',x:p[0],y:p[1],spr:'glowshroom_big',block:true,state:'idle',light:[0.5,1,0.45],lr:4}); }
   if(!opt.rift&&!opt.endgame&&depth>=3&&!boss&&R.chance(0.35)){ const p=randIn(extraRoom(),interior); if(p) put({type:'rift',x:p[0],y:p[1],spr:'arch',block:true,light:[0.75,0.3,1],lr:5}); }
+  // S2: Trhlina jádra (sezónní událost Padlí z jádra)
+  if(!opt.rift&&depth>=8&&!boss&&R.chance(opt.endgame?0.1:0.15)){ const p=randIn(extraRoom(),interior); if(p) put({type:'fallen',x:p[0],y:p[1],spr:'tomb',block:true,state:'idle',light:[1,0.9,0.65],lr:3}); }
+  if(!opt.rift&&depth>=4&&!boss&&R.chance(opt.endgame?0.2:0.3)){ const p=randIn(extraRoom(),interior); if(p) put({type:'corerift',x:p[0],y:p[1],spr:'arch_broken',block:true,state:'idle',light:[0.85,0.55,1],lr:5}); }
   if(opt.event==='merchant'){ const p=randIn(rooms[0],interior)||randIn(extraRoom(),interior); if(p) put({type:'merchant',x:p[0],y:p[1],spr:'npc_sage',block:true,light:[1,0.8,0.5],lr:3}); }
   if(opt.rift){ stairs.type='riftexit'; stairs.spr='arch_broken'; stairs.locked=true; stairs.light=[0.75,0.3,1]; stairs.lr=4; }
   // wall torches: wall tile with floor below
