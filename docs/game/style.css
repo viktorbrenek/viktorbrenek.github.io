@@ -480,3 +480,26 @@ body.touch #panel .x::after{content:none}
 @media (max-width:900px){.atlas{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:16px}}
 .att.cd{box-shadow:inset 0 -3px 0 #b05cff;border-radius:50%}
 .att.cd::after{content:'';}
+/* v29: Sezóna 2 na titulce */
+.title h1{color:#ece0c2;text-shadow:0 0 22px #c99bff55,0 0 54px #f2d36b33}
+.s2hero{position:relative;max-width:820px;margin:8px auto 6px;min-height:230px;display:grid;place-items:center;padding:22px 16px 20px;border-radius:14px;overflow:hidden;
+  background:radial-gradient(ellipse at center,rgba(20,13,24,.85),transparent 73%) center/55% 100% no-repeat,url(assets/ui/s2_keyart.webp) center/cover no-repeat #160f1b;
+  box-shadow:inset 0 0 0 1px #6c4f8c,inset 0 0 40px rgba(0,0,0,.7),0 0 26px rgba(160,110,230,.18)}
+.s2hero::before{content:'';position:absolute;inset:6px;border-radius:10px;border:1px solid rgba(242,211,107,.28);pointer-events:none}
+.s2txt{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;z-index:1;max-width:350px}
+.s2txt .sn{font:800 12px "Alegreya Sans",sans-serif;letter-spacing:4px;text-transform:uppercase;color:#1a1410;background:linear-gradient(90deg,#c99bff,#f2d36b);padding:3px 12px 2px;border-radius:20px}
+.s2txt b{font:700 40px "Grenze Gotisch",serif;color:#f6dc86;text-shadow:0 0 18px #f2d36b66,0 2px 0 #1a1410;line-height:1.05}
+.s2txt small{font-size:13.5px;color:#efe5f4;line-height:1.35;text-shadow:0 1px 4px #100a13}
+.s2chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px}
+.s2chips span{font:700 12px "Alegreya Sans",sans-serif;color:#eadcff;background:rgba(38,24,48,.86);border:1px solid rgba(201,155,255,.4);border-radius:20px;padding:3px 10px}
+.rgrp{max-width:660px;margin:14px auto 0;padding:4px 10px 10px;border-radius:12px}
+.rgrp h3{margin:6px 0 8px!important}
+.rs2{background:linear-gradient(180deg,rgba(150,90,220,.14),transparent);box-shadow:inset 0 1px 0 rgba(201,155,255,.45)}
+.rs2 h3 span{color:#f2d36b}
+.ret{background:rgba(120,130,150,.06);box-shadow:inset 0 1px 0 rgba(160,170,190,.3)}
+.ret h3{color:#b9c0cc!important}
+.ret .rnote{font-size:12.5px;color:#8f8a80;margin:-4px 0 8px}
+.ret .rch{filter:saturate(.6) brightness(.92)}
+@media (max-width:900px){.s2hero{padding:16px 14px 14px;min-height:170px}.s2txt b{font-size:30px}}
+@media (max-height:500px){.s2hero{padding:10px 14px;min-height:0;margin:0 auto 2px}.s2txt small{display:none}.s2chips{margin-top:4px}.s2txt b{font-size:26px}}
+@media (max-width:560px){.s2hero{padding:132px 14px 14px;background:linear-gradient(180deg,transparent 72px,#160f1b 120px),url(assets/ui/s2_keyart.webp) center top/max(100%,385px) auto no-repeat #160f1b}}

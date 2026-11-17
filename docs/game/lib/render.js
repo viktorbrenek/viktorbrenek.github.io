@@ -2,13 +2,17 @@
 import {T} from './game.js';
 import {WALL,FLOOR} from './dungeon.js';
 import {rng,edist,dist} from './util.js';
-import {rarityColor} from './items.js';
+import {itemSprite,rarityColor} from './items.js';
 import {SKILLS,biomeFor} from './data.js';
 import {drawRig,animTick,RIGS,drawBeast,drawForm,beastKey} from './rig.js';
 import {angelStill,drawCoreAngel} from './angel-rig.js';
 import {royalTrapActive} from './community.js';
 
 const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
+const SEASON_PROPS={
+  corerift:['core_rift','core_rift_closed',1.08,1.35],
+  fallen:['angel_fallen_wounded','angel_fallen_ash',1.25,0.9],
+};
 export class SceneRenderer{
   constructor(r,overlay){ this.r=r; this.o=overlay; this.ctx=overlay.getContext('2d'); this.spores=[]; this.zoom=1; this.hover=null; }
   uiImg(n){ this._ui=this._ui||{}; if(!this._ui[n]){ const i=new Image(); i.src=`assets/ui/${n}.webp`; this._ui[n]=i; } return this._ui[n]; }
@@ -126,14 +130,27 @@ export class SceneRenderer{
   drawProp(g,pr,time){ const R=this.r;
     if(pr.type==='walltorch'){ const [w,h]=this.fitSprite('torch_wall',T*0.5,T*0.75); R.sprite('torch_wall',pr.x*T+T/2-w/2,pr.y*T+T*0.35,w,h); return; }
     if(pr.type==='stairs'){ const [w,h]=this.fitSprite('stairs',T*1.0,T*1.0); R.sprite('stairs',pr.x*T+T/2-w/2,pr.y*T+T-h,w,h,{tint:pr.locked?[0.5,0.45,0.5]:[1,1,1]}); return; }
+    const season=SEASON_PROPS[pr.type];
+    const spr=season?.[pr.state==='done'?1:0];
+    if(spr&&R.meta.s[spr]){
+      const [w,h]=this.fitSprite(spr,T*season[2],T*season[3]);
+      const pulse=pr.type==='corerift'&&pr.state==='active'?1.12+Math.sin(time*5)*0.12:1;
+      R.sprite(spr,pr.x*T+T/2-w/2,pr.y*T+T-h-2,w,h,{tint:[pulse,pulse,pulse]});
+      return;
+    }
     const big=['gate','arch','arch_broken','altar','shrine','obelisk','chest','pillar','pillars','deadtree','glowshroom_big','brazier','grave','tomb','npc_sage'].includes(pr.spr)||pr.type==='gate';
     const maxH=pr.sz?T*pr.sz[1]:pr.type==='gate'?T*1.25:big?T*1.15:pr.deco?T*0.8:T*0.9; const maxW=pr.sz?T*pr.sz[0]:pr.type==='gate'?T*1.05:T*(big?1.0:0.85);
     const [w,h]=this.fitSprite(pr.spr,maxW,maxH); const bob=pr.type==='lever'?Math.sin(time*3+pr.x)*2:0;
     let tint=[1,1,1]; if(pr.type==='brazier'&&!pr.lit) tint=[0.55,0.55,0.6]; if(pr.type==='rune') tint=pr.on?[0.8,1,1.3]:[0.75,0.75,0.8]; if(pr.type==='fallen') tint=pr.state==='done'?[0.5,0.48,0.5]:[1.15,1.05,1.25]; if(pr.type==='shrine'&&pr.used) tint=[0.5,0.5,0.55]; if(pr.type==='pillar') tint=pr.state==='done'?[0.45,0.45,0.45]:pr.state==='active'?[1.2+Math.sin(time*6)*0.2,1.3,1.1]:[1,1,1]; if(pr.type==='riftexit'&&pr.locked) tint=[0.55,0.5,0.6]; if(pr.type==='corerift') tint=pr.state==='done'?[0.5,0.45,0.55]:[1.15+Math.sin(time*3)*0.15,0.85,1.35]; if(pr.type==='lore'&&pr.read) tint=[0.7,0.7,0.75]; if(pr.type==='grave') tint=pr.respected?[0.55,0.55,0.6]:[0.85,0.88,0.95]; if(pr.type==='lever') tint=[1.05+Math.sin(time*4)*0.08,0.95,0.85];
     R.sprite(pr.spr,pr.x*T+T/2-w/2,pr.y*T+T-h-2+bob,w,h,{tint});
     if(pr.type==='rune'){ /* symbol drawn in overlay */ } }
-  drawGround(g,gr,time){ const R=this.r; const n=gr.gold?'coins':gr.item.spr; const [w,h]=this.fitSprite(n,T*0.55,T*0.55); const b=Math.sin(time*2.5+gr.x*1.3)*2;
-    R.sprite(n,gr.x*T+T/2-w/2,gr.y*T+T*0.85-h+b,w,h,{rot:gr.gold?0:-0.25,tint:gr.item?.tint}); }
+  drawGround(g,gr,time){ const R=this.r, it=gr.item; const n=gr.gold?'coins':itemSprite(it,R.meta.s); const [w,h]=this.fitSprite(n,T*0.55,T*0.55); const b=Math.sin(time*2.5+gr.x*1.3)*2;
+    let tint=it?.tint;
+    if(it?.type==='crystal'&&n===`crystal_${it.fam}`){
+      const brightness=0.78+(it.g||1)*0.08;
+      tint=[brightness,brightness,brightness];
+    }
+    R.sprite(n,gr.x*T+T/2-w/2,gr.y*T+T*0.85-h+b,w,h,{rot:gr.gold?0:-0.25,tint}); }
   drawActor(g,e,spr,time,isP){ const R=this.r; const sc=e.sc||1; const [w,h]=this.spritesize(spr,T*0.92*sc);
     let ox=0,oy=0; if(e.lunge){ const k=Math.sin(e.lunge.t*Math.PI)*0.32; ox=e.lunge.dx*k*T; oy=e.lunge.dy*k*T; }
     const breathe=1+Math.sin(time*3+(e.x||0)*1.7)*0.018; const bx=e.rx*T+T/2+ox, by=e.ry*T+T*0.96+oy;

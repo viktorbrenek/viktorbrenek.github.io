@@ -31,6 +31,16 @@ ANGEL_SHEETS = {
     "arch": (*ANGEL_PARTS, "weapon", "banner"),
 }
 ANGEL_STILLS = (*(f"{kind}_full" for kind in ANGEL_SHEETS), "ophan_closed", "ophan_open")
+SEASON_PROP_PAIRS = (
+    ("core_rift", "core_rift_closed"),
+    ("angel_fallen_wounded", "angel_fallen_ash"),
+)
+SEASON_ICONS = (
+    "crystal_life", "crystal_war", "crystal_mind", "feather_angel",
+    "s2_halo", "s2_wingblade", "s2_corecensor",
+    "s2_featherstep", "s2_seraphmail", "s2_choir",
+)
+SEASON_WORN = ("s2_halo_worn", "s2_wingblade_held")
 
 
 def load_sprite(path):
@@ -38,11 +48,15 @@ def load_sprite(path):
         return image.convert("RGBA")
 
 
-def trim_sprite(sprite, name):
+def sprite_bounds(sprite, name):
     bounds = sprite.getchannel("A").point(lambda alpha: 255 if alpha >= 24 else 0).getbbox()
     if bounds is None:
         raise ValueError(f"Empty sprite: {name}")
-    return sprite.crop(bounds)
+    return bounds
+
+
+def trim_sprite(sprite, name):
+    return sprite.crop(sprite_bounds(sprite, name))
 
 
 def angel_parts(folder):
@@ -70,6 +84,34 @@ def add_angel_art(sprites):
             sprite = trim_sprite(load_sprite(path), path.stem)
             sprite.thumbnail((168, 168), Image.Resampling.LANCZOS)
             sprites[path.stem] = sprite
+
+
+def add_season_art(sprites):
+    folder = RAW / "s2"
+    for pair in SEASON_PROP_PAIRS:
+        variants = {
+            name: load_sprite(folder / f"{name}.png")
+            for name in pair if (folder / f"{name}.png").exists()
+        }
+        if not variants:
+            continue
+        if any(sprite.size != (768, 768) for sprite in variants.values()):
+            raise ValueError(f"{pair} must use 768 × 768 canvases")
+        # Crop both states to the same rectangle so their scale and ground anchor agree.
+        left, top, right, bottom = zip(
+            *(sprite_bounds(sprite, name) for name, sprite in variants.items())
+        )
+        bounds = min(left), min(top), max(right), max(bottom)
+        for name, sprite in variants.items():
+            prop = sprite.crop(bounds)
+            prop.thumbnail((192, 192), Image.Resampling.LANCZOS)
+            sprites[name] = prop
+    for name in (*SEASON_ICONS, *SEASON_WORN):
+        path = folder / f"{name}.png"
+        if path.exists():
+            sprite = trim_sprite(load_sprite(path), name)
+            sprite.thumbnail((128, 128), Image.Resampling.LANCZOS)
+            sprites[name] = sprite
 
 
 def alpha_span(sprite, row):
@@ -143,6 +185,7 @@ def main():
         raise ValueError("No paper-doll sprites found")
     fit_rig_sprites(sprites)
     add_angel_art(sprites)
+    add_season_art(sprites)
 
     base = json.loads((ASSETS / "atlas.json").read_text(encoding="utf-8"))
     width = base["w"]

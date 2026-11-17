@@ -3,6 +3,11 @@ import {rng,fmt} from './util.js';
 let UID=1;
 const slotTag=b=>b.slot==='ring'?'ring':b.slot;
 export const isEquip=it=>!!it.base;
+export function itemSprite(it,sprites,suffix=''){
+  if(!it) return;
+  const season=it.type==='crystal'?`crystal_${it.fam}`:it.unique?.startsWith('s2_')?it.unique:null;
+  return season&&sprites[season+suffix]?season+suffix:it.spr;
+}
 const ATTR=new Set(['might','finesse','wits']);
 export const WEAP_SCALE=ilvl=>1+(Math.min(ilvl,60)-1)*0.11, IMP_SCALE=ilvl=>1+(Math.min(ilvl,60)-1)*0.14;
 export function scaleVal(a,ilvl,v){

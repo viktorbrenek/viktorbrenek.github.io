@@ -1,5 +1,9 @@
 // Novinky – nejnovější nahoře. Při každém nasazení přidej záznam (v = rostoucí číslo verze).
 export const NEWS=[
+  {v:30, d:'17. 11. 2026', t:'Sezóna 2: nový vzhled', i:[
+    'Andělé z jádra mají vlastní postavy: cherub, serafín a archanděl se hýbou po částech (křídla, ruce, nálet, sesílání), Ofan otevírá a zavírá oči podle toho, jestli je zranitelný.',
+    'Nový art pro Trhlinu jádra (otevřená i zacelená), Padlého anděla (a jeho popel), krystaly, andělská pera a všech 6 sezónních unikátů. Svatozář a Čepel padlého křídla mají vlastní vzhled i na postavě.',
+    'Titulní obrazovka má nový obraz sezóny a postavy jsou rozdělené na Sezónu 2 a Věčnou říši.']},
   {v:29, d:'17. 11. 2026', t:'Sezóna 2: Padlí z jádra', i:[
     '<b>Začíná Sezóna 2.</b> Nové postavy hrají S2 se samostatnou truhlou a žebříčkem. Všechny dosavadní postavy jsou teď <b>Věčné (♾)</b>: hrají dál, nic neztratí a mají vlastní žebříček „Věčná“.',
     '<b>Přepočet čísel</b> (styl Diablo 2): poškození a životy jsou o řády menší a procenta se sčítají místo násobení. Nadpoložky „více“, kritický zásah, redukce poškození, regenerace a vysávání mají stropy. Staré předměty se přepočítají automaticky, pasivní strom je slabší a bodů je méně (1 za úroveň do 60, pak 1 za 2 úrovně). Pokud ti po přepočtu body chybí, strom se vrátí a rozdělíš ho znovu.',

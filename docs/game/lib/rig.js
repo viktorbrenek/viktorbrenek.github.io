@@ -1,5 +1,7 @@
 // Paper-doll hero rig: hand-drawn body parts (head, body, arms, legs) + equipped weapon / offhand / helm,
 // animated procedurally (idle, walk, swing, shoot, cast, hurt). Units = original part pixels.
+import {itemSprite} from './items.js';
+
 const P=(cls,leg,arm,body,armAt,legAt)=>({head:`rig_${cls}_hlava`,body:`rig_${cls}_body`,arm:`rig_${arm}`,leg:`rig_${leg}`,bodyAt:body,armAt,legAt});
 const NL='noha_vsichni_krom_strazce';
 export const RIGS={
@@ -12,7 +14,7 @@ export const RIGS={
 };
 const FOOT=99, CX=25;
 const ARM={w:29,h:49,sh:[10,9],hand:[19,42]}, LEG={w:28,h:35,hip:[14,5]};
-const WEAP={sword:52,sword2:52,axe:50,axe2:54,club:52,club2:52,club3:56,dagger_r:38,dagger_p:40,spear:90,staff_moss:84,staff_green:84,staff_crystal:86,staff_purple:84,staff_shroom:80,staff_red:84,wand_shroom:52,bow:58,crossbow:52,crossbow2:52,q_blade:46,q_blade_held:46,q_scepter:86,q_scepter_held:86};
+const WEAP={sword:52,sword2:52,axe:50,axe2:54,club:52,club2:52,club3:56,dagger_r:38,dagger_p:40,spear:90,staff_moss:84,staff_green:84,staff_crystal:86,staff_purple:84,staff_shroom:80,staff_red:84,wand_shroom:52,bow:58,crossbow:52,crossbow2:52,q_blade:46,q_blade_held:46,q_scepter:86,q_scepter_held:86,s2_wingblade_held:62};
 // helm item sprite -> hand-drawn hat; [hat, bottom of hat as fraction of head height]
 const HATMAP={helm_red:'hat_slice1',helm_brown:'hat_slice4',helm_purple:'hat_slice9',helm_tan:'hat_slice14',helm_violet:'hat_slice12',helm_rust:'hat_slice5',helm_purple2:'hat_slice13',q_crown:'q_crown',eg_seedcrown:'eg_seedcrown'};
 const HATFIT={hat_slice1:0.5,hat_slice2:1.04,hat_slice3:0.42,hat_slice4:0.45,hat_slice5:0.45,hat_slice6:0.98,hat_slice7:0.8,hat_slice8:0.42,hat_slice9:0.45,hat_slice10:0.45,hat_slice11:1.04,hat_slice12:0.98,hat_slice13:0.5,hat_slice14:0.72,hat_slice15:1.0,q_crown_worn:0.5,eg_seedcrown_worn:0.55,q_crown:0.66,eg_seedcrown:0.42};
@@ -35,8 +37,9 @@ export function drawRig(R,e,g,bx,by,k,time,tint,rigId=e.cls,eq=e.equip||{}){
   const chest=worn('chest')||bodyName, leg=worn('boots')||legName, gloves=worn('gloves');
   const glovedArm=gloves&&`${armName}_${gloves}`;
   const arm=R.meta.s[glovedArm]?glovedArm:armName;
-  const wspr=alt(eq.weapon?.spr,'_held'), ospr=alt(eq.offhand?.spr,'_held'), off=eq.offhand?.base;
-  const hspr=eq.helm?.spr;
+  const wspr=alt(itemSprite(eq.weapon,R.meta.s,'_held'),'_held');
+  const ospr=alt(itemSprite(eq.offhand,R.meta.s),'_held'), off=eq.offhand?.base;
+  const hspr=itemSprite(eq.helm,R.meta.s,'_worn');
   // ---- animation parameters ----
   const wp=e._wp||0, mv=e._mv||0, sw=Math.sin(wp);
   let bob=-Math.abs(sw)*2.6*mv + Math.sin(time*3)*0.5*(1-mv), lean=0;
@@ -96,19 +99,22 @@ export function drawRig(R,e,g,bx,by,k,time,tint,rigId=e.cls,eq=e.equip||{}){
   // near leg, body, head, helm (only the cap of the helm, so the face stays visible)
   legLayer(lx,lNear,false);
   part(chest,bxx,byy,body[0],body[1]);
-  fitted(eq.amulet?.spr,bxx+body[0]*0.54,Math.max(byy+body[1]*0.49,head[1]+6),12);
+  fitted(itemSprite(eq.amulet,R.meta.s),bxx+body[0]*0.54,Math.max(byy+body[1]*0.49,head[1]+6),12);
   part(headName,0,0,head[0],head[1],{rot:headR,pv:[head[0]*0.5,head[1]*0.9]});
   const baseHat=hspr&&(hspr.startsWith('hat_')||hspr.endsWith('_worn')?hspr:HATMAP[hspr]);
   const hat=rigId===e.cls?alt(baseHat||hspr,'_worn'):baseHat;
   if(hat&&R.meta.s[hat]){
-    const [w,h]=size(hat), fit=HATFIT[hat]??HATFIT[baseHat]??0.5;
+    const [iw,ih]=size(hat);
+    const scale=hat==='s2_halo_worn'?head[0]*1.2/iw:1;
+    const w=iw*scale, h=ih*scale;
+    const fit=hat==='s2_halo_worn'?0.44:(HATFIT[hat]??HATFIT[baseHat]??0.5);
     part(hat,head[0]*0.5-w/2,head[1]*fit-h,w,h,{rot:headR,pv:[w/2,h+head[1]*(0.9-fit)]});
   }
   // near arm, offhand item held in front of it
   const [nearX,nearY]=armLayer(ax,aNear,false,tint,'ring1');
   if(ospr&&off!=='quiver'){
     const [iw,ih]=size(ospr), edge=Math.max(iw,ih)||1;
-    const shield=eq.offhand.spr.startsWith('shield_'), hanging=eq.offhand.spr.startsWith('lantern');
+    const shield=eq.offhand.spr.startsWith('shield_'), hanging=ospr==='s2_corecensor'||eq.offhand.spr.startsWith('lantern');
     const length=shield?34:24, w=length*iw/edge, h=length*ih/edge;
     part(ospr,nearX-w/2,nearY-h*(hanging?0.15:0.5),w,h,{rot:aNear*0.3});
   }

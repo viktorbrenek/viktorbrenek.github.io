@@ -22,6 +22,10 @@ Sezónní andělé jsou v `raw6/s2/`. Tentýž skript vyřízne díly ze sheetů
 a přidá sestavené náhledy i oba stavy Ofana. Úchyty a animace andělů jsou
 v `docs/game/lib/angel-rig.js`.
 
+V `raw6/s2/` jsou také rekvizity Trhliny jádra a Padlého anděla, ikony krystalů,
+pírka a sezónních unikátů a dva sprity nasazené výbavy. Oba stavy každé
+rekvizity se balí se společným ořezem, aby při přepnutí zůstaly na stejném místě.
+
 ## Struktura hry (`docs/game/lib`)
 - `gl.js` – WebGL2 renderer: sprite batch, světelná mapa, pochodeň per-pixel, spory, post FX
 - `dungeon.js` – generátor pater, trezory, hádanky, světla

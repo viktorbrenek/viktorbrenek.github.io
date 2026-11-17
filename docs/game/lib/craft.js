@@ -1,12 +1,12 @@
 // S2: nová výroba na Oltáři hniloby – Výtrusné krystaly a recepty (inspirace Horadrickou kostkou).
 // Krystaly se neukládají do inventáře, ale do „měšce“ player.crystals = {life:[g1..g5], war:[...], mind:[...]}.
 import {AFFIXES,BASES,UNIQUES} from './data.js';
-import {addAffixes,rollAffix,famOf,makeItem,tooltipHTML,statLine,itemValue,nameItem} from './items.js';
+import {addAffixes,rollAffix,famOf,makeItem,tooltipHTML,statLine,itemSprite,itemValue,nameItem} from './items.js';
 import {rng,fmt} from './util.js';
 
 export const CFAM={
-  life:{name:'Míza',adj:'Mízy',color:'#7fe07a',spr:'crystal_green',tint:[0.6,1,0.55],desc:'život, odolnosti, zbroj, obrana'},
-  war:{name:'Zuřivost',adj:'Zuřivosti',color:'#ff7a5a',spr:'crystal_violet',tint:[1.25,0.45,0.35],desc:'poškození, kritické zásahy, síla, obratnost'},
+  life:{name:'Míza',adj:'Mízy',color:'#ec829e',spr:'crystal_green',tint:[0.6,1,0.55],desc:'život, odolnosti, zbroj, obrana'},
+  war:{name:'Zuřivost',adj:'Zuřivosti',color:'#f0a463',spr:'crystal_violet',tint:[1.25,0.45,0.35],desc:'poškození, kritické zásahy, síla, obratnost'},
   mind:{name:'Mysl',adj:'Mysli',color:'#b98cff',spr:'crystal_violet',tint:[0.8,0.6,1.2],desc:'kouzla, živly, neduhy, esence, přisluhovači'},
 };
 export const GRADES=['Úlomek','Zrnko','Krystal','Čistý krystal','Bezvadný krystal'];
@@ -52,9 +52,13 @@ export const GameCraft={
 
 // ---------------- UI ----------------
 export const UICraft={
-  crystalIcon(f){ return `<img class="cico c-${f}" src="${this.icon(CFAM[f].spr,48)}">`; },
+  crystalIcon(f){
+    const fallback=CFAM[f].spr, spr=itemSprite({type:'crystal',fam:f,spr:fallback},this.meta.s);
+    return `<img class="cico${spr===fallback?' c-'+f:''}" alt="" src="${this.icon(spr,48)}">`;
+  },
   walletHTML(){ const w=walletOf(this.g.player); return `<div class="wallet">${FAMS.map(f=>`<div class="wf"><span class="wn" style="color:${CFAM[f].color}">${this.crystalIcon(f)} ${CFAM[f].name}</span>${w[f].map((n,i)=>`<span class="wg ${n?'':'z'}" title="${GRADES[i]} ${CFAM[f].adj}">${['I','II','III','IV','V'][i]}<b>${n}</b>${i<4&&n>=3?`<button data-cmb="${f}:${i+1}" title="Spojit 3× ${GRADES[i]} → 1× ${GRADES[i+1]} (${10*(i+1)*(i+1)} ✦)">⇧</button>`:''}</span>`).join('')}</div>`).join('')}</div>`; },
   recipeHTML(){ const g=this.g,p=g.player,w=walletOf(p); const it=this.craftSel; const items=[...Object.values(p.equip).filter(Boolean),...p.inv.filter(i=>i.base)];
+    const feather=this.icon('feather_angel',48);
     const fsel=this.rcFam||'life'; const famBtns=`<div class="famsel">${FAMS.map(f=>`<button data-rcf="${f}" class="${f===fsel?'on':''}" style="--fc:${CFAM[f].color}">${this.crystalIcon(f)} ${CFAM[f].name}<small>${CFAM[f].desc}</small></button>`).join('')}</div>`;
     let act='';
     if(it){ const cor=it.corrupted, need=needGrade(it); const B=(id,label,ok,why)=>`<button data-rc="${id}" ${ok?'':'disabled'} title="${why||''}">${label}</button>`;
@@ -74,7 +78,7 @@ export const UICraft={
       }
       act=`<div class="craftsel"><div class="ttc">${tooltipHTML(it)}</div><div class="cbtn">${rows.join('')}</div></div>`; }
     return `<h2>Oltář hniloby · Recepty</h2><div class="hint">Krystaly padají z monster (vzácná a bossové častěji). Barva určuje, jaké vlastnosti recept přidá. Tři stejné krystaly spojíš ve vyšší stupeň (⇧). Výtrusný prach (✦ ${fmt(p.dust)}) slouží ke spojování krystalů. Zkažená jádra: ${p.cores||0}.</div>
-      ${this.walletHTML()}<div class="feath">🪶 Andělská pera: <b>${p.feathers||0}</b> <small>(ze zavřených Trhlin jádra)</small> <button data-fth="1" class="egbtn" ${(p.feathers||0)>=g.featherCost()?'':'disabled'}>Sezónní unikát · ${g.featherCost()} per</button></div>${famBtns}<div class="bag craftbag">${items.map((i,k)=>this.slotHTML(i,`data-craft="${k}" ${i===it?'data-sel="1"':''}`)).join('')}</div>${act}`; },
+      ${this.walletHTML()}<div class="feath">${feather?`<img class="cico" alt="" src="${feather}">`:'🪶'} Andělská pera: <b>${p.feathers||0}</b> <small>(ze zavřených Trhlin jádra)</small> <button data-fth="1" class="egbtn" ${(p.feathers||0)>=g.featherCost()?'':'disabled'}>Sezónní unikát · ${g.featherCost()} per</button></div>${famBtns}<div class="bag craftbag">${items.map((i,k)=>this.slotHTML(i,`data-craft="${k}" ${i===it?'data-sel="1"':''}`)).join('')}</div>${act}`; },
   craftWire(el){ const g=this.g,p=g.player; const it=this.craftSel;
     el.querySelectorAll('[data-rcf]').forEach(b=>b.onclick=()=>{ this.rcFam=b.dataset.rcf; this.renderPanel(); });
     el.querySelectorAll('[data-fth]').forEach(b=>b.onclick=()=>{ const it=g.buyFeatherUnique(); if(it){ this.banner('Dar jádra',it.name); g.log('Pera se proměnila: '+it.name,'loot:legendary'); this.craftSel=it; } this.refresh(); });
