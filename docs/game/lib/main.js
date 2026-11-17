@@ -10,7 +10,7 @@ const loadImg=src=>new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>re
 async function boot(){
   const [atlas,meta,wing,rigArt]=await Promise.all([
     loadImg('assets/atlas.webp?v=26'),fetch('assets/atlas.json?v=26').then(r=>r.json()),loadImg('assets/angel-wing.webp').catch(()=>null),
-    Promise.all([loadImg('assets/rig-art.webp?v=5'),fetch('assets/rig-art.json?v=5').then(r=>r.json())]).catch(()=>null),
+    Promise.all([loadImg('assets/rig-art.webp?v=12'),fetch('assets/rig-art.json?v=12').then(r=>r.json())]).catch(()=>null),
   ]);
   let img=atlas;
   const wingY=Math.max(...Object.values(meta.s).map(([,y,,h])=>y+h))+4;

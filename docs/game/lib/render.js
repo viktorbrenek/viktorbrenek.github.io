@@ -6,6 +6,7 @@ import {itemSprite,rarityColor} from './items.js';
 import {SKILLS,biomeFor} from './data.js';
 import {drawRig,animTick,RIGS,drawBeast,drawForm,beastKey} from './rig.js';
 import {angelStill,drawCoreAngel} from './angel-rig.js';
+import {drawClassicMonster,monsterStill} from './monster-rig.js';
 import {royalTrapActive} from './community.js';
 
 const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
@@ -65,8 +66,8 @@ export class SceneRenderer{
     for(const gr of g.ground){ if(!g.isVis(gr.x,gr.y)&&!g.explored[gr.y*W+gr.x]) continue; if(!g.lootOk(gr)) continue; list.push({y:gr.y-0.2,f:()=>this.drawGround(g,gr,time)}); }
     for(const m of g.monsters){ if(m.hp<=0||!g.canSee(m)) continue; list.push({y:m.ry,f:()=>this.drawActor(g,m,m.spr,time)}); }
     for(const f of g.fx) if(f.type==='corpse') list.push({y:f.y-0.1,f:()=>{
-      const angel=angelStill(f.core,f.closed), hasArt=angel&&R.meta.s[angel];
-      const spr=hasArt?angel:f.spr, a=f.life/f.max;
+      const still=angelStill(f.core,f.closed)||monsterStill(f.spr), hasArt=still&&R.meta.s[still];
+      const spr=hasArt?still:f.spr, a=f.life/f.max;
       const [w,h]=this.spritesize(spr,T*0.95*f.sc);
       R.sprite(spr,f.x*T+T/2-w/2,f.y*T+T-h*a,w,h*a,{a,tint:[0.5,0.5,0.5],flip:hasArt?f.core!=='ophan'&&!!f.flip:f.flip});
     }});
@@ -163,7 +164,13 @@ export class SceneRenderer{
     }
     if(e.def?.wingRig){ this.drawAngel(g,e,bx,by,T*0.96*sc/99,time,tint); return; }
     if(isP&&e.form){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; if(drawForm(R,e,bx,by,T*0.92*1.1/99,time,tint)) return; }
-    { const bk=!isP&&beastKey(spr); if(bk&&drawBeast(R,bk,e,bx,by,T*0.92*sc,time,tint)){ if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } return; } }
+    if(!isP){
+      const bk=beastKey(spr), height=T*0.92*sc;
+      if(drawClassicMonster(R,spr,e,bx,by,height,time,tint)||(bk&&drawBeast(R,bk,e,bx,by,height,time,tint))){
+        if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); }
+        return;
+      }
+    }
     if(isP&&!e.form&&RIGS[e.cls]){ if(e._hurt>0) tint=[tint[0]*(1+e._hurt),tint[1]*(1-e._hurt*0.4),tint[2]*(1-e._hurt*0.4)]; drawRig(R,e,g,bx,by,T*0.92*sc*1.1/99,time,tint); return; }
     const hop=Math.abs(Math.sin(e._wp||0))*(e._mv||0), sway=Math.sin(e._wp||0)*(e._mv||0)*0.07;
     R.sprite(spr,bx-w/2,by-h*breathe-hop*T*0.07,w,h*breathe,{flip:!e.flip,tint,rot:sway}); if(e.ally){ R.layer('add'); R.glow(bx,by-4,w*0.55,[0.5,1,0.45],0.16); R.layer('base'); } }

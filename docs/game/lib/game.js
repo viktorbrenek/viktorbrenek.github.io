@@ -1192,10 +1192,15 @@ export class Game{
     if(m.ai==='mine'){ if(d<=1){ this.telegraph(m,this.area(m.x,m.y,1),'mine',1.6); } return; }
     if(m.ai==='burster'&&d<=1){ this.telegraph(m,this.area(m.x,m.y,1),'burst',1.5); return; }
     if(m.ai==='healer'&&m.cd<=0){ const w=this.monsters.filter(o=>o!==m&&o.hp>0&&o.hp<o.maxhp*0.7&&dist(o.x,o.y,m.x,m.y)<=5).sort((a,b)=>a.hp/a.maxhp-b.hp/b.maxhp)[0];
-      if(w){ const h=w.maxhp*0.25; w.hp=Math.min(w.maxhp,w.hp+h); this.proj(m.x,m.y,w.x,w.y,[0.5,1,0.5]); if(this.canSee(w)) this.float(w.x,w.y,'+'+fmt(h),'#7f7'); m.cd=3; return; } }
+      if(w){ const h=w.maxhp*0.25; w.hp=Math.min(w.maxhp,w.hp+h);
+        if(m.spr==='shaman1'){ this.face(m,w.x); m.anim={k:'cast',t:0,dur:0.55}; }
+        this.proj(m.x,m.y,w.x,w.y,[0.5,1,0.5]); if(this.canSee(w)) this.float(w.x,w.y,'+'+fmt(h),'#7f7'); m.cd=3; return; } }
     if(m.ai==='charger'&&m.cd<=0&&d>=2&&d<=5&&sight&&(m.x===p.x||m.y===p.y||Math.abs(m.x-p.x)===Math.abs(m.y-p.y))){ const dx=Math.sign(p.x-m.x), dy=Math.sign(p.y-m.y); const tiles=[]; let x=m.x,y=m.y; for(let i=0;i<6;i++){ x+=dx; y+=dy; if(!this.passable(x,y)) break; tiles.push([x,y]); } if(tiles.length){ this.telegraph(m,tiles,'charge',1.6,{dir:[dx,dy]}); m.cd=4; return; } }
     if((m.ai==='ranged'||m.ai==='caster'||m.ai==='healer')&&sight&&d<=6&&d>1&&(m.ai==='ranged'||m.cd<=0)){
       if(m.def.puddle&&rng.chance(0.4)&&!p.ally){ this.telegraph(m,this.cross(p.x,p.y,1),'puddle',1.1,{cx:p.x,cy:p.y}); m.cd=4; return; }
+      if(m.spr==='gob3'||m.spr==='shaman1'||m.spr==='witch1'||m.spr==='spore_octo'){
+        this.face(m,p.x); m.anim={k:m.spr==='gob3'?'shoot':'cast',t:0,dur:0.45};
+      }
       this.proj(m.x,m.y,p.x,p.y,m.el==='decay'?[0.8,0.4,1]:m.el==='poison'?[0.6,1,0.3]:m.el==='fire'?[1,0.5,0.2]:[1,0.9,0.7],m.ai==='ranged'&&!m.el?'arrow':null);
       this.monHit(m,m.ai==='ranged'?0.85:1.15,m.ai!=='ranged'||m.el?m.el||'decay':null,p);
       if(m.ai!=='ranged') m.cd=2;
@@ -1252,6 +1257,7 @@ export class Game{
     if(t.kind==='charge'){ let last=[m.x,m.y]; for(const [x,y] of t.path||t.tiles){ if(x===p.x&&y===p.y) break; if(!this.passable(x,y)||this.monAt(x,y)) break; last=[x,y]; } m.x=last[0]; m.y=last[1]; this.shake=Math.max(this.shake,6); }
     if(t.kind==='puddle'||t.kind==='spit'){
       const puddle=t.kind==='puddle';
+      if(puddle&&m.spr==='spore_octo') m.anim={k:'cast',t:0,dur:0.45};
       this.addHazard(t.cx,t.cy,puddle?1:0,el,rng.range(m.dmg[0],m.dmg[1])*0.45,0,puddle?2:3,m.name,{shape:'cross',owner:m,pct:0.06});
     }
     if(hit) this.monHit(m,t.mult,el); this._hitNote=null;

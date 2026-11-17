@@ -26,6 +26,10 @@ V `raw6/s2/` jsou také rekvizity Trhliny jádra a Padlého anděla, ikony kryst
 pírka a sezónních unikátů a dva sprity nasazené výbavy. Oba stavy každé
 rekvizity se balí se společným ořezem, aby při přepnutí zůstaly na stejném místě.
 
+Rig sheety běžných monster jsou v `raw6/monster_art/` a balí se stejným
+skriptem. Používají mřížku 4 × 4 po 256 px
+v pořadí `MONSTER_SHEETS`. Jejich animace jsou v `docs/game/lib/monster-rig.js`.
+
 ## Struktura hry (`docs/game/lib`)
 - `gl.js` – WebGL2 renderer: sprite batch, světelná mapa, pochodeň per-pixel, spory, post FX
 - `dungeon.js` – generátor pater, trezory, hádanky, světla

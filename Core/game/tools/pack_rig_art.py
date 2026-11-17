@@ -31,6 +31,24 @@ ANGEL_SHEETS = {
     "arch": (*ANGEL_PARTS, "weapon", "banner"),
 }
 ANGEL_STILLS = (*(f"{kind}_full" for kind in ANGEL_SHEETS), "ophan_closed", "ophan_open")
+HUMANOID_PARTS = ("head", "body", "arm_near", "arm_far", "leg_near", "leg_far", "weapon")
+MONSTER_SHEETS = {
+    "rat": ("head", "body", "foreleg", "hindleg", "tail"),
+    "capling": ("head", "body", "arm_near", "arm_far", "leg_near", "leg_far"),
+    "blob": ("body", "leg_near", "leg_far", "spore"),
+    "gob": HUMANOID_PARTS,
+    "archer": HUMANOID_PARTS,
+    "shaman": HUMANOID_PARTS,
+    "mine": ("body", "horn_far", "horn_near", "tendril", "root", "spore"),
+    "crawler": ("body", "antenna", "foreleg", "hindleg", "feeler", "spore"),
+    "stalker": ("cap", "body", "arm_near", "arm_far", "foreleg", "hindleg"),
+    "witch": (*HUMANOID_PARTS, "cape"),
+    "moth": ("body", "head", "wing_l", "wing_r", "hind_l", "hind_r"),
+    "tentacle": ("base", "stem", "head", "arm_far", "arm_near", "spore"),
+    "octo": ("body", "arm_far", "arm_near", "leg_near", "leg_far", "spore"),
+    "burster": ("bulb", "body", "foreleg", "hindleg", "spore", "cinder"),
+    "maw": ("body", "head", "jaw", "arm", "leg", "mouth"),
+}
 SEASON_PROP_PAIRS = (
     ("core_rift", "core_rift_closed"),
     ("angel_fallen_wounded", "angel_fallen_ash"),
@@ -59,9 +77,9 @@ def trim_sprite(sprite, name):
     return sprite.crop(sprite_bounds(sprite, name))
 
 
-def angel_parts(folder):
-    for kind, parts in ANGEL_SHEETS.items():
-        path = folder / f"angel_{kind}_rig.png"
+def sheet_parts(folder, sheets, prefix):
+    for kind, parts in sheets.items():
+        path = folder / f"{prefix}_{kind}_rig.png"
         if not path.exists():
             continue
         sheet = load_sprite(path)
@@ -69,13 +87,13 @@ def angel_parts(folder):
             raise ValueError(f"{path.name} must be a 1024 × 1024 PNG")
         for i, part in enumerate(parts):
             x, y = i % 4 * 256, i // 4 * 256
-            name = f"angel_{kind}_{part}"
+            name = f"{prefix}_{kind}_{part}"
             yield name, trim_sprite(sheet.crop((x, y, x + 256, y + 256)), name)
 
 
 def add_angel_art(sprites):
     folder = RAW / "s2"
-    for name, sprite in angel_parts(folder):
+    for name, sprite in sheet_parts(folder, ANGEL_SHEETS, "angel"):
         sprite.thumbnail((144, 144), Image.Resampling.LANCZOS)
         sprites[name] = sprite
     for kind in ANGEL_STILLS:
@@ -83,6 +101,19 @@ def add_angel_art(sprites):
         if path.exists():
             sprite = trim_sprite(load_sprite(path), path.stem)
             sprite.thumbnail((168, 168), Image.Resampling.LANCZOS)
+            sprites[path.stem] = sprite
+
+
+def add_monster_art(sprites):
+    folder = RAW / "monster_art"
+    for name, sprite in sheet_parts(folder, MONSTER_SHEETS, "monster"):
+        sprite.thumbnail((112, 112), Image.Resampling.LANCZOS)
+        sprites[name] = sprite
+    for kind in MONSTER_SHEETS:
+        path = folder / f"monster_{kind}_full.png"
+        if path.exists():
+            sprite = trim_sprite(load_sprite(path), path.stem)
+            sprite.thumbnail((144, 144), Image.Resampling.LANCZOS)
             sprites[path.stem] = sprite
 
 
@@ -185,6 +216,7 @@ def main():
         raise ValueError("No paper-doll sprites found")
     fit_rig_sprites(sprites)
     add_angel_art(sprites)
+    add_monster_art(sprites)
     add_season_art(sprites)
 
     base = json.loads((ASSETS / "atlas.json").read_text(encoding="utf-8"))
